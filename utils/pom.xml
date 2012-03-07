@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+		<groupId>com.mitnick</groupId>
+		<artifactId>mitnick</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mitnick</groupId>
+	<artifactId>utils</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>Proyecto utils del proyecto mitnick</name>
+	
+	<dependencies>
+		 <dependency>
+            <groupId>org.appfuse</groupId>
+            <artifactId>appfuse-service</artifactId>
+            <version>${appfuse.version}</version>
+            <!-- This exclusion and the dependency following this one allow DAO framework switching. -->
+            <!-- You only need these if you want to use JPA or iBATIS. See APF-565 for more information. -->
+            <!-- It does no harm to leave it in for Hibernate, but it's not needed. -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.appfuse</groupId>
+                    <artifactId>appfuse-hibernate</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+		<dependency>
+		    <groupId>commons-validator</groupId>
+		    <artifactId>commons-validator</artifactId>
+		    <version>1.3.1</version>
+		</dependency>
+	</dependencies>
+</project>
