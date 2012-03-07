@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<table name='cliente'>
+	  <column>id</column>
+	  <column>nombre</column>
+	  <column>apellido</column>
+	  <column>documento</column>
+	  <column>cuit</column>
+	  <column>telefono</column>
+	  <column>email</column>
+	  
+	  <row>
+	    <value>1</value>
+	    <value>Agustina</value>
+	    <value>Berraz</value>
+	    <value>28764155</value>
+	    <value>27287641554</value>
+	    <value>154071797</value>
+	    <value>agustinabm@gmail.com</value>	    
+	  </row>
+	</table>
+	<table name='producto'>
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <column>marca</column>
+	  <column>tipo</column>
+	  <column>stock</column>
+	  <column>precio</column>
+	  
+	  <row>
+	    <value>1</value>
+	    <value>pantalon</value>
+	    <value>1</value>
+	    <value>1</value>
+	    <value>10</value>
+	    <value>250</value>
+	  </row>
+	</table>
+</dataset>
