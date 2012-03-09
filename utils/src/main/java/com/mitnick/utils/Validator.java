@@ -8,7 +8,7 @@ import org.apache.commons.validator.GenericValidator;
  * Esta clase tiene la responsabilidad de representar el validador que se va a utilizar
  * para realizar validaciones de datos.
  * 
- * @author Lucas Garc�a
+ * @author Lucas García
  *
  */
 public class Validator extends GenericValidator{
@@ -25,20 +25,17 @@ public class Validator extends GenericValidator{
 		return !Validator.isNull(object);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static boolean isEmpty(Collection collection)
+	public static boolean isEmpty(@SuppressWarnings("rawtypes") Collection collection)
 	{
 		return collection.isEmpty();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static boolean isEmptyOrNull(Collection collection)
+	public static boolean isEmptyOrNull(@SuppressWarnings("rawtypes") Collection collection)
 	{
 		return Validator.isNull(collection) || Validator.isEmpty(collection);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static boolean isNotEmptyOrNull(Collection collection)
+	public static boolean isNotEmptyOrNull(@SuppressWarnings("rawtypes") Collection collection)
 	{
 		return !Validator.isEmptyOrNull(collection);
 	}

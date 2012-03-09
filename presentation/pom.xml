@@ -8,10 +8,8 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.proyectoanalista</groupId>
 	<artifactId>presentation</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
 	<name>Proyecto presentation del proyecto mitnick</name>
 	<dependencies>
 		<dependency>

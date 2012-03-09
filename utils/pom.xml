@@ -8,10 +8,8 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.mitnick</groupId>
 	<artifactId>utils</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
 	<name>Proyecto utils del proyecto mitnick</name>
 	
 	<dependencies>
