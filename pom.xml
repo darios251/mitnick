@@ -299,6 +299,6 @@
 		<jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
 		<jdbc.url>jdbc:postgresql://localhost/${db.name}</jdbc.url>
 		<jdbc.username>postgres</jdbc.username>
-		<jdbc.password>admin</jdbc.password>
+		<jdbc.password>postgres</jdbc.password>
     </properties>
 </project>

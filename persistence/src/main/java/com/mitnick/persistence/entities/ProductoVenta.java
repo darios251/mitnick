@@ -13,7 +13,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.appfuse.model.BaseObject;
 
-@Entity(name = "PRODUCTOVENTA")
+@Entity(name = "Producto_Venta")
 public class ProductoVenta extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,13 +22,13 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	private Long id;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn(name = "PRODUCTO")
+	@PrimaryKeyJoinColumn(name = "producto_id")
 	private Producto producto;
 	
-	@Column(name = "PRECIO", nullable = false)
+	@Column(name = "precio", nullable = false)
 	private Long precio;
 	
-	@Column(name = "CANTIDAD", nullable = false)
+	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
 	
 	

@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
 
-@Entity(name = "CLIENTE")
+@Entity(name = "Cliente")
 public class Cliente extends BaseObject implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -21,25 +21,26 @@ public class Cliente extends BaseObject implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name = "NOMBRE", length = 20, nullable = false)
+	@Column(name = "nombre", length = 20, nullable = false)
 	private String nombre;
 	
-	@Column(name = "APELLIDO", length = 20, nullable = false)
+	@Column(name = "apellido", length = 20, nullable = false)
 	private String apellido;
 	
-	@Column(name = "DOCUMENTO", length = 10, nullable = false, unique = true)
+	@Column(name = "documento", length = 10, nullable = false, unique = true)
 	private Long documento;
 	
-	@Column(name = "CUIT", length = 10, nullable = false, unique = true)
+	@Column(name = "cuit", length = 10, nullable = false, unique = true)
 	private Long cuit;
 
-	@Column(name = "TELEFONO", length = 20, nullable = true)
+	@Column(name = "telefono", length = 20, nullable = true)
 	private String telefono;
 	
-	@Column(name = "EMAIL", length = 20, nullable = true)
+	@Column(name = "email", length = 20, nullable = true)
 	private String email;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_nacimiento", nullable = true)
 	private Date fechaNacimiento;
 
 
