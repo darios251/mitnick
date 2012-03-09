@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 import org.appfuse.model.BaseObject;
 
-@Entity( name = "TIPO" )
+@Entity( name = "Tipo" )
 public class Tipo extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,7 +18,7 @@ public class Tipo extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name = "DESCRIPCION", length = 255, nullable = false)
+	@Column(name = "descripcion", length = 255, nullable = false)
 	private String descripcion;
 	
 	

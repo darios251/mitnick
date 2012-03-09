@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<table name='tipo'>
-	  <column>id</column>
-	  <column>descripcion</column>
-	  
-	  <row>
-	    <value>1</value>
-	    <value>>Camisa</value>
-	  </row>
-	</table>
-	<table name='marca'>
-	  <column>id</column>
-	  <column>descripcion</column>
-	  
-	  <row>
-	    <value>1</value>
-	    <value>levis</value>
-	  </row>
-	</table>
+	
 </dataset>

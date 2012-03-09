@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<table name='cliente'>
+	<table name="Cliente">
 	  <column>id</column>
 	  <column>nombre</column>
 	  <column>apellido</column>
@@ -19,11 +19,27 @@
 	    <value>agustinabm@gmail.com</value>	    
 	  </row>
 	</table>
-	<table name='producto'>
+	<table name="Tipo">
 	  <column>id</column>
 	  <column>descripcion</column>
-	  <column>marca</column>
-	  <column>tipo</column>
+	  <row>
+	  	<value>1</value>
+	  	<value>primer tipo</value>
+	  </row>
+	</table>
+	<table name="Marca">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <row>
+	  	<value>1</value>
+	  	<value>primer marca</value>
+	  </row>
+	</table>
+	<table name="Producto">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <column>marca_id</column>
+	  <column>tipo_id</column>
 	  <column>stock</column>
 	  <column>precio</column>
 	  

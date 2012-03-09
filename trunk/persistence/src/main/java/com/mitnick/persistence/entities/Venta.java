@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +19,7 @@ import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
 
-@Entity(name = "VENTA")
+@Entity(name = "Venta")
 public class Venta extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -28,31 +27,32 @@ public class Venta extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PRODUCTOS")
+	@OneToMany
+	@JoinColumn(name = "producto_id")
 	private List<Producto> productos;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PAGOS")
+	@OneToMany
+	@JoinColumn(name = "pagos_id")
 	private List<Pago> pagos;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha")
 	private Date fecha;
 	
-	@Column(name = "SUBTOTAL", nullable = false)
+	@Column(name = "subtotal", nullable = false)
 	private Long subtotal;
 	
-	@Column(name = "DESCUENTO", nullable = false)
+	@Column(name = "descuento", nullable = false)
 	private Long descuento;
 	
-	@Column(name = "IMPUESTO", nullable = false)
+	@Column(name = "impuesto", nullable = false)
 	private Long impuesto;
 	
-	@Column(name = "TOTAL", nullable = false)
+	@Column(name = "total", nullable = false)
 	private Long total;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn(name = "CLIENTE")
+	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
 	@Override

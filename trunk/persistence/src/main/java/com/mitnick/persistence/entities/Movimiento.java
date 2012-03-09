@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
 
-@Entity(name = "MOVIMIENTO")
+@Entity(name = "Movimiento")
 public class Movimiento extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,12 +26,13 @@ public class Movimiento extends BaseObject implements Serializable {
 	
 	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha", nullable = false)
 	private Date fecha;
 	
-	@Column(name = "CANTIDAD", nullable = false)
+	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
 	
-	@Column(name = "TIPO", nullable = false)
+	@Column(name = "tipo", nullable = false)
 	private int tipo;
 	
 	@Override

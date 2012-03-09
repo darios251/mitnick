@@ -17,7 +17,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.appfuse.model.BaseObject;
 
-@Entity(name = "PRODUCTO")
+@Entity(name = "Producto")
 public class Producto extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,25 +25,25 @@ public class Producto extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name = "DESCRIPCION", length = 255, nullable = false)
+	@Column(name = "descripcion", length = 255, nullable = false)
 	private String descripcion;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn(name = "MARCA")
+	@PrimaryKeyJoinColumn(name = "marca_id")
 	private Marca marca;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn(name = "TIPO")
+	@PrimaryKeyJoinColumn(name = "tipo_id")
 	private Tipo tipo;
 	
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MOVIMIENTO")
+	@JoinColumn(name = "movimiento_id")
 	private List<Movimiento> movimientos;
 	
-	@Column(name = "STOCK", nullable = false)
+	@Column(name = "stock", nullable = false)
 	private int stock;
 	
-	@Column(name = "PRECIO", nullable = false)
+	@Column(name = "precio", nullable = false)
 	private Long precio;
 	
 	@Override
