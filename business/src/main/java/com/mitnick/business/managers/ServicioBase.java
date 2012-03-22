@@ -9,6 +9,6 @@ import org.apache.log4j.Logger;
  * @author Lucas Garc�a
  *
  */
-public class BaseManager {
+public class ServicioBase {
 	protected Logger logger = Logger.getLogger(this.getClass());
 }
