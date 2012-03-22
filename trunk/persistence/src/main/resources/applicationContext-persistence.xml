@@ -31,13 +31,13 @@
 	<bean id="clienteDao" class="com.mitnick.persistence.daos.ClienteDao" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.Cliente"/>
 	</bean>
-	<bean id="medioPagoDao" class="com.mitnick.persistence.daos.MedioPagoDao" autowire="byType">
+	<bean id="medioPagoDao" class="com.mitnick.persistence.daos.MedioPagoDAO" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.MedioPago"/>
 	</bean>
-	<bean id="productoDao" class="com.mitnick.persistence.daos.ProductoDao" autowire="byType">
+	<bean id="productoDao" class="com.mitnick.persistence.daos.ProductoDAO" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.Producto"/>
 	</bean>
-	<bean id="ventaDao" class="com.mitnick.persistence.daos.VentaDao" autowire="byType">
+	<bean id="ventaDao" class="com.mitnick.persistence.daos.VentaDAO" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.Venta"/>
 	</bean>
 	
@@ -46,8 +46,9 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 	</bean>
-                
- 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" >
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" >
  		<property name="sessionFactory" ref="sessionFactory" />
  	</bean>
+                
 </beans>
