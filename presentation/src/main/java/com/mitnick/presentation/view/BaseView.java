@@ -68,5 +68,6 @@ public abstract class BaseView extends JPanel implements ITitlePane {
 	
 	protected abstract void limpiarCamposPantalla();
 	
-	protected abstract void initializeComponents();	
+	protected abstract void initializeComponents();
+
 }

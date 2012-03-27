@@ -40,4 +40,42 @@
 			</list>
 		</property>
  	</bean>
+ 	
+ 	<!-- Add new Views here -->
+ 	<bean id="productosPanel" class="com.mitnick.presentation.view.ProductosPanel">
+ 		<constructor-arg value="Articulos"></constructor-arg>
+ 	</bean>
+ 	
+ 	<bean id="clientesPanel" class="com.mitnick.presentation.view.ClientesPanel">
+ 		<constructor-arg value="Clientes"></constructor-arg>
+ 	</bean>
+ 	
+ 	<bean id="buscarProductoPanel" class="com.mitnick.presentation.view.BuscarProductoPanel">
+ 		<constructor-arg value=""></constructor-arg>
+ 		<property name="ventasController" ref="ventasController"></property>
+ 	</bean>
+ 	
+ 	<bean id="ventasPanel" class="com.mitnick.presentation.view.VentasPanel">
+ 		<constructor-arg value=""></constructor-arg>
+ 		<property name="ventasController" ref="ventasController"></property>
+ 	</bean>
+ 	
+ 	<bean id="ventasView" class="com.mitnick.presentation.view.VentasView">
+ 		<constructor-arg value="Ventas"></constructor-arg>
+ 		<property name="ventasController" ref="ventasController"></property>
+ 	</bean>
+ 	
+ 	<bean id="principalView" class="com.mitnick.presentation.view.PrincipalView">
+ 		<property name="ventasView" ref="ventasView"></property>
+ 		<property name="productosPanel" ref="productosPanel"></property>
+ 		<property name="clientesPanel" ref="clientesPanel"></property>
+ 	</bean>
+ 	
+ 	<!-- Add new Controllers here -->
+ 	<bean id="ventasController" class="com.mitnick.presentation.controller.VentasController">
+ 		<property name="ventasView" ref="ventasView"></property>
+ 		<property name="ventasPanel" ref="ventasPanel"></property>
+ 	</bean>
+ 	
+ 	
 </beans>

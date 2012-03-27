@@ -12,7 +12,7 @@ public class ProductoDto extends BaseDto {
 	
 	private TipoDto tipo;
 	
-	private char talle;
+	private String talle;
 	
 	private MarcaDto marca;
 	
@@ -46,11 +46,11 @@ public class ProductoDto extends BaseDto {
 		this.tipo = tipo;
 	}
 
-	public char getTalle() {
+	public String getTalle() {
 		return talle;
 	}
 
-	public void setTalle(char talle) {
+	public void setTalle(String talle) {
 		this.talle = talle;
 	}
 
