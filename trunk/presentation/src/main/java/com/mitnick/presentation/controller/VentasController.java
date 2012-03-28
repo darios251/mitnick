@@ -11,7 +11,6 @@ import com.mitnick.presentation.view.VentasPanel;
 import com.mitnick.presentation.view.VentasView;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
-import com.mitnick.utils.dtos.VentaDto;
 
 public class VentasController extends BaseController {
 

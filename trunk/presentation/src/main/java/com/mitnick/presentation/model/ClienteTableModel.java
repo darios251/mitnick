@@ -1,16 +1,13 @@
 package com.mitnick.presentation.model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
-import com.mitnick.utils.dtos.MarcaDto;
-import com.mitnick.utils.dtos.ProductoDto;
-import com.mitnick.utils.dtos.TipoDto;
 
 public class ClienteTableModel extends AbstractTableModel implements TableModel{
 
@@ -21,9 +18,9 @@ public class ClienteTableModel extends AbstractTableModel implements TableModel{
 	
 	public ClienteTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add("Apellido");
-		columnNames.add("Nombre");
-		columnNames.add("Documento");
+		columnNames.add(PropertiesManager.getProperty("clienteTableModel.apellido"));
+		columnNames.add(PropertiesManager.getProperty("clienteTableModel.nombre"));
+		columnNames.add(PropertiesManager.getProperty("clienteTableModel.documento"));
 		data = new ArrayList<ClienteDto>();
 	}
 	

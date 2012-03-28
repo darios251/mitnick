@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
@@ -20,13 +21,13 @@ public class ProductoTableModel extends AbstractTableModel implements TableModel
 	
 	public ProductoTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add("Codigo");
-		columnNames.add("Descripcion");
-		columnNames.add("Tipo");
-		columnNames.add("Talle");
-		columnNames.add("Marca");
-		columnNames.add("Precio");
-		columnNames.add("Stock");
+		columnNames.add(PropertiesManager.getProperty("productoTableModel.codigo"));
+		columnNames.add(PropertiesManager.getProperty("productoTableModel.descripcion"));
+		columnNames.add(PropertiesManager.getProperty("productoTableModel.tipo"));
+		columnNames.add(PropertiesManager.getProperty("productoTableModel.talle"));
+		columnNames.add(PropertiesManager.getProperty("productoTableModel.marca"));
+		columnNames.add(PropertiesManager.getProperty("productoTableModel.precio"));
+		columnNames.add(PropertiesManager.getProperty("productoTableModel.stock"));
 		data = new ArrayList<ProductoDto>();
 		
 	}

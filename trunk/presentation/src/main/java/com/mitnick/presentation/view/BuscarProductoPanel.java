@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.mitnick.presentation.controller.VentasController;
+import com.mitnick.utils.PropertiesManager;
 
 public class BuscarProductoPanel extends BaseView {
 	private static final long serialVersionUID = 1L;
@@ -43,7 +44,7 @@ public class BuscarProductoPanel extends BaseView {
 		scrollPane.setBounds(25, 115, 700, 315);
 		add(scrollPane);
 		
-		lblCodigo = new JLabel("C\u00F3digo:");
+		lblCodigo = new JLabel(PropertiesManager.getProperty("buscarArticuloPanel.etiqueta.codigo"));
 		lblCodigo.setBounds(125, 35, 70, 20);
 		add(lblCodigo);
 		
@@ -52,7 +53,7 @@ public class BuscarProductoPanel extends BaseView {
 		txtCodigo.setBounds(200, 35, 110, 20);
 		add(txtCodigo);
 		
-		lblDescripcion = new JLabel("Descripcion:");
+		lblDescripcion = new JLabel(PropertiesManager.getProperty("buscarArticuloPanel.etiqueta.descripcion"));
 		lblDescripcion.setBounds(330, 35, 70, 20);
 		add(lblDescripcion);
 		
@@ -61,13 +62,13 @@ public class BuscarProductoPanel extends BaseView {
 		txtDescripcion.setBounds(420, 35, 110, 20);
 		add(txtDescripcion);
 		
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.setToolTipText("Buscar Producto");
+		btnBuscar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.buscar"));
+		btnBuscar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.buscar"));
 		btnBuscar.setBounds(570, 15, 60, 60);
 		add(btnBuscar);
 		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setToolTipText("Cancelar");
+		btnCancelar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.cancelar"));
+		btnCancelar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.cancelar"));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventasController.mostrarVentasPanel();
@@ -76,8 +77,8 @@ public class BuscarProductoPanel extends BaseView {
 		btnCancelar.setBounds(735, 185, 60, 60);
 		add(btnCancelar);
 		
-		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setToolTipText("Agregar producto a la venta");
+		btnAceptar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.aceptar"));
+		btnAceptar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.aceptar"));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventasController.agregarProducto(txtCodigo.getText());
@@ -87,7 +88,7 @@ public class BuscarProductoPanel extends BaseView {
 		btnAceptar.setBounds(735, 115, 60, 60);
 		add(btnAceptar);
 		
-		lblProductos = new JLabel("Productos");
+		lblProductos = new JLabel(PropertiesManager.getProperty("buscarArticuloPanel.etiqueta.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
 	}
