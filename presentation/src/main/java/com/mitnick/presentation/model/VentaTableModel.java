@@ -7,10 +7,8 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import com.mitnick.utils.dtos.MarcaDto;
-import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ProductoVentaDto;
-import com.mitnick.utils.dtos.TipoDto;
 
 public class VentaTableModel extends AbstractTableModel implements TableModel{
 
@@ -21,11 +19,11 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 	
 	public VentaTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add("Codigo");
-		columnNames.add("Descripcion");
-		columnNames.add("Precio Unitario");
-		columnNames.add("Cantidad");
-		columnNames.add("Precio Final");
+		columnNames.add(PropertiesManager.getProperty("ventaTableModel.codigo"));
+		columnNames.add(PropertiesManager.getProperty("ventaTableModel.descripcion"));
+		columnNames.add(PropertiesManager.getProperty("ventaTableModel.precioUnitario"));
+		columnNames.add(PropertiesManager.getProperty("ventaTableModel.cantidad"));
+		columnNames.add(PropertiesManager.getProperty("ventaTableModel.precioFinal"));
 		data = new ArrayList<ProductoVentaDto>();
 	}
 	

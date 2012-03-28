@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableRowSorter;
 
 import com.mitnick.presentation.model.ClienteTableModel;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
 
 public class ClientesPanel extends BaseView {
@@ -44,7 +45,7 @@ public class ClientesPanel extends BaseView {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblNumeroDocumento = new JLabel("Documento");
+		lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientesPanel.etiqueta.documento"));
 		lblNumeroDocumento.setBounds(125, 15, 70, 20);
 		add(lblNumeroDocumento);
 		
@@ -53,7 +54,7 @@ public class ClientesPanel extends BaseView {
 		txtNumeroDocumento.setBounds(200, 15, 110, 20);
 		add(txtNumeroDocumento);
 		
-		lblApellido = new JLabel("Apellido");
+		lblApellido = new JLabel(PropertiesManager.getProperty("clientesPanel.etiqueta.apellido"));
 		lblApellido.setBounds(125, 55, 70, 20);
 		add(lblApellido);
 		
@@ -151,16 +152,16 @@ public class ClientesPanel extends BaseView {
 		List<ClienteDto> clientes = new ArrayList<ClienteDto>();
 		
 		ClienteDto c1 = new ClienteDto();
-		c1.setApellido("Garcia");
+		c1.setApellido("García");
 		c1.setNombre("Lucas");
-		c1.setDocumento("31.115.029");
+		c1.setDocumento("31.115.019");
 		
 		clientes.add(c1);
 		
 		ClienteDto c2 = new ClienteDto();
-		c2.setApellido("Suller");
-		c2.setNombre("Guido");
-		c2.setDocumento("12.327.389");
+		c2.setApellido("Berraz");
+		c2.setNombre("Agustina");
+		c2.setDocumento("28.764.155");
 		
 		clientes.add(c2);
 		

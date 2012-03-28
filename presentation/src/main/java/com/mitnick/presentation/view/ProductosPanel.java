@@ -22,8 +22,6 @@ import com.mitnick.utils.dtos.TipoDto;
 public class ProductosPanel extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
-
-	
 	
 	private JTextField txtCodigo;
 	private JTextField txtDescripcion;
