@@ -1,20 +1,26 @@
 package com.mitnick.presentation.view;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.mitnick.presentation.controller.VentasController;
 
-public class PagosPanel extends JPanel {
+
+public class PagosPanel extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private VentasController ventasController;
+	
 	private JTextField txtMonto;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -33,7 +39,12 @@ public class PagosPanel extends JPanel {
 	private JComboBox cbxContado;
 	private Component lblTarjeta;
 
-	public PagosPanel() {
+	private String title;
+
+	public PagosPanel(String titulo) {
+		
+		this.title = titulo;
+		
 		setLayout(null);
 		
 		lblTarjeta = new JLabel("Contado");
@@ -73,6 +84,11 @@ public class PagosPanel extends JPanel {
 		add(scrollPane);
 		
 		btnFinalizar = new JButton("Finalizar");
+		btnFinalizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventasController.mostrarVentasPanel();
+			}
+		});
 		btnFinalizar.setBounds(440, 298, 89, 23);
 		add(btnFinalizar);
 		
@@ -114,6 +130,27 @@ public class PagosPanel extends JPanel {
 		btnAgregar.setBounds(140, 123, 89, 23);
 		add(btnAgregar);
 		
+		
+	}
+
+	public void setVentasController(VentasController ventasController) {
+		this.ventasController = ventasController;
+	}
+
+	@Override
+	public String getTitle() {
+		return this.title;
+	}
+
+	@Override
+	public void limpiarCamposPantalla() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void initializeComponents() {
+		// TODO Auto-generated method stub
 		
 	}
 

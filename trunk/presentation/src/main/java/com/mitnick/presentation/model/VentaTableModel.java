@@ -42,6 +42,10 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		this.fireTableDataChanged();
 	}
 	
+	public ProductoVentaDto getProductosVenta(int index) {
+		return this.data.get(index);
+	}
+	
 	public void addProductosVentas(List<ProductoVentaDto> productos) {
 		for(ProductoVentaDto prod : productos) {
 			addProductoVenta(prod);
@@ -58,9 +62,14 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		this.fireTableRowsInserted(index, index);
 	}
 	
-	public void removeProductoVenta(ProductoVentaDto producto, int index) {
+	public void removeProductoVenta(int index) {
 		this.data.remove(index);
 		this.fireTableRowsDeleted(index, index);
+	}
+	
+	public void removeProductoVenta(ProductoVentaDto producto) {
+		this.data.remove(producto);
+		this.fireTableDataChanged();
 	}
 	
 	public void removeAll() {
@@ -98,11 +107,11 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		case 1:
 			return fila.getProducto().getDescripcion();
 		case 2:
-			return fila.getProducto().getPrecio();
+			return fila.getProducto().getPrecio().setScale (2, BigDecimal.ROUND_HALF_UP);
 		case 3:
 			return fila.getCantidad();
 		case 4:
-			return fila.getPrecioTotal();
+			return fila.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP);
 		}
 		
 		return data.get(-1);

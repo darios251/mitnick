@@ -21,6 +21,9 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
+import com.mitnick.presentation.controller.ClientesController;
+import com.mitnick.presentation.controller.ProductosController;
+import com.mitnick.presentation.controller.VentasController;
 import com.mitnick.presentation.view.usercontrols.DetailPanel;
 import com.mitnick.presentation.view.usercontrols.JTabbedPaneConBoton;
 import com.mitnick.utils.PropertiesManager;
@@ -33,14 +36,18 @@ public class PrincipalView extends JFrame
 	private static Logger logger = Logger.getLogger(PrincipalView.class);
 
 	//	 declaraciones de inyecciones de spring
+	private VentasController ventasController;
+	private ProductosController productosController;
+	private ClientesController clientesController;
+	
 	private DetailPanel pnlPrincipal;
 	private DetailPanel pnlToolBar;
-	private BaseView ventasView;
-	private BaseView productosPanel;
-	private BaseView clientesPanel;
-
+	
+	private JTabbedPaneConBoton jtbPrincipalPanel;
+	
 	private JPanel jContentPane;
 	private JPanel pnlToolBarArrow;
+	private JToolBar tlbQuickAccess;
 	private JPanel pnlArrow;
 	
 	private JButton btnVentas;
@@ -54,10 +61,6 @@ public class PrincipalView extends JFrame
 
 	private JLabel lblArrow;
 	public static JLabel lblLogo;
-
-	private JTabbedPaneConBoton jtbPrincipalPanel;
-
-	private JToolBar tlbQuickAccess;
 
 	
 
@@ -162,14 +165,14 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
-					if (jtbPrincipalPanel.indexOfComponent(ventasView) == -1) {
+					if (jtbPrincipalPanel.indexOfComponent(ventasController.getVentasView()) == -1) {
 						logger.info("Agregando el panel de ventas al tabbedPane");
-						jtbPrincipalPanel.addTab(ventasView.getTitle(), ventasView);
+						jtbPrincipalPanel.addTab(ventasController.getVentasView().getTitle(), ventasController.getVentasView());
 					}
 					logger.info("Mostrando el panel de ventas");
 					jtbPrincipalPanel.setVisible(true);
-					ventasView.setVisible(true);
-					jtbPrincipalPanel.setSelectedComponent(ventasView);
+					ventasController.mostrarVentasPanel();
+					jtbPrincipalPanel.setSelectedComponent(ventasController.getVentasView());
 				}
 			});
 		}
@@ -194,14 +197,14 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
-					if (jtbPrincipalPanel.indexOfComponent(productosPanel) == -1) {
+					if (jtbPrincipalPanel.indexOfComponent(productosController.getProductosView()) == -1) {
 						logger.info("Agregando el panel de articulos al tabbedPane");
-						jtbPrincipalPanel.addTab(productosPanel.getTitle(), productosPanel);
+						jtbPrincipalPanel.addTab(productosController.getProductosView().getTitle(), productosController.getProductosView());
 					}
 					logger.info("Mostrando el panel de articulos");
 					jtbPrincipalPanel.setVisible(true);
-					productosPanel.setVisible(true);
-					jtbPrincipalPanel.setSelectedComponent(productosPanel);
+					productosController.mostrarProductosPanel();
+					jtbPrincipalPanel.setSelectedComponent(productosController.getProductosView());
 				}
 			});
 		}
@@ -214,26 +217,23 @@ public class PrincipalView extends JFrame
 		if(btnClientes == null)
 		{
 			btnClientes = new JButton();
-			btnClientes.setSize(new Dimension(100, 100));
-			btnClientes.setMinimumSize(new Dimension(100, 100));
 			btnClientes.setText(PropertiesManager.getProperty("principalView.button.clientes"));
 			btnClientes.setIcon(new ImageIcon(this.getClass().getResource("/img/clientes.png")));
+			
 			btnClientes.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnClientes.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnClientes.setMargin(new Insets(-1, -1, -1, -1));
-			btnClientes.addMouseListener(new MouseAdapter()
-			{
-				public void mouseClicked(MouseEvent e)
-				{
-					if (jtbPrincipalPanel.indexOfComponent(clientesPanel) == -1) {
+			
+			btnClientes.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e)	{
+					if (jtbPrincipalPanel.indexOfComponent(clientesController.getClientesPanel()) == -1) {
 						logger.info("Agregando el panel de clientes al tabbedPane");
-						jtbPrincipalPanel.addTab(clientesPanel.getTitle(), clientesPanel);
+						jtbPrincipalPanel.addTab(clientesController.getClientesPanel().getTitle(), clientesController.getClientesPanel());
 					}
 					logger.info("Mostrando el panel de clientes");
 					jtbPrincipalPanel.setVisible(true);
-					clientesPanel.setVisible(true);
-					jtbPrincipalPanel.setSelectedComponent(clientesPanel);
-					
+					clientesController.mostrarClientesPanel();
+					jtbPrincipalPanel.setSelectedComponent(clientesController.getClientesPanel());
 				}
 			});
 		}
@@ -404,18 +404,17 @@ public class PrincipalView extends JFrame
 		return pnlArrow;
 	}
 
-	public void setVentasView(BaseView ventasView) {
-		this.ventasView = ventasView;
+
+	public void setVentasController(VentasController ventasController) {
+		this.ventasController = ventasController;
 	}
 
-	public void setProductosPanel(BaseView productosPanel) {
-		this.productosPanel = productosPanel;
+	public void setProductosController(ProductosController productosController) {
+		this.productosController = productosController;
 	}
 
-	public void setClientesPanel(BaseView clientesPanel) {
-		this.clientesPanel = clientesPanel;
+	public void setClientesController(ClientesController clientesController) {
+		this.clientesController = clientesController;
 	}
-
-	
 
 }

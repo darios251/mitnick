@@ -2,18 +2,24 @@ package com.mitnick.presentation.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.table.TableRowSorter;
 
+import com.mitnick.presentation.controller.ProductosController;
 import com.mitnick.presentation.model.ProductoTableModel;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -22,6 +28,8 @@ import com.mitnick.utils.dtos.TipoDto;
 public class ProductosPanel extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private ProductosController productosController;
 	
 	private JTextField txtCodigo;
 	private JTextField txtDescripcion;
@@ -34,12 +42,16 @@ public class ProductosPanel extends BaseView {
 	private JLabel lblCdigo;
 	private JScrollPane scrollPane;
 	private JTable table;
-	private JButton btnNuevo;
-	private JButton btnModificar;
+	private JButton btnAgregar;
+	private JButton btnEditar;
 	private JButton btnEliminar;
 	private JLabel lblArtculos;
 	private TableRowSorter<ProductoTableModel> sorter;
 	private ProductoTableModel model;
+
+
+
+	private JButton btnMovimientos;
 	
 	public ProductosPanel(String titulo) {
 		setLayout(null);
@@ -72,9 +84,7 @@ public class ProductosPanel extends BaseView {
 		cbxTipo.setBounds(200, 55, 110, 20);
 		add(cbxTipo);
 		
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.setBounds(570, 15, 60, 60);
-		add(btnBuscar);
+		
 		
 		cbxMarca = new JComboBox();
 		cbxMarca.setBounds(420, 55, 110, 20);
@@ -97,17 +107,84 @@ public class ProductosPanel extends BaseView {
 		scrollPane.setBounds(25, 115, 700, 315);
 		add(scrollPane);
 		
-		btnNuevo = new JButton("Nuevo");
-		btnNuevo.setBounds(735, 115, 60, 60);
-		add(btnNuevo);
+		btnBuscar = new JButton();
+		btnBuscar.setToolTipText("Buscar Producto");
 		
-		btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(735, 255, 60, 60);
-		add(btnModificar);
+		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
+		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
 		
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(735, 185, 60, 60);
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnBuscar.setBounds(560, 15, 60, 60);
+		add(btnBuscar);
+		
+		
+		btnAgregar = new JButton();
+		btnAgregar.setToolTipText("Nuevo Producto");
+		
+		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
+		btnAgregar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnAgregar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				productosController.mostrarProductoNuevoPanel();
+			}
+		});
+		btnAgregar.setBounds(735, 115, 60, 60);
+		add(btnAgregar);
+		
+		btnEditar = new JButton();
+		btnEditar.setToolTipText("Modificar Producto");
+		
+		btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/editar.png")));
+		btnEditar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnEditar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnEditar.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEditar.setBounds(735, 185, 60, 60);
+		add(btnEditar);
+		
+		btnEliminar = new JButton();
+		btnEliminar.setToolTipText("Eliminar Producto");
+		
+		btnEliminar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+		btnEliminar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnEliminar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEliminar.setBounds(735, 255, 60, 60);
 		add(btnEliminar);
+		
+		
+		btnMovimientos = new JButton();
+		btnMovimientos.setToolTipText("Detalles Movimientos");
+		
+		btnMovimientos.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
+		btnMovimientos.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnMovimientos.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnMovimientos.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnMovimientos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnMovimientos.setBounds(735, 325, 60, 60);
+		add(btnMovimientos);
+		
 		
 		lblArtculos = new JLabel("Art\u00EDculos");
 		lblArtculos.setBounds(163, 132, 65, 14);
@@ -116,6 +193,7 @@ public class ProductosPanel extends BaseView {
 		JLabel lblProductos = new JLabel("Productos");
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
+		
 		
 		
 	}
@@ -172,4 +250,10 @@ public class ProductosPanel extends BaseView {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setProductosController(ProductosController productosController) {
+		this.productosController = productosController;
+	}
+	
+	
 }

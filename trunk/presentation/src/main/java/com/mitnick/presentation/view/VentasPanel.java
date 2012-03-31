@@ -1,14 +1,16 @@
 package com.mitnick.presentation.view;
 
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -17,6 +19,10 @@ import javax.swing.SwingConstants;
 
 import com.mitnick.presentation.controller.VentasController;
 import com.mitnick.presentation.model.VentaTableModel;
+import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.dtos.ProductoVentaDto;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VentasPanel extends BaseView {
 	
@@ -26,9 +32,9 @@ public class VentasPanel extends BaseView {
 	
 	private JScrollPane scrollPane;
 	private JLabel lblTotal;
-	private Component btnPagar;
+	private JButton btnPagar;
 	private JLabel lblVenta;
-	private Component btnQuitar;
+	private JButton btnQuitar;
 	private JButton btnBuscar;
 	private JLabel lblCdigo;
 	
@@ -53,7 +59,7 @@ public class VentasPanel extends BaseView {
 
 
 	@Override
-	protected void limpiarCamposPantalla() {
+	public void limpiarCamposPantalla() {
 		txtCodigo.setText("");
 	}
 
@@ -64,6 +70,25 @@ public class VentasPanel extends BaseView {
 		model = new VentaTableModel();
 		
 		table = new JTable(model);
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evento) {
+				if (evento.getClickCount() == 2) {
+				      try {
+							int index = table.getSelectedRow();
+							ProductoVentaDto productoVentaDto = model.getProductosVenta(index);
+							logger.info("Abrir panel para editar el articulo con codigo " + productoVentaDto.getProducto().getCodigo());
+						}
+						catch (IndexOutOfBoundsException exception) {
+							if(model.getRowCount() == 0) {
+								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.emptyModel"));
+							}
+							else {
+								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.noRowSelected"));
+							}
+						}
+				    }
+			}
+		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
@@ -73,7 +98,7 @@ public class VentasPanel extends BaseView {
 		add(scrollPane);
 		
 		lblCdigo = new JLabel("C\u00F3digo:");
-		lblCdigo.setBounds(125, 35, 60, 20);
+		lblCdigo.setBounds(330, 35, 60, 20);
 		add(lblCdigo);
 		
 		txtCodigo = new JTextField();
@@ -82,16 +107,29 @@ public class VentasPanel extends BaseView {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					logger.info("Buscando producto ... ");
-					ventasController.agregarProducto(txtCodigo.getText());
+					if(txtCodigo.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.emptyTextCode"));
+					}
+					else {
+						ventasController.agregarProducto(txtCodigo.getText());
+						txtCodigo.setText("");
+					}
 				}
 			}
 		});
-		txtCodigo.setBounds(200, 35, 110, 20);
+		txtCodigo.setBounds(420, 35, 110, 20);
 		txtCodigo.setColumns(10);
 		add(txtCodigo);
 		
 		
 		btnBuscar = new JButton("Buscar");
+		btnBuscar.setToolTipText("Buscar Producto");
+		
+		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
+		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
+		
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventasController.mostrarBuscarArticuloPanel();
@@ -101,6 +139,40 @@ public class VentasPanel extends BaseView {
 		add(btnBuscar);
 		
 		btnQuitar = new JButton("Quitar");
+		btnQuitar.setToolTipText("Quitar Producto");
+		
+		btnQuitar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+		btnQuitar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnQuitar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnQuitar.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnQuitar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evento) {
+				logger.info("Quitando producto ... ");
+
+				try {
+					int index = table.getSelectedRow();
+					ProductoVentaDto productoVentaDto = model.getProductosVenta(index);
+					int opcion = JOptionPane.showConfirmDialog(scrollPane.getParent(), 
+							PropertiesManager.getProperty("ventasPanel.dialog.confirm.quitar"), 
+							PropertiesManager.getProperty("dialog.warning.title"), 
+							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
+					
+					if ( opcion == JOptionPane.YES_OPTION) {
+						ventasController.quitarProductoVentaDto(productoVentaDto);	
+					}
+				}
+				catch (IndexOutOfBoundsException exception) {
+					if(model.getRowCount() == 0) {
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.emptyModel"));
+					}
+					else {
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.noRowSelected"));
+					}
+					
+				}
+			}
+		});
 		btnQuitar.setBounds(735, 115, 60, 60);
 		add(btnQuitar);
 		
@@ -108,7 +180,19 @@ public class VentasPanel extends BaseView {
 		lblVenta.setBounds(25, 90, 46, 20);
 		add(lblVenta);
 		
-		btnPagar = new JButton("Pagar");
+		btnPagar = new JButton("Cobrar");
+		btnPagar.setToolTipText("Cobrar");
+		
+		btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/cobrar.png")));
+		btnPagar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnPagar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnPagar.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnPagar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventasController.mostrarPagosPanel();
+			}
+		});
 		btnPagar.setBounds(735, 185, 60, 60);
 		add(btnPagar);
 		

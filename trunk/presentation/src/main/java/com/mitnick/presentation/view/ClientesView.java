@@ -3,20 +3,19 @@ package com.mitnick.presentation.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import com.mitnick.presentation.controller.VentasController;
+import com.mitnick.presentation.controller.ClientesController;
 
 
-public class VentasView extends BaseView {
+public class ClientesView extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private String titulo = null;
 	
-	private VentasController ventasController;
+	private ClientesController clientesController;
 
 
-	public VentasView (String titulo) {
-		
+	public ClientesView (String titulo) {
 		this.centrarVentana( null );
 		this.titulo = titulo;
 		initializeComponents();
@@ -33,10 +32,8 @@ public class VentasView extends BaseView {
 	
 	public void setVisible(boolean aFlag) {
 		if(aFlag) {
-			this.add( ventasController.getVentasPanel(), BorderLayout.CENTER );
-			this.add( ventasController.getBuscarProductoPanel(), BorderLayout.CENTER );
-			this.add( ventasController.getPagosPanel(), BorderLayout.CENTER );
-			ventasController.mostrarVentasPanel();
+			this.add( clientesController.getClientesPanel(), BorderLayout.CENTER );
+			clientesController.mostrarClientesPanel();
 		}
 		super.setVisible(aFlag);
 	}
@@ -56,8 +53,9 @@ public class VentasView extends BaseView {
 		
 	}
 
-	public void setVentasController(VentasController ventasController) {
-		this.ventasController = ventasController;
+	public void setClientesController(ClientesController clientesController) {
+		this.clientesController = clientesController;
 	}
+
 
 }  
