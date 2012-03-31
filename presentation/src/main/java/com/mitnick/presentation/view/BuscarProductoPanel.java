@@ -2,14 +2,17 @@ package com.mitnick.presentation.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.mitnick.presentation.controller.VentasController;
 import com.mitnick.utils.PropertiesManager;
@@ -23,7 +26,7 @@ public class BuscarProductoPanel extends BaseView {
 	private Component lblCodigo;
 	private JLabel lblDescripcion;
 	private JButton btnBuscar;
-	private JButton btnCancelar;
+	private JButton btnVolver;
 	private JButton btnAceptar;
 	
 	private JTable table;
@@ -64,21 +67,44 @@ public class BuscarProductoPanel extends BaseView {
 		
 		btnBuscar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.buscar"));
 		btnBuscar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.buscar"));
+
+		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
+		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnBuscar.setBounds(570, 15, 60, 60);
 		add(btnBuscar);
 		
-		btnCancelar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.cancelar"));
-		btnCancelar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.cancelar"));
-		btnCancelar.addActionListener(new ActionListener() {
+		btnVolver = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.volver"));
+		btnVolver.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.volver"));
+		
+		btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
+		btnVolver.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnVolver.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnVolver.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventasController.mostrarVentasPanel();
 			}
 		});
-		btnCancelar.setBounds(735, 185, 60, 60);
-		add(btnCancelar);
+		btnVolver.setBounds(735, 185, 60, 60);
+		add(btnVolver);
 		
+
 		btnAceptar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.aceptar"));
 		btnAceptar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.aceptar"));
+		
+		btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
+		btnAceptar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnAceptar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
+		
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventasController.agregarProducto(txtCodigo.getText());
@@ -99,7 +125,7 @@ public class BuscarProductoPanel extends BaseView {
 	}
 
 	@Override
-	protected void limpiarCamposPantalla() {
+	public void limpiarCamposPantalla() {
 		// TODO Auto-generated method stub
 		
 	}
