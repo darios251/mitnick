@@ -1,6 +1,5 @@
 package com.mitnick.presentacion.controladores;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +7,17 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.vistas.PagoPanel;
 import com.mitnick.presentacion.vistas.VentaPanel;
 import com.mitnick.presentacion.vistas.VentaView;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
+import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 @Controller("ventaController")
 public class VentaController extends BaseController {
@@ -32,13 +34,20 @@ public class VentaController extends BaseController {
 	private BuscarProductoPanel buscarProductoPanel;
 	
 	@Autowired
+	private	IVentaServicio ventaServicio;
+	
+	@Autowired
 	private IProductoServicio productoServicio;
+	
+	// venta actual
+	private VentaDto venta;
 	
 	public VentaController() {
 		
 	}
 
 	public VentaView getVentaView() {
+		venta = new VentaDto();
 		return ventaView;
 	}
 
@@ -98,39 +107,15 @@ public class VentaController extends BaseController {
 		ConsultaProductoDto filtro = new ConsultaProductoDto();
 		filtro.setCodigo(codigo);
 		
-/*
 		List<ProductoDto> productos = new ArrayList<ProductoDto>(productoServicio.consultaProducto(filtro));
 		
-		VentaDto venta;
-		if(productos.isEmpty()) {
-			venta = iVentaServicio.agregarProducto(productos.get(0), venta);
-			ventasPanel.getModel().addProductosVentas(venta.getProductos());
+		if(!productos.isEmpty()) {
+			venta = ventaServicio.agregarProducto(productos.get(0), venta);
+			ventaPanel.getModel().setProductosVenta(venta.getProductos());
 		}
 		else {
-			throw new Exception("No se encontro el producto");
+			throw new PresentationException("No se encontro el producto");
 		}
-*/
-		
-// *********  Borrar cuando este implementado 	productoServicio.consultaProducto() ********	
-		List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
-		
-		ProductoVentaDto productoVenta = new ProductoVentaDto();
-		ProductoDto producto = new ProductoDto();
-		
-		producto.setCodigo(codigo);
-		producto.setDescripcion("Descripcion del producto " + producto.getCodigo() );
-		BigDecimal precio = new BigDecimal(new Double((Math.random()*300)+10));
-		producto.setPrecio(precio);
-		productoVenta.setProducto(producto);
-		
-		productoVenta.setCantidad(1);
-		BigDecimal precioTotal = producto.getPrecio().multiply(new BigDecimal(productoVenta.getCantidad()));
-		productoVenta.setPrecioTotal(precioTotal);
-		
-		productos.add(productoVenta);
-// **************************************************		
-		
-		ventaPanel.getModel().addProductosVentas(productos);
 	}
 
 
@@ -138,5 +123,13 @@ public class VentaController extends BaseController {
 		logger.info("Quitando elemento de la tabla");
 		ventaPanel.getModel().removeProductoVenta(productoVentaDto);
 		logger.info("Recalculando totales");
+	}
+
+	public void setVentaServicio(IVentaServicio ventaServicio) {
+		this.ventaServicio = ventaServicio;
+	}
+
+	public void setProductoServicio(IProductoServicio productoServicio) {
+		this.productoServicio = productoServicio;
 	}
 }
