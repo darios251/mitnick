@@ -51,7 +51,6 @@ public class VentaPanel extends BaseView {
 	public VentaPanel() {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
-		this.title = "colocar titulo";
 	}
 
 	@Override
@@ -74,10 +73,10 @@ public class VentaPanel extends BaseView {
 						}
 						catch (IndexOutOfBoundsException exception) {
 							if(model.getRowCount() == 0) {
-								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.emptyModel"));
+								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
 							}
 							else {
-								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.noRowSelected"));
+								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
 							}
 						}
 				    }
@@ -102,7 +101,7 @@ public class VentaPanel extends BaseView {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					logger.info("Buscando producto ... ");
 					if(txtCodigo.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.emptyTextCode"));
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyTextCode"));
 					}
 					else {
 						ventaController.agregarProducto(txtCodigo.getText());
@@ -147,8 +146,8 @@ public class VentaPanel extends BaseView {
 					int index = table.getSelectedRow();
 					ProductoVentaDto productoVentaDto = model.getProductosVenta(index);
 					int opcion = JOptionPane.showConfirmDialog(scrollPane.getParent(), 
-							PropertiesManager.getProperty("ventasPanel.dialog.confirm.quitar"), 
-							PropertiesManager.getProperty("dialog.warning.title"), 
+							PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"), 
+							PropertiesManager.getProperty("dialog.warning.titulo"), 
 							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
 					
 					if ( opcion == JOptionPane.YES_OPTION) {
@@ -157,10 +156,10 @@ public class VentaPanel extends BaseView {
 				}
 				catch (IndexOutOfBoundsException exception) {
 					if(model.getRowCount() == 0) {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.emptyModel"));
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
 					}
 					else {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventasPanel.dialog.warning.noRowSelected"));
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
 					}
 				}
 			}

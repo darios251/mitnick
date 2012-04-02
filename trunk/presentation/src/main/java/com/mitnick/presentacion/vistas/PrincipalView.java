@@ -81,7 +81,7 @@ public class PrincipalView extends JFrame
 
 	private void initialize()
 	{
-		this.setTitle(PropertiesManager.getProperty("principalView.title"));
+		this.setTitle(PropertiesManager.getProperty("principalView.titulo"));
 		this.setMinimumSize(new Dimension(990,600));
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 //		this.setExtendedState(MAXIMIZED_BOTH);
@@ -158,7 +158,7 @@ public class PrincipalView extends JFrame
 				{
 					if (getJTabbedPane().indexOfComponent(ventaController.getVentaView()) == -1) {
 						logger.info("Agregando el panel de ventas al tabbedPane");
-						getJTabbedPane().addTab("colocar titulo", ventaController.getVentaView());
+						getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
 					}
 					logger.info("Mostrando el panel de ventas");
 					getJTabbedPane().setVisible(true);
@@ -189,7 +189,7 @@ public class PrincipalView extends JFrame
 				{
 					if (getJTabbedPane().indexOfComponent(productoController.getProductoView()) == -1) {
 						logger.info("Agregando el panel de articulos al tabbedPane");
-						getJTabbedPane().addTab("colocar titulo", productoController.getProductoView());
+						getJTabbedPane().addTab(PropertiesManager.getProperty("producto.titulo"), productoController.getProductoView());
 					}
 					logger.info("Mostrando el panel de articulos");
 					getJTabbedPane().setVisible(true);
@@ -218,7 +218,7 @@ public class PrincipalView extends JFrame
 				public void mouseClicked(MouseEvent e)	{
 					if (getJTabbedPane().indexOfComponent(clienteController.getClientePanel()) == -1) {
 						logger.info("Agregando el panel de clientes al tabbedPane");
-						jTabbedPaneConBoton.addTab("colocar titulo", clienteController.getClientePanel());
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("cliente.titulo"), clienteController.getClientePanel());
 					}
 					logger.info("Mostrando el panel de clientes");
 					getJTabbedPane().setVisible(true);

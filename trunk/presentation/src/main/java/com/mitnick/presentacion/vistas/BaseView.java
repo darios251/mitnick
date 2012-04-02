@@ -20,8 +20,6 @@ public abstract class BaseView extends JPanel {
 	
 	protected JButton defaultButtonAction;
 	
-	protected String title = null;  
-	
 	public BaseView () {
 		this.centrarVentana( null );
 		initializePanel();
@@ -41,21 +39,21 @@ public abstract class BaseView extends JPanel {
 		//Primero despliego un mensaje para confirmar la operaci�n
 	     Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 	     
-	     JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty( "dialog.error.title" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+	     JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected void showDialogWarning ( String message ) {
 		//Primero despliego un mensaje para confirmar la operaci�n
 	     Object[] options = { PropertiesManager.getProperty( "dialog.warning.okbutton" ) };
 	     
-	     JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty("dialog.warning.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[ 0 ] );
+	     JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected void showDialogInfo ( String message ) {
 		//Primero despliego un mensaje para confirmar la operaci�n
 	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ) };
 	     
-	     JOptionPane.showOptionDialog(currentView, message, PropertiesManager.getProperty( "dialog.info.title" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
+	     JOptionPane.showOptionDialog(currentView, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected void centrarVentana ( Component parent ) {

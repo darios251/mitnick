@@ -41,8 +41,6 @@ public class BuscarProductoPanel extends BaseView {
 	private JLabel lblProductos;
 	
 	public BuscarProductoPanel() {
-		this.title = "colocar titulo";
-		
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
@@ -52,7 +50,7 @@ public class BuscarProductoPanel extends BaseView {
 		scrollPane.setBounds(25, 115, 700, 315);
 		add(scrollPane);
 		
-		lblCodigo = new JLabel(PropertiesManager.getProperty("buscarArticuloPanel.etiqueta.codigo"));
+		lblCodigo = new JLabel(PropertiesManager.getProperty("buscarProductoPanel.etiqueta.codigo"));
 		lblCodigo.setBounds(125, 35, 70, 20);
 		add(lblCodigo);
 		
@@ -61,7 +59,7 @@ public class BuscarProductoPanel extends BaseView {
 		txtCodigo.setBounds(200, 35, 110, 20);
 		add(txtCodigo);
 		
-		lblDescripcion = new JLabel(PropertiesManager.getProperty("buscarArticuloPanel.etiqueta.descripcion"));
+		lblDescripcion = new JLabel(PropertiesManager.getProperty("buscarProductoPanel.etiqueta.descripcion"));
 		lblDescripcion.setBounds(330, 35, 70, 20);
 		add(lblDescripcion);
 		
@@ -70,8 +68,8 @@ public class BuscarProductoPanel extends BaseView {
 		txtDescripcion.setBounds(420, 35, 110, 20);
 		add(txtDescripcion);
 		
-		btnBuscar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.buscar"));
-		btnBuscar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.buscar"));
+		btnBuscar = new JButton(PropertiesManager.getProperty("buscarProductoPanel.boton.buscar"));
+		btnBuscar.setToolTipText(PropertiesManager.getProperty("buscarProductoPanel.tooltip.buscar"));
 
 		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
 		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -85,8 +83,8 @@ public class BuscarProductoPanel extends BaseView {
 		btnBuscar.setBounds(570, 15, 60, 60);
 		add(btnBuscar);
 		
-		btnVolver = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.volver"));
-		btnVolver.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.volver"));
+		btnVolver = new JButton(PropertiesManager.getProperty("buscarProductoPanel.boton.volver"));
+		btnVolver.setToolTipText(PropertiesManager.getProperty("buscarProductoPanel.tooltip.volver"));
 		
 		btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
 		btnVolver.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -101,8 +99,8 @@ public class BuscarProductoPanel extends BaseView {
 		btnVolver.setBounds(735, 185, 60, 60);
 		add(btnVolver);
 
-		btnAceptar = new JButton(PropertiesManager.getProperty("buscarArticuloPanel.boton.aceptar"));
-		btnAceptar.setToolTipText(PropertiesManager.getProperty("buscarArticuloPanel.tooltip.aceptar"));
+		btnAceptar = new JButton(PropertiesManager.getProperty("buscarProductoPanel.boton.aceptar"));
+		btnAceptar.setToolTipText(PropertiesManager.getProperty("buscarProductoPanel.tooltip.aceptar"));
 		
 		btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
 		btnAceptar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -118,7 +116,7 @@ public class BuscarProductoPanel extends BaseView {
 		btnAceptar.setBounds(735, 115, 60, 60);
 		add(btnAceptar);
 		
-		lblProductos = new JLabel(PropertiesManager.getProperty("buscarArticuloPanel.etiqueta.productos"));
+		lblProductos = new JLabel(PropertiesManager.getProperty("buscarProductoPanel.etiqueta.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
 	}

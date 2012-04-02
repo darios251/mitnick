@@ -12,14 +12,11 @@ public class VentaView extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String titulo = null;
-	
 	@Autowired
 	private VentaController ventaController;
 
 	public VentaView () {
 		this.centrarVentana( null );
-		this.titulo = "colocar titulo";
 		initializeComponents();
 	}
 	
@@ -38,11 +35,6 @@ public class VentaView extends BaseView {
 			ventaController.mostrarVentasPanel();
 		}
 		super.setVisible(aFlag);
-	}
-
-	public void setTitle( String title ) {
-		
-		this.titulo = title;
 	}
 
 	@Override
