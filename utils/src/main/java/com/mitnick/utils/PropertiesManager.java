@@ -3,7 +3,9 @@ package com.mitnick.utils;
 import java.util.Locale;
 
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.stereotype.Component;
 
+@Component("propertiesManager")
 public class PropertiesManager {
 	
 	private static ResourceBundleMessageSource messageSource;

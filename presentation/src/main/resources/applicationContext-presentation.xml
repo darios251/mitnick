@@ -9,7 +9,8 @@
     <context:annotation-config/>
 
     <!-- Activates scanning of @Repository and @Service -->
-    <context:component-scan base-package="com.mitnick.presentation"/>
+    <context:component-scan base-package="com.mitnick.presentacion"/>
+    <context:component-scan base-package="com.mitnick.utils"/>
     
     <bean id="log4jInitialization"	class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
@@ -21,14 +22,6 @@
 		</property>
 	</bean>
 	
-	<bean id="dbInitialization" class="com.mitnick.presentation.utils.DBInitialization" >
-    </bean>
-
-
-	<bean id="propertiesManager" class="com.mitnick.utils.PropertiesManager" >
-    	<property name="messageSource" ref="messageSource" />
-    </bean>
-    
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
@@ -42,73 +35,7 @@
  	</bean>
  	
  	<!-- Add new Views here -->
- 	<bean id="ventasPanel" class="com.mitnick.presentation.view.VentasPanel">
- 		<constructor-arg value=""></constructor-arg>
- 		<property name="ventasController" ref="ventasController"></property>
- 	</bean>
- 	
- 	<bean id="buscarProductoPanel" class="com.mitnick.presentation.view.BuscarProductoPanel">
- 		<constructor-arg value=""></constructor-arg>
- 		<property name="ventasController" ref="ventasController"></property>
- 	</bean>
- 	
- 	<bean id="pagosPanel" class="com.mitnick.presentation.view.PagosPanel">
- 		<constructor-arg value=""></constructor-arg>
- 		<property name="ventasController" ref="ventasController"></property>
- 	</bean>
- 	
- 	
- 	<bean id="productosPanel" class="com.mitnick.presentation.view.ProductosPanel">
- 		<constructor-arg value=""></constructor-arg>
- 		<property name="productosController" ref="productosController"></property>
- 	</bean>
- 	
- 	<bean id="productoNuevoPanel" class="com.mitnick.presentation.view.ProductoNuevoPanel">
- 		<constructor-arg value="Nuevo Producto"></constructor-arg>
- 		<property name="productosController" ref="productosController"></property>
- 	</bean>
- 	
- 	
- 	<bean id="clientesPanel" class="com.mitnick.presentation.view.ClientesPanel">
- 		<constructor-arg value="Clientes"></constructor-arg>
- 	</bean>
- 	
- 	
- 	<bean id="ventasView" class="com.mitnick.presentation.view.VentasView">
- 		<constructor-arg value="Ventas"></constructor-arg>
- 		<property name="ventasController" ref="ventasController"></property>
- 	</bean>
- 	
- 	<bean id="productosView" class="com.mitnick.presentation.view.ProductosView">
- 		<constructor-arg value="Productos"></constructor-arg>
- 		<property name="productosController" ref="productosController"></property>
- 	</bean>
- 	
- 	<bean id="clientesView" class="com.mitnick.presentation.view.ClientesView">
- 		<constructor-arg value="Clientes"></constructor-arg>
- 		<property name="clientesController" ref="clientesController"></property>
- 	</bean>
- 	
- 	<bean id="principalView" class="com.mitnick.presentation.view.PrincipalView">
- 		<property name="ventasController" ref="ventasController"></property>
- 		<property name="productosController" ref="productosController"></property>
- 		<property name="clientesController" ref="clientesController"></property>
- 	</bean>
  	
  	<!-- Add new Controllers here -->
- 	<bean id="ventasController" class="com.mitnick.presentation.controller.VentasController">
- 		<property name="ventasView" ref="ventasView"></property>
- 		<property name="ventasPanel" ref="ventasPanel"></property>
- 		<property name="pagosPanel" ref="pagosPanel"></property>
- 	</bean>
- 	
- 	<bean id="productosController" class="com.mitnick.presentation.controller.ProductosController">
- 		<property name="productosPanel" ref="productosPanel"></property>
- 		<property name="productoNuevoPanel" ref="productoNuevoPanel"></property>
- 	</bean>
- 	
- 	<bean id="clientesController" class="com.mitnick.presentation.controller.ClientesController">
- 		<property name="clientesPanel" ref="clientesPanel"></property>
- 	</bean>
  	
 </beans>

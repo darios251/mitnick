@@ -1,6 +1,7 @@
 package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VentaDto extends BaseDto {
@@ -28,6 +29,8 @@ public class VentaDto extends BaseDto {
 	private BigDecimal faltaPagar;
 	
 	public List<ProductoVentaDto> getProductos() {
+		if(productos == null)
+			productos = new ArrayList<ProductoVentaDto>();
 		return productos;
 	}
 
@@ -68,6 +71,8 @@ public class VentaDto extends BaseDto {
 	}
 
 	public List<PagoDto> getPagos() {
+		if(pagos == null)
+			pagos = new ArrayList<PagoDto>();
 		return pagos;
 	}
 
