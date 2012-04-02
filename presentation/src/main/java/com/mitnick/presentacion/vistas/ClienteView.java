@@ -13,14 +13,11 @@ public class ClienteView extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String titulo = null;
-	
 	@Autowired
 	private ClienteController clienteController;
 
 	public ClienteView () {
 		this.centrarVentana( null );
-		this.titulo = "colocar titulo";
 		initializeComponents();
 	}
 	
@@ -37,11 +34,6 @@ public class ClienteView extends BaseView {
 			clienteController.mostrarClientePanel();
 		}
 		super.setVisible(aFlag);
-	}
-
-	public void setTitle( String title ) {
-		
-		this.titulo = title;
 	}
 
 	@Override

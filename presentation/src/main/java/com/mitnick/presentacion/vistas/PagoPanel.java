@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 
 @Panel("pagoPanel")
@@ -46,7 +47,7 @@ public class PagoPanel extends BaseView {
 	private String title;
 
 	public PagoPanel() {
-		this.title = "colocar titulo";
+		this.title = PropertiesManager.getProperty("pagoPanel.titulo");
 		
 		setLayout(null);
 		

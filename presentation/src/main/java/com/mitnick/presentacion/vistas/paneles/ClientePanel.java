@@ -44,11 +44,10 @@ public class ClientePanel extends BaseView {
 	private TableRowSorter<ClienteTableModel> sorter;
 	
 	public ClientePanel() {
-		this.title = "colocar titulo";
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientesPanel.etiqueta.documento"));
+		lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
 		lblNumeroDocumento.setBounds(125, 15, 70, 20);
 		add(lblNumeroDocumento);
 		
@@ -57,7 +56,7 @@ public class ClientePanel extends BaseView {
 		txtNumeroDocumento.setBounds(200, 15, 110, 20);
 		add(txtNumeroDocumento);
 		
-		lblApellido = new JLabel(PropertiesManager.getProperty("clientesPanel.etiqueta.apellido"));
+		lblApellido = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.apellido"));
 		lblApellido.setBounds(125, 55, 70, 20);
 		add(lblApellido);
 		

@@ -39,12 +39,10 @@ public class ProductoNuevoPanel extends BaseView {
 	private JComboBox cmbMarca;
 
 	public ProductoNuevoPanel() {
-		this.title = "colocar titulo";
-		
 		setSize(new Dimension(815, 470));
 		setLayout(null);
 		
-		JLabel lblCdigo = new JLabel(PropertiesManager.getProperty("articuloNuevoPanel.etiqueta.codigo"));
+		JLabel lblCdigo = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.codigo"));
 		lblCdigo.setBounds(92, 25, 60, 20);
 		add(lblCdigo);
 		
@@ -53,7 +51,7 @@ public class ProductoNuevoPanel extends BaseView {
 		add(txtCodigo);
 		txtCodigo.setColumns(10);
 		
-		JLabel lblDescripcin = new JLabel(PropertiesManager.getProperty("articuloNuevoPanel.etiqueta.descripcion"));
+		JLabel lblDescripcin = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.descripcion"));
 		lblDescripcin.setBounds(92, 56, 60, 20);
 		add(lblDescripcin);
 		
@@ -62,7 +60,7 @@ public class ProductoNuevoPanel extends BaseView {
 		txtDescripcion.setBounds(162, 56, 326, 20);
 		add(txtDescripcion);
 		
-		JLabel lblTipo = new JLabel(PropertiesManager.getProperty("articuloNuevoPanel.etiqueta.tipo"));
+		JLabel lblTipo = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.tipo"));
 		lblTipo.setBounds(92, 87, 60, 20);
 		add(lblTipo);
 		
@@ -70,7 +68,7 @@ public class ProductoNuevoPanel extends BaseView {
 		cmbTipo.setBounds(162, 87, 86, 20);
 		add(cmbTipo);
 		
-		JLabel lblMarca = new JLabel(PropertiesManager.getProperty("articuloNuevoPanel.etiqueta.marca"));
+		JLabel lblMarca = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.marca"));
 		lblMarca.setBounds(352, 87, 40, 20);
 		add(lblMarca);
 		
@@ -78,7 +76,7 @@ public class ProductoNuevoPanel extends BaseView {
 		cmbMarca.setBounds(402, 87, 86, 20);
 		add(cmbMarca);
 		
-		JLabel lblPrecio = new JLabel(PropertiesManager.getProperty("articuloNuevoPanel.etiqueta.precio"));
+		JLabel lblPrecio = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.precio"));
 		lblPrecio.setBounds(92, 118, 60, 20);
 		add(lblPrecio);
 		
@@ -87,7 +85,7 @@ public class ProductoNuevoPanel extends BaseView {
 		txtPrecio.setBounds(162, 118, 86, 20);
 		add(txtPrecio);
 		
-		JLabel lblStock = new JLabel(PropertiesManager.getProperty("articuloNuevoPanel.etiqueta.stock"));
+		JLabel lblStock = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stock"));
 		lblStock.setBounds(352, 118, 40, 20);
 		add(lblStock);
 		
@@ -96,8 +94,8 @@ public class ProductoNuevoPanel extends BaseView {
 		txtStock.setBounds(402, 118, 86, 20);
 		add(txtStock);
 		
-		btnAceptar = new JButton(PropertiesManager.getProperty("articuloNuevoPanel.boton.aceptar"));
-//		btnAceptar.setToolTipText(PropertiesManager.getProperty("articuloNuevoPanel.tooltip.aceptar"));
+		btnAceptar = new JButton(PropertiesManager.getProperty("productoNuevoPanel.boton.aceptar"));
+//		btnAceptar.setToolTipText(PropertiesManager.getProperty("productoNuevoPanel.tooltip.aceptar"));
 		
 		btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
 		btnAceptar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -112,9 +110,9 @@ public class ProductoNuevoPanel extends BaseView {
 		btnAceptar.setBounds(548, 56, 60, 60);
 		add(btnAceptar);
 		
-		btnCancelar = new JButton(PropertiesManager.getProperty("articuloNuevoPanel.boton.cancelar"));
+		btnCancelar = new JButton(PropertiesManager.getProperty("productoNuevoPanel.boton.cancelar"));
 		
-//		btnAceptar.setToolTipText(PropertiesManager.getProperty("articuloNuevoPanel.tooltip.cancelar"));
+//		btnAceptar.setToolTipText(PropertiesManager.getProperty("productoNuevoPanel.tooltip.cancelar"));
 		
 		btnCancelar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 		btnCancelar.setHorizontalTextPosition( SwingConstants.CENTER );

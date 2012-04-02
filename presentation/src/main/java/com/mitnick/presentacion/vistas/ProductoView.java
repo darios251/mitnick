@@ -13,13 +13,10 @@ public class ProductoView extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String titulo = null;
-	
 	@Autowired
 	private ProductoController productoController;
 
 	public ProductoView () {
-		this.titulo = "colocar titulo";
 		initializeComponents();
 	}
 	
@@ -37,11 +34,6 @@ public class ProductoView extends BaseView {
 			productoController.mostrarProductosPanel();
 		}
 		super.setVisible(aFlag);
-	}
-
-	public void setTitle( String title ) {
-		
-		this.titulo = title;
 	}
 
 	@Override
