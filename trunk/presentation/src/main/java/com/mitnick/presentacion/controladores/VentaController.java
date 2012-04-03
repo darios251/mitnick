@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.mitnick.presentacion.excepciones.PresentationException;
-import com.mitnick.presentacion.vistas.PagoPanel;
-import com.mitnick.presentacion.vistas.VentaPanel;
 import com.mitnick.presentacion.vistas.VentaView;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
+import com.mitnick.presentacion.vistas.paneles.PagoPanel;
+import com.mitnick.presentacion.vistas.paneles.VentaPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
