@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.mitnick.presentacion.vistas.ProductoNuevoPanel;
-import com.mitnick.presentacion.vistas.ProductoPanel;
 import com.mitnick.presentacion.vistas.ProductoView;
+import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
+import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
 
 @Controller("productoController")
 public class ProductoController extends BaseController {
