@@ -47,6 +47,7 @@ public class VentaController extends BaseController {
 	}
 
 	public VentaView getVentaView() {
+		// TODO: quitarlo de aca e instanciar la venta nueva cuando termine la actual
 		venta = new VentaDto();
 		return ventaView;
 	}
@@ -83,6 +84,7 @@ public class VentaController extends BaseController {
 		ventaPanel.setVisible(false);
 		pagoPanel.setVisible(false);
 		buscarProductoPanel.setVisible(true);
+		buscarProductoPanel.limpiarCamposPantalla();
 	}
 	
 	public void mostrarVentasPanel() {
@@ -101,6 +103,7 @@ public class VentaController extends BaseController {
 		ventaPanel.limpiarCamposPantalla();
 		buscarProductoPanel.limpiarCamposPantalla();
 		pagoPanel.limpiarCamposPantalla();
+		venta = new VentaDto();
 	}
 
 	public void agregarProducto(String codigo) {
@@ -119,9 +122,12 @@ public class VentaController extends BaseController {
 	}
 
 
-	public void quitarProductoVentaDto(ProductoVentaDto productoVentaDto) {
+	public void quitarProductoVentaDto(ProductoVentaDto producto) {
 		logger.info("Quitando elemento de la tabla");
-		ventaPanel.getModel().removeProductoVenta(productoVentaDto);
+		
+		venta = ventaServicio.quitarProducto(producto, venta);
+		ventaPanel.getModel().setProductosVenta(venta.getProductos());
+		
 		logger.info("Recalculando totales");
 	}
 

@@ -5,10 +5,12 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -16,10 +18,14 @@ import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.presentacion.vistas.BaseView;
+import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
+import com.mitnick.utils.dtos.ProductoDto;
 
 @Panel("buscarProductoPanel")
 public class BuscarProductoPanel extends BaseView {
@@ -28,23 +34,32 @@ public class BuscarProductoPanel extends BaseView {
 	@Autowired
 	private VentaController ventasController;
 	
+	@Autowired
+	private ProductoController productoController;
+	
 	private JScrollPane scrollPane;
 	private Component lblCodigo;
 	private JLabel lblDescripcion;
 	private JButton btnBuscar;
 	private JButton btnVolver;
-	private JButton btnAceptar;
+	private JButton btnAgregar;
 	
 	private JTable table;
 	private JTextField txtCodigo;
 	private JTextField txtDescripcion;
 	private JLabel lblProductos;
+
+	private ProductoTableModel model;
 	
 	public BuscarProductoPanel() {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		table = new JTable();
+		// Creo una tabla con un sorter
+		model = new ProductoTableModel();
+        table = new JTable(model);
+        table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        table.setFillsViewportHeight(true);
 		
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(25, 115, 700, 315);
@@ -78,6 +93,11 @@ public class BuscarProductoPanel extends BaseView {
 		
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ConsultaProductoDto dto = new ConsultaProductoDto();
+				dto.setCodigo(txtCodigo.getText());
+				dto.setDescripcion(txtDescripcion.getText());
+
+				model.setProductos(	productoController.getProductosByFilter(dto) );
 			}
 		});
 		btnBuscar.setBounds(570, 15, 60, 60);
@@ -99,22 +119,38 @@ public class BuscarProductoPanel extends BaseView {
 		btnVolver.setBounds(735, 185, 60, 60);
 		add(btnVolver);
 
-		btnAceptar = new JButton(PropertiesManager.getProperty("buscarProductoPanel.boton.aceptar"));
-		btnAceptar.setToolTipText(PropertiesManager.getProperty("buscarProductoPanel.tooltip.aceptar"));
+		btnAgregar = new JButton(PropertiesManager.getProperty("buscarProductoPanel.boton.agregar"));
+		btnAgregar.setToolTipText(PropertiesManager.getProperty("buscarProductoPanel.tooltip.agregar"));
 		
-		btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
-		btnAceptar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnAceptar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
+		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
+		btnAgregar.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnAgregar.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
 		
-		btnAceptar.addActionListener(new ActionListener() {
+		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventasController.agregarProducto(txtCodigo.getText());
-				ventasController.mostrarVentasPanel();
+				try {
+					int index = table.getSelectedRow();
+					ProductoDto productoDto = model.getProducto(index);
+					
+					ventasController.agregarProducto(productoDto.getCodigo());
+					ventasController.mostrarVentasPanel();	
+				}
+				catch (IndexOutOfBoundsException exception) {
+					if(model.getRowCount() == 0) {
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("buscarProductoPanel.dialog.warning.emptyModel"));
+					}
+					else {
+						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("buscarProductoPanel.dialog.warning.noRowSelected"));
+					}
+				}
+				
+				
+				
 			}
 		});
-		btnAceptar.setBounds(735, 115, 60, 60);
-		add(btnAceptar);
+		btnAgregar.setBounds(735, 115, 60, 60);
+		add(btnAgregar);
 		
 		lblProductos = new JLabel(PropertiesManager.getProperty("buscarProductoPanel.etiqueta.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
@@ -123,7 +159,9 @@ public class BuscarProductoPanel extends BaseView {
 
 	@Override
 	public void limpiarCamposPantalla() {
-		
+		txtCodigo.setText("");
+		txtDescripcion.setText("");
+		model.setProductos(new ArrayList<ProductoDto>());
 	}
 
 	@Override
@@ -134,5 +172,10 @@ public class BuscarProductoPanel extends BaseView {
 	public void setVentasController(VentaController ventasController) {
 		this.ventasController = ventasController;
 	}
+
+	public void setProductoController(ProductoController productoController) {
+		this.productoController = productoController;
+	}
+	
 	
 }
