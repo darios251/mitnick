@@ -1,5 +1,6 @@
 package com.mitnick.utils;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -13,7 +14,7 @@ public class PropertiesManager {
 	public static String getProperty(String propertyKey, Object[] args)
 	{
 		try {
-			return messageSource.getMessage(propertyKey, args, Locale.getDefault());
+			return new String(messageSource.getMessage(propertyKey, args, Locale.getDefault()).getBytes(), Charset.forName("UTF-8"));
 		}
 		catch (Exception e) {
 			return propertyKey;

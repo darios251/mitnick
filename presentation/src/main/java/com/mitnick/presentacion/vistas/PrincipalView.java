@@ -56,11 +56,11 @@ public class PrincipalView extends JFrame
 	private JPanel pnlArrow;
 	
 	private JButton btnVentas;
-	private JButton btnArticulos;
+	private JButton btnProductos;
 	private JButton btnClientes;
 
 	private JMenuBar menuBar;
-	private JMenu menuArticulo;
+	private JMenu menuProductos;
 	private JMenu menuArchivo;
 	private JMenu menuAyuda;
 
@@ -102,22 +102,22 @@ public class PrincipalView extends JFrame
 	}
 
 	private JMenu getMenuArticulo() {
-		if (menuArticulo == null)
+		if (menuProductos == null)
 		{
-			menuArticulo = new JMenu();
-			menuArticulo.setText("Art�culo");
-			menuArticulo.add("Consultar");
-			menuArticulo.add("Nuevo");
+			menuProductos = new JMenu();
+			menuProductos.setText(PropertiesManager.getProperty("principalView.menu.productos"));
+			menuProductos.add(PropertiesManager.getProperty("principalView.menu.productos.nuevo"));
+			menuProductos.add(PropertiesManager.getProperty("principalView.menu.productos.consultar"));
 		}
-		return menuArticulo;
+		return menuProductos;
 	}
 
 	private JMenu getMenuAyuda() {
 		if (menuAyuda == null)
 		{
 			menuAyuda = new JMenu();
-			menuAyuda.setText("Ayuda");
-			menuAyuda.add("Manual de Usuario");
+			menuAyuda.setText(PropertiesManager.getProperty("principalView.menu.ayuda"));
+			menuAyuda.add(PropertiesManager.getProperty("principalView.menu.ayuda.manual"));
 		}
 		return menuAyuda;
 	}
@@ -126,8 +126,8 @@ public class PrincipalView extends JFrame
 		if (menuArchivo == null)
 		{
 			menuArchivo = new JMenu();
-			menuArchivo.setText("Archivo");
-			menuArchivo.add("Salir");
+			menuArchivo.setText(PropertiesManager.getProperty("principalView.menu.archivo"));
+			menuArchivo.add(PropertiesManager.getProperty("principalView.menu.archivo.salir"));
 		}
 		return menuArchivo;
 	}
@@ -173,17 +173,17 @@ public class PrincipalView extends JFrame
 	
 	private JButton getBtnArticulos()
 	{
-		if(btnArticulos == null)
+		if(btnProductos == null)
 		{
-			btnArticulos = new JButton();
-			btnArticulos.setSize(new Dimension(100, 100));
-			btnArticulos.setMinimumSize(new Dimension(100, 100));
-			btnArticulos.setText(PropertiesManager.getProperty("principalView.button.articulos"));
-			btnArticulos.setIcon(new ImageIcon(this.getClass().getResource("/img/remera.png")));
-			btnArticulos.setHorizontalTextPosition( SwingConstants.CENTER );
-			btnArticulos.setVerticalTextPosition( SwingConstants.BOTTOM );
-			btnArticulos.setMargin(new Insets(-1, -1, -1, -1));
-			btnArticulos.addMouseListener(new MouseAdapter()
+			btnProductos = new JButton();
+			btnProductos.setSize(new Dimension(100, 100));
+			btnProductos.setMinimumSize(new Dimension(100, 100));
+			btnProductos.setText(PropertiesManager.getProperty("principalView.button.productos"));
+			btnProductos.setIcon(new ImageIcon(this.getClass().getResource("/img/remera.png")));
+			btnProductos.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnProductos.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnProductos.setMargin(new Insets(-1, -1, -1, -1));
+			btnProductos.addMouseListener(new MouseAdapter()
 			{
 				public void mouseClicked(MouseEvent e)
 				{
@@ -199,7 +199,7 @@ public class PrincipalView extends JFrame
 			});
 		}
 
-		return btnArticulos;
+		return btnProductos;
 	}
 	
 	private JButton getBtnClientes()

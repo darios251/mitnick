@@ -38,7 +38,7 @@ public class VentaPanel extends BaseView {
 	
 	private JScrollPane scrollPane;
 	private JLabel lblTotal;
-	private JButton btnPagar;
+	private JButton btnPagos;
 	private JLabel lblVenta;
 	private JButton btnQuitar;
 	private JButton btnBuscar;
@@ -48,6 +48,10 @@ public class VentaPanel extends BaseView {
 	private JTextField txtCodigo;
 
 	private VentaTableModel model;
+
+	private JLabel lblTotalValor;
+
+	private JButton btnAceptar;
 	
 	public VentaPanel() {
 		setLayout(null);
@@ -91,8 +95,8 @@ public class VentaPanel extends BaseView {
 		scrollPane.setBounds(25, 115, 700, 315);
 		add(scrollPane);
 		
-		lblCdigo = new JLabel("C\u00F3digo:");
-		lblCdigo.setBounds(330, 35, 60, 20);
+		lblCdigo = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.codigo"));
+		lblCdigo.setBounds(125, 35, 70, 20);
 		add(lblCdigo);
 		
 		txtCodigo = new JTextField();
@@ -100,23 +104,16 @@ public class VentaPanel extends BaseView {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					logger.info("Buscando producto ... ");
-					if(txtCodigo.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyTextCode"));
-					}
-					else {
-						ventaController.agregarProducto(txtCodigo.getText());
-						txtCodigo.setText("");
-					}
+					agregarProducto();
 				}
 			}
 		});
-		txtCodigo.setBounds(420, 35, 110, 20);
+		txtCodigo.setBounds(200, 35, 110, 20);
 		txtCodigo.setColumns(10);
 		add(txtCodigo);
 		
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.setToolTipText("Buscar Producto");
+		btnBuscar = new JButton(PropertiesManager.getProperty("ventaPanel.button.buscar"));
+		btnBuscar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.buscar"));
 		
 		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
 		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -131,8 +128,8 @@ public class VentaPanel extends BaseView {
 		btnBuscar.setBounds(570, 15, 60, 60);
 		add(btnBuscar);
 		
-		btnQuitar = new JButton("Quitar");
-		btnQuitar.setToolTipText("Quitar Producto");
+		btnQuitar = new JButton(PropertiesManager.getProperty("ventaPanel.button.quitar"));
+		btnQuitar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.quitar"));
 		
 		btnQuitar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 		btnQuitar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -168,32 +165,63 @@ public class VentaPanel extends BaseView {
 		btnQuitar.setBounds(735, 115, 60, 60);
 		add(btnQuitar);
 		
-		lblVenta = new JLabel("Venta");
+		lblVenta = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.venta"));
 		lblVenta.setBounds(25, 90, 46, 20);
 		add(lblVenta);
 		
-		btnPagar = new JButton("Cobrar");
-		btnPagar.setToolTipText("Cobrar");
+		btnPagos = new JButton(PropertiesManager.getProperty("ventaPanel.button.pagos"));
+		btnPagos.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.pagos"));
 		
-		btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/cobrar.png")));
-		btnPagar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnPagar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnPagar.setMargin(new Insets(-1, -1, -1, -1));
+		btnPagos.setIcon(new ImageIcon(this.getClass().getResource("/img/cobrar.png")));
+		btnPagos.setHorizontalTextPosition( SwingConstants.CENTER );
+		btnPagos.setVerticalTextPosition( SwingConstants.BOTTOM );
+		btnPagos.setMargin(new Insets(-1, -1, -1, -1));
 		
-		btnPagar.addActionListener(new ActionListener() {
+		btnPagos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventaController.mostrarPagosPanel();
 			}
 		});
-		btnPagar.setBounds(735, 185, 60, 60);
-		add(btnPagar);
+		btnPagos.setBounds(735, 185, 60, 60);
+		add(btnPagos);
 		
-		lblTotal = new JLabel("Total: <<total>>");
+		lblTotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.total"));
 		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotal.setBounds(585, 439, 140, 20);
+		lblTotal.setBounds(475, 438, 140, 20);
 		add(lblTotal);		
+		
+		lblTotalValor = new JLabel("");
+		lblTotalValor.setBounds(625, 441, 100, 14);
+		add(lblTotalValor);
+		
+		btnAceptar = new JButton(PropertiesManager.getProperty("ventaPanel.button.aceptar"));
+		btnAceptar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.aceptar"));
+		
+		btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
+		btnAceptar.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAceptar.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
+		
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				agregarProducto();
+			}
+		});
+		btnAceptar.setBounds(500, 15, 60, 60);
+		add(btnAceptar);
 	}
 
+	public void agregarProducto() {
+		logger.info("Buscando producto ... ");
+		if(txtCodigo.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyTextCode"));
+		}
+		else {
+			ventaController.agregarProducto(txtCodigo.getText());
+			txtCodigo.setText("");
+		}
+	}
+	
 	public void setVentaController(VentaController ventaController) {
 		this.ventaController = ventaController;
 	}

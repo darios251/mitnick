@@ -10,6 +10,7 @@ import javax.swing.table.TableModel;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 public class ProductoTableModel extends AbstractTableModel implements TableModel{
@@ -59,6 +60,10 @@ public class ProductoTableModel extends AbstractTableModel implements TableModel
 	public void addProducto(ProductoDto producto, int index) {
 		this.data.add(index, producto);
 		this.fireTableRowsInserted(index, index);
+	}
+	
+	public ProductoDto getProducto(int index) {
+		return this.data.get(index);
 	}
 	
 	public void remove(int index) {
