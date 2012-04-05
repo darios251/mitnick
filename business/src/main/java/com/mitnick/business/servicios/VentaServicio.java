@@ -164,6 +164,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		}
 		int stock = producto.getStock();
 		stock = stock - productoVenta.getCantidad();
+		//se modifica el stock del producto
 		producto.setStock(stock);
 		
 		//se generan los movimientos
@@ -209,10 +210,10 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		}
 		venta.setPagos(pagos);
 		
-		//TODO IVAAAAA
-		venta.setImpuesto(null);
+		//TODO: tipo de cliente
 		venta.setDiscriminacionIVA(null); 
 		
+		venta.setImpuesto(new Long(ventaDto.getImpuesto().longValue()));
 		venta.setSubtotal(new Long(ventaDto.getSubTotal().longValue()));
 		venta.setTotal(new Long(ventaDto.getTotal().longValue()));
 		
@@ -263,20 +264,26 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		//suma de todos los productos
 		BigDecimal subTotal = new BigDecimal(0);
+		BigDecimal impuestos = new BigDecimal(0);
 		Iterator<ProductoVentaDto> productos = ventaDto.getProductos().iterator();
 		while (productos.hasNext()) {
 			ProductoVentaDto producto = productos.next();
 			BigDecimal precioTotal = producto.getProducto().getPrecio().multiply(new BigDecimal(producto.getCantidad()));
 			producto.setPrecioTotal(precioTotal);
 			
+			
 			subTotal = subTotal.add(precioTotal);
+			
+			impuestos = impuestos.add(producto.getProducto().getIva());
 		}
 		
+		//incluye los impuestos
 		ventaDto.setSubTotal(subTotal);
-		ventaDto.setImpuesto(new BigDecimal(0)); //TODO: impuesto
+		
+		ventaDto.setImpuesto(impuestos); 
 		
 		BigDecimal descuentos = getDescuentoTotal(ventaDto);
-		BigDecimal total = subTotal.subtract(descuentos); // TODO: impuestos? estan incluidos en los precios, solo se extraen para la factura
+		BigDecimal total = subTotal.subtract(descuentos); 
 		
 		ventaDto.setTotal(total);
 		

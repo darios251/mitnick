@@ -49,6 +49,9 @@ public class Producto extends BaseObject implements Serializable {
 	
 	@Column(name = "precio", nullable = false)
 	private Long precio;
+
+	@Column(name = "iva", nullable = false)
+	private Long iva;
 	
 	@Column(name = "stockMinimo", nullable = false)
 	private int stockMinimo=-1;
@@ -131,6 +134,14 @@ public class Producto extends BaseObject implements Serializable {
 		this.codigo = codigo;
 	}
 
+	public Long getIva() {
+		return iva;
+	}
+
+	public void setIva(Long iva) {
+		this.iva = iva;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -139,6 +150,7 @@ public class Producto extends BaseObject implements Serializable {
 		result = prime * result
 				+ ((descripcion == null) ? 0 : descripcion.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((iva == null) ? 0 : iva.hashCode());
 		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
 		result = prime * result
 				+ ((movimientos == null) ? 0 : movimientos.hashCode());
@@ -180,6 +192,13 @@ public class Producto extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (iva == null) {
+			if (other.iva != null) {
+				return false;
+			}
+		} else if (!iva.equals(other.iva)) {
 			return false;
 		}
 		if (marca == null) {
@@ -224,7 +243,10 @@ public class Producto extends BaseObject implements Serializable {
 		return "Producto [id=" + id + ", descripcion=" + descripcion
 				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo
 				+ ", movimientos=" + movimientos + ", stock=" + stock
-				+ ", precio=" + precio + ", stockMinimo=" + stockMinimo + "]";
+				+ ", precio=" + precio + ", iva=" + iva + ", stockMinimo="
+				+ stockMinimo + "]";
 	}
+
+	
 
 }
