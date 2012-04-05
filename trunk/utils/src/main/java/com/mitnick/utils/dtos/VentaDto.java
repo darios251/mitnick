@@ -22,11 +22,17 @@ public class VentaDto extends BaseDto {
 	
 	private ClienteDto cliente;
 	
-	private boolean pagado;
+	private boolean pagado = false;
 	
 	private BigDecimal totalPagado;
 	
 	private BigDecimal faltaPagar;
+	
+	public VentaDto() {
+		subTotal = new BigDecimal(0);
+		total =  new BigDecimal(0);
+		totalPagado = new BigDecimal(0);
+	}
 	
 	public List<ProductoVentaDto> getProductos() {
 		if(productos == null)

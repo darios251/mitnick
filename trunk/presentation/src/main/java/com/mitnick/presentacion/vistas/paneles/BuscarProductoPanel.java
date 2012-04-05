@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
@@ -97,7 +98,12 @@ public class BuscarProductoPanel extends BaseView {
 				dto.setCodigo(txtCodigo.getText());
 				dto.setDescripcion(txtDescripcion.getText());
 
-				model.setProductos(	productoController.getProductosByFilter(dto) );
+				try {
+					model.setProductos(	productoController.getProductosByFilter(dto) );
+				}
+				catch(PresentationException ex) {
+					mostrarMensajeError(ex.getMessage());
+				}
 			}
 		});
 		btnBuscar.setBounds(570, 15, 60, 60);
@@ -138,15 +144,12 @@ public class BuscarProductoPanel extends BaseView {
 				}
 				catch (IndexOutOfBoundsException exception) {
 					if(model.getRowCount() == 0) {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("buscarProductoPanel.dialog.warning.emptyModel"));
+						mostrarMensajeError("buscarProductoPanel.dialog.warning.emptyModel");
 					}
 					else {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("buscarProductoPanel.dialog.warning.noRowSelected"));
+						mostrarMensajeError("buscarProductoPanel.dialog.warning.noRowSelected");
 					}
 				}
-				
-				
-				
 			}
 		});
 		btnAgregar.setBounds(735, 115, 60, 60);
@@ -176,6 +179,5 @@ public class BuscarProductoPanel extends BaseView {
 	public void setProductoController(ProductoController productoController) {
 		this.productoController = productoController;
 	}
-	
 	
 }

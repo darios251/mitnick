@@ -1,10 +1,11 @@
 package com.mitnick.presentacion.vistas.paneles;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,10 +18,17 @@ import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.presentacion.excepciones.PresentationException;
+import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
+import com.mitnick.presentacion.modelos.PagoTableModel;
+import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
+import com.mitnick.utils.dtos.MedioPagoDto;
 
 @Panel("pagoPanel")
 public class PagoPanel extends BaseView {
@@ -41,70 +49,80 @@ public class PagoPanel extends BaseView {
 	private JLabel lblTotal;
 	private JLabel lbl_TP;
 	private JLabel lblTotalPagado;
+	private JLabel lblSubtotalValor;
+	private JLabel lblTotalValor;
+	private JLabel lblTotalPagadoValor;
 	private JButton btnAgregar;
 	private JLabel lblMonto;
-	private JComboBox cbxMedioPago;
+	private JComboBox<MedioPagoDto> cmbMedioPago;
 	private JLabel lblMedioPago;
+	private JButton btnVolver;
+	
+	private PagoTableModel pagoTableModel;
 
 	public PagoPanel() {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
-		
-		
-		
-		
 	}
 
 	public void setVentaController(VentaController ventaController) {
 		this.ventaController = ventaController;
 	}
 
-	
-
 	@Override
 	protected void initializeComponents() {
 		lblMedioPago = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.medioPago"));
-		lblMedioPago.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMedioPago.setBounds(75, 35, 115, 20);
+		lblMedioPago.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMedioPago.setBounds(44, 86, 115, 20);
 		add(lblMedioPago);
 		
-		cbxMedioPago = new JComboBox();
-		cbxMedioPago.setBounds(200, 35, 110, 20);
-		add(cbxMedioPago);
+		cmbMedioPago = new JComboBox<MedioPagoDto>(new MitnickComboBoxModel<MedioPagoDto>());
+		cmbMedioPago.setBounds(44, 117, 110, 20);
+		add(cmbMedioPago);
 		
 		lblMonto = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.monto"));
-		lblMonto.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMonto.setBounds(330, 35, 80, 20);
+		lblMonto.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMonto.setBounds(44, 148, 80, 20);
 		add(lblMonto);
 		
 		txtMonto = new JTextField();
-		txtMonto.setBounds(420, 35, 110, 20);
+		txtMonto.setBounds(44, 176, 110, 20);
 		add(txtMonto);
 		txtMonto.setColumns(10);
 		
-		table = new JTable();
+		pagoTableModel = new PagoTableModel();
+		
+		table = new JTable(pagoTableModel);
 		table.setBounds(0, 0, 1, 1);
 		
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(25, 115, 467, 315);
+		scrollPane.setBounds(269, 115, 516, 143);
 		add(scrollPane);
 		
-		btnFinalizar = new JButton(PropertiesManager.getProperty("pagoPanel.button.finalizar"));
+		btnFinalizar = new JButton(PropertiesManager.getProperty("pagoPanel.boton.finalizar"));
 		btnFinalizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventaController.mostrarVentasPanel();
+				try {
+					ventaController.checkFinalizarVenta();
+					ventaController.crearNuevaVenta();
+					ventaController.limpiarVenta();
+					ventaController.mostrarVentasPanel();
+				}
+				catch(PresentationException ex) {
+					mostrarMensajeError(ex.getMessage());
+				}
 			}
 		});
-		btnFinalizar.setBounds(724, 370, 60, 60);
+		btnFinalizar.setBounds(610, 364, 60, 60);
 		add(btnFinalizar);
 		
 		lblPagosRealizados = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.pagosRealizados"));
-		lblPagosRealizados.setBounds(268, 124, 88, 20);
+		lblPagosRealizados.setBounds(269, 86, 141, 20);
 		add(lblPagosRealizados);
 		
 		lbl_ST = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.subtotal"));
 		lbl_ST.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_ST.setBounds(542, 176, 88, 20);
+		lbl_ST.setBounds(277, 316, 88, 20);
 		add(lbl_ST);
 		
 		lblSubtotal = new JLabel();
@@ -114,7 +132,7 @@ public class PagoPanel extends BaseView {
 		
 		lbl_T = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.total"));
 		lbl_T.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_T.setBounds(542, 207, 88, 20);
+		lbl_T.setBounds(277, 360, 88, 20);
 		add(lbl_T);
 		
 		lblTotal = new JLabel();
@@ -124,7 +142,7 @@ public class PagoPanel extends BaseView {
 		
 		lbl_TP = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalPagado"));
 		lbl_TP.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_TP.setBounds(542, 238, 88, 20);
+		lbl_TP.setBounds(277, 404, 88, 20);
 		add(lbl_TP);
 		
 		lblTotalPagado = new JLabel();
@@ -142,16 +160,83 @@ public class PagoPanel extends BaseView {
 		
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
+					ventaController.agregarPago((MedioPagoDto)cmbMedioPago.getSelectedItem(), txtMonto.getText());
+				}
+				catch(PresentationException ex) {
+					mostrarMensajeError(ex.getMessage());
+				}
 			}
 		});
-		btnAgregar.setBounds(570, 15, 60, 60);
+		btnAgregar.setBounds(188, 117, 60, 60);
 		add(btnAgregar);
+		
+		btnVolver = new JButton(PropertiesManager.getProperty("pagoPanel.boton.volver"));
+		btnVolver.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.volver"));
+		btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnVolver.setMargin(new Insets(-1, -1, -1, -1));
+		btnVolver.setBounds(680, 364, 60, 60);
+		btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ventaController.mostrarVentasPanel();
+				}
+				catch(PresentationException ex) {
+					mostrarMensajeError(ex.getMessage());
+				}
+			}
+		});
+		
+		add(btnVolver);
+		
+		lblSubtotalValor = new JLabel("<< subtotal >>");
+		lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSubtotalValor.setBounds(396, 319, 88, 20);
+		add(lblSubtotalValor);
+		
+		lblTotalValor = new JLabel("<< total >>");
+		lblTotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotalValor.setBounds(396, 363, 88, 20);
+		add(lblTotalValor);
+		
+		lblTotalPagadoValor = new JLabel("<< total pagado >>");
+		lblTotalPagadoValor.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotalPagadoValor.setBounds(396, 404, 88, 20);
+		add(lblTotalPagadoValor);
 	}
 	
 	@Override
 	public void limpiarCamposPantalla() {
 		
 	}
-	
+
+	public void actualizarPantalla() {
+		if(Validator.isNotNull(lblSubtotalValor))
+			lblSubtotalValor.setText(VentaManager.getVentaActual().getSubTotal().toString());
+		if(Validator.isNotNull(lblTotalValor))
+			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toString());
+		if(Validator.isNotNull(lblTotalPagadoValor))
+			lblTotalPagadoValor.setText(VentaManager.getVentaActual().getTotalPagado().toString());
+		if(Validator.isNotNull(cmbMedioPago) && cmbMedioPago.getItemCount() == 0) {
+			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
+			
+			try {
+				medioPagoList = ventaController.getAllMedioPago();
+			}
+			catch(BusinessException e) {
+				;
+			}
+			
+			((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).addItems(medioPagoList);
+		}
+		if(Validator.isNotNull(pagoTableModel)) {
+			pagoTableModel.setProductosVenta(VentaManager.getVentaActual().getPagos());
+		}
+		if(Validator.isNotNull(txtMonto))
+			txtMonto.setText("");
+		if(Validator.isNotNull(cmbMedioPago))
+			cmbMedioPago.setSelectedIndex(0);
+	}
 }

@@ -23,4 +23,9 @@ public class MedioPagoDto extends BaseDto {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	
+	@Override // es para que se muestre bien en el combo
+	public String toString() {
+		return descripcion;
+	}
 }

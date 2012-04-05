@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.presentacion.vistas.BaseView;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -60,7 +61,7 @@ public class ProductoPanel extends BaseView {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblCdigo = new JLabel("C\u00F3digo");
+		lblCdigo = new JLabel(PropertiesManager.getProperty("productoPanel.label.codigo"));
 		lblCdigo.setBounds(125, 15, 60, 20);
 		add(lblCdigo);
 		
@@ -69,7 +70,7 @@ public class ProductoPanel extends BaseView {
 		txtCodigo.setBounds(200, 15, 110, 20);
 		add(txtCodigo);
 		
-		lblDescripcin = new JLabel("Descripci\u00F3n");
+		lblDescripcin = new JLabel(PropertiesManager.getProperty("productoPanel.label.descripcion"));
 		lblDescripcin.setBounds(330, 15, 60, 20);
 		add(lblDescripcin);
 		
@@ -78,7 +79,7 @@ public class ProductoPanel extends BaseView {
 		txtDescripcion.setBounds(420, 15, 110, 20);
 		add(txtDescripcion);
 		
-		lblTipo = new JLabel("Tipo");
+		lblTipo = new JLabel(PropertiesManager.getProperty("productoPanel.label.tipo"));
 		lblTipo.setBounds(125, 55, 90, 20);
 		add(lblTipo);
 		
@@ -90,7 +91,7 @@ public class ProductoPanel extends BaseView {
 		cbxMarca.setBounds(420, 55, 110, 20);
 		add(cbxMarca);
 		
-		lblMarca = new JLabel("Marca");
+		lblMarca = new JLabel(PropertiesManager.getProperty("productoPanel.label.marca"));
 		lblMarca.setBounds(330, 55, 60, 20);
 		add(lblMarca);
 		
@@ -108,7 +109,7 @@ public class ProductoPanel extends BaseView {
 		add(scrollPane);
 		
 		btnBuscar = new JButton();
-		btnBuscar.setToolTipText("Buscar Producto");
+		btnBuscar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.buscarProducto"));
 		
 		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
 		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -123,7 +124,7 @@ public class ProductoPanel extends BaseView {
 		add(btnBuscar);
 		
 		btnAgregar = new JButton();
-		btnAgregar.setToolTipText("Nuevo Producto");
+		btnAgregar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.agregarProducto"));
 		
 		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
 		btnAgregar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -139,7 +140,7 @@ public class ProductoPanel extends BaseView {
 		add(btnAgregar);
 		
 		btnEditar = new JButton();
-		btnEditar.setToolTipText("Modificar Producto");
+		btnEditar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.modificarProducto"));
 		
 		btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/editar.png")));
 		btnEditar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -154,7 +155,7 @@ public class ProductoPanel extends BaseView {
 		add(btnEditar);
 		
 		btnEliminar = new JButton();
-		btnEliminar.setToolTipText("Eliminar Producto");
+		btnEliminar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.eliminarProducto"));
 		
 		btnEliminar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 		btnEliminar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -169,7 +170,7 @@ public class ProductoPanel extends BaseView {
 		add(btnEliminar);
 		
 		btnMovimientos = new JButton();
-		btnMovimientos.setToolTipText("Detalles Movimientos");
+		btnMovimientos.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.detallesMovimientos"));
 		
 		btnMovimientos.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
 		btnMovimientos.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -183,11 +184,11 @@ public class ProductoPanel extends BaseView {
 		btnMovimientos.setBounds(735, 325, 60, 60);
 		add(btnMovimientos);
 		
-		lblArtculos = new JLabel("Art\u00EDculos");
+		lblArtculos = new JLabel(PropertiesManager.getProperty("productoPanel.label.productos"));
 		lblArtculos.setBounds(163, 132, 65, 14);
 		add(lblArtculos);
 		
-		JLabel lblProductos = new JLabel("Productos");
+		JLabel lblProductos = new JLabel(PropertiesManager.getProperty("productoPanel.label.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
 	}

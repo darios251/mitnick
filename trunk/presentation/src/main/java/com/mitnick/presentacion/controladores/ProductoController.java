@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.mitnick.business.exceptions.BusinessException;
+import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.vistas.ProductoView;
 import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
@@ -75,7 +77,20 @@ public class ProductoController extends BaseController {
 	public List<ProductoDto> getProductosByFilter(ConsultaProductoDto dto) {
 		logger.info("Consultando productos por filtro");
 		
-		return productoServicio.consultaProducto(dto);
+		
+		List<ProductoDto> resultado = null;
+		try {
+			resultado = getProductoServicio().consultaProducto(dto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+		
+		// chequeo si se encontró o no algo en la búsqueda
+		if(resultado == null || resultado.isEmpty())
+			throw new PresentationException("error.venta.producto.noExiste");
+		
+		return resultado;
 	}
 	
 	public List<ProductoDto> getAllProductos() {
@@ -116,6 +131,12 @@ public class ProductoController extends BaseController {
 
 	public void setProductoServicio(IProductoServicio productoServicio) {
 		this.productoServicio = productoServicio;
+	}
+	
+	private IProductoServicio getProductoServicio() {
+		if(productoServicio == null)
+			throw new PresentationException("error.unknown", "El servicio: " + productoServicio.getClass().getSimpleName() + "");
+		return productoServicio;
 	}
 	
 	
