@@ -8,6 +8,9 @@ import com.mitnick.persistence.entities.Cliente;
 
 public interface IClienteDao extends GenericDao<Cliente, Long>{
 
-	public List<Cliente> findByDocumento(Long documento);
+	public List<Cliente> findByDocumento(String documento);
 	
+	public Cliente saveOrUpdate(Cliente cliente);
+	
+	public List<Cliente> findByDocumentoNombreApellido(String documento, String nombre, String apellido);
 }
