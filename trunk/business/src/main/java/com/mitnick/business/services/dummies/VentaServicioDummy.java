@@ -87,6 +87,8 @@ public class VentaServicioDummy extends ServicioBase implements IVentaServicio {
 	@Override
 	public VentaDto quitarPago(PagoDto pago, VentaDto venta) {
 		venta.getPagos().remove(pago);
+		venta.setTotalPagado(venta.getTotalPagado().subtract(pago.getMonto()));
+		venta.setFaltaPagar(venta.getFaltaPagar().add(pago.getMonto()));
 		return venta;
 	}
 

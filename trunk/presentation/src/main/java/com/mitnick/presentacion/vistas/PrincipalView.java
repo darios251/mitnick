@@ -163,7 +163,7 @@ public class PrincipalView extends JFrame
 					}
 					logger.info("Mostrando el panel de ventas");
 					getJTabbedPane().setVisible(true);
-					ventaController.mostrarVentasPanel();
+					ventaController.mostrarUltimoPanelMostrado();
 					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
 				}
 			});

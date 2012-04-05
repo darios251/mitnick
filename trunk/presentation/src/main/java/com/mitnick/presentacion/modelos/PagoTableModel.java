@@ -34,22 +34,22 @@ public class PagoTableModel extends AbstractTableModel implements TableModel{
 		this.fireTableStructureChanged();
 	}
 	
-	public void setProductosVenta(List<PagoDto> pagos) {
+	public void setPagos(List<PagoDto> pagos) {
 		this.data = pagos;
 		this.fireTableDataChanged();
 	}
 	
-	public PagoDto getProductosVenta(int index) {
+	public PagoDto getPago(int index) {
 		return this.data.get(index);
 	}
 	
-	public void addProductosVentas(List<PagoDto> pagos) {
+	public void addPago(List<PagoDto> pagos) {
 		for(PagoDto pago : pagos) {
-			addProductoVenta(pago);
+			addPago(pago);
 		}
 	}
 	
-	public void addProductoVenta(PagoDto pago) {
+	public void addPago(PagoDto pago) {
 		this.data.add(0, pago);
 		this.fireTableRowsInserted(0, 0);
 	}
