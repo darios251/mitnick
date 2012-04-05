@@ -46,11 +46,16 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	
 	@Override
 	public VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
-		ProductoVentaDto productoVenta = new ProductoVentaDto();
-		productoVenta.setProducto(producto);
-		productoVenta.setCantidad(1);
-		productoVenta.setPrecioTotal(producto.getPrecio());
-		venta.addProducto(productoVenta);
+		ProductoVentaDto productoVenta = getProductoVentaDto(producto, venta);
+		if (productoVenta == null) {
+			productoVenta = new ProductoVentaDto();
+			
+			productoVenta.setProducto(producto);
+			productoVenta.setCantidad(1);
+			productoVenta.setPrecioTotal(producto.getPrecio());
+			venta.addProducto(productoVenta);
+		} else
+			productoVenta.setCantidad(productoVenta.getCantidad()+1);
 		
 		calcularTotales(venta);
 		
@@ -138,6 +143,17 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		guardarVenta(ventaDto);
 		return ventaDto;
 
+	}
+	
+	private ProductoVentaDto getProductoVentaDto(ProductoDto productoDto, VentaDto venta){
+		Iterator<ProductoVentaDto> productos = venta.getProductos().iterator();
+		ProductoVentaDto producto = null;
+		while (productos.hasNext()) {
+			ProductoVentaDto pvDto = productos.next();
+			if (pvDto.getProducto().getCodigo().equals(productoDto.getCodigo()))
+				producto = pvDto;
+		}
+		return producto;
 	}
 	
 	private void guardarVenta(VentaDto ventaDto){
