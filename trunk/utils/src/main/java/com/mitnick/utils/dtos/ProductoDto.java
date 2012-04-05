@@ -18,6 +18,8 @@ public class ProductoDto extends BaseDto {
 	
 	private BigDecimal precio;
 	
+	private BigDecimal iva;
+	
 	private BigDecimal descuento;
 	
 	private int stock;
@@ -94,5 +96,13 @@ public class ProductoDto extends BaseDto {
 
 	public void setStockMinimo(int stockMinimo) {
 		this.stockMinimo = stockMinimo;
+	}
+
+	public BigDecimal getIva() {
+		return iva;
+	}
+
+	public void setIva(BigDecimal iva) {
+		this.iva = iva;
 	}
 }

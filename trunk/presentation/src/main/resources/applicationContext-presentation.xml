@@ -22,18 +22,6 @@
 		</property>
 	</bean>
 	
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basenames">
-			<list>
-				<value>presentation-labels</value>
-				<value>presentation-errors</value>
-				<value>presentation-messages</value>
-				<value>business-errors</value>
-				<value>business-validation</value>
-			</list>
-		</property>
- 	</bean>
- 	
  	<!-- Add new Views here -->
  	
  	<!-- Add new Controllers here -->

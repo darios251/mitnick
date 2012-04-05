@@ -20,6 +20,7 @@ import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.servicio.servicios.dtos.ConsultaStockDto;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -211,6 +212,15 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		producto.setCodigo(productoDto.getCodigo());
 		producto.setDescripcion(productoDto.getDescripcion());
 		producto.setPrecio(new Long(productoDto.getPrecio().longValue()));
+		
+		//se calcula el impuesto del producto
+		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
+		if (!Validator.isBlankOrNull(ivaString)){
+			BigDecimal iva = new BigDecimal(ivaString).divide(new BigDecimal(100));
+			BigDecimal impuesto = productoDto.getPrecio().multiply(iva);
+			producto.setIva(new Long(impuesto.longValue()));
+		}
+		
 		producto.setStock(productoDto.getStock());
 		producto.setStockMinimo(productoDto.getStockMinimo());
 
@@ -237,6 +247,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		productoDto.setCodigo(producto.getCodigo());
 		productoDto.setDescripcion(producto.getDescripcion());
 		productoDto.setPrecio(new BigDecimal(producto.getPrecio()));
+		productoDto.setIva(new BigDecimal(producto.getIva()));
 		productoDto.setStock(producto.getStock());
 
 		productoDto.setMarca(getMarcaDtoFromMarca(producto.getMarca()));
