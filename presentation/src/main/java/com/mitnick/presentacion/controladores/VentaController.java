@@ -144,7 +144,7 @@ public class VentaController extends BaseController {
 		List<ProductoDto> productos = null;
 		
 		try {
-			productos = new ArrayList<ProductoDto>(productoServicio.consultaProducto(filtro));
+			productos = new ArrayList<ProductoDto>(getProductoServicio().consultaProducto(filtro));
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);
@@ -191,6 +191,7 @@ public class VentaController extends BaseController {
 	}
 	
 	public void agregarPago(MedioPagoDto medioPago, String monto) {
+		logger.debug("Entrado al metodo agregarPago, con medioPago: " + medioPago + " y monto: " + monto);
 		if(Validator.isNull(medioPago))
 			throw new PresentationException("error.venta.medioPago.null");
 		if(Validator.isBlankOrNull(monto))
@@ -206,8 +207,23 @@ public class VentaController extends BaseController {
 			getPagoPanel().actualizarPantalla();
 		}
 		catch(BusinessException e) {
-			throw new PresentationException(e);
+			throw new PresentationException(e.getMessage(),"Hubo un error al intentar agregar el pago con medio de pago: " + medioPago + " y monto: " + monto);
 		}
+		logger.debug("Saliendo del método agregarPago");
+	}
+	
+	public void quitarPago(PagoDto pagoDto) {
+		logger.debug("Entrado al metodo quitarPago, con pago: " + pagoDto);
+		
+		try {
+			VentaManager.setVentaActual(getVentaServicio().quitarPago(pagoDto, VentaManager.getVentaActual()));
+			pagoPanel.actualizarPantalla();
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el pago: " + pagoDto);
+		}
+		
+		logger.debug("Saliendo del método quitaPago");
 	}
 	
 	private IMedioPagoServicio getMedioPagoServicio() {

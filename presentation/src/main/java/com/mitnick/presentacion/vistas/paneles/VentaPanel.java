@@ -56,6 +56,8 @@ public class VentaPanel extends BaseView {
 	private JLabel lblTotalValor;
 
 	private JButton btnAceptar;
+	private JLabel lblSutotal;
+	private JLabel lblSubtotalValor;
 	
 	public VentaPanel() {
 		setLayout(null);
@@ -196,13 +198,23 @@ public class VentaPanel extends BaseView {
 		btnPagos.setBounds(735, 185, 60, 60);
 		add(btnPagos);
 		
+		lblSutotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.subtotal"));
+		lblSutotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSutotal.setBounds(279, 441, 88, 20);
+		add(lblSutotal);
+		
+		lblSubtotalValor = new JLabel("<< subtotal >>");
+		lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSubtotalValor.setBounds(377, 441, 88, 20);
+		add(lblSubtotalValor);
+		
 		lblTotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.total"));
 		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotal.setBounds(475, 438, 140, 20);
+		lblTotal.setBounds(475, 441, 88, 20);
 		add(lblTotal);		
 		
-		lblTotalValor = new JLabel("");
-		lblTotalValor.setBounds(625, 441, 100, 14);
+		lblTotalValor = new JLabel("<< total >>");
+		lblTotalValor.setBounds(625, 441, 88, 20);
 		add(lblTotalValor);
 		
 		btnAceptar = new JButton(PropertiesManager.getProperty("ventaPanel.button.aceptar"));
@@ -235,9 +247,12 @@ public class VentaPanel extends BaseView {
 	}
 	
 	public void actualizarPantalla() {
-		getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
+		if(Validator.isNotNull(getModel()))
+			getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
 		if(Validator.isNotNull(lblTotalValor))
 			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
+		if(Validator.isNotNull(lblSubtotalValor))
+			lblSubtotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
 	}
 	
 	public void setVentaController(VentaController ventaController) {

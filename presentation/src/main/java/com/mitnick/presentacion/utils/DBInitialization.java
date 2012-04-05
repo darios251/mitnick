@@ -10,7 +10,7 @@ public class DBInitialization {
 	
 	public void initializeDB() {
 		
-		logger.info("La base de datos se ha inicializado con �xito.");
+		logger.info("La base de datos se ha inicializado con éxito.");
 	}
 	
 
