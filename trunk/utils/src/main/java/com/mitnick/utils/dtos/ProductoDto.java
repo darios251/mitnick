@@ -21,7 +21,9 @@ public class ProductoDto extends BaseDto {
 	private BigDecimal descuento;
 	
 	private int stock;
-
+	
+	private int stockMinimo=-1;
+	
 	public String getCodigo() {
 		return codigo;
 	}
@@ -84,5 +86,13 @@ public class ProductoDto extends BaseDto {
 
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+
+	public int getStockMinimo() {
+		return stockMinimo;
+	}
+
+	public void setStockMinimo(int stockMinimo) {
+		this.stockMinimo = stockMinimo;
 	}
 }

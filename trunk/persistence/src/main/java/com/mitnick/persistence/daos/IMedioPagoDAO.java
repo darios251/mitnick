@@ -4,6 +4,6 @@ import org.appfuse.dao.GenericDao;
 
 import com.mitnick.persistence.entities.MedioPago;
 
-public interface IMedioPagoDAO extends GenericDao<MedioPago, Long>{
+public interface IMedioPagoDao extends GenericDao<MedioPago, Long>{
 
 }

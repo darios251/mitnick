@@ -31,25 +31,6 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
 	
-	
-	@Override
-	public boolean equals(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -80,6 +61,63 @@ public class ProductoVenta extends BaseObject implements Serializable {
 
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + cantidad;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
+		result = prime * result
+				+ ((producto == null) ? 0 : producto.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ProductoVenta)) {
+			return false;
+		}
+		ProductoVenta other = (ProductoVenta) obj;
+		if (cantidad != other.cantidad) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (precio == null) {
+			if (other.precio != null) {
+				return false;
+			}
+		} else if (!precio.equals(other.precio)) {
+			return false;
+		}
+		if (producto == null) {
+			if (other.producto != null) {
+				return false;
+			}
+		} else if (!producto.equals(other.producto)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductoVenta [id=" + id + ", producto=" + producto
+				+ ", precio=" + precio + ", cantidad=" + cantidad + "]";
 	}
 
 }

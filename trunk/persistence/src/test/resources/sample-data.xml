@@ -37,17 +37,21 @@
 	</table>
 	<table name="Producto">
 	  <column>id</column>
+	  <column>codigo</column>
 	  <column>descripcion</column>
 	  <column>marca_id</column>
 	  <column>tipo_id</column>
 	  <column>stock</column>
+	  <column>stockminimo</column>
 	  <column>precio</column>
 	  
 	  <row>
 	    <value>1</value>
+	    <value>1</value>
 	    <value>pantalon</value>
 	    <value>1</value>
 	    <value>1</value>
+	    <value>10</value>
 	    <value>10</value>
 	    <value>250</value>
 	  </row>

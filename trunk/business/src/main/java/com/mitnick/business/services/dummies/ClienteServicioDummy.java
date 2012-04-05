@@ -11,7 +11,6 @@ import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.dtos.ClienteDto;
 
-@Service("clienteServicio")
 public class ClienteServicioDummy extends ServicioBase implements
 		IClienteServicio {
 

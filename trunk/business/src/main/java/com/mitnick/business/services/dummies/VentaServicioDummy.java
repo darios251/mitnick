@@ -14,14 +14,9 @@ import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
-@Service("ventaServicio")
 public class VentaServicioDummy extends ServicioBase implements IVentaServicio {
 
-	@Override
-	public void guardarVenta(VentaDto venta) {
-
-	}
-
+	
 	@Override
 	public VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
 		ProductoVentaDto productoVenta = new ProductoVentaDto();
@@ -47,13 +42,13 @@ public class VentaServicioDummy extends ServicioBase implements IVentaServicio {
 
 	@Override
 	public VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta) {
-		venta.setDescuento(descuento.getDescuento());
+		venta.setDescuento(descuento);
 		return venta;
 	}
 
 	@Override
 	public VentaDto quitarDescuento(VentaDto venta) {
-		venta.setDescuento(new BigDecimal(0));
+		venta.setDescuento(null);
 		return venta;
 	}
 
@@ -93,8 +88,8 @@ public class VentaServicioDummy extends ServicioBase implements IVentaServicio {
 	}
 
 	@Override
-	public void facturar(VentaDto venta) {
-
+	public VentaDto facturar(VentaDto venta) {
+		return venta;
 	}
 
 }

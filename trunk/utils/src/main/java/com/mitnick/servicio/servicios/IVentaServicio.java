@@ -9,8 +9,6 @@ import com.mitnick.utils.dtos.VentaDto;
 
 public interface IVentaServicio {
 
-	void guardarVenta(VentaDto venta);
-	
 	VentaDto agregarProducto(ProductoDto producto, VentaDto venta);
 	
 	VentaDto quitarProducto(ProductoVentaDto producto, VentaDto venta);
@@ -29,5 +27,5 @@ public interface IVentaServicio {
 	
 	VentaDto quitarPago(PagoDto pago, VentaDto venta);
 	
-	void facturar(VentaDto venta);
+	VentaDto facturar(VentaDto venta);
 }

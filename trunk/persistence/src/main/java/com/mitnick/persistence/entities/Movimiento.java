@@ -35,24 +35,6 @@ public class Movimiento extends BaseObject implements Serializable {
 	@Column(name = "tipo", nullable = false)
 	private int tipo;
 	
-	@Override
-	public boolean equals(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -83,6 +65,58 @@ public class Movimiento extends BaseObject implements Serializable {
 
 	public void setTipo(int tipo) {
 		this.tipo = tipo;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + cantidad;
+		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + tipo;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Movimiento)) {
+			return false;
+		}
+		Movimiento other = (Movimiento) obj;
+		if (cantidad != other.cantidad) {
+			return false;
+		}
+		if (fecha == null) {
+			if (other.fecha != null) {
+				return false;
+			}
+		} else if (!fecha.equals(other.fecha)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (tipo != other.tipo) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Movimiento [id=" + id + ", fecha=" + fecha + ", cantidad="
+				+ cantidad + ", tipo=" + tipo + "]";
 	}
 
 }

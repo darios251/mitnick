@@ -28,26 +28,6 @@ public class Pago extends BaseObject implements Serializable {
 	@Column(name = "pago", nullable = false)
 	private Long pago;
 	
-	
-	
-	@Override
-	public boolean equals(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -70,6 +50,59 @@ public class Pago extends BaseObject implements Serializable {
 
 	public void setPago(Long pago) {
 		this.pago = pago;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((medioPago == null) ? 0 : medioPago.hashCode());
+		result = prime * result + ((pago == null) ? 0 : pago.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Pago)) {
+			return false;
+		}
+		Pago other = (Pago) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (medioPago == null) {
+			if (other.medioPago != null) {
+				return false;
+			}
+		} else if (!medioPago.equals(other.medioPago)) {
+			return false;
+		}
+		if (pago == null) {
+			if (other.pago != null) {
+				return false;
+			}
+		} else if (!pago.equals(other.pago)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Pago [id=" + id + ", medioPago=" + medioPago + ", pago=" + pago
+				+ "]";
 	}
 
 	

@@ -1,6 +1,7 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,9 @@ public class Producto extends BaseObject implements Serializable {
 	@Column(name = "descripcion", length = 255, nullable = false)
 	private String descripcion;
 	
+	@Column(name = "codigo", length = 255, nullable = false)
+	private String codigo;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn(name = "marca_id")
 	private Marca marca;
@@ -46,24 +50,9 @@ public class Producto extends BaseObject implements Serializable {
 	@Column(name = "precio", nullable = false)
 	private Long precio;
 	
-	@Override
-	public boolean equals(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	@Column(name = "stockMinimo", nullable = false)
+	private int stockMinimo=-1;
+	
 	public Long getId() {
 		return id;
 	}
@@ -97,11 +86,17 @@ public class Producto extends BaseObject implements Serializable {
 	}
 
 	public List<Movimiento> getMovimientos() {
+		if (movimientos==null)
+			movimientos = new ArrayList<Movimiento>();
 		return movimientos;
 	}
 
 	public void setMovimientos(List<Movimiento> movimientos) {
 		this.movimientos = movimientos;
+	}
+	
+	public void addMovimientos(Movimiento movimiento) {
+		getMovimientos().add(movimiento);
 	}
 
 	public int getStock() {
@@ -118,6 +113,118 @@ public class Producto extends BaseObject implements Serializable {
 
 	public void setPrecio(Long precio) {
 		this.precio = precio;
+	}
+
+	public int getStockMinimo() {
+		return stockMinimo;
+	}
+
+	public void setStockMinimo(int stockMinimo) {
+		this.stockMinimo = stockMinimo;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result
+				+ ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
+		result = prime * result
+				+ ((movimientos == null) ? 0 : movimientos.hashCode());
+		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
+		result = prime * result + stock;
+		result = prime * result + stockMinimo;
+		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Producto)) {
+			return false;
+		}
+		Producto other = (Producto) obj;
+		if (codigo == null) {
+			if (other.codigo != null) {
+				return false;
+			}
+		} else if (!codigo.equals(other.codigo)) {
+			return false;
+		}
+		if (descripcion == null) {
+			if (other.descripcion != null) {
+				return false;
+			}
+		} else if (!descripcion.equals(other.descripcion)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (marca == null) {
+			if (other.marca != null) {
+				return false;
+			}
+		} else if (!marca.equals(other.marca)) {
+			return false;
+		}
+		if (movimientos == null) {
+			if (other.movimientos != null) {
+				return false;
+			}
+		} else if (!movimientos.equals(other.movimientos)) {
+			return false;
+		}
+		if (precio == null) {
+			if (other.precio != null) {
+				return false;
+			}
+		} else if (!precio.equals(other.precio)) {
+			return false;
+		}
+		if (stock != other.stock) {
+			return false;
+		}
+		if (stockMinimo != other.stockMinimo) {
+			return false;
+		}
+		if (tipo == null) {
+			if (other.tipo != null) {
+				return false;
+			}
+		} else if (!tipo.equals(other.tipo)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Producto [id=" + id + ", descripcion=" + descripcion
+				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo
+				+ ", movimientos=" + movimientos + ", stock=" + stock
+				+ ", precio=" + precio + ", stockMinimo=" + stockMinimo + "]";
 	}
 
 }

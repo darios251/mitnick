@@ -6,9 +6,7 @@ public class DireccionDto extends BaseDto {
 	
 	private String domicilio;
 	
-	private String ciudad;
-	
-	private String provincia;
+	private CiudadDto ciudad;
 	
 	private String pais;
 	
@@ -22,22 +20,7 @@ public class DireccionDto extends BaseDto {
 		this.domicilio = domicilio;
 	}
 
-	public String getCiudad() {
-		return ciudad;
-	}
-
-	public void setCiudad(String ciudad) {
-		this.ciudad = ciudad;
-	}
-
-	public String getProvincia() {
-		return provincia;
-	}
-
-	public void setProvincia(String provincia) {
-		this.provincia = provincia;
-	}
-
+	
 	public String getPais() {
 		return pais;
 	}
@@ -52,6 +35,14 @@ public class DireccionDto extends BaseDto {
 
 	public void setCodigoPostal(String codigoPostal) {
 		this.codigoPostal = codigoPostal;
+	}
+
+	public CiudadDto getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(CiudadDto ciudad) {
+		this.ciudad = ciudad;
 	}
 
 }
