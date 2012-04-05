@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,9 +23,12 @@ import javax.swing.SwingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.modelos.VentaTableModel;
+import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
@@ -61,6 +65,7 @@ public class VentaPanel extends BaseView {
 	@Override
 	public void limpiarCamposPantalla() {
 		txtCodigo.setText("");
+		getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
 	}
 
 	@Override
@@ -143,10 +148,8 @@ public class VentaPanel extends BaseView {
 				try {
 					int index = table.getSelectedRow();
 					ProductoVentaDto productoVentaDto = model.getProductosVenta(index);
-					int opcion = JOptionPane.showConfirmDialog(scrollPane.getParent(), 
-							PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"), 
-							PropertiesManager.getProperty("dialog.warning.titulo"), 
-							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
+					
+					int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"));
 					
 					if ( opcion == JOptionPane.YES_OPTION) {
 						ventaController.quitarProductoVentaDto(productoVentaDto);	
@@ -154,11 +157,14 @@ public class VentaPanel extends BaseView {
 				}
 				catch (IndexOutOfBoundsException exception) {
 					if(model.getRowCount() == 0) {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
+						mostrarMensajeError(PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
 					}
 					else {
-						JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
+						mostrarMensajeError(PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
 					}
+				}
+				catch (PresentationException e) {
+					mostrarMensajeError(e.getMessage());
 				}
 			}
 		});
@@ -179,7 +185,12 @@ public class VentaPanel extends BaseView {
 		
 		btnPagos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventaController.mostrarPagosPanel();
+				try {
+					ventaController.mostrarPagosPanel();
+				}
+				catch(PresentationException ex) {
+					mostrarMensajeError(ex.getMessage());
+				}
 			}
 		});
 		btnPagos.setBounds(735, 185, 60, 60);
@@ -212,14 +223,21 @@ public class VentaPanel extends BaseView {
 	}
 
 	public void agregarProducto() {
-		logger.info("Buscando producto ... ");
-		if(txtCodigo.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyTextCode"));
-		}
-		else {
+		logger.debug("entrado a agregarProducto");
+		try {
 			ventaController.agregarProducto(txtCodigo.getText());
 			txtCodigo.setText("");
 		}
+		catch(PresentationException ex) {
+			mostrarMensajeError(ex.getMessage());
+		}
+		logger.debug("saliendo de agregarProducto");
+	}
+	
+	public void actualizarPantalla() {
+		getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
+		if(Validator.isNotNull(lblTotalValor))
+			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
 	}
 	
 	public void setVentaController(VentaController ventaController) {

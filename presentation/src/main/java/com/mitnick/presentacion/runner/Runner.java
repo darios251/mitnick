@@ -13,7 +13,7 @@ public class Runner {
 	
 	public static void main(String[] args) {
 
-		logger.info("Iniciando la aplicaciï¿½n: Applicaciï¿½n del proyecto mitnick...");
+		logger.info("Iniciando la aplicación: Applicación del proyecto mitnick...");
 		logger.info("Inicializando el propertiesManager...");
 		BeanLocator.getBean("propertiesManager");
 		

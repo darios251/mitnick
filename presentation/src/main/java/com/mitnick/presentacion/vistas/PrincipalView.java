@@ -159,6 +159,7 @@ public class PrincipalView extends JFrame
 					if (getJTabbedPane().indexOfComponent(ventaController.getVentaView()) == -1) {
 						logger.info("Agregando el panel de ventas al tabbedPane");
 						getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
+						ventaController.crearNuevaVenta();
 					}
 					logger.info("Mostrando el panel de ventas");
 					getJTabbedPane().setVisible(true);

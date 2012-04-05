@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
 
+import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.business.services.ServicioBase;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
@@ -28,12 +29,19 @@ public class VentaServicioDummy extends ServicioBase implements IVentaServicio {
 		productoVenta.setPrecioTotal(new BigDecimal(100));
 		productoVenta.setProducto(producto);
 		venta.getProductos().add(productoVenta);
+		venta.setSubTotal(new BigDecimal(100));
+		venta.setTotal(new BigDecimal(100));
+		venta.setFaltaPagar(new BigDecimal(100));
+		venta.setTotalPagado(new BigDecimal(0));
 		return venta;
 	}
 
 	@Override
 	public VentaDto quitarProducto(ProductoVentaDto producto, VentaDto venta) {
-		venta.getProductos().remove(producto);
+		boolean eliminado = venta.getProductos().remove(producto);
+		
+		if(!eliminado)
+			throw new BusinessException("Error al eliminar el producto. Consulte con el administrador");
 		return venta;
 	}
 
@@ -70,6 +78,9 @@ public class VentaServicioDummy extends ServicioBase implements IVentaServicio {
 	@Override
 	public VentaDto agregarPago(PagoDto pago, VentaDto venta) {
 		venta.getPagos().add(pago);
+		if(pago.getMonto().compareTo(venta.getFaltaPagar()) >= 0)
+			venta.setPagado(true);
+		venta.setTotalPagado(pago.getMonto());
 		return venta;
 	}
 
