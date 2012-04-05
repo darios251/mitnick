@@ -29,7 +29,7 @@ public class Venta extends BaseObject implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name = "producto_id")
-	private List<Producto> productos;
+	private List<ProductoVenta> productos;
 	
 	@OneToMany
 	@JoinColumn(name = "pagos_id")
@@ -65,11 +65,11 @@ public class Venta extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	public List<Producto> getProductos() {
+	public List<ProductoVenta> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(List<Producto> productos) {
+	public void setProductos(List<ProductoVenta> productos) {
 		this.productos = productos;
 	}
 

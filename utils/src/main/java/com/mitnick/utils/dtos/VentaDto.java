@@ -4,35 +4,33 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+
 public class VentaDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 
 	private List<ProductoVentaDto> productos;
 	
-	private BigDecimal subTotal;
+	private BigDecimal subTotal = new BigDecimal(0);
 	
-	private BigDecimal total;
+	private BigDecimal total = new BigDecimal(0);
 	
-	private BigDecimal impuesto;
+	private BigDecimal impuesto = new BigDecimal(0);
 	
-	private BigDecimal descuento;
+	private DescuentoDto descuento;
 	
 	private List<PagoDto> pagos; 
 	
 	private ClienteDto cliente;
 	
-	private boolean pagado = false;
+	private boolean pagado;
 	
-	private BigDecimal totalPagado;
+	private BigDecimal totalPagado = new BigDecimal(0);
 	
-	private BigDecimal faltaPagar;
+	private BigDecimal faltaPagar = new BigDecimal(0);
 	
-	public VentaDto() {
-		subTotal = new BigDecimal(0);
-		total =  new BigDecimal(0);
-		totalPagado = new BigDecimal(0);
-	}
+	private BigDecimal vuelto = new BigDecimal(0);
 	
 	public List<ProductoVentaDto> getProductos() {
 		if(productos == null)
@@ -42,6 +40,10 @@ public class VentaDto extends BaseDto {
 
 	public void setProductos(List<ProductoVentaDto> productos) {
 		this.productos = productos;
+	}
+	
+	public void addProducto(ProductoVentaDto producto){
+		this.getProductos().add(producto);
 	}
 
 	public BigDecimal getSubTotal() {
@@ -66,14 +68,6 @@ public class VentaDto extends BaseDto {
 
 	public void setImpuesto(BigDecimal impuesto) {
 		this.impuesto = impuesto;
-	}
-
-	public BigDecimal getDescuento() {
-		return descuento;
-	}
-
-	public void setDescuento(BigDecimal descuento) {
-		this.descuento = descuento;
 	}
 
 	public List<PagoDto> getPagos() {
@@ -116,5 +110,21 @@ public class VentaDto extends BaseDto {
 
 	public void setFaltaPagar(BigDecimal faltaPagar) {
 		this.faltaPagar = faltaPagar;
+	}
+
+	public DescuentoDto getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(DescuentoDto descuento) {
+		this.descuento = descuento;
+	}
+
+	public BigDecimal getVuelto() {
+		return vuelto;
+	}
+
+	public void setVuelto(BigDecimal vuelto) {
+		this.vuelto = vuelto;
 	}
 }

@@ -1,7 +1,6 @@
 package com.mitnick.utils;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.lf5.LogLevel;
 
 /**
  * Esta clase tiene la responsabilidad de representar la excepci�n base
@@ -14,63 +13,134 @@ public class BaseException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final int ERROR = 1;
+	
+	public static final int WARNING = 3;
+	
+	private int type;
+	
 	private Logger logger = Logger.getLogger(BaseException.class);
 	
 	public BaseException(String key)
 	{
 		super(PropertiesManager.getProperty(key));
+		this.type = ERROR;
+		logException(PropertiesManager.getProperty(key), null);
 	}
 	
-	public BaseException(String key, Object[] params)
+	public BaseException(String key, String log, int type)
 	{
-		super(PropertiesManager.getProperty(key, params));
+		super(PropertiesManager.getProperty(key));
+		this.type = type;
+		logException(log, null);
 	}
 	
 	public BaseException(String key, String log)
 	{
 		super(PropertiesManager.getProperty(key));
-		logger.error(log);
+		this.type = ERROR;
+		logException(log, null);
+	}
+
+	public BaseException(String key, Object[] params)
+	{
+		super(PropertiesManager.getProperty(key, params));
+		this.type = ERROR;
+		logException(PropertiesManager.getProperty(key, params), null);
 	}
 	
-	public BaseException(String key, String log, LogLevel logLevel)
-	{
-		super(PropertiesManager.getProperty(key));
-		if(LogLevel.ERROR.equals(logLevel))
-			logger.error(log);
-		else if(LogLevel.INFO.equals(logLevel))
-			logger.info(log);
-		else if(LogLevel.DEBUG.equals(logLevel))
-			logger.debug(log);
-		else if(LogLevel.WARNING.equals(logLevel))
-			logger.warn(log);
-	}
 	
 	public BaseException(String key, Object[] params, String log)
 	{
 		super(PropertiesManager.getProperty(key, params));
-		logger.error(log);
+		this.type = ERROR;
+		logException(log, null);
+	}
+	
+	public BaseException(String key, Object[] params, int type)
+	{
+		super(PropertiesManager.getProperty(key, params));
+		this.type = type;
+		logException(PropertiesManager.getProperty(key, params), null);
+	}
+	
+	
+	public BaseException(String key, Object[] params, String log, int type)
+	{
+		super(PropertiesManager.getProperty(key, params));
+		this.type = type;
+		logException(log, null);
 	}
 	
 	public BaseException(String key, Throwable cause)
 	{
 		super(PropertiesManager.getProperty(key), cause);
+		this.type = ERROR;
+		logException(PropertiesManager.getProperty(key), cause);
+	}
+
+	public BaseException(String key, Throwable cause, int type)
+	{
+		super(PropertiesManager.getProperty(key), cause);
+		this.type = type;
+		logException(PropertiesManager.getProperty(key), cause);
 	}
 	
 	public BaseException(String key, Object[] params, Throwable cause)
 	{
 		super(PropertiesManager.getProperty(key, params), cause);
+		this.type = ERROR;
+		logException(PropertiesManager.getProperty(key, params), cause);
+	}
+	
+	public BaseException(String key, Object[] params, Throwable cause, int type)
+	{
+		super(PropertiesManager.getProperty(key, params), cause);
+		this.type = type;
+		logException(PropertiesManager.getProperty(key, params), cause);
 	}
 	
 	public BaseException(String key, String log, Throwable cause)
 	{
 		super(PropertiesManager.getProperty(key), cause);
-		logger.error(log, cause);
+		this.type = ERROR;
+		logException(log, cause);
+	}
+	
+	public BaseException(String key, String log, Throwable cause, int type)
+	{
+		super(PropertiesManager.getProperty(key), cause);
+		this.type = type;
+		logException(log, cause);
 	}
 	
 	public BaseException(String key, Object[] params, String log, Throwable cause)
 	{
 		super(PropertiesManager.getProperty(key, params), cause);
-		logger.error(log, cause);
+		this.type = ERROR;
+		logException(log, cause);
 	}
+	
+	public BaseException(String key, Object[] params, String log, Throwable cause, int type)
+	{
+		super(PropertiesManager.getProperty(key, params), cause);
+		this.type = type;
+		logException(log, cause);
+	}
+	
+	private void logException(String message, Throwable cause){
+		switch (this.type) {
+		case ERROR:
+			logger.error(message, cause);
+			break;
+		case WARNING:
+			logger.warn(message, cause);
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
 
 }

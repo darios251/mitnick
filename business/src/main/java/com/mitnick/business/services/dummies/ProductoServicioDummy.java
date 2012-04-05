@@ -14,7 +14,6 @@ import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
-@Service("productoServicio")
 public class ProductoServicioDummy extends ServicioBase implements
 		IProductoServicio {
 
@@ -79,15 +78,13 @@ public class ProductoServicioDummy extends ServicioBase implements
 		List<TipoDto> tipos = new ArrayList<TipoDto>();
 		TipoDto tipo = new TipoDto();
 		tipo.setId(1l);
-		tipo.setCodigo("tipo 1");
-		tipo.setDescripcion("Descripción tipo 1");
+		tipo.setDescripcion("Descripciï¿½n tipo 1");
 		
 		tipos.add(tipo);
 		
 		tipo = new TipoDto();
 		tipo.setId(1l);
-		tipo.setCodigo("tipo 2");
-		tipo.setDescripcion("Descripción tipo 2");
+		tipo.setDescripcion("Descripciï¿½n tipo 2");
 		
 		tipos.add(tipo);
 		return tipos;
@@ -98,15 +95,13 @@ public class ProductoServicioDummy extends ServicioBase implements
 		List<MarcaDto> marcas = new ArrayList<MarcaDto>();
 		MarcaDto marca = new MarcaDto();
 		marca.setId(1l);
-		marca.setCodigo("marca 1");
-		marca.setDescripcion("Descripción marca 1");
+		marca.setDescripcion("Descripciï¿½n marca 1");
 		
 		marcas.add(marca);
 		
 		marca = new MarcaDto();
 		marca.setId(1l);
-		marca.setCodigo("marca 2");
-		marca.setDescripcion("Descripción marca 2");
+		marca.setDescripcion("Descripciï¿½n marca 2");
 		
 		marcas.add(marca);
 		return marcas;

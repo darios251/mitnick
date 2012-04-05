@@ -9,7 +9,6 @@ import com.mitnick.business.services.ServicioBase;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.utils.dtos.MedioPagoDto;
 
-@Service("medioPagoServicio")
 public class MedioPagoServicioDummy extends ServicioBase implements
 		IMedioPagoServicio {
 
@@ -27,14 +26,14 @@ public class MedioPagoServicioDummy extends ServicioBase implements
 		medioPago = new MedioPagoDto();
 		medioPago.setId(2l);
 		medioPago.setCodigo("2");
-		medioPago.setDescripcion("Tarjeta Débito");
+		medioPago.setDescripcion("Tarjeta Dï¿½bito");
 		
 		mediosPago.add(medioPago);
 		
 		medioPago = new MedioPagoDto();
 		medioPago.setId(3l);
 		medioPago.setCodigo("3");
-		medioPago.setDescripcion("Tarjeta Crédito");
+		medioPago.setDescripcion("Tarjeta Crï¿½dito");
 		
 		mediosPago.add(medioPago);
 		

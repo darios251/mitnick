@@ -31,17 +31,28 @@
 	<bean id="clienteDao" class="com.mitnick.persistence.daos.ClienteDao" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.Cliente"/>
 	</bean>
-	<bean id="medioPagoDao" class="com.mitnick.persistence.daos.MedioPagoDAO" autowire="byType">
+	<bean id="medioPagoDao" class="com.mitnick.persistence.daos.MedioPagoDao" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.MedioPago"/>
 	</bean>
-	<bean id="productoDao" class="com.mitnick.persistence.daos.ProductoDAO" autowire="byType">
+	<bean id="productoDao" class="com.mitnick.persistence.daos.ProductoDao" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.Producto"/>
 	</bean>
-	<bean id="ventaDao" class="com.mitnick.persistence.daos.VentaDAO" autowire="byType">
+	<bean id="ventaDao" class="com.mitnick.persistence.daos.VentaDao" autowire="byType">
 		<constructor-arg value="com.mitnick.persistence.entities.Venta"/>
 	</bean>
+	<bean id="marcaDao" class="com.mitnick.persistence.daos.MarcaDao" autowire="byType">
+		<constructor-arg value="com.mitnick.persistence.entities.Marca"/>
+	</bean>
+	<bean id="ciudadDao" class="com.mitnick.persistence.daos.CiudadDao" autowire="byType">
+		<constructor-arg value="com.mitnick.persistence.entities.Ciudad"/>
+	</bean>
+	<bean id="provinciaDao" class="com.mitnick.persistence.daos.ProvinciaDao" autowire="byType">
+		<constructor-arg value="com.mitnick.persistence.entities.Provincia"/>
+	</bean>
+	<bean id="tipoDao" class="com.mitnick.persistence.daos.TipoDao" autowire="byType">
+		<constructor-arg value="com.mitnick.persistence.entities.Tipo"/>
+	</bean>
 	
-   
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />

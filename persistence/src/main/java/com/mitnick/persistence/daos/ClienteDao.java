@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.springframework.stereotype.Repository;
 
 import com.mitnick.persistence.entities.Cliente;
 
@@ -14,6 +15,7 @@ import com.mitnick.persistence.entities.Cliente;
  * @author Lucas Garc�a
  *
  */
+@Repository("clienteDao")
 public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IClienteDao {
 
 	public ClienteDao(Class<Cliente> persistentClass) {
@@ -21,12 +23,12 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<Cliente> findByDocumento(String documento) {
 		return getHibernateTemplate().find("from Cliente c where c.documento=?", documento);
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public List<Cliente> findByDocumentoNombreApellido(String documento, String nombre, String apellido) {
 		String query = "from Cliente c";
 		List<Object> filtros = new ArrayList<Object>();
@@ -56,7 +58,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			}						
 		}
 		
-		return getHibernateTemplate().find(query, filtros);
+		return getHibernateTemplate().find(query, filtros.toArray());
 	}
 	
 	public Cliente saveOrUpdate(Cliente cliente){
