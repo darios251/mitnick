@@ -101,7 +101,7 @@ public class BuscarProductoPanel extends BaseView {
 					model.setProductos(	productoController.getProductosByFilter(dto) );
 				}
 				catch(PresentationException ex) {
-					mostrarMensajeError(ex.getMessage());
+					mostrarMensaje(ex);
 				}
 			}
 		});

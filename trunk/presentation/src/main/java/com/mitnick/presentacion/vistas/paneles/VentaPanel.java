@@ -83,15 +83,17 @@ public class VentaPanel extends BaseView {
 				      try {
 							int index = table.getSelectedRow();
 							ProductoVentaDto productoVentaDto = model.getProductosVenta(index);
+							
 							logger.info("Abrir panel para editar el articulo con codigo " + productoVentaDto.getProducto().getCodigo());
 						}
-						catch (IndexOutOfBoundsException exception) {
-							if(model.getRowCount() == 0) {
-								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
-							}
-							else {
-								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
-							}
+						catch (PresentationException exception) {
+							mostrarMensaje(exception);
+//							if(model.getRowCount() == 0) {
+//								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
+//							}
+//							else {
+//								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
+//							}
 						}
 				    }
 			}
@@ -167,8 +169,8 @@ public class VentaPanel extends BaseView {
 						mostrarMensajeError(PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
 					}
 				}
-				catch (PresentationException e) {
-					mostrarMensajeError(e.getMessage());
+				catch (PresentationException ex) {
+					mostrarMensaje(ex);
 				}
 			}
 		});
@@ -193,7 +195,7 @@ public class VentaPanel extends BaseView {
 					ventaController.mostrarPagosPanel();
 				}
 				catch(PresentationException ex) {
-					mostrarMensajeError(ex.getMessage());
+					mostrarMensaje(ex);
 				}
 			}
 		});
@@ -243,7 +245,7 @@ public class VentaPanel extends BaseView {
 			txtCodigo.setText("");
 		}
 		catch(PresentationException ex) {
-			mostrarMensajeError(ex.getMessage());
+			mostrarMensaje(ex);
 		}
 		logger.debug("saliendo de agregarProducto");
 	}

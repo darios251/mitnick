@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import com.mitnick.presentacion.excepciones.PresentationException;
+import com.mitnick.utils.BaseException;
 import com.mitnick.utils.PropertiesManager;
 
 public abstract class BaseView extends JPanel {
@@ -37,15 +39,25 @@ public abstract class BaseView extends JPanel {
 
 	}
 	
+	protected int mostrarMensaje(PresentationException ex) {
+		switch(ex.getType()) {
+		case BaseException.WARNING:
+			return mostrarMensajeAdvertencia(ex.getMessage());
+		case BaseException.ERROR:
+		default:
+			return mostrarMensajeError(ex.getMessage());
+		}
+	}
+	
 	protected int mostrarMensajeError ( String message ) {
-		//Primero despliego un mensaje para confirmar la operaci�n
+		//Primero despliego un mensaje para confirmar la operacion
 	     Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 	     
 	     return JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected int mostrarMensajeAdvertencia ( String message ) {
-		//Primero despliego un mensaje para confirmar la operaci�n
+		//Primero despliego un mensaje para confirmar la operacion
 	     Object[] options = { PropertiesManager.getProperty( "dialog.warning.okbutton" ) };
 	     
 	     return JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[ 0 ] );

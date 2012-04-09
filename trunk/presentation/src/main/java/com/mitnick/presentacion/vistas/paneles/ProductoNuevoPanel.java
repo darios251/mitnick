@@ -99,11 +99,11 @@ public class ProductoNuevoPanel extends BaseView {
 		lblMarca.setBounds(319, 87, 73, 20);
 		add(lblMarca);
 		
-		cmbMarca = new JComboBox<MarcaDto>();
-		cmbMarca.setBounds(402, 87, 86, 20);
+		
 		MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
 		modeloMarca.addItems(productoController.obtenerMarcas());
-		cmbMarca.setModel(modeloMarca);
+		cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
+		cmbMarca.setBounds(402, 87, 86, 20);
 		add(cmbMarca);
 		
 		JLabel lblPrecio = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.precio"));

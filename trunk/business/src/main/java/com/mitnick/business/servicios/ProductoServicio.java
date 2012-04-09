@@ -42,7 +42,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	public List<ProductoDto> consultaProducto(ConsultaProductoDto filtro) {
 		List<Producto> productos = null;
 		try{
-			productos = productoDao.findByCodigoDescripcion(filtro.getCodigo(), filtro.getDescripcion());
+			productos = productoDao.findByFiltro(filtro);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}

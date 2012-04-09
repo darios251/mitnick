@@ -127,7 +127,7 @@ public class PagoPanel extends BaseView {
 					ventaController.mostrarVentasPanel();
 				}
 				catch(PresentationException ex) {
-					mostrarMensajeError(ex.getMessage());
+					mostrarMensaje(ex);
 				}
 			}
 		});
@@ -219,8 +219,8 @@ public class PagoPanel extends BaseView {
 						mostrarMensajeError(PropertiesManager.getProperty("error.pagoPanel.pago.noSeleccionado"));
 					}
 				}
-				catch (PresentationException e) {
-					mostrarMensajeError(e.getMessage());
+				catch (PresentationException ex) {
+					mostrarMensaje(ex);
 				}
 			}
 		});
@@ -240,7 +240,8 @@ public class PagoPanel extends BaseView {
 					ventaController.mostrarVentasPanel();
 				}
 				catch(PresentationException ex) {
-					mostrarMensajeError(ex.getMessage());
+					
+					mostrarMensaje(ex);
 				}
 			}
 		});
@@ -273,7 +274,7 @@ public class PagoPanel extends BaseView {
 			ventaController.agregarPago((MedioPagoDto)cmbMedioPago.getSelectedItem(), txtMonto.getText());
 		}
 		catch(PresentationException ex) {
-			mostrarMensajeError(ex.getMessage());
+			mostrarMensaje(ex);
 		}
 	}
 
@@ -300,7 +301,7 @@ public class PagoPanel extends BaseView {
 			}
 			catch(BusinessException e) {
 				;
-			}
+			} 
 			
 			cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());
 			((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).addItems(medioPagoList);
@@ -310,7 +311,5 @@ public class PagoPanel extends BaseView {
 		}
 		if(Validator.isNotNull(txtMonto))
 			txtMonto.setText("");
-		if(Validator.isNotNull(cmbMedioPago))
-			cmbMedioPago.setSelectedIndex(0);
 	}
 }

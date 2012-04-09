@@ -84,7 +84,7 @@ public class ProductoController extends BaseController {
 			throw new PresentationException(e);
 		}
 		
-		// chequeo si se encontró o no algo en la búsqueda
+		// chequeo si se encontro o no algo en la busqueda
 		if(resultado == null || resultado.isEmpty())
 			throw new PresentationException("error.venta.producto.noExiste");
 		
