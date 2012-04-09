@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.business.services.ServicioBase;
 import com.mitnick.persistence.daos.IMarcaDao;
-import com.mitnick.persistence.daos.IProductoDao;
 import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Movimiento;
@@ -25,12 +24,13 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
+import com.mitnick.persistence.daos.IProductoDAO;
 
 @Service("productoServicio")
 public class ProductoServicio extends ServicioBase implements IProductoServicio {
 
 	@Autowired
-	IProductoDao productoDao;
+	IProductoDAO productoDao;
 
 	@Autowired
 	IMarcaDao marcaDao;
@@ -238,6 +238,17 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 		return producto;
 	}
+	
+	@Override
+	public List<ProductoDto> obtenerProductos() {
+		List<ProductoDto> productos = new ArrayList<ProductoDto>();
+		
+		for (Producto producto : productoDao.getAll()) {
+			productos.add(getProductoDtoFromProducto(producto));
+		}
+		
+		return productos;
+	}
 
 	private ProductoDto getProductoDtoFromProducto(Producto producto) {
 		ProductoDto productoDto = new ProductoDto();
@@ -270,7 +281,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		marcaDto.setId(marca.getId());
 		return marcaDto;
 	}
-
+	
 	private void validar(ProductoDto productoDto) {
 		if (Validator.isBlankOrNull(productoDto.getDescripcion()))
 			throw new BusinessException("error.productoServicio.descripcion.nulo");	
@@ -287,24 +298,12 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	
 	}
 
-	public IProductoDao getProductoDao() {
-		return productoDao;
-	}
-
-	public void setProductoDao(IProductoDao productoDao) {
+	public void setProductoDao(IProductoDAO productoDao) {
 		this.productoDao = productoDao;
-	}
-
-	public IMarcaDao getMarcaDao() {
-		return marcaDao;
 	}
 
 	public void setMarcaDao(IMarcaDao marcaDao) {
 		this.marcaDao = marcaDao;
-	}
-
-	public ITipoDao getTipoDao() {
-		return tipoDao;
 	}
 
 	public void setTipoDao(ITipoDao tipoDao) {

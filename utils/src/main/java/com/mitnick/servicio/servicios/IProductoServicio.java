@@ -31,4 +31,6 @@ public interface IProductoServicio {
 	List<TipoDto> obtenerTipos();
 	
 	List<MarcaDto> obtenerMarcas();
+
+	List<ProductoDto> obtenerProductos();
 }

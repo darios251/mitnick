@@ -2,8 +2,6 @@ package com.mitnick.business.services.dummies;
 
 import java.math.BigDecimal;
 
-import org.springframework.stereotype.Service;
-
 import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.business.services.ServicioBase;
 import com.mitnick.servicio.servicios.IVentaServicio;

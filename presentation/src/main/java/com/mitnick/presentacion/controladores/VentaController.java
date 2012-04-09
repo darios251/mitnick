@@ -123,9 +123,12 @@ public class VentaController extends BaseController {
 	}
 	
 	public void mostrarUltimoPanelMostrado () {
-		if(ultimoPanelMostrado == null)
-			ultimoPanelMostrado = ventaPanel;
-		ultimoPanelMostrado.setVisible(true);
+		if(buscarProductoPanel.equals(ultimoPanelMostrado))
+			mostrarBuscarArticuloPanel();
+		else if(pagoPanel.equals(ultimoPanelMostrado) && !VentaManager.getVentaActual().getProductos().isEmpty())
+			mostrarPagosPanel();
+		else
+			mostrarVentasPanel();
 	}
 	
 	public void limpiarVenta() {

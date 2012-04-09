@@ -1,7 +1,5 @@
 package com.mitnick.presentacion.controladores;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -93,40 +91,31 @@ public class ProductoController extends BaseController {
 		return resultado;
 	}
 	
+	public List<MarcaDto> obtenerMarcas() {
+		try {
+			return productoServicio.obtenerMarcas();
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener las marcas");
+		}
+	}
+	
+	public List<TipoDto> obtenerTipos() {
+		try {
+			return productoServicio.obtenerTipos();
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los tipos");
+		}
+	}
+	
 	public List<ProductoDto> getAllProductos() {
-		List<ProductoDto> productos = new ArrayList<ProductoDto>();
-
-		ProductoDto p1 = new ProductoDto();
-		TipoDto tipo1 = new TipoDto();
-		MarcaDto marca1 = new MarcaDto();
-
-		p1.setCodigo("1");
-		p1.setDescripcion("Pantalon de vestir");
-		tipo1.setDescripcion("Pantalon");
-		p1.setTipo(tipo1);
-		p1.setTalle("L");
-		marca1.setDescripcion("Wrangler");
-		p1.setMarca(marca1);
-		p1.setPrecio(new BigDecimal(120.50));
-
-		productos.add(p1);
-
-		ProductoDto p2 = new ProductoDto();
-		TipoDto tipo2 = new TipoDto();
-		MarcaDto marca2 = new MarcaDto();
-
-		p2.setCodigo("2");
-		p2.setDescripcion("Camisa manga larga");
-		tipo2.setDescripcion("Camisa");
-		p2.setTipo(tipo2);
-		p2.setTalle("XL");
-		marca2.setDescripcion("Polo");
-		p2.setMarca(marca2);
-		p2.setPrecio(new BigDecimal(80.00));
-
-		productos.add(p2);
-
-		return productos;
+		try {
+			return productoServicio.obtenerProductos();
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los productos");
+		}
 	}
 
 	public void setProductoServicio(IProductoServicio productoServicio) {
@@ -138,6 +127,5 @@ public class ProductoController extends BaseController {
 			throw new PresentationException("error.unknown", "El servicio: " + productoServicio.getClass().getSimpleName() + "");
 		return productoServicio;
 	}
-	
-	
+
 }

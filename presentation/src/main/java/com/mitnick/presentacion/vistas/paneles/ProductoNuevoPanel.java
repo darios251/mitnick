@@ -13,18 +13,21 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.presentacion.controladores.ProductoController;
+import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
+import com.mitnick.utils.dtos.MarcaDto;
+import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("productoNuevoPanel")
 public class ProductoNuevoPanel extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
 	private ProductoController productoController;
 	
 	private JButton btnAceptar;
@@ -35,16 +38,37 @@ public class ProductoNuevoPanel extends BaseView {
 	private JTextField txtPrecio;
 	private JTextField txtStock;
 
-	private JComboBox cmbTipo;
+	private JComboBox<TipoDto> cmbTipo;
 
-	private JComboBox cmbMarca;
+	private JComboBox<MarcaDto> cmbMarca;
+	
+	/**
+	 * @throws Exception 
+	 * @wbp.parser.constructor
+	 */
+	public ProductoNuevoPanel(boolean modoDisenio) throws Exception {
+		// Este contructor solo se utiliza para que funcione el plugin
+		initializeComponents();
+		throw new Exception("Este constructor no debe ser utilizado");
+	}
+	
+	@Autowired(required=true)
+	public ProductoNuevoPanel(@Qualifier("productoController") ProductoController productoController) {
+		this.productoController = productoController;
+	}
 
-	public ProductoNuevoPanel() {
+	@Override
+	protected void limpiarCamposPantalla() {
+		
+	}
+	
+	@Override
+	protected void initializeComponents() {
 		setSize(new Dimension(815, 470));
 		setLayout(null);
 		
 		JLabel lblCdigo = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.codigo"));
-		lblCdigo.setBounds(92, 25, 60, 20);
+		lblCdigo.setBounds(58, 25, 94, 20);
 		add(lblCdigo);
 		
 		txtCodigo = new JTextField();
@@ -53,7 +77,7 @@ public class ProductoNuevoPanel extends BaseView {
 		txtCodigo.setColumns(10);
 		
 		JLabel lblDescripcin = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.descripcion"));
-		lblDescripcin.setBounds(92, 56, 60, 20);
+		lblDescripcin.setBounds(58, 56, 94, 20);
 		add(lblDescripcin);
 		
 		txtDescripcion = new JTextField();
@@ -62,23 +86,28 @@ public class ProductoNuevoPanel extends BaseView {
 		add(txtDescripcion);
 		
 		JLabel lblTipo = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.tipo"));
-		lblTipo.setBounds(92, 87, 60, 20);
+		lblTipo.setBounds(58, 87, 94, 20);
 		add(lblTipo);
 		
-		cmbTipo = new JComboBox();
+		MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
+		modeloTipo.addItems(productoController.obtenerTipos());
+		cmbTipo = new JComboBox<TipoDto>(modeloTipo);
 		cmbTipo.setBounds(162, 87, 86, 20);
 		add(cmbTipo);
 		
 		JLabel lblMarca = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.marca"));
-		lblMarca.setBounds(352, 87, 40, 20);
+		lblMarca.setBounds(319, 87, 73, 20);
 		add(lblMarca);
 		
-		cmbMarca = new JComboBox();
+		cmbMarca = new JComboBox<MarcaDto>();
 		cmbMarca.setBounds(402, 87, 86, 20);
+		MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
+		modeloMarca.addItems(productoController.obtenerMarcas());
+		cmbMarca.setModel(modeloMarca);
 		add(cmbMarca);
 		
 		JLabel lblPrecio = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.precio"));
-		lblPrecio.setBounds(92, 118, 60, 20);
+		lblPrecio.setBounds(58, 118, 94, 20);
 		add(lblPrecio);
 		
 		txtPrecio = new JTextField();
@@ -87,7 +116,7 @@ public class ProductoNuevoPanel extends BaseView {
 		add(txtPrecio);
 		
 		JLabel lblStock = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stock"));
-		lblStock.setBounds(352, 118, 40, 20);
+		lblStock.setBounds(319, 118, 73, 20);
 		add(lblStock);
 		
 		txtStock = new JTextField();
@@ -128,15 +157,7 @@ public class ProductoNuevoPanel extends BaseView {
 		btnCancelar.setBounds(618, 56, 60, 60);
 		add(btnCancelar);
 	}
-
-	@Override
-	protected void limpiarCamposPantalla() {
-		
-	}
-	@Override
-	protected void initializeComponents() {
-		
-	}
+	
 	public void setProductoController(ProductoController productoController) {
 		this.productoController = productoController;
 	}

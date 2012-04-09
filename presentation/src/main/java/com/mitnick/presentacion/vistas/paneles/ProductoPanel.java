@@ -40,8 +40,8 @@ public class ProductoPanel extends BaseView {
 	
 	private JTextField txtCodigo;
 	private JTextField txtDescripcion;
-	private JComboBox cbxTipo;
-	private JComboBox cbxMarca;
+	private JComboBox<TipoDto> cbxTipo;
+	private JComboBox<MarcaDto> cbxMarca;
 	private JLabel lblMarca;
 	private JButton btnBuscar;
 	private Component lblTipo;
@@ -83,11 +83,11 @@ public class ProductoPanel extends BaseView {
 		lblTipo.setBounds(125, 55, 90, 20);
 		add(lblTipo);
 		
-		cbxTipo = new JComboBox();
+		cbxTipo = new JComboBox<TipoDto>();
 		cbxTipo.setBounds(200, 55, 110, 20);
 		add(cbxTipo);
 		
-		cbxMarca = new JComboBox();
+		cbxMarca = new JComboBox<MarcaDto>();
 		cbxMarca.setBounds(420, 55, 110, 20);
 		add(cbxMarca);
 		

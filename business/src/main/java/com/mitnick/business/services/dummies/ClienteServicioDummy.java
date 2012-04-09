@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.mitnick.business.services.ServicioBase;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;

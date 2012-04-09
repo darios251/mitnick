@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.mitnick.utils.BaseException;
 import com.mitnick.utils.PropertiesManager;
 
 public abstract class BaseView extends JPanel {
@@ -20,6 +19,8 @@ public abstract class BaseView extends JPanel {
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	protected JButton defaultButtonAction;
+	
+	protected boolean panelInicializado = false;
 	
 	public BaseView () {
 		this.centrarVentana( null );
@@ -33,7 +34,7 @@ public abstract class BaseView extends JPanel {
 	}
 	
 	protected void initializePanel () {
-		this.initializeComponents();
+
 	}
 	
 	protected int mostrarMensajeError ( String message ) {
@@ -55,6 +56,14 @@ public abstract class BaseView extends JPanel {
 	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ) };
 	     
 	     return JOptionPane.showOptionDialog(currentView, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
+	}
+	
+	@Override
+	public void setVisible(boolean aFlag) {
+		if(!panelInicializado)
+			initializeComponents();
+		panelInicializado = true;
+		super.setVisible(aFlag);
 	}
 	
 	protected void centrarVentana ( Component parent ) {
