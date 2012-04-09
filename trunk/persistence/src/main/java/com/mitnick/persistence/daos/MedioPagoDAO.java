@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.persistence.entities.MedioPago;
 
 @Repository("medioPagoDao")
-public class MedioPagoDao extends GenericDaoHibernate<MedioPago, Long>  implements IMedioPagoDao {
+public class MedioPagoDAO extends GenericDaoHibernate<MedioPago, Long>  implements IMedioPagoDAO {
 
-	public MedioPagoDao(Class<MedioPago> persistentClass) {
+	public MedioPagoDAO(Class<MedioPago> persistentClass) {
 		super(persistentClass);
 	}
 

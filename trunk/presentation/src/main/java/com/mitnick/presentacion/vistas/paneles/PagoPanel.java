@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.presentacion.controladores.VentaController;
@@ -33,14 +34,12 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
-import com.mitnick.utils.dtos.ProductoVentaDto;
 
 @Panel("pagoPanel")
 public class PagoPanel extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
 	private VentaController ventaController;
 	
 	private JTextField txtMonto;
@@ -68,9 +67,9 @@ public class PagoPanel extends BaseView {
 	
 	private PagoTableModel pagoTableModel;
 
-	public PagoPanel() {
-		setLayout(null);
-		setSize(new Dimension(815, 470));
+	@Autowired
+	public PagoPanel(@Qualifier("ventaController") VentaController ventaController) {
+		this.ventaController = ventaController;
 	}
 
 	public void setVentaController(VentaController ventaController) {
@@ -79,6 +78,9 @@ public class PagoPanel extends BaseView {
 
 	@Override
 	protected void initializeComponents() {
+		setLayout(null);
+		setSize(new Dimension(815, 470));
+		
 		lblMedioPago = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.medioPago"));
 		lblMedioPago.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMedioPago.setBounds(44, 86, 115, 20);
@@ -245,22 +247,22 @@ public class PagoPanel extends BaseView {
 		
 		add(btnVolver);
 		
-		lblSubtotalValor = new JLabel("<< subtotal >>");
+		lblSubtotalValor = new JLabel();
 		lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSubtotalValor.setBounds(396, 299, 88, 20);
 		add(lblSubtotalValor);
 		
-		lblTotalValor = new JLabel("<< total >>");
+		lblTotalValor = new JLabel();
 		lblTotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTotalValor.setBounds(396, 348, 88, 20);
 		add(lblTotalValor);
 		
-		lblTotalPagadoValor = new JLabel("<< total pagado >>");
+		lblTotalPagadoValor = new JLabel();
 		lblTotalPagadoValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTotalPagadoValor.setBounds(396, 384, 88, 20);
 		add(lblTotalPagadoValor);
 		
-		lblAPagarValor = new JLabel("<< total a pagar >>");
+		lblAPagarValor = new JLabel();
 		lblAPagarValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAPagarValor.setBounds(396, 420, 88, 20);
 		add(lblAPagarValor);
@@ -278,12 +280,11 @@ public class PagoPanel extends BaseView {
 	@Override
 	public void limpiarCamposPantalla() {
 		txtMonto.setText("");
-		((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).removeAllElements();
 		pagoTableModel.setPagos(new ArrayList<PagoDto>());
 	}
 
 	public void actualizarPantalla() {
-		if(Validator.isNotNull(lblSubtotalValor))
+		if(Validator.isNotNull(lblSubtotalValor)) 
 			lblSubtotalValor.setText(VentaManager.getVentaActual().getSubTotal().toString());
 		if(Validator.isNotNull(lblTotalValor))
 			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toString());
@@ -291,7 +292,7 @@ public class PagoPanel extends BaseView {
 			lblTotalPagadoValor.setText(VentaManager.getVentaActual().getTotalPagado().toString());
 		if(Validator.isNotNull(lblAPagarValor))
 			lblAPagarValor.setText(VentaManager.getVentaActual().getFaltaPagar().toString());
-		if(Validator.isNotNull(cmbMedioPago) && cmbMedioPago.getItemCount() == 0) {
+		if(Validator.isNotNull(cmbMedioPago)) {
 			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
 			
 			try {
@@ -301,6 +302,7 @@ public class PagoPanel extends BaseView {
 				;
 			}
 			
+			cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());
 			((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).addItems(medioPagoList);
 		}
 		if(Validator.isNotNull(pagoTableModel)) {

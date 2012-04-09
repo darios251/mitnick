@@ -66,8 +66,10 @@ public class VentaPanel extends BaseView {
 
 	@Override
 	public void limpiarCamposPantalla() {
-		txtCodigo.setText("");
-		getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
+		if(Validator.isNotNull(txtCodigo))
+			txtCodigo.setText("");
+		if(Validator.isNotNull(getModel()))
+			getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
 	}
 
 	@Override

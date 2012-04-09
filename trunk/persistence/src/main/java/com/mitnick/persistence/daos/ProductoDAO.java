@@ -10,9 +10,9 @@ import com.mitnick.persistence.entities.Producto;
 import com.mitnick.utils.Validator;
 
 @Repository("productoDao")
-public class ProductoDao extends GenericDaoHibernate<Producto, Long>  implements IProductoDao {
+public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements IProductoDAO {
 
-	public ProductoDao(Class<Producto> persistentClass) {
+	public ProductoDAO(Class<Producto> persistentClass) {
 		super(persistentClass);
 	}
 
@@ -45,6 +45,7 @@ public class ProductoDao extends GenericDaoHibernate<Producto, Long>  implements
 		return getHibernateTemplate().find(query, filtros.toArray());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Producto> findByCodigoDescripcionTipoMarca(String codigo,String descripcion, Long tipo, Long marca) {
 		String query = "from Producto p ";

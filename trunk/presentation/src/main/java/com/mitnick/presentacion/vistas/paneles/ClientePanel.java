@@ -172,13 +172,11 @@ public class ClientePanel extends BaseView {
 
 	@Override
 	protected void limpiarCamposPantalla() {
-		// TODO Auto-generated method stub
-		
+		// TODO: implementar método
 	}
 
 	@Override
 	protected void initializeComponents() {
-		// TODO Auto-generated method stub
-		
+		// TODO: implementar método
 	}
 }

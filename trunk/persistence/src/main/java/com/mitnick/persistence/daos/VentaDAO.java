@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.persistence.entities.Venta;
 
 @Repository("ventaDao")
-public class VentaDao extends GenericDaoHibernate<Venta, Long>  implements IVentaDao {
+public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVentaDAO {
 
-	public VentaDao(Class<Venta> persistentClass) {
+	public VentaDAO(Class<Venta> persistentClass) {
 		super(persistentClass);
 	}
 

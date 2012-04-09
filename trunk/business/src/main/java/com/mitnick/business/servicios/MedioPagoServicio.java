@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.business.services.ServicioBase;
-import com.mitnick.persistence.daos.IMedioPagoDao;
+import com.mitnick.persistence.daos.IMedioPagoDAO;
 import com.mitnick.persistence.entities.MedioPago;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.utils.dtos.MedioPagoDto;
@@ -17,7 +17,7 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 public class MedioPagoServicio extends ServicioBase implements IMedioPagoServicio {
 
 	@Autowired
-	IMedioPagoDao medioPagoDao;
+	IMedioPagoDAO medioPagoDao;
 	
 	@Override
 	public List<MedioPagoDto> obtenerMediosPagos() {
@@ -42,11 +42,11 @@ public class MedioPagoServicio extends ServicioBase implements IMedioPagoServici
 		return medioPagoDto;
 	}
 	
-	public IMedioPagoDao getMedioPagoDao() {
+	public IMedioPagoDAO getMedioPagoDao() {
 		return medioPagoDao;
 	}
 
-	public void setMedioPagoDao(IMedioPagoDao medioPagoDao) {
+	public void setMedioPagoDao(IMedioPagoDAO medioPagoDao) {
 		this.medioPagoDao = medioPagoDao;
 	}
 

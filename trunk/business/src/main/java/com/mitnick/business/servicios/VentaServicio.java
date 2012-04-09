@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.business.services.ServicioBase;
 import com.mitnick.persistence.daos.IClienteDao;
-import com.mitnick.persistence.daos.IMedioPagoDao;
-import com.mitnick.persistence.daos.IProductoDao;
-import com.mitnick.persistence.daos.IVentaDao;
+import com.mitnick.persistence.daos.IMedioPagoDAO;
+import com.mitnick.persistence.daos.IProductoDAO;
+import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Producto;
@@ -33,16 +33,16 @@ import com.mitnick.utils.dtos.VentaDto;
 public class VentaServicio extends ServicioBase implements IVentaServicio {
 
 	@Autowired
-	IVentaDao ventaDao;
+	IVentaDAO ventaDao;
 	
 	@Autowired
 	IClienteDao clienteDao;
 	
 	@Autowired
-	IProductoDao productoDao;
+	IProductoDAO productoDao;
 	
 	@Autowired
-	IMedioPagoDao medioPagoDao;
+	IMedioPagoDAO medioPagoDao;
 	
 	@Override
 	public VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
@@ -325,11 +325,11 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 
 	}
 
-	public IVentaDao getVentaDao() {
+	public IVentaDAO getVentaDao() {
 		return ventaDao;
 	}
 
-	public void setVentaDao(IVentaDao ventaDao) {
+	public void setVentaDao(IVentaDAO ventaDao) {
 		this.ventaDao = ventaDao;
 	}
 
@@ -341,19 +341,19 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		this.clienteDao = clienteDao;
 	}
 
-	public IProductoDao getProductoDao() {
+	public IProductoDAO getProductoDao() {
 		return productoDao;
 	}
 
-	public void setProductoDao(IProductoDao productoDao) {
+	public void setProductoDao(IProductoDAO productoDao) {
 		this.productoDao = productoDao;
 	}
 
-	public IMedioPagoDao getMedioPagoDao() {
+	public IMedioPagoDAO getMedioPagoDao() {
 		return medioPagoDao;
 	}
 
-	public void setMedioPagoDao(IMedioPagoDao medioPagoDao) {
+	public void setMedioPagoDao(IMedioPagoDAO medioPagoDao) {
 		this.medioPagoDao = medioPagoDao;
 	}
 	

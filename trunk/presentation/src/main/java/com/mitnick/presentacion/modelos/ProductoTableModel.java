@@ -10,7 +10,6 @@ import javax.swing.table.TableModel;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
-import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 public class ProductoTableModel extends AbstractTableModel implements TableModel{

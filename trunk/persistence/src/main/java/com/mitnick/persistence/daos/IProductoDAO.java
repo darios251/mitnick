@@ -6,7 +6,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.mitnick.persistence.entities.Producto;
 
-public interface IProductoDao extends GenericDao<Producto, Long>{
+public interface IProductoDAO extends GenericDao<Producto, Long>{
 	
 	public List<Producto> getAll();
 	
