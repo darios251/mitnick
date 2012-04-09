@@ -141,6 +141,11 @@ public class BaseException extends RuntimeException {
 		}
 		
 	}
+
+	
+	public int getType() {
+		return type;
+	}
 	
 
 }

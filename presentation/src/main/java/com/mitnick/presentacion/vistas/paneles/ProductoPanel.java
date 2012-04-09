@@ -20,10 +20,14 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableRowSorter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.presentacion.controladores.ProductoController;
+import com.mitnick.presentacion.excepciones.PresentationException;
+import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.presentacion.vistas.BaseView;
+import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
@@ -35,13 +39,12 @@ public class ProductoPanel extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
 	private ProductoController productoController;
 	
 	private JTextField txtCodigo;
 	private JTextField txtDescripcion;
-	private JComboBox<TipoDto> cbxTipo;
-	private JComboBox<MarcaDto> cbxMarca;
+	private JComboBox<TipoDto> cmbTipo;
+	private JComboBox<MarcaDto> cmbMarca;
 	private JLabel lblMarca;
 	private JButton btnBuscar;
 	private Component lblTipo;
@@ -57,7 +60,28 @@ public class ProductoPanel extends BaseView {
 	private ProductoTableModel model;
 	private JButton btnMovimientos;
 	
-	public ProductoPanel() {
+	@Autowired
+	public ProductoPanel(@Qualifier ("productoController") ProductoController productoController) {
+		this.productoController = productoController;
+	}
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public ProductoPanel(boolean modoDisenio) {
+		initializeComponents();
+	}
+
+	
+
+	@Override
+	protected void limpiarCamposPantalla() {
+		
+	}
+
+	@Override
+	protected void initializeComponents() {
+
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
@@ -83,13 +107,17 @@ public class ProductoPanel extends BaseView {
 		lblTipo.setBounds(125, 55, 90, 20);
 		add(lblTipo);
 		
-		cbxTipo = new JComboBox<TipoDto>();
-		cbxTipo.setBounds(200, 55, 110, 20);
-		add(cbxTipo);
+		MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
+		modeloTipo.addItems(productoController.obtenerTipos());
+		cmbTipo = new JComboBox<TipoDto>(modeloTipo);
+		cmbTipo.setBounds(200, 55, 110, 20);
+		add(cmbTipo);
 		
-		cbxMarca = new JComboBox<MarcaDto>();
-		cbxMarca.setBounds(420, 55, 110, 20);
-		add(cbxMarca);
+		MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
+		modeloMarca.addItems(productoController.obtenerMarcas());
+		cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
+		cmbMarca.setBounds(420, 55, 110, 20);
+		add(cmbMarca);
 		
 		lblMarca = new JLabel(PropertiesManager.getProperty("productoPanel.label.marca"));
 		lblMarca.setBounds(330, 55, 60, 20);
@@ -97,7 +125,6 @@ public class ProductoPanel extends BaseView {
 		
 		// Creo una tabla con un sorter
 		model = new ProductoTableModel();
-		model.setProductos(getProductos());
         sorter = new TableRowSorter<ProductoTableModel>(model);
         table = new JTable(model);
         table.setRowSorter(sorter);
@@ -117,7 +144,21 @@ public class ProductoPanel extends BaseView {
 		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
 		
 		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent evento) {
+				try {
+					ConsultaProductoDto dto = new ConsultaProductoDto();
+					dto.setCodigo(txtCodigo.getText());
+					dto.setDescripcion(txtDescripcion.getText());
+					dto.setMarca((MarcaDto) cmbMarca.getSelectedItem());
+					dto.setTipo((TipoDto) cmbTipo.getSelectedItem());
+					
+					model.setProductos(productoController.getProductosByFilter(dto));
+				}
+				catch (PresentationException ex) {
+					mostrarMensaje(ex);
+					model.setProductos(new ArrayList<ProductoDto>());
+				}
+				
 			}
 		});
 		btnBuscar.setBounds(560, 15, 60, 60);
@@ -191,52 +232,7 @@ public class ProductoPanel extends BaseView {
 		JLabel lblProductos = new JLabel(PropertiesManager.getProperty("productoPanel.label.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
-	}
-
-	private List<ProductoDto> getProductos() {
-		List<ProductoDto> productos = new ArrayList<ProductoDto>();
-		
-		ProductoDto p1 = new ProductoDto();
-		TipoDto tipo1 = new TipoDto();
-		MarcaDto marca1 = new MarcaDto();
-		
-		p1.setCodigo("1");
-		p1.setDescripcion("Pantalon de vestir");
-		tipo1.setDescripcion("Pantalon");
-		p1.setTipo(tipo1);
-		p1.setTalle("L");
-		marca1.setDescripcion("Wrangler");
-		p1.setMarca(marca1);
-		p1.setPrecio(new BigDecimal(120.50));
-		
-		productos.add(p1);
-		
-		ProductoDto p2 = new ProductoDto();
-		TipoDto tipo2 = new TipoDto();
-		MarcaDto marca2 = new MarcaDto();
-		
-		p2.setCodigo("2");
-		p2.setDescripcion("Camisa manga larga");
-		tipo2.setDescripcion("Camisa");
-		p2.setTipo(tipo2);
-		p2.setTalle("XL");
-		marca2.setDescripcion("Polo");
-		p2.setMarca(marca2);
-		p2.setPrecio(new BigDecimal(80.00));
-		
-		productos.add(p2);
-		
-		return productos;
-	}
-
-	@Override
-	protected void limpiarCamposPantalla() {
-		
-	}
-
-	@Override
-	protected void initializeComponents() {
-		
+	
 	}
 
 	public void setProductoController(ProductoController productoController) {
