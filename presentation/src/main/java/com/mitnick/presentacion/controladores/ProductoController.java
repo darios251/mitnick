@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.controladores;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,6 +14,7 @@ import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
@@ -117,12 +119,48 @@ public class ProductoController extends BaseController {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los productos");
 		}
 	}
+	
+	public void guardarProducto(String codigo, String descripcion, TipoDto tipo, MarcaDto marca, String stock, String precio) {
+		if(Validator.isBlankOrNull(codigo))
+			throw new PresentationException("error.producto.nuevo.codigo.null");
+		if(Validator.isBlankOrNull(descripcion))
+			throw new PresentationException("error.producto.nuevo.descripcion.null");
+		if(Validator.isNull(tipo))
+			throw new PresentationException("error.producto.nuevo.tipo.null");
+		if(Validator.isNull(marca))
+			throw new PresentationException("error.producto.nuevo.marca.null");
+		if(Validator.isBlankOrNull(stock))
+			throw new PresentationException("error.producto.nuevo.stock.null");
+		if(!Validator.isInt(stock))
+			throw new PresentationException("error.producto.nuevo.stock.format");
+		if(!Validator.isBlankOrNull(stock) && !Validator.isInRange(Integer.parseInt(stock), 0, 10000))
+			throw new PresentationException("error.producto.nuevo.stock.rangoEntero", new Object[]{"0", "10000"});
+		if(Validator.isBlankOrNull(precio))
+			throw new PresentationException("error.producto.nuevo.precio.null");
+		if(!Validator.isDouble(precio))
+			throw new PresentationException("error.producto.nuevo.precio.format");
+		
+		ProductoDto producto = new ProductoDto();
+		producto.setCodigo(codigo);
+		producto.setDescripcion(descripcion);
+		producto.setPrecio(new BigDecimal(Double.parseDouble(precio)));
+		producto.setTipo(tipo);
+		producto.setMarca(marca);
+		producto.setStock(Integer.parseInt(stock));
+		
+		try {
+			getProductoServicio().altaProducto(producto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar dar del alta el producto: " + producto);
+		}
+	}
 
 	public void setProductoServicio(IProductoServicio productoServicio) {
 		this.productoServicio = productoServicio;
 	}
 	
-	private IProductoServicio getProductoServicio() {
+	protected IProductoServicio getProductoServicio() {
 		if(productoServicio == null)
 			throw new PresentationException("error.unknown", "El servicio: " + productoServicio.getClass().getSimpleName() + "");
 		return productoServicio;
