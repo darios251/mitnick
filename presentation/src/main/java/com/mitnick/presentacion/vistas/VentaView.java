@@ -41,6 +41,11 @@ public class VentaView extends BaseView {
 	protected void limpiarCamposPantalla() {
 		
 	}
+	
+	@Override
+	public void actualizarPantalla() {
+		
+	}
 
 	public void setVentaController(VentaController ventaController) {
 		this.ventaController = ventaController;

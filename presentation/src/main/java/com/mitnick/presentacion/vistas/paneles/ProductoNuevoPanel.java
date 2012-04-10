@@ -158,8 +158,9 @@ public class ProductoNuevoPanel extends BaseView {
 		add(btnCancelar);
 	}
 	
-	public void setProductoController(ProductoController productoController) {
-		this.productoController = productoController;
+	@Override
+	public void actualizarPantalla() {
+		
 	}
 	
 }

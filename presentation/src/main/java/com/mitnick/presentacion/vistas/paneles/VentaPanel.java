@@ -21,6 +21,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.excepciones.PresentationException;
@@ -37,7 +38,6 @@ public class VentaPanel extends BaseView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
 	private VentaController ventaController;
 	
 	private JScrollPane scrollPane;
@@ -59,9 +59,15 @@ public class VentaPanel extends BaseView {
 	private JLabel lblSutotal;
 	private JLabel lblSubtotalValor;
 	
-	public VentaPanel() {
-		setLayout(null);
-		setSize(new Dimension(815, 470));
+	public VentaPanel(boolean modoDisenio) throws Exception {
+		// Este contructor solo se utiliza para que funcione el plugin
+		initializeComponents();
+		throw new Exception("Este constructor no debe ser utilizado");
+	}
+	
+	@Autowired
+	public VentaPanel(@Qualifier("ventaController") VentaController ventaController) {
+		this.ventaController = ventaController;
 	}
 
 	@Override
@@ -74,6 +80,9 @@ public class VentaPanel extends BaseView {
 
 	@Override
 	protected void initializeComponents() {
+		setLayout(null);
+		setSize(new Dimension(815, 470));
+		
 		model = new VentaTableModel();
 		
 		table = new JTable(model);
@@ -251,18 +260,16 @@ public class VentaPanel extends BaseView {
 	}
 	
 	public void actualizarPantalla() {
-		if(Validator.isNotNull(getModel()))
+		if(Validator.isNotNull(getModel()) && VentaManager.getVentaActual() != null)
 			getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
-		if(Validator.isNotNull(lblTotalValor))
+		if(Validator.isNotNull(lblTotalValor) && VentaManager.getVentaActual() != null)
 			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
-		if(Validator.isNotNull(lblSubtotalValor))
+		if(Validator.isNotNull(lblSubtotalValor) && VentaManager.getVentaActual() != null)
 			lblSubtotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
+		if(Validator.isNotNull(txtCodigo))
+			txtCodigo.requestFocus();
 	}
 	
-	public void setVentaController(VentaController ventaController) {
-		this.ventaController = ventaController;
-	}
-
 	public VentaTableModel getModel() {
 		return this.model;
 	}

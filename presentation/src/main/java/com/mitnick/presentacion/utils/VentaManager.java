@@ -1,6 +1,5 @@
 package com.mitnick.presentacion.utils;
 
-import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.utils.dtos.VentaDto;
 
 public class VentaManager {
@@ -21,8 +20,6 @@ public class VentaManager {
 	}
 	
 	public static VentaDto getVentaActual() {
-		if(ventaActual == null)
-			throw new PresentationException("error.venta.ventaActual.null");
 		return ventaActual;
 	}
 }

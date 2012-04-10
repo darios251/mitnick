@@ -170,6 +170,11 @@ public class BuscarProductoPanel extends BaseView {
 	protected void initializeComponents() {
 		
 	}
+	
+	@Override
+	public void actualizarPantalla() {
+		
+	}
 
 	public void setVentasController(VentaController ventasController) {
 		this.ventasController = ventasController;

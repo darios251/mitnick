@@ -45,7 +45,6 @@ public class PagoPanel extends BaseView {
 	private JTextField txtMonto;
 	private JTable table;
 	private JScrollPane scrollPane;
-	private JButton btnFinalizar;
 	private JLabel lblPagosRealizados;
 	private JLabel lbl_ST;
 	private JLabel lblSubtotal;
@@ -66,14 +65,19 @@ public class PagoPanel extends BaseView {
 	private JLabel lblTotalAPagar;
 	
 	private PagoTableModel pagoTableModel;
-
+	
 	@Autowired
 	public PagoPanel(@Qualifier("ventaController") VentaController ventaController) {
 		this.ventaController = ventaController;
 	}
-
-	public void setVentaController(VentaController ventaController) {
-		this.ventaController = ventaController;
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public PagoPanel(boolean modoDisenio) throws Exception {
+		// Este contructor solo se utiliza para que funcione el plugin
+		initializeComponents();
+		throw new Exception("Este constructor no debe ser utilizado");
 	}
 
 	@Override
@@ -116,23 +120,6 @@ public class PagoPanel extends BaseView {
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(269, 115, 516, 143);
 		add(scrollPane);
-		
-		btnFinalizar = new JButton(PropertiesManager.getProperty("pagoPanel.boton.finalizar"));
-		btnFinalizar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					ventaController.checkFinalizarVenta();
-					ventaController.crearNuevaVenta();
-					ventaController.limpiarVenta();
-					ventaController.mostrarVentasPanel();
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		btnFinalizar.setBounds(610, 364, 60, 60);
-		add(btnFinalizar);
 		
 		lblPagosRealizados = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.pagosRealizados"));
 		lblPagosRealizados.setBounds(269, 86, 141, 20);
@@ -183,7 +170,12 @@ public class PagoPanel extends BaseView {
 		
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				agregarPago();
+				try {
+					agregarPago();
+				}
+				catch(PresentationException ex) {
+					mostrarMensaje(ex);
+				}
 			}
 		});
 		btnAgregar.setBounds(188, 86, 60, 60);
@@ -272,6 +264,8 @@ public class PagoPanel extends BaseView {
 	protected void agregarPago() {
 		try {
 			ventaController.agregarPago((MedioPagoDto)cmbMedioPago.getSelectedItem(), txtMonto.getText());
+			
+			
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -309,7 +303,27 @@ public class PagoPanel extends BaseView {
 		if(Validator.isNotNull(pagoTableModel)) {
 			pagoTableModel.setPagos(VentaManager.getVentaActual().getPagos());
 		}
-		if(Validator.isNotNull(txtMonto))
+		if(Validator.isNotNull(txtMonto)) {
 			txtMonto.setText("");
+			txtMonto.requestFocus();
+		}
+	}
+	
+	public void finalizarVenta() {
+		try {
+			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[]{ VentaManager.getVentaActual().getVuelto().toString() }));
+			ventaController.crearNuevaVenta();
+			ventaController.limpiarVenta();
+			ventaController.mostrarVentasPanel();
+		}
+		catch(PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
+	public int mostrarMensajeReintentar() {
+	     Object[] options = { PropertiesManager.getProperty( "dialog.error.reintentar" ), PropertiesManager.getProperty( "dialog.error.cancelarVenta" )  };
+	     
+	     return JOptionPane.showOptionDialog( currentView, PropertiesManager.getProperty( "dialog.error.MensajeReintentar" ), PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 }
