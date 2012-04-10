@@ -2,13 +2,13 @@ package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.appfuse.model.BaseObject;
@@ -21,12 +21,15 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "producto_id")
 	private Producto producto;
 	
 	@Column(name = "precio", nullable = false)
 	private Long precio;
+	
+	@Column(name = "iva", nullable = false)
+	private Long iva;
 	
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
@@ -63,12 +66,21 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		this.cantidad = cantidad;
 	}
 
+	public Long getIva() {
+		return iva;
+	}
+
+	public void setIva(Long iva) {
+		this.iva = iva;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + cantidad;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((iva == null) ? 0 : iva.hashCode());
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
 		result = prime * result
 				+ ((producto == null) ? 0 : producto.hashCode());
@@ -97,6 +109,13 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		} else if (!id.equals(other.id)) {
 			return false;
 		}
+		if (iva == null) {
+			if (other.iva != null) {
+				return false;
+			}
+		} else if (!iva.equals(other.iva)) {
+			return false;
+		}
 		if (precio == null) {
 			if (other.precio != null) {
 				return false;
@@ -117,7 +136,10 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	@Override
 	public String toString() {
 		return "ProductoVenta [id=" + id + ", producto=" + producto
-				+ ", precio=" + precio + ", cantidad=" + cantidad + "]";
+				+ ", precio=" + precio + ", iva=" + iva + ", cantidad="
+				+ cantidad + "]";
 	}
+
+	
 
 }

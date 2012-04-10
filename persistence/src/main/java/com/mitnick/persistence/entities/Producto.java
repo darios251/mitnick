@@ -40,7 +40,7 @@ public class Producto extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "tipo_id")
 	private Tipo tipo;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "movimiento_id")
 	private List<Movimiento> movimientos;
 	

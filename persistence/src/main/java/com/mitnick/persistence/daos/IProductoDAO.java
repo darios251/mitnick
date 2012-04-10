@@ -16,6 +16,6 @@ public interface IProductoDAO extends GenericDao<Producto, Long>{
 	
 	public Producto saveOrUpdate(Producto producto);
 
-	public List<Producto> findByFiltro(ConsultaProductoDto filtro);
+	public List<Producto> findByFiltro(ConsultaProductoDto filtro);	
 
 }
