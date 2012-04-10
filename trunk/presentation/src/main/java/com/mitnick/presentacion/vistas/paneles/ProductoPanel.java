@@ -234,6 +234,12 @@ public class ProductoPanel extends BaseView {
 		add(lblProductos);
 	
 	}
+	
+	@Override
+	public void actualizarPantalla() {
+		
+	}
+	
 
 	public void setProductoController(ProductoController productoController) {
 		this.productoController = productoController;

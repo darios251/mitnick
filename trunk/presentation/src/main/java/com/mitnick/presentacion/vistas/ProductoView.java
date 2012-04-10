@@ -40,6 +40,11 @@ public class ProductoView extends BaseView {
 	protected void limpiarCamposPantalla() {
 		
 	}
+	
+	@Override
+	public void actualizarPantalla() {
+		
+	}
 
 	public void setProductoController(ProductoController productoController) {
 		this.productoController = productoController;

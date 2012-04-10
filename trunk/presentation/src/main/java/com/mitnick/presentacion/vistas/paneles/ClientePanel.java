@@ -172,11 +172,13 @@ public class ClientePanel extends BaseView {
 
 	@Override
 	protected void limpiarCamposPantalla() {
-		// TODO: implementar método
 	}
 
 	@Override
 	protected void initializeComponents() {
-		// TODO: implementar método
+	}
+	
+	@Override
+	public void actualizarPantalla() {
 	}
 }

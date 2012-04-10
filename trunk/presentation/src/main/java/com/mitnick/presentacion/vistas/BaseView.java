@@ -84,5 +84,7 @@ public abstract class BaseView extends JPanel {
 	protected abstract void limpiarCamposPantalla();
 	
 	protected abstract void initializeComponents();
+	
+	public abstract void actualizarPantalla();
 
 }

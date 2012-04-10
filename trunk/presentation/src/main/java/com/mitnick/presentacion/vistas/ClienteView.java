@@ -40,6 +40,11 @@ public class ClienteView extends BaseView {
 	protected void limpiarCamposPantalla() {
 		
 	}
+	
+	@Override
+	public void actualizarPantalla() {
+		
+	}
 
 	public void setClienteController(ClienteController clienteController) {
 		this.clienteController = clienteController;

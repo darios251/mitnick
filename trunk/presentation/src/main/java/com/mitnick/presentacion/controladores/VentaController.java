@@ -93,19 +93,20 @@ public class VentaController extends BaseController {
 		pagoPanel.setVisible(false);
 		buscarProductoPanel.setVisible(true);
 		buscarProductoPanel.limpiarCamposPantalla();
+		buscarProductoPanel.actualizarPantalla();
 	}
 	
 	public void mostrarVentasPanel() {
 		// TODO: preguntar si es necesaria esta validación
 		// valido si puede mostrar el panel de ventas
-		if(pagoPanel != null && pagoPanel.equals(ultimoPanelMostrado) && !VentaManager.getVentaActual().getPagos().isEmpty())
+		if(pagoPanel != null && pagoPanel.equals(ultimoPanelMostrado) && VentaManager.getVentaActual()!= null && !VentaManager.getVentaActual().getPagos().isEmpty())
 			throw new PresentationException("error.venta.pagos.noVacio");
 		
 		ultimoPanelMostrado = ventaPanel;
 		buscarProductoPanel.setVisible(false);
 		pagoPanel.setVisible(false);
-		ventaPanel.actualizarPantalla();
 		ventaPanel.setVisible(true);
+		ventaPanel.actualizarPantalla();
 	}
 	
 	public void mostrarPagosPanel() {
@@ -118,8 +119,8 @@ public class VentaController extends BaseController {
 		ultimoPanelMostrado = pagoPanel;
 		buscarProductoPanel.setVisible(false);
 		ventaPanel.setVisible(false);
-		pagoPanel.actualizarPantalla();
 		pagoPanel.setVisible(true);
+		pagoPanel.actualizarPantalla();
 	}
 	
 	public void mostrarUltimoPanelMostrado () {
@@ -182,11 +183,13 @@ public class VentaController extends BaseController {
 		limpiarVenta();
 	}
 
-	public void checkFinalizarVenta() {
+	public boolean checkFinalizarVenta() {
 		if(VentaManager.getVentaActual() != null && (VentaManager.getVentaActual().getPagos() == null || VentaManager.getVentaActual().getPagos().isEmpty()))
-			throw new PresentationException("error.venta.finalizarVenta.sinPagos");
+			return false;
 		if(!VentaManager.getVentaActual().isPagado())
-			throw new PresentationException("error.venta.finalizarVenta.faltanPagos");
+			return false;
+		
+		return true;
 	}
 
 	public List<MedioPagoDto> getAllMedioPago() {
@@ -212,7 +215,32 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(),"Hubo un error al intentar agregar el pago con medio de pago: " + medioPago + " y monto: " + monto);
 		}
+		
+		finalizarVenta();
+		
 		logger.debug("Saliendo del método agregarPago");
+	}
+	
+	private void finalizarVenta() {
+		if(checkFinalizarVenta()) {
+			try {
+				getVentaServicio().facturar(VentaManager.getVentaActual());
+			}
+			catch(BusinessException e) {
+				int opcion = getPagoPanel().mostrarMensajeReintentar();
+				
+				if(opcion == 0) {
+					finalizarVenta();
+					return;
+				}
+				else {
+					VentaManager.crearNuevaVenta();
+					mostrarVentasPanel();
+					return;
+				}
+			}
+			getPagoPanel().finalizarVenta();
+		}
 	}
 	
 	public void quitarPago(PagoDto pagoDto) {
