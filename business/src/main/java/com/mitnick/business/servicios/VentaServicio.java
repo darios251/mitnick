@@ -122,11 +122,32 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 
 	@Override
 	public VentaDto agregarPago(PagoDto pago, VentaDto venta) {
-		venta.getPagos().add(pago);
+		PagoDto pagoDto = getPagoDto(pago, venta);
+		if (pagoDto == null)
+			//agrego el nuevo pago
+			venta.getPagos().add(pago);
+		else{
+			//actualizo el pago existente en la venta
+			BigDecimal pagado = pagoDto.getMonto();
+			BigDecimal pagando = pago.getMonto();
+			pagoDto.setMonto(pagado.add(pagando));
+		}
+		
 		calcularTotales(venta);
 		return venta;
 	}
 
+	public PagoDto getPagoDto(PagoDto pago, VentaDto venta){
+		Iterator<PagoDto> pagos = venta.getPagos().iterator();
+		PagoDto pagoDto = null;
+		while (pagos.hasNext()) {
+			PagoDto pDto = pagos.next();
+			if (pDto.getMedioPago().getId().equals(pago.getMedioPago().getId()))
+				pagoDto = pDto;
+		}
+		return pagoDto;
+	}
+	
 	@Override
 	public VentaDto quitarPago(PagoDto pago, VentaDto venta) {
 		venta.getPagos().remove(pago);
