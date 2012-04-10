@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 
 public interface IClienteDao extends GenericDao<Cliente, Long>{
 
@@ -12,5 +13,5 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	
 	public Cliente saveOrUpdate(Cliente cliente);
 	
-	public List<Cliente> findByDocumentoNombreApellido(String documento, String nombre, String apellido);
+	public List<Cliente> findByFiltro(ConsultaClienteDto filtro);
 }

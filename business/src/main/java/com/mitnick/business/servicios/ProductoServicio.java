@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.business.services.ServicioBase;
 import com.mitnick.persistence.daos.IMarcaDao;
+import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Movimiento;
@@ -24,7 +25,6 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
-import com.mitnick.persistence.daos.IProductoDAO;
 
 @Service("productoServicio")
 public class ProductoServicio extends ServicioBase implements IProductoServicio {
@@ -152,9 +152,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		List<Producto> productos = null;
 		try {
 			productos = productoDao
-				.findByCodigoDescripcionTipoMarca(filtro.getCodigo(),
-						filtro.getDescripcion(), filtro.getTipo(),
-						filtro.getMarca());
+				.findStockByFiltro(filtro);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
