@@ -66,7 +66,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		
 			producto.addMovimientos(movimiento);
 			
-			producto = productoDao.save(producto);
+			producto = productoDao.saveOrUpdate(producto);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}

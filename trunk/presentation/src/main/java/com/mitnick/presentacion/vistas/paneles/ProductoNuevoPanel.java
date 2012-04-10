@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.presentacion.controladores.ProductoController;
+import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
@@ -59,7 +60,12 @@ public class ProductoNuevoPanel extends BaseView {
 
 	@Override
 	protected void limpiarCamposPantalla() {
-		
+		txtCodigo.setText("");
+		txtDescripcion.setText("");
+		txtPrecio.setText("");
+		txtStock.setText("");
+		cmbMarca.setSelectedIndex(0);
+		cmbTipo.setSelectedIndex(0);
 	}
 	
 	@Override
@@ -134,7 +140,14 @@ public class ProductoNuevoPanel extends BaseView {
 		
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				productoController.mostrarProductosPanel();
+				try {
+					productoController.guardarProducto(txtCodigo.getText(), txtDescripcion.getText(), (TipoDto)cmbTipo.getSelectedItem(), (MarcaDto)cmbMarca.getSelectedItem(), txtStock.getText(), txtPrecio.getText());
+					limpiarCamposPantalla();
+					productoController.mostrarProductosPanel();
+				}
+				catch(PresentationException ex) {
+					mostrarMensaje(ex);
+				}
 			}
 		});
 		btnAceptar.setBounds(548, 56, 60, 60);
@@ -151,6 +164,7 @@ public class ProductoNuevoPanel extends BaseView {
 		
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				limpiarCamposPantalla();
 				productoController.mostrarProductosPanel();
 			}
 		});
