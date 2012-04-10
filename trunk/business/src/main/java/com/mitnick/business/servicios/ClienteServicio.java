@@ -75,9 +75,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public List<ClienteDto> consultarCliente(ConsultaClienteDto filtro) {
 		List<Cliente> clientes = null;
 		try {
-			clientes = clienteDao
-				.findByDocumentoNombreApellido(filtro.getDocumento(),
-						filtro.getNombre(), filtro.getApellido());
+			clientes = clienteDao.findByFiltro(filtro);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
