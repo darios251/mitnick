@@ -41,7 +41,7 @@
 	  <column>descripcion</column>
 	  <column>marca_id</column>
 	  <column>tipo_id</column>
-	  <column>stock</column>
+	  <column>stock</column>	  
 	  <column>stockminimo</column>
 	  <column>precio</column>
 	  <column>iva</column>
@@ -52,6 +52,7 @@
 	    <value>pantalon</value>
 	    <value>1</value>
 	    <value>1</value>
+	    <value>10</value>
 	    <value>10</value>
 	    <value>10</value>
 	    <value>250</value>

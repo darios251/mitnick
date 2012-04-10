@@ -36,14 +36,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		criteria.addOrder(Order.desc("apellido"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
-	
-	
-	
-	
-	public Cliente saveOrUpdate(Cliente cliente){
-		getHibernateTemplate().saveOrUpdate(cliente);
-		return cliente;
-	}
+
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -64,6 +57,11 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 
 		criteria.addOrder(Order.desc("apellido"));
 		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
+	public Cliente saveOrUpdate(Cliente cliente){
+		getHibernateTemplate().saveOrUpdate(cliente);
+		return cliente;
 	}
 
 }

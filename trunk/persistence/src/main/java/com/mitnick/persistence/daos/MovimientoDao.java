@@ -6,22 +6,20 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
 
-import com.mitnick.persistence.entities.Venta;
-import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
+import com.mitnick.persistence.entities.Movimiento;
+import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.utils.Validator;
 
-@Repository("ventaDao")
-public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVentaDAO {
+public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> implements IMovimientoDao {
 
-	public VentaDAO(Class<Venta> persistentClass) {
+	public MovimientoDao(Class<Movimiento> persistentClass) {
 		super(persistentClass);
 	}
 
 	@Override
-	public List<Venta> findByFiltro(ReporteVentaDto filtro) {
-		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
+	public List<Movimiento> findByFiltro(ReporteMovimientosDto filtro) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
 
 		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
 			criteria.add(Restrictions.gt("fecha", filtro.getFechaInicio()));
@@ -29,13 +27,16 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
+		if(Validator.isNotNull(filtro.getProducto())){
+			criteria.add(Restrictions.eq("producto.id", filtro.getProducto().getId()));
+		}
 		
 		criteria.addOrder(Order.desc("fecha"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
-	public Venta saveOrUpdate(Venta venta){
-		getHibernateTemplate().saveOrUpdate(venta);
-		return venta;
+	public Movimiento saveOrUpdate(Movimiento movimiento){
+		getHibernateTemplate().saveOrUpdate(movimiento);
+		return movimiento;
 	}
 }

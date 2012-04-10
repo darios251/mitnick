@@ -27,11 +27,11 @@ public class Venta extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@OneToMany
+	@OneToMany (cascade = {CascadeType.ALL})
 	@JoinColumn(name = "producto_id")
 	private List<ProductoVenta> productos;
 	
-	@OneToMany
+	@OneToMany (cascade = {CascadeType.ALL})
 	@JoinColumn(name = "pagos_id")
 	private List<Pago> pagos;
 	
@@ -51,7 +51,7 @@ public class Venta extends BaseObject implements Serializable {
 	@Column(name = "total", nullable = false)
 	private Long total;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
