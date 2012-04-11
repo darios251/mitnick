@@ -8,8 +8,8 @@ import com.mitnick.persistence.entities.MedioPago;
 @Repository("medioPagoDao")
 public class MedioPagoDAO extends GenericDaoHibernate<MedioPago, Long>  implements IMedioPagoDAO {
 
-	public MedioPagoDAO(Class<MedioPago> persistentClass) {
-		super(persistentClass);
+	public MedioPagoDAO() {
+		super(MedioPago.class);
 	}
 
 

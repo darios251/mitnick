@@ -16,8 +16,8 @@ import com.mitnick.utils.Validator;
 @Repository("productoDao")
 public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements IProductoDAO {
 
-	public ProductoDAO(Class<Producto> persistentClass) {
-		super(persistentClass);
+	public ProductoDAO() {
+		super(Producto.class);
 	}
 
 	@SuppressWarnings("unchecked")

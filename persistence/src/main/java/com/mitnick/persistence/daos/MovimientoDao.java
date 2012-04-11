@@ -6,15 +6,17 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.utils.Validator;
 
+@Repository("movimientoDao")
 public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> implements IMovimientoDao {
 
-	public MovimientoDao(Class<Movimiento> persistentClass) {
-		super(persistentClass);
+	public MovimientoDao() {
+		super(Movimiento.class);
 	}
 
 	@Override

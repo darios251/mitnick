@@ -8,8 +8,8 @@ import com.mitnick.persistence.entities.Tipo;
 @Repository("tipoDao")
 public class TipoDao extends GenericDaoHibernate<Tipo, Long>  implements ITipoDao {
 
-	public TipoDao(Class<Tipo> persistentClass) {
-		super(persistentClass);
+	public TipoDao() {
+		super(Tipo.class);
 	}
 
 }
