@@ -8,8 +8,8 @@ import com.mitnick.persistence.entities.Provincia;
 @Repository("provinciaDao")
 public class ProvinciaDao extends GenericDaoHibernate<Provincia, Long>  implements IProvinciaDao {
 
-	public ProvinciaDao(Class<Provincia> persistentClass) {
-		super(persistentClass);
+	public ProvinciaDao() {
+		super(Provincia.class);
 	}
 
 }

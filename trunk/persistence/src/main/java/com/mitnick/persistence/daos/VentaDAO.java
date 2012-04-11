@@ -15,8 +15,8 @@ import com.mitnick.utils.Validator;
 @Repository("ventaDao")
 public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVentaDAO {
 
-	public VentaDAO(Class<Venta> persistentClass) {
-		super(persistentClass);
+	public VentaDAO() {
+		super(Venta.class);
 	}
 
 	@Override
