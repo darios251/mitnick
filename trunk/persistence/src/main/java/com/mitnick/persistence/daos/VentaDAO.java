@@ -19,6 +19,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		super(Venta.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Venta> findByFiltro(ReporteVentaDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);

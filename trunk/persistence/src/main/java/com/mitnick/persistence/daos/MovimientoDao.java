@@ -19,6 +19,7 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		super(Movimiento.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Movimiento> findByFiltro(ReporteMovimientosDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
