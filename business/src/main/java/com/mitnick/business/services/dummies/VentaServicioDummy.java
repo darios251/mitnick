@@ -3,7 +3,7 @@ package com.mitnick.business.services.dummies;
 import java.math.BigDecimal;
 
 import com.mitnick.business.exceptions.BusinessException;
-import com.mitnick.business.services.ServicioBase;
+import com.mitnick.business.servicios.ServicioBase;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.dtos.ClienteDto;

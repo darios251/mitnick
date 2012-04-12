@@ -3,7 +3,7 @@ package com.mitnick.business.services.dummies;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mitnick.business.services.ServicioBase;
+import com.mitnick.business.servicios.ServicioBase;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.utils.dtos.MedioPagoDto;
 
