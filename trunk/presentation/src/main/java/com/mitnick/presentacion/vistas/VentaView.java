@@ -32,6 +32,7 @@ public class VentaView extends BaseView {
 			this.add( ventaController.getVentaPanel(), BorderLayout.CENTER );
 			this.add( ventaController.getBuscarProductoPanel(), BorderLayout.CENTER );
 			this.add( ventaController.getPagoPanel(), BorderLayout.CENTER );
+			this.add( ventaController.getDetalleProductoPanel(), BorderLayout.CENTER );
 			ventaController.mostrarUltimoPanelMostrado();
 		}
 		super.setVisible(aFlag);

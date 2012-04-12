@@ -31,7 +31,6 @@ public class ProductoView extends BaseView {
 		if(aFlag) {
 			this.add( productoController.getProductoPanel(), BorderLayout.CENTER );
 			this.add( productoController.getProductoNuevoPanel(), BorderLayout.CENTER );
-			productoController.mostrarProductosPanel();
 		}
 		super.setVisible(aFlag);
 	}

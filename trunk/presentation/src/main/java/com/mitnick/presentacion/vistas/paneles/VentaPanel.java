@@ -89,22 +89,13 @@ public class VentaPanel extends BaseView {
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evento) {
 				if (evento.getClickCount() == 2) {
-				      try {
-							int index = table.getSelectedRow();
-							ProductoVentaDto productoVentaDto = model.getProductosVenta(index);
-							
-							logger.info("Abrir panel para editar el articulo con codigo " + productoVentaDto.getProducto().getCodigo());
-						}
-						catch (PresentationException exception) {
-							mostrarMensaje(exception);
-//							if(model.getRowCount() == 0) {
-//								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
-//							}
-//							else {
-//								JOptionPane.showMessageDialog(scrollPane.getParent(), PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
-//							}
-						}
-				    }
+					try {
+						ventaController.mostrarDetalleProductoPanel();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
 			}
 		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -158,27 +149,14 @@ public class VentaPanel extends BaseView {
 		
 		btnQuitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evento) {
-				logger.info("Quitando producto ... ");
-
 				try {
-					int index = table.getSelectedRow();
-					ProductoVentaDto productoVentaDto = model.getProductosVenta(index);
-					
 					int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"));
 					
 					if ( opcion == JOptionPane.YES_OPTION) {
-						ventaController.quitarProductoVentaDto(productoVentaDto);	
+						ventaController.quitarProductoVentaDto();	
 					}
 				}
-				catch (IndexOutOfBoundsException exception) {
-					if(model.getRowCount() == 0) {
-						mostrarMensajeError(PropertiesManager.getProperty("ventaPanel.dialog.warning.emptyModel"));
-					}
-					else {
-						mostrarMensajeError(PropertiesManager.getProperty("ventaPanel.dialog.warning.noRowSelected"));
-					}
-				}
-				catch (PresentationException ex) {
+				catch(PresentationException ex) {
 					mostrarMensaje(ex);
 				}
 			}
@@ -268,6 +246,10 @@ public class VentaPanel extends BaseView {
 			lblSubtotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
 		if(Validator.isNotNull(txtCodigo))
 			txtCodigo.requestFocus();
+	}
+	
+	public JTable getTable() {
+		return table;
 	}
 	
 	public VentaTableModel getModel() {

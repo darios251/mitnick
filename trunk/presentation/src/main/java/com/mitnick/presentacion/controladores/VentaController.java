@@ -14,6 +14,7 @@ import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.presentacion.vistas.VentaView;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
+import com.mitnick.presentacion.vistas.paneles.DetalleProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.PagoPanel;
 import com.mitnick.presentacion.vistas.paneles.VentaPanel;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
@@ -39,6 +40,8 @@ public class VentaController extends BaseController {
 	private PagoPanel pagoPanel;
 	@Autowired
 	private BuscarProductoPanel buscarProductoPanel;
+	@Autowired
+	private DetalleProductoPanel detalleProductoPanel;
 	
 	@Autowired
 	private	IVentaServicio ventaServicio;
@@ -55,42 +58,11 @@ public class VentaController extends BaseController {
 		
 	}
 
-	public VentaView getVentaView() {
-		return ventaView;
-	}
-
-	public void setVentaView(VentaView ventaView) {
-		this.ventaView = ventaView;
-	}
-
-	public VentaPanel getVentaPanel() {
-		return ventaPanel;
-	}
-
-	public void setVentaPanel(VentaPanel ventaPanel) {
-		this.ventaPanel = ventaPanel;
-	}
-
-	public PagoPanel getPagoPanel() {
-		return pagoPanel;
-	}
-
-	public void setPagoPanel(PagoPanel pagoPanel) {
-		this.pagoPanel = pagoPanel;
-	}
-
-	public BuscarProductoPanel getBuscarProductoPanel() {
-		return buscarProductoPanel;
-	}
-
-	public void setBuscarProductoPanel(BuscarProductoPanel buscarProductoPanel) {
-		this.buscarProductoPanel = buscarProductoPanel;
-	}
-
 	public void mostrarBuscarArticuloPanel() {
 		ultimoPanelMostrado = buscarProductoPanel;
 		ventaPanel.setVisible(false);
 		pagoPanel.setVisible(false);
+		detalleProductoPanel.setVisible(false);
 		buscarProductoPanel.setVisible(true);
 		buscarProductoPanel.limpiarCamposPantalla();
 		buscarProductoPanel.actualizarPantalla();
@@ -105,6 +77,7 @@ public class VentaController extends BaseController {
 		ultimoPanelMostrado = ventaPanel;
 		buscarProductoPanel.setVisible(false);
 		pagoPanel.setVisible(false);
+		detalleProductoPanel.setVisible(false);
 		ventaPanel.setVisible(true);
 		ventaPanel.actualizarPantalla();
 	}
@@ -119,12 +92,42 @@ public class VentaController extends BaseController {
 		ultimoPanelMostrado = pagoPanel;
 		buscarProductoPanel.setVisible(false);
 		ventaPanel.setVisible(false);
+		detalleProductoPanel.setVisible(false);
 		pagoPanel.setVisible(true);
 		pagoPanel.actualizarPantalla();
 	}
 	
+	public void mostrarDetalleProductoPanel() {
+		if(ultimoPanelMostrado == null || !ventaPanel.equals(ultimoPanelMostrado))
+			throw new PresentationException("error.venta.detalleProducto.mostrar");
+		
+		try {
+			int index = ventaPanel.getTable().getSelectedRow();
+			ProductoVentaDto productoVentaDto = ventaPanel.getModel().getProductosVenta(index);
+			
+			ultimoPanelMostrado = detalleProductoPanel;
+			buscarProductoPanel.setVisible(false);
+			ventaPanel.setVisible(false);
+			pagoPanel.setVisible(false);
+			detalleProductoPanel.setVisible(true);
+			detalleProductoPanel.setProducto(productoVentaDto);
+			detalleProductoPanel.limpiarCamposPantalla();
+			detalleProductoPanel.actualizarPantalla();
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(ventaPanel.getModel().getRowCount() == 0) {
+				throw new PresentationException("ventaPanel.dialog.warning.emptyModel");
+			}
+			else {
+				throw new PresentationException("ventaPanel.dialog.warning.noRowSelected");
+			}
+		}
+	}
+	
 	public void mostrarUltimoPanelMostrado () {
 		if(buscarProductoPanel.equals(ultimoPanelMostrado))
+			mostrarBuscarArticuloPanel();
+		if(getDetalleProductoPanel().equals(ultimoPanelMostrado))
 			mostrarBuscarArticuloPanel();
 		else if(pagoPanel.equals(ultimoPanelMostrado) && !VentaManager.getVentaActual().getProductos().isEmpty())
 			mostrarPagosPanel();
@@ -163,13 +166,23 @@ public class VentaController extends BaseController {
 		}
 	}
 
+	public void quitarProductoVentaDto() {
+		logger.info("Quitando producto ... ");
 
-	public void quitarProductoVentaDto(ProductoVentaDto producto) {
-		logger.info("Quitando elemento de la tabla");
-		
 		try {
-			VentaManager.setVentaActual(ventaServicio.quitarProducto(producto, VentaManager.getVentaActual()));
+			int index = ventaPanel.getTable().getSelectedRow();
+			ProductoVentaDto productoVentaDto = ventaPanel.getModel().getProductosVenta(index);
+			
+			VentaManager.setVentaActual(ventaServicio.quitarProducto(productoVentaDto, VentaManager.getVentaActual()));
 			ventaPanel.actualizarPantalla();
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(ventaPanel.getModel().getRowCount() == 0) {
+				throw new PresentationException("ventaPanel.dialog.warning.emptyModel");
+			}
+			else {
+				throw new PresentationException("ventaPanel.dialog.warning.noRowSelected");
+			}
 		}
 		catch (BusinessException e) {
 			throw new PresentationException(e);
@@ -221,7 +234,7 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarPago");
 	}
 	
-	private void finalizarVenta() {
+	protected void finalizarVenta() {
 		if(checkFinalizarVenta()) {
 			try {
 				getVentaServicio().facturar(VentaManager.getVentaActual());
@@ -244,7 +257,7 @@ public class VentaController extends BaseController {
 	}
 	
 	public void quitarPago(PagoDto pagoDto) {
-		logger.debug("Entrado al metodo quitarPago, con pago: " + pagoDto);
+		logger.debug("Entrado al método quitarPago, con pago: " + pagoDto);
 		
 		try {
 			VentaManager.setVentaActual(getVentaServicio().quitarPago(pagoDto, VentaManager.getVentaActual()));
@@ -257,7 +270,61 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método quitaPago");
 	}
 	
-	private IMedioPagoServicio getMedioPagoServicio() {
+	public void modificarCantidad(ProductoVentaDto producto, String cantidad) {
+		logger.debug("Entrado al método modificarCantidad, con producto: " + producto + " y cantidad: " + cantidad);
+		
+		if(Validator.isNull(producto))
+			throw new PresentationException("error.venta.modificarCantidad.producto.null", "El producto al que se quiere modificar la cantidad es nulo");
+		if(Validator.isBlankOrNull(cantidad))
+			throw new PresentationException("error.venta.modificarCantidad.cantidad.null");
+		if(!Validator.isInt(cantidad))
+			throw new PresentationException("error.venta.modificarCantidad.cantidad.int");
+		if(!Validator.isInRange(Integer.parseInt(cantidad), 0, 1000))
+			throw new PresentationException("error.venta.modificarCantidad.cantidad.rango", new Object[] {"0", "1000"});
+		
+		try {
+			getVentaServicio().modificarCantidad(producto, Integer.parseInt(cantidad), VentaManager.getVentaActual());
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+		
+		logger.debug("Saliendo del método modificarCantidad");
+	}
+	
+	public VentaView getVentaView() {
+		return ventaView;
+	}
+
+	public void setVentaView(VentaView ventaView) {
+		this.ventaView = ventaView;
+	}
+
+	public VentaPanel getVentaPanel() {
+		return ventaPanel;
+	}
+
+	public void setVentaPanel(VentaPanel ventaPanel) {
+		this.ventaPanel = ventaPanel;
+	}
+
+	public PagoPanel getPagoPanel() {
+		return pagoPanel;
+	}
+
+	public void setPagoPanel(PagoPanel pagoPanel) {
+		this.pagoPanel = pagoPanel;
+	}
+
+	public BuscarProductoPanel getBuscarProductoPanel() {
+		return buscarProductoPanel;
+	}
+
+	public void setBuscarProductoPanel(BuscarProductoPanel buscarProductoPanel) {
+		this.buscarProductoPanel = buscarProductoPanel;
+	}
+	
+	protected IMedioPagoServicio getMedioPagoServicio() {
 		if(Validator.isNull(medioPagoServicio))
 			throw new PresentationException("error.unknown", "El servicio: " + medioPagoServicio.getClass().getSimpleName() + " no ha sido inyectado.");
 		return medioPagoServicio;
@@ -267,7 +334,7 @@ public class VentaController extends BaseController {
 		this.medioPagoServicio = medioPagoServicio;
 	}
 	
-	private IVentaServicio getVentaServicio() {
+	protected IVentaServicio getVentaServicio() {
 		if(Validator.isNull(ventaServicio))
 			throw new PresentationException("error.unknown", "El servicio: " + ventaServicio.getClass().getSimpleName() + " no ha sido inyectado.");
 		return ventaServicio;
@@ -277,7 +344,7 @@ public class VentaController extends BaseController {
 		this.ventaServicio = ventaServicio;
 	}
 	
-	private IProductoServicio getProductoServicio() {
+	protected IProductoServicio getProductoServicio() {
 		if(Validator.isNull(productoServicio))
 			throw new PresentationException("error.unknown", "El servicio: " + productoServicio.getClass().getSimpleName() + " no ha sido inyectado.");
 		return productoServicio;
@@ -286,5 +353,15 @@ public class VentaController extends BaseController {
 	public void setProductoServicio(IProductoServicio productoServicio) {
 		this.productoServicio = productoServicio;
 	}
-	
+
+	public DetalleProductoPanel getDetalleProductoPanel() {
+		if(Validator.isNull(detalleProductoPanel))
+			throw new PresentationException("error.unknown", "El panel: " + detalleProductoPanel.getClass().getSimpleName() + " no ha sido inyectado.");
+		return detalleProductoPanel;
+	}
+
+	public void setDetalleProductoPanel(DetalleProductoPanel detalleProductoPanel) {
+		this.detalleProductoPanel = detalleProductoPanel;
+	}
+
 }

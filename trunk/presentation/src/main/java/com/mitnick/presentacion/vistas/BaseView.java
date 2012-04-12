@@ -63,6 +63,13 @@ public abstract class BaseView extends JPanel {
 	     return JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[ 0 ] );
 	}
 	
+	protected int mostrarMensajeConsulta( String message ) {
+		//Primero despliego un mensaje para confirmar la operaci�n
+	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ), PropertiesManager.getProperty( "dialog.info.cancelbutton" ) };
+	     
+	     return JOptionPane.showOptionDialog(currentView, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
+	}
+	
 	protected int mostrarMensajeInformativo ( String message ) {
 		//Primero despliego un mensaje para confirmar la operaci�n
 	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ) };
@@ -72,9 +79,11 @@ public abstract class BaseView extends JPanel {
 	
 	@Override
 	public void setVisible(boolean aFlag) {
-		if(!panelInicializado)
-			initializeComponents();
-		panelInicializado = true;
+		if(aFlag) {
+			if(!panelInicializado)
+				initializeComponents();
+			panelInicializado = true;
+		}
 		super.setVisible(aFlag);
 	}
 	

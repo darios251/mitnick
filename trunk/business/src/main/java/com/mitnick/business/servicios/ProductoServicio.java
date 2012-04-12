@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mitnick.business.exceptions.BusinessException;
 import com.mitnick.business.services.ServicioBase;
 import com.mitnick.persistence.daos.IMarcaDao;
+import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Marca;
@@ -37,19 +38,18 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 	@Autowired
 	protected ITipoDao tipoDao;
+	
+	@Autowired
+	private IMovimientoDao movimientoDao;
 
 	@Transactional(readOnly=true)
 	@Override
 	public List<ProductoDto> consultaProducto(ConsultaProductoDto filtro) {
-		List<ProductoDto> resultado = new ArrayList<ProductoDto>();
 		try{
-			for (Producto producto : productoDao.findByFiltro(filtro))
-				resultado.add(entityDTOParser.getDtoFromEntity(producto));
+			return entityDTOParser.getDtosFromEntities(productoDao.findByFiltro(filtro));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
-
-		return resultado;
 	}
 
 	@Transactional
@@ -63,16 +63,20 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			
 			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
 			//se calcula la cantidad a ajustar
+			//producto.addMovimientos(movimiento);
+			
+			producto = productoDao.saveOrUpdate(producto);
+			productoDto.setId(producto.getId());
+			
 			Movimiento movimiento = new Movimiento();
 			movimiento.setCantidad(productoDto.getStock());
 			//el primer movimiento al dar de alta el producto es igual al stock ingresado
 			movimiento.setStockAlaFecha(productoDto.getStock());
 			movimiento.setFecha(new Date());
 			movimiento.setTipo(Movimiento.AJUSTE);
-			producto.addMovimientos(movimiento);
+			movimiento.setProducto(producto);
 			
-			producto = productoDao.saveOrUpdate(producto);
-			productoDto.setId(producto.getId());
+			movimientoDao.saveOrUpdate(movimiento);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
@@ -81,17 +85,17 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 	@Transactional
 	@Override
-	public void bajaProducto(ProductoDto producto) {
-		if (producto.getId() == null) {
+	public void bajaProducto(ProductoDto productoDto) {
+		if (productoDto.getId() == null) {
 			throw new BusinessException("error.productoServicio.id.nulo", "Se invoca la modificacion de un producto que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
-			productoDao.remove(producto.getId());
+			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
+			producto.setEliminado(true);
+			productoDao.saveOrUpdate(producto);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
-
-
 	}
 
 	@Transactional
@@ -136,21 +140,23 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		
-		int stockOriginal = producto.getStock();
-		
-		int movimientoCantidad = cantidad - stockOriginal;
-		
-		//se calcula la cantidad a ajustar
-		Movimiento movimiento = new Movimiento();
-		movimiento.setCantidad(movimientoCantidad);
-		movimiento.setFecha(new Date());
-		movimiento.setTipo(Movimiento.AJUSTE);
-		movimiento.setProducto(producto);
-		producto.addMovimientos(movimiento);
 		producto.setStock(cantidad);
 		
 		try {
 			productoDao.saveOrUpdate(producto);
+			
+			int stockOriginal = producto.getStock();
+			
+			int movimientoCantidad = cantidad - stockOriginal;
+			
+			//se calcula la cantidad a ajustar
+			Movimiento movimiento = new Movimiento();
+			movimiento.setCantidad(movimientoCantidad);
+			movimiento.setFecha(new Date());
+			movimiento.setTipo(Movimiento.AJUSTE);
+			movimiento.setProducto(producto);
+			
+			movimientoDao.saveOrUpdate(movimiento);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
@@ -236,6 +242,10 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 	public void setTipoDao(ITipoDao tipoDao) {
 		this.tipoDao = tipoDao;
+	}
+
+	public void setMovimientoDao(IMovimientoDao movimientoDao) {
+		this.movimientoDao = movimientoDao;
 	}
 
 }

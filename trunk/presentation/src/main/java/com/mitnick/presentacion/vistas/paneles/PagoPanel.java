@@ -274,8 +274,10 @@ public class PagoPanel extends BaseView {
 
 	@Override
 	public void limpiarCamposPantalla() {
-		txtMonto.setText("");
-		pagoTableModel.setPagos(new ArrayList<PagoDto>());
+		if(Validator.isNotNull(txtMonto))
+			txtMonto.setText("");
+		if(Validator.isNotNull(pagoTableModel))
+			pagoTableModel.setPagos(new ArrayList<PagoDto>());
 	}
 
 	public void actualizarPantalla() {

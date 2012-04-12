@@ -45,6 +45,7 @@
 	  <column>stockminimo</column>
 	  <column>precio</column>
 	  <column>iva</column>
+	  <column>eliminado</column>
 	  
 	  <row>
 	    <value>1</value>
@@ -57,6 +58,7 @@
 	    <value>10</value>
 	    <value>250</value>
 	    <value>52.5</value>
+	    <value>FALSE</value>
 	  </row>
 	</table>
 	

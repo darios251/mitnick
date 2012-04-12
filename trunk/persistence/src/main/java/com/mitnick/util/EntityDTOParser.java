@@ -145,6 +145,15 @@ public class EntityDTOParser {
 
 		return productoDto;
 	}
+	
+	public List<ProductoDto> getDtosFromEntities(List<Producto> productos) {
+		List<ProductoDto> resultado = new ArrayList<ProductoDto>();
+		
+		for (Producto producto : productos)
+			resultado.add(getDtoFromEntity(producto));
+		
+		return resultado;
+	}
 
 	public TipoDto getDtoFromEntity(Tipo tipo) {
 		TipoDto tipoDto = new TipoDto();

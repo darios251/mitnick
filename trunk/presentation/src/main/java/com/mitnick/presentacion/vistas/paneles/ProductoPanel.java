@@ -5,14 +5,13 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -145,20 +144,7 @@ public class ProductoPanel extends BaseView {
 		
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evento) {
-				try {
-					ConsultaProductoDto dto = new ConsultaProductoDto();
-					dto.setCodigo(txtCodigo.getText());
-					dto.setDescripcion(txtDescripcion.getText());
-					dto.setMarca((MarcaDto) cmbMarca.getSelectedItem());
-					dto.setTipo((TipoDto) cmbTipo.getSelectedItem());
-					
-					model.setProductos(productoController.getProductosByFilter(dto));
-				}
-				catch (PresentationException ex) {
-					mostrarMensaje(ex);
-					model.setProductos(new ArrayList<ProductoDto>());
-				}
-				
+				consultarProductos();
 			}
 		});
 		btnBuscar.setBounds(560, 15, 60, 60);
@@ -190,6 +176,13 @@ public class ProductoPanel extends BaseView {
 		
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					productoController.eliminarProducto();
+				}
+				catch(PresentationException ex) {
+					mostrarMensaje(ex);
+				}
+				actualizarPantalla();
 			}
 		});
 		btnEditar.setBounds(735, 185, 60, 60);
@@ -205,7 +198,18 @@ public class ProductoPanel extends BaseView {
 		
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			}
+	        	int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("productoPanel.dialog.confirm.eliminar"));
+				
+				if ( opcion == JOptionPane.YES_OPTION) {
+					try {
+						productoController.eliminarProducto();
+						actualizarPantalla();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+	        }
 		});
 		btnEliminar.setBounds(735, 255, 60, 60);
 		add(btnEliminar);
@@ -235,11 +239,35 @@ public class ProductoPanel extends BaseView {
 	
 	}
 	
-	@Override
-	public void actualizarPantalla() {
-		
+	protected void consultarProductos() {
+		try {
+			ConsultaProductoDto dto = new ConsultaProductoDto();
+			dto.setCodigo(txtCodigo.getText());
+			dto.setDescripcion(txtDescripcion.getText());
+			dto.setMarca((MarcaDto) cmbMarca.getSelectedItem());
+			dto.setTipo((TipoDto) cmbTipo.getSelectedItem());
+			
+			model.setProductos(productoController.getProductosByFilter(dto));
+		}
+		catch (PresentationException ex) {
+			mostrarMensaje(ex);
+			model.setProductos(new ArrayList<ProductoDto>());
+		}
+	}
+
+	public JTable getTable() {
+		return table;
 	}
 	
+	public ProductoTableModel getTableModel() {
+		return model;
+	}
+	
+	@Override
+	public void actualizarPantalla() {
+		consultarProductos();
+		txtCodigo.requestFocus();
+	}
 
 	public void setProductoController(ProductoController productoController) {
 		this.productoController = productoController;
