@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.mitnick.business.services.ServicioBase;
+import com.mitnick.business.servicios.ServicioBase;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.dtos.ClienteDto;

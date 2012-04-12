@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.business.exceptions.BusinessException;
-import com.mitnick.business.services.ServicioBase;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Movimiento;

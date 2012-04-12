@@ -13,7 +13,7 @@
     <!-- AOP: Configuration and Aspects                                      -->
     <!-- =================================================================== -->
     <aop:config>
-        <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* com.mitnick.business.managers.*Manager.*(..))" order="2"/>
+        <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* com.mitnick.business.servicios.*Servicio.*(..))" order="2"/>
     </aop:config>
 
     <!-- Activates scanning of @Autowired -->

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.business.exceptions.BusinessException;
-import com.mitnick.business.services.ServicioBase;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
