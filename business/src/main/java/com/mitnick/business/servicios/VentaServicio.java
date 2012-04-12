@@ -181,6 +181,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 	}
 	
+	@Transactional
 	private void actualizarStock(ProductoVenta productoVenta){
 		Producto producto = productoVenta.getProducto(); 
 		int stock = producto.getStock();
@@ -198,10 +199,9 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		movimiento.setFecha(new Date());
 		movimiento.setTipo(Movimiento.VENTA);
 		movimiento.setProducto(producto);
-		producto.addMovimientos(movimiento);
 		
 		productoDao.saveOrUpdate(producto);
-		
+		movimientoDao.saveOrUpdate(movimiento);
 	}
 
 

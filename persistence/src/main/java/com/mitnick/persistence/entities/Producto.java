@@ -1,19 +1,14 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.appfuse.model.BaseObject;
@@ -40,10 +35,6 @@ public class Producto extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "tipo_id")
 	private Tipo tipo;
 	
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "movimiento_id")
-	private List<Movimiento> movimientos;
-	
 	@Column(name = "stock", nullable = false)
 	private int stock;
 	
@@ -55,6 +46,9 @@ public class Producto extends BaseObject implements Serializable {
 	
 	@Column(name = "stockMinimo", nullable = false)
 	private int stockMinimo=-1;
+	
+	@Column(name = "eliminado", nullable = false)
+	private boolean eliminado = false;
 	
 	public Long getId() {
 		return id;
@@ -86,20 +80,6 @@ public class Producto extends BaseObject implements Serializable {
 
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
-	}
-
-	public List<Movimiento> getMovimientos() {
-		if (movimientos==null)
-			movimientos = new ArrayList<Movimiento>();
-		return movimientos;
-	}
-
-	public void setMovimientos(List<Movimiento> movimientos) {
-		this.movimientos = movimientos;
-	}
-	
-	public void addMovimientos(Movimiento movimiento) {
-		getMovimientos().add(movimiento);
 	}
 
 	public int getStock() {
@@ -142,6 +122,14 @@ public class Producto extends BaseObject implements Serializable {
 		this.iva = iva;
 	}
 
+	public boolean isEliminado() {
+		return eliminado;
+	}
+
+	public void setEliminado(boolean eliminado) {
+		this.eliminado = eliminado;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -149,11 +137,10 @@ public class Producto extends BaseObject implements Serializable {
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		result = prime * result
 				+ ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + (eliminado ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((iva == null) ? 0 : iva.hashCode());
 		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
-		result = prime * result
-				+ ((movimientos == null) ? 0 : movimientos.hashCode());
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
 		result = prime * result + stock;
 		result = prime * result + stockMinimo;
@@ -163,78 +150,54 @@ public class Producto extends BaseObject implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (!(obj instanceof Producto)) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		Producto other = (Producto) obj;
 		if (codigo == null) {
-			if (other.codigo != null) {
+			if (other.codigo != null)
 				return false;
-			}
-		} else if (!codigo.equals(other.codigo)) {
+		} else if (!codigo.equals(other.codigo))
 			return false;
-		}
 		if (descripcion == null) {
-			if (other.descripcion != null) {
+			if (other.descripcion != null)
 				return false;
-			}
-		} else if (!descripcion.equals(other.descripcion)) {
+		} else if (!descripcion.equals(other.descripcion))
 			return false;
-		}
+		if (eliminado != other.eliminado)
+			return false;
 		if (id == null) {
-			if (other.id != null) {
+			if (other.id != null)
 				return false;
-			}
-		} else if (!id.equals(other.id)) {
+		} else if (!id.equals(other.id))
 			return false;
-		}
 		if (iva == null) {
-			if (other.iva != null) {
+			if (other.iva != null)
 				return false;
-			}
-		} else if (!iva.equals(other.iva)) {
+		} else if (!iva.equals(other.iva))
 			return false;
-		}
 		if (marca == null) {
-			if (other.marca != null) {
+			if (other.marca != null)
 				return false;
-			}
-		} else if (!marca.equals(other.marca)) {
+		} else if (!marca.equals(other.marca))
 			return false;
-		}
-		if (movimientos == null) {
-			if (other.movimientos != null) {
-				return false;
-			}
-		} else if (!movimientos.equals(other.movimientos)) {
-			return false;
-		}
 		if (precio == null) {
-			if (other.precio != null) {
+			if (other.precio != null)
 				return false;
-			}
-		} else if (!precio.equals(other.precio)) {
+		} else if (!precio.equals(other.precio))
 			return false;
-		}
-		if (stock != other.stock) {
+		if (stock != other.stock)
 			return false;
-		}
-		if (stockMinimo != other.stockMinimo) {
+		if (stockMinimo != other.stockMinimo)
 			return false;
-		}
 		if (tipo == null) {
-			if (other.tipo != null) {
+			if (other.tipo != null)
 				return false;
-			}
-		} else if (!tipo.equals(other.tipo)) {
+		} else if (!tipo.equals(other.tipo))
 			return false;
-		}
 		return true;
 	}
 
@@ -242,11 +205,9 @@ public class Producto extends BaseObject implements Serializable {
 	public String toString() {
 		return "Producto [id=" + id + ", descripcion=" + descripcion
 				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo
-				+ ", movimientos=" + movimientos + ", stock=" + stock
-				+ ", precio=" + precio + ", iva=" + iva + ", stockMinimo="
-				+ stockMinimo + "]";
+				+ ", stock=" + stock + ", precio=" + precio + ", iva=" + iva
+				+ ", stockMinimo=" + stockMinimo + ", eliminado=" + eliminado
+				+ "]";
 	}
-
-	
 
 }

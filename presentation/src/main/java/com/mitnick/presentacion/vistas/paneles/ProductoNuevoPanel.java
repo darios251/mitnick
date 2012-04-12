@@ -1,9 +1,12 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +23,7 @@ import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.TipoDto;
@@ -140,14 +144,7 @@ public class ProductoNuevoPanel extends BaseView {
 		
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					productoController.guardarProducto(txtCodigo.getText(), txtDescripcion.getText(), (TipoDto)cmbTipo.getSelectedItem(), (MarcaDto)cmbMarca.getSelectedItem(), txtStock.getText(), txtPrecio.getText());
-					limpiarCamposPantalla();
-					productoController.mostrarProductosPanel();
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
+				agregarProducto();
 			}
 		});
 		btnAceptar.setBounds(548, 56, 60, 60);
@@ -170,11 +167,40 @@ public class ProductoNuevoPanel extends BaseView {
 		});
 		btnCancelar.setBounds(618, 56, 60, 60);
 		add(btnCancelar);
+		
+		addKeyListeners();
 	}
 	
+	private void addKeyListeners() {
+		for(Component component : this.getComponents()) {
+			if(component instanceof JTextField){
+				component.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+							agregarProducto();
+						}
+					}
+				});
+			}
+		}
+	}
+
+	protected void agregarProducto() {
+		try {
+			productoController.guardarProducto(txtCodigo.getText(), txtDescripcion.getText(), (TipoDto)cmbTipo.getSelectedItem(), (MarcaDto)cmbMarca.getSelectedItem(), txtStock.getText(), txtPrecio.getText());
+			limpiarCamposPantalla();
+			productoController.mostrarProductosPanel();
+		}
+		catch(PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+
 	@Override
 	public void actualizarPantalla() {
-		
+		if(Validator.isNotNull(txtCodigo))
+			txtCodigo.requestFocus();
 	}
 	
 }

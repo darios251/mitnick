@@ -32,6 +32,8 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 		if(!Validator.isBlankOrNull(filtro.getDescripcion())){
 			criteria.add(Restrictions.ilike("descripcion", filtro.getDescripcion()));
 		}
+		
+		criteria.add(Restrictions.eq("eliminado", false));
 		criteria.addOrder(Order.desc("codigo"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
@@ -62,6 +64,7 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 			criteria.add(Restrictions.eq("tipo.id", filtro.getTipo().getId()));
 		}
 		
+		criteria.add(Restrictions.eq("eliminado", false));
 		criteria.addOrder(Order.desc("codigo"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}

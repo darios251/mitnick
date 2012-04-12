@@ -28,11 +28,11 @@ public class Venta extends BaseObject implements Serializable {
 	private Long id;
 	
 	@OneToMany (cascade = {CascadeType.ALL})
-	@JoinColumn(name = "producto_id")
+	@JoinColumn(name = "venta_id")
 	private List<ProductoVenta> productos;
 	
 	@OneToMany (cascade = {CascadeType.ALL})
-	@JoinColumn(name = "pagos_id")
+	@JoinColumn(name = "venta_id")
 	private List<Pago> pagos;
 	
 	@Temporal(TemporalType.DATE)

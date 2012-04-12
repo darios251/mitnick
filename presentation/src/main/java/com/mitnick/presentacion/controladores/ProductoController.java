@@ -37,41 +37,18 @@ public class ProductoController extends BaseController {
 		
 	}
 	
-	public ProductoView getProductoView() {
-		return productoView;
-	}
-
-	public void setProductoView(ProductoView productoView) {
-		this.productoView = productoView;
-	}
-
-	public ProductoPanel getProductoPanel() {
-		return productoPanel;
-	}
-
-	public void setProductoPanel(ProductoPanel productoPanel) {
-		this.productoPanel = productoPanel;
-	}
-
-	public ProductoNuevoPanel getProductoNuevoPanel() {
-		return productoNuevoPanel;
-	}
-
-	public void setProductoNuevoPanel(ProductoNuevoPanel productoNuevoPanel) {
-		this.productoNuevoPanel = productoNuevoPanel;
-	}
-
 	public void mostrarProductoNuevoPanel() {
 		logger.info("Mostrando el panel de producto nuevo");
 		productoPanel.setVisible(false);
 		productoNuevoPanel.setVisible(true);
+		productoNuevoPanel.actualizarPantalla();
 	}
 
 	public void mostrarProductosPanel() {
 		logger.info("Mostrando el panel de productos");
 		productoNuevoPanel.setVisible(false);
 		productoPanel.setVisible(true);
-		
+		productoPanel.actualizarPantalla();
 	}
 	
 	public List<ProductoDto> getProductosByFilter(ConsultaProductoDto dto) {
@@ -154,6 +131,57 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar dar del alta el producto: " + producto);
 		}
+	}
+	
+	public void eliminarProducto() {
+		ProductoDto productoDto = null;
+		try {
+			int index = getProductoPanel().getTable().getSelectedRow();
+			productoDto = getProductoPanel().getTableModel().getProducto(index);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getProductoPanel().getTableModel().getRowCount() == 0) {
+				throw new PresentationException("error.productoPanel.productos.vacio");
+			}
+			else {
+				throw new PresentationException("error.productoPanel.producto.noSeleccionado");
+			}
+		}
+		
+		try {
+			getProductoServicio().bajaProducto(productoDto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el producto");
+		}
+	}
+	
+	public void editarProducto() {
+		
+	}
+	
+	public ProductoView getProductoView() {
+		return productoView;
+	}
+
+	public void setProductoView(ProductoView productoView) {
+		this.productoView = productoView;
+	}
+
+	public ProductoPanel getProductoPanel() {
+		return productoPanel;
+	}
+
+	public void setProductoPanel(ProductoPanel productoPanel) {
+		this.productoPanel = productoPanel;
+	}
+
+	public ProductoNuevoPanel getProductoNuevoPanel() {
+		return productoNuevoPanel;
+	}
+
+	public void setProductoNuevoPanel(ProductoNuevoPanel productoNuevoPanel) {
+		this.productoNuevoPanel = productoNuevoPanel;
 	}
 
 	public void setProductoServicio(IProductoServicio productoServicio) {
