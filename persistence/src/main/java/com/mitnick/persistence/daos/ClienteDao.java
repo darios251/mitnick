@@ -2,9 +2,7 @@ package com.mitnick.persistence.daos;
 
 import java.util.List;
 
-import org.appfuse.dao.GenericDao;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.aspectj.lang.annotation.Before;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
