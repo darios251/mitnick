@@ -1,6 +1,5 @@
-package com.mitnick.business.exceptions;
+package com.mitnick.exceptions;
 
-import com.mitnick.utils.BaseException;
 
 /**
  * Esta clase tiene la responsabilidad de representar la excepci�n por defecto

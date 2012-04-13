@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mitnick.business.exceptions.BusinessException;
+import com.mitnick.exceptions.BusinessException;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IVentaDAO;
@@ -167,7 +167,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	private void guardarVenta(VentaDto ventaDto){
 		VentaHelper.calcularTotales(ventaDto);
 		try {
-			Venta venta = entityDTOParser.getEntityFromDto(ventaDto);
+			@SuppressWarnings("unchecked")
+			Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 			//Actualizacion de stock
 			Iterator<ProductoVenta> productos = venta.getProductos().iterator();
 			while (productos.hasNext()) {

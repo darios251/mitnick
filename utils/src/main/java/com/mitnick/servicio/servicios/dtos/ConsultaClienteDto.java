@@ -34,5 +34,11 @@ public class ConsultaClienteDto extends ServicioBaseDto {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
+
+	@Override
+	public String toString() {
+		return "ConsultaClienteDto [documento=" + documento + ", nombre="
+				+ nombre + ", apellido=" + apellido + "]";
+	}
 	
 }

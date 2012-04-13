@@ -8,8 +8,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.mitnick.business.exceptions.BusinessException;
-import com.mitnick.presentacion.excepciones.PresentationException;
+import com.mitnick.exceptions.BusinessException;
+import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.presentacion.vistas.VentaView;

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mitnick.business.exceptions.BusinessException;
+import com.mitnick.exceptions.BusinessException;
 import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.servicio.servicios.IClienteServicio;
@@ -26,7 +26,8 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public ClienteDto altaCliente(ClienteDto clienteDto) {
 		validar(clienteDto);
 		try {
-			Cliente cliente = entityDTOParser.getEntityFromDto(clienteDto);
+			@SuppressWarnings("unchecked")
+			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
 		} catch (Exception e) {
@@ -44,7 +45,8 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 		validar(clienteDto);
 		try {
-			Cliente cliente = entityDTOParser.getEntityFromDto(clienteDto);
+			@SuppressWarnings("unchecked")
+			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
 			clienteDao.saveOrUpdate(cliente);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
@@ -65,13 +67,13 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ClienteDto> consultarCliente(ConsultaClienteDto filtro) {
 		List<ClienteDto> resultado = new ArrayList<ClienteDto>();
 		try {
-			for (Cliente cliente:clienteDao.findByFiltro(filtro))
-				resultado.add(entityDTOParser.getDtoFromEntity(cliente));
+			resultado = entityDTOParser.getDtosFromEntities(clienteDao.findByFiltro(filtro));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}

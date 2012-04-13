@@ -22,9 +22,9 @@ import javax.swing.SwingConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.mitnick.business.exceptions.BusinessException;
+import com.mitnick.exceptions.BusinessException;
+import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
-import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.PagoTableModel;
 import com.mitnick.presentacion.utils.VentaManager;

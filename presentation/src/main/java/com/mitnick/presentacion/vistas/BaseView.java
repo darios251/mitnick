@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.mitnick.presentacion.excepciones.PresentationException;
-import com.mitnick.utils.BaseException;
+import com.mitnick.exceptions.BaseException;
+import com.mitnick.exceptions.PresentationException;
 import com.mitnick.utils.PropertiesManager;
 
 public abstract class BaseView extends JPanel {

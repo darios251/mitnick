@@ -43,4 +43,11 @@ public class ConsultaStockDto extends ServicioBaseDto {
 	public void setMarca(Long marca) {
 		this.marca = marca;
 	}
+
+	@Override
+	public String toString() {
+		return "ConsultaStockDto [codigo=" + codigo + ", descripcion="
+				+ descripcion + ", tipo=" + tipo + ", marca=" + marca + "]";
+	}
+	
 }

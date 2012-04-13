@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mitnick.business.exceptions.BusinessException;
+import com.mitnick.exceptions.BusinessException;
 import com.mitnick.persistence.daos.IMedioPagoDAO;
-import com.mitnick.persistence.entities.MedioPago;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.utils.dtos.MedioPagoDto;
 
@@ -19,13 +18,13 @@ public class MedioPagoServicio extends ServicioBase implements IMedioPagoServici
 	@Autowired
 	protected IMedioPagoDAO medioPagoDao;
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<MedioPagoDto> obtenerMediosPagos() {
 		List<MedioPagoDto> resultado = new ArrayList<MedioPagoDto>();
 		try {
-			for (MedioPago medioPago: medioPagoDao.getAll())
-				resultado.add(entityDTOParser.getDtoFromEntity(medioPago));
+			resultado.addAll(entityDTOParser.getDtosFromEntities(medioPagoDao.getAll()));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}

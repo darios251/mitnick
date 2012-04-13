@@ -2,8 +2,8 @@ package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,11 +14,17 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableRowSorter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.mitnick.exceptions.PresentationException;
+import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.ClienteTableModel;
 import com.mitnick.presentacion.vistas.BaseView;
+import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
-import com.mitnick.utils.dtos.ClienteDto;
 
 @Panel("clientePanel")
 public class ClientePanel extends BaseView {
@@ -43,7 +49,28 @@ public class ClientePanel extends BaseView {
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
 	
-	public ClientePanel() {
+	private ClienteController clienteController;
+	
+	@Autowired(required = true)
+	public ClientePanel(@Qualifier("clienteController") ClienteController clienteController) {
+		this.clienteController = clienteController;
+	}
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public ClientePanel(boolean modoDisenio) {
+		initializeComponents();
+		
+		throw new PresentationException("error.unknow", "este constructor es solo parar el plugin de diseño");
+	}
+
+	@Override
+	protected void limpiarCamposPantalla() {
+	}
+
+	@Override
+	protected void initializeComponents() {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
@@ -72,11 +99,16 @@ public class ClientePanel extends BaseView {
 		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
 		btnBuscar.setBounds(570, 15, 60, 60);
+		btnBuscar.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				consultarClientes();
+			}
+		});
+		
 		add(btnBuscar);
 		
 		// Creo una tabla con un sorter
 		model = new ClienteTableModel();
-		model.setClientes(getClientes());
         sorter = new TableRowSorter<ClienteTableModel>(model);
         table = new JTable(model);
         table.setRowSorter(sorter);
@@ -144,41 +176,26 @@ public class ClientePanel extends BaseView {
 		txtNumeroCtaCte.setColumns(10);
 		txtNumeroCtaCte.setBounds(420, 15, 110, 20);
 		add(txtNumeroCtaCte);
-		
-		
-	}
-
-	
-
-	private List<ClienteDto> getClientes() {
-		List<ClienteDto> clientes = new ArrayList<ClienteDto>();
-		
-		ClienteDto c1 = new ClienteDto();
-		c1.setApellido("García");
-		c1.setNombre("Lucas");
-		c1.setDocumento("31.115.019");
-		
-		clientes.add(c1);
-		
-		ClienteDto c2 = new ClienteDto();
-		c2.setApellido("Berraz");
-		c2.setNombre("Agustina");
-		c2.setDocumento("28.764.155");
-		
-		clientes.add(c2);
-		
-		return clientes;
-	}
-
-	@Override
-	protected void limpiarCamposPantalla() {
-	}
-
-	@Override
-	protected void initializeComponents() {
 	}
 	
+	protected void consultarClientes() {
+		try {
+			ConsultaClienteDto filtroDto = new ConsultaClienteDto();
+			filtroDto.setApellido(txtApellido.getText());
+			filtroDto.setDocumento(txtNumeroDocumento.getText());
+			filtroDto.setNombre(txtNombre.getText());
+			
+			model.setClientes(clienteController.obtenerClientesByFilter(filtroDto));
+		}
+		catch(PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+
 	@Override
 	public void actualizarPantalla() {
+		if(Validator.isNotNull(txtNumeroDocumento))
+			txtNumeroDocumento.requestFocus();
+		consultarClientes();
 	}
 }

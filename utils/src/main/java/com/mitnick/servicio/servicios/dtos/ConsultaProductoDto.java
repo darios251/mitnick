@@ -47,7 +47,11 @@ public class ConsultaProductoDto extends ServicioBaseDto {
 	public void setTipo(TipoDto tipo) {
 		this.tipo = tipo;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "ConsultaProductoDto [codigo=" + codigo + ", descripcion="
+				+ descripcion + ", marca=" + marca + ", tipo=" + tipo + "]";
+	}
 	
 }
