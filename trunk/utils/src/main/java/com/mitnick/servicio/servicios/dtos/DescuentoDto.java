@@ -30,4 +30,10 @@ public class DescuentoDto extends ServicioBaseDto {
 	public void setDescuento(BigDecimal descuento) {
 		this.descuento = descuento;
 	}
+
+	@Override
+	public String toString() {
+		return "DescuentoDto [tipo=" + tipo + ", descuento=" + descuento + "]";
+	}
+	
 }

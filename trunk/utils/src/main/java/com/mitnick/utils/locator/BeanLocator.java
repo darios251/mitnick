@@ -15,10 +15,9 @@ public class BeanLocator {
 	private static BeanFactory getFactory() {
 		if(factory == null)
 		{
-			factory = new FileSystemXmlApplicationContext("src/main/resources/applicationContext-presentation.xml",
+			factory = new FileSystemXmlApplicationContext("../utils/src/main/resources/applicationContext-utils.xml", "src/main/resources/applicationContext-presentation.xml",
 					"../business/src/main/resources/applicationContext-business.xml",
-					"../persistence/src/main/resources/applicationContext-persistence.xml",
-					"../utils/src/main/resources/applicationContext-utils.xml");
+					"../persistence/src/main/resources/applicationContext-persistence.xml");
 		}
 		return factory;
 	}

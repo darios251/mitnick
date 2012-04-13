@@ -25,7 +25,11 @@ public class ReporteVentaDto extends ServicioBaseDto {
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "ReporteVentaDto [fechaInicio=" + fechaInicio + ", fechaFin="
+				+ fechaFin + "]";
+	}
+	
 }

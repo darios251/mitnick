@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.appfuse.model.BaseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
+import com.mitnick.utils.dtos.BaseDto;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.DireccionDto;
@@ -43,7 +45,7 @@ import com.mitnick.utils.dtos.VentaDto;
 
 @Scope
 @Component("entityDTOParser")
-public class EntityDTOParser {
+public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	@Autowired
 	protected IClienteDao clienteDao;
 	@Autowired
@@ -60,8 +62,56 @@ public class EntityDTOParser {
 	private String AJUSTE = "Ajuste Manual";
 
 	private String VENTA = "Venta";
+	
+	public List<D> getDtosFromEntities(List<E> entities) {
+		List<D> resultado = new ArrayList<D>();
+		
+		for (E entity : entities)
+			resultado.add(getDtoFromEntity(entity));
+		
+		return resultado;
+	}
 
-	public Cliente getEntityFromDto(ClienteDto clienteDto) {
+	@SuppressWarnings("unchecked")
+	public D getDtoFromEntity(E entity) {
+		if(entity instanceof Cliente)
+			return (D) getDtoFromEntity((Cliente) entity);
+		else if(entity instanceof Producto)
+			return (D) getDtoFromEntity((Producto) entity);
+		else if(entity instanceof MedioPago)
+			return (D) getDtoFromEntity((MedioPago) entity);
+		else if(entity instanceof Movimiento)
+			return (D) getDtoFromEntity((Movimiento) entity);
+		else if(entity instanceof Venta)
+			return (D) getDtoFromEntity((Venta) entity);
+		else if(entity instanceof Tipo)
+			return (D) getDtoFromEntity((Tipo) entity);
+		else if(entity instanceof Marca)
+			return (D) getDtoFromEntity((Marca) entity);
+		else return null;
+	}
+
+	public List<E> getEntitesFromDtos(List<D> dtos) {
+		List<E> resultado = new ArrayList<E>();
+		
+		for (D dto : dtos)
+			resultado.add(getEntityFromDto(dto));
+		
+		return resultado;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public E getEntityFromDto(D dto) {
+		if(dto instanceof ClienteDto)
+			return (E) getEntityFromDto((ClienteDto) dto);
+		else if(dto instanceof ProductoDto)
+			return (E) getEntityFromDto((ProductoDto) dto);
+		else if(dto instanceof VentaDto)
+			return (E) getEntityFromDto((VentaDto) dto);
+		else return null;
+	}
+	
+	private Cliente getEntityFromDto(ClienteDto clienteDto) {
 		Cliente cliente = null;
 		if (Validator.isNotNull(clienteDto.getId()))
 			cliente = clienteDao.get(clienteDto.getId());
@@ -88,7 +138,7 @@ public class EntityDTOParser {
 		return cliente;
 	}
 
-	public ClienteDto getDtoFromEntity(Cliente cliente) {
+	private ClienteDto getDtoFromEntity(Cliente cliente) {
 		ClienteDto clienteDto = new ClienteDto();
 		clienteDto.setId(cliente.getId());
 		clienteDto.setApellido(cliente.getApellido());
@@ -99,36 +149,35 @@ public class EntityDTOParser {
 		clienteDto.setFechaNacimiento(cliente.getFechaNacimiento());
 		clienteDto.setTelefono(cliente.getTelefono());
 
-		CiudadDto ciudadDto = new CiudadDto();
-		ciudadDto.setDescripcion(cliente.getDireccion().getCiudad()
-				.getDescripcion());
-		ciudadDto.setId(cliente.getDireccion().getCiudad().getId());
-		ProvinciaDto provinciaDto = new ProvinciaDto();
-		provinciaDto.setDescripcion(cliente.getDireccion().getCiudad()
-				.getProvincia().getDescripcion());
-		provinciaDto.setId(cliente.getDireccion().getCiudad().getProvincia()
-				.getId());
-		ciudadDto.setPrinvinciaDto(provinciaDto);
-		String pais = cliente.getDireccion().getCiudad().getProvincia()
-				.getPais().getDescripcion();
-
-		DireccionDto direccionDto = new DireccionDto();
-		direccionDto.setId(cliente.getDireccion().getId());
-		direccionDto.setDomicilio(cliente.getDireccion().getDomicilio());
-		direccionDto.setCiudad(ciudadDto);
-		direccionDto.setPais(pais);
+		if(Validator.isNotNull(cliente.getDireccion())) {
+			CiudadDto ciudadDto = new CiudadDto();
+			ciudadDto.setDescripcion(cliente.getDireccion().getCiudad().getDescripcion());
+			ciudadDto.setId(cliente.getDireccion().getCiudad().getId());
+			ProvinciaDto provinciaDto = new ProvinciaDto();
+			provinciaDto.setDescripcion(cliente.getDireccion().getCiudad().getProvincia().getDescripcion());
+			provinciaDto.setId(cliente.getDireccion().getCiudad().getProvincia().getId());
+			ciudadDto.setPrinvinciaDto(provinciaDto);
+			String pais = cliente.getDireccion().getCiudad().getProvincia().getPais().getDescripcion();
+	
+			DireccionDto direccionDto = new DireccionDto();
+			direccionDto.setId(cliente.getDireccion().getId());
+			direccionDto.setDomicilio(cliente.getDireccion().getDomicilio());
+			direccionDto.setCiudad(ciudadDto);
+			direccionDto.setPais(pais);
+			clienteDto.setDireccion(direccionDto);
+		}
 
 		return clienteDto;
 	}
 
-	public MedioPagoDto getDtoFromEntity(MedioPago medioPago) {
+	private MedioPagoDto getDtoFromEntity(MedioPago medioPago) {
 		MedioPagoDto medioPagoDto = new MedioPagoDto();
 		medioPagoDto.setDescripcion(medioPago.getDescripcion());
 		medioPagoDto.setId(medioPago.getId());
 		return medioPagoDto;
 	}
 
-	public ProductoDto getDtoFromEntity(Producto producto) {
+	private ProductoDto getDtoFromEntity(Producto producto) {
 		ProductoDto productoDto = new ProductoDto();
 
 		productoDto.setId(producto.getId());
@@ -146,30 +195,21 @@ public class EntityDTOParser {
 		return productoDto;
 	}
 	
-	public List<ProductoDto> getDtosFromEntities(List<Producto> productos) {
-		List<ProductoDto> resultado = new ArrayList<ProductoDto>();
-		
-		for (Producto producto : productos)
-			resultado.add(getDtoFromEntity(producto));
-		
-		return resultado;
-	}
-
-	public TipoDto getDtoFromEntity(Tipo tipo) {
+	private TipoDto getDtoFromEntity(Tipo tipo) {
 		TipoDto tipoDto = new TipoDto();
 		tipoDto.setDescripcion(tipo.getDescripcion());
 		tipoDto.setId(tipo.getId());
 		return tipoDto;
 	}
 
-	public MarcaDto getDtoFromEntity(Marca marca) {
+	private MarcaDto getDtoFromEntity(Marca marca) {
 		MarcaDto marcaDto = new MarcaDto();
 		marcaDto.setDescripcion(marca.getDescripcion());
 		marcaDto.setId(marca.getId());
 		return marcaDto;
 	}
 
-	public Producto getEntityFromDto(ProductoDto productoDto) {
+	private Producto getEntityFromDto(ProductoDto productoDto) {
 		Producto producto = null;
 		if (Validator.isNotNull(productoDto.getId()))
 			producto = productoDao.get(productoDto.getId());
@@ -194,7 +234,7 @@ public class EntityDTOParser {
 		return producto;
 	}
 
-	public MovimientoDto getDtoFromEntity(Movimiento movimiento) {
+	private MovimientoDto getDtoFromEntity(Movimiento movimiento) {
 		MovimientoDto movimientoDto = new MovimientoDto();
 		movimientoDto.setCantidad(movimiento.getCantidad());
 		movimientoDto.setFecha(movimiento.getFecha());
@@ -208,13 +248,13 @@ public class EntityDTOParser {
 	}
 
 	//TODO:
-	public VentaDto getDtoFromEntity(Venta venta) {
+	private VentaDto getDtoFromEntity(Venta venta) {
 		VentaDto ventaDto = new VentaDto();
 		ventaDto.setCliente(getDtoFromEntity(venta.getCliente()));
 		return ventaDto;
 	}
 
-	public Venta getEntityFromDto(VentaDto ventaDto) {
+	private Venta getEntityFromDto(VentaDto ventaDto) {
 
 		Venta venta = new Venta();
 		if (Validator.isNotNull(ventaDto.getCliente()))
@@ -245,9 +285,7 @@ public class EntityDTOParser {
 		return venta;
 	}
 	
-	
-	
-	public ProductoVenta getEntityFromDto(ProductoVentaDto productoVentaDto) {
+	private ProductoVenta getEntityFromDto(ProductoVentaDto productoVentaDto) {
 		ProductoVenta productoVenta = new ProductoVenta();
 		productoVenta.setProducto(productoDao.get(productoVentaDto
 				.getProducto().getId()));
@@ -258,12 +296,11 @@ public class EntityDTOParser {
 		return productoVenta;
 	}
 
-	public Pago getPagoFromPagoDto(PagoDto pagoDto) {
+	private Pago getPagoFromPagoDto(PagoDto pagoDto) {
 		Pago pago = new Pago();
 		pago.setMedioPago(medioPagoDao.get(pagoDto.getMedioPago().getId()));
 		pago.setPago(new Long(pagoDto.getMonto().longValue()));
 		return pago;
 	}
-
 
 }

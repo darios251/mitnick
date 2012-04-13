@@ -1,6 +1,7 @@
 package com.mitnick.business.servicios;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -8,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mitnick.business.exceptions.BusinessException;
+import com.mitnick.exceptions.BusinessException;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.ITipoDao;
-import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Producto;
-import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.servicio.servicios.dtos.ConsultaStockDto;
@@ -41,6 +40,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	@Autowired
 	private IMovimientoDao movimientoDao;
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ProductoDto> consultaProducto(ConsultaProductoDto filtro) {
@@ -60,7 +60,8 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			//se calcula el impuesto del producto
 			productoDto.setIva(VentaHelper.CalcularImpuesto(productoDto));
 			
-			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
+			@SuppressWarnings("unchecked")
+			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			//se calcula la cantidad a ajustar
 			//producto.addMovimientos(movimiento);
 			
@@ -89,7 +90,8 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			throw new BusinessException("error.productoServicio.id.nulo", "Se invoca la modificacion de un producto que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
-			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
+			@SuppressWarnings("unchecked")
+			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			producto.setEliminado(true);
 			productoDao.saveOrUpdate(producto);
 		} catch (Exception e) {
@@ -108,7 +110,8 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		try {
 			//se calcula el impuesto del producto
 			productoDto.setIva(VentaHelper.CalcularImpuesto(productoDto));
-			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
+			@SuppressWarnings("unchecked")
+			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			productoDao.saveOrUpdate(producto);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
@@ -164,53 +167,52 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ProductoDto> obtenerStock(ConsultaStockDto filtro) {
 		List<ProductoDto> resultado = new ArrayList<ProductoDto>();
 		try {
-			for (Producto producto : productoDao.findStockByFiltro(filtro))
-				resultado.add(entityDTOParser.getDtoFromEntity(producto));
+			resultado.addAll((Collection<? extends ProductoDto>) entityDTOParser.getDtosFromEntities(productoDao.findStockByFiltro(filtro)));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<TipoDto> obtenerTipos() {
 		List<TipoDto> resultado = new ArrayList<TipoDto>();
 		try {
-			for (Tipo tipo : tipoDao.getAll())
-				resultado.add(entityDTOParser.getDtoFromEntity(tipo));
+			resultado.addAll(entityDTOParser.getDtosFromEntities(tipoDao.getAll()));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<MarcaDto> obtenerMarcas() {
 		List<MarcaDto> resultado = new ArrayList<MarcaDto>();
 		try {
-			for (Marca marca: marcaDao.getAll())
-				resultado.add(entityDTOParser.getDtoFromEntity(marca));
+			resultado.addAll(entityDTOParser.getDtosFromEntities(marcaDao.getAll()));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ProductoDto> obtenerProductos() {
 		List<ProductoDto> productos = new ArrayList<ProductoDto>();
 		
-		for (Producto producto : productoDao.getAll()) {
-			productos.add(entityDTOParser.getDtoFromEntity(producto));
-		}
+		productos.addAll(entityDTOParser.getDtosFromEntities(productoDao.getAll()));
 		
 		return productos;
 	}

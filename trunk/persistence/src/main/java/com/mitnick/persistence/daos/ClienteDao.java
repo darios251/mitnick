@@ -51,7 +51,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			criteria.add(Restrictions.ilike("nombre", filtro.getNombre()));
 		}
 		
-		if(Validator.isNotNull(filtro.getApellido())){
+		if(!Validator.isBlankOrNull(filtro.getApellido())){
 			criteria.add(Restrictions.ilike("apellido", filtro.getApellido()));
 		}
 

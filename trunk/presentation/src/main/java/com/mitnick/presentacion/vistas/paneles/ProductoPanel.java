@@ -21,8 +21,8 @@ import javax.swing.table.TableRowSorter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ProductoController;
-import com.mitnick.presentacion.excepciones.PresentationException;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.presentacion.vistas.BaseView;

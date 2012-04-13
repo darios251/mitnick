@@ -37,7 +37,11 @@ public class ReporteMovimientosDto extends ServicioBaseDto {
 	public void setProducto(ProductoDto producto) {
 		this.producto = producto;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "ReporteMovimientosDto [fechaInicio=" + fechaInicio
+				+ ", fechaFin=" + fechaFin + ", producto=" + producto + "]";
+	}
+	
 }

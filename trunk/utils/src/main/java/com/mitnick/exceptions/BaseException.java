@@ -1,6 +1,8 @@
-package com.mitnick.utils;
+package com.mitnick.exceptions;
 
 import org.apache.log4j.Logger;
+
+import com.mitnick.utils.PropertiesManager;
 
 /**
  * Esta clase tiene la responsabilidad de representar la excepci�n base
