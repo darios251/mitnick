@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +26,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
+import com.mitnick.utils.dtos.ClienteDto;
 
 @Panel("clientePanel")
 public class ClientePanel extends BaseView {
@@ -189,6 +191,7 @@ public class ClientePanel extends BaseView {
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
+			model.setClientes(new ArrayList<ClienteDto>());
 		}
 	}
 

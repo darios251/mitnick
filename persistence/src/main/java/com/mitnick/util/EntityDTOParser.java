@@ -122,7 +122,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cliente.setApellido(clienteDto.getApellido());
 		cliente.setNombre(clienteDto.getNombre());
 		cliente.setCuit(new Long(clienteDto.getCuit()));
-		cliente.setDocumento(new Long(clienteDto.getDocumento()));
+		cliente.setDocumento(clienteDto.getDocumento());
 		cliente.setEmail(clienteDto.getEmail());
 		cliente.setFechaNacimiento(clienteDto.getFechaNacimiento());
 		cliente.setTelefono(clienteDto.getTelefono());

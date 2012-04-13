@@ -28,7 +28,7 @@ public class Cliente extends BaseObject implements Serializable{
 	private String apellido;
 	
 	@Column(name = "documento", length = 10, nullable = false, unique = true)
-	private Long documento;
+	private String documento;
 	
 	@Column(name = "cuit", length = 10, nullable = false, unique = true)
 	private Long cuit;
@@ -61,11 +61,11 @@ public class Cliente extends BaseObject implements Serializable{
 		return apellido;
 	}
 
-	public void setDocumento(Long documento) {
+	public void setDocumento(String documento) {
 		this.documento = documento;
 	}
 
-	public Long getDocumento() {
+	public String getDocumento() {
 		return documento;
 	}
 

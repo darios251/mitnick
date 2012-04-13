@@ -35,7 +35,9 @@ public class ClienteController extends BaseController {
 		
 		if(Validator.isNull(filtroDto))
 			throw new PresentationException("error.unknown", "El filtro para la consulta de clientes no puede ser nulo");
-
+		if(!Validator.isBlankOrNull(filtroDto.getDocumento()) && !Validator.isDocumentNumber(filtroDto.getDocumento()))
+			throw new PresentationException("error.cliente.consulta.documento.format");
+		
 		List<ClienteDto> clientes = null;
 		try {
 			clientes = clienteServicio.consultarCliente(filtroDto);
