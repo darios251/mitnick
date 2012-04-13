@@ -44,15 +44,15 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
 		
 		if(!Validator.isBlankOrNull(filtro.getDocumento())){
-			criteria.add(Restrictions.ilike("documento", filtro.getDocumento()));
+			criteria.add(Restrictions.ilike("documento", filtro.getDocumento().trim()));
 		}
 		
 		if(!Validator.isBlankOrNull(filtro.getNombre())){
-			criteria.add(Restrictions.ilike("nombre", filtro.getNombre()));
+			criteria.add(Restrictions.ilike("nombre", "%" + filtro.getNombre().trim() + "%"));
 		}
 		
 		if(!Validator.isBlankOrNull(filtro.getApellido())){
-			criteria.add(Restrictions.ilike("apellido", filtro.getApellido()));
+			criteria.add(Restrictions.ilike("apellido", "%" + filtro.getApellido().trim() + "%"));
 		}
 
 		criteria.addOrder(Order.desc("apellido"));

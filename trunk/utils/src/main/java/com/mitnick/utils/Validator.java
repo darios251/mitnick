@@ -40,4 +40,17 @@ public class Validator extends GenericValidator{
 		return !Validator.isEmptyOrNull(collection);
 	}
 
+	public static boolean isDocumentNumber(String documento) {
+		if(isNull(documento))
+			return false;
+		try {
+			Long documentoLong = Long.parseLong(documento);
+			
+			return documentoLong > 1000000 && documentoLong < 99999999;
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
+
 }
