@@ -18,14 +18,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
-import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
 @Panel("detalleProductoPanel")
-public class DetalleProductoPanel extends BaseView {
+public class DetalleProductoPanel extends BasePanel {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -158,5 +157,10 @@ public class DetalleProductoPanel extends BaseView {
 
 	public void setProducto(ProductoVentaDto producto) {
 		this.producto = producto;
+	}
+	
+	@Override
+	public void setDefaultFocusField() {
+		this.defaultFocusField = txtCantidad;
 	}
 }

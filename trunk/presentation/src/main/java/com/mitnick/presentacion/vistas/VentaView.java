@@ -14,16 +14,15 @@ public class VentaView extends BaseView {
 	
 	@Autowired
 	private VentaController ventaController;
+	
 
 	public VentaView () {
-		this.centrarVentana( null );
 		initializeComponents();
 	}
 	
 	@Override
 	protected void initializeComponents () {
 		this.setSize( new Dimension(815, 470) );
-		
 		this.setLayout( new BorderLayout() );
 	}
 	
@@ -33,19 +32,9 @@ public class VentaView extends BaseView {
 			this.add( ventaController.getBuscarProductoPanel(), BorderLayout.CENTER );
 			this.add( ventaController.getPagoPanel(), BorderLayout.CENTER );
 			this.add( ventaController.getDetalleProductoPanel(), BorderLayout.CENTER );
-			ventaController.mostrarUltimoPanelMostrado();
+			//ventaController.mostrarUltimoPanelMostrado();
 		}
 		super.setVisible(aFlag);
-	}
-
-	@Override
-	protected void limpiarCamposPantalla() {
-		
-	}
-	
-	@Override
-	public void actualizarPantalla() {
-		
 	}
 
 	public void setVentaController(VentaController ventaController) {

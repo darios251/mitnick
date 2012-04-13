@@ -97,7 +97,7 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
-	public void guardarProducto(String codigo, String descripcion, TipoDto tipo, MarcaDto marca, String stock, String precio) {
+	public void guardarProducto(ProductoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, String stock, String precio) {
 		if(Validator.isBlankOrNull(codigo))
 			throw new PresentationException("error.producto.nuevo.codigo.null");
 		if(Validator.isBlankOrNull(descripcion))
@@ -117,7 +117,9 @@ public class ProductoController extends BaseController {
 		if(!Validator.isDouble(precio))
 			throw new PresentationException("error.producto.nuevo.precio.format");
 		
-		ProductoDto producto = new ProductoDto();
+		if(Validator.isNull(producto))
+			producto = new ProductoDto();
+		
 		producto.setCodigo(codigo);
 		producto.setDescripcion(descripcion);
 		producto.setPrecio(new BigDecimal(Double.parseDouble(precio)));
@@ -157,7 +159,27 @@ public class ProductoController extends BaseController {
 	}
 	
 	public void editarProducto() {
+		ProductoDto productoDto = null;
+		try {
+			int index = getProductoPanel().getTable().getSelectedRow();
+			productoDto = getProductoPanel().getTableModel().getProducto(index);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getProductoPanel().getTableModel().getRowCount() == 0) {
+				throw new PresentationException("error.productoPanel.productos.vacio");
+			}
+			else {
+				throw new PresentationException("error.productoPanel.producto.noSeleccionado");
+			}
+		}
 		
+		try {
+			productoNuevoPanel.setProducto(productoDto);
+			mostrarProductoNuevoPanel();
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el producto");
+		}
 	}
 	
 	public ProductoView getProductoView() {

@@ -15,35 +15,27 @@ public class ClienteView extends BaseView {
 	
 	@Autowired
 	private ClienteController clienteController;
+	
+	private boolean initialized = false;
 
 	public ClienteView () {
-		this.centrarVentana( null );
 		initializeComponents();
 	}
 	
 	@Override
 	protected void initializeComponents () {
 		this.setSize( new Dimension(815, 470) );
-		
 		this.setLayout( new BorderLayout() );
 	}
 	
 	public void setVisible(boolean aFlag) {
 		if(aFlag) {
-			this.add( clienteController.getClientePanel(), BorderLayout.CENTER );
-			clienteController.mostrarClientePanel();
+			if(!initialized) {
+				this.add( clienteController.getClientePanel(), BorderLayout.CENTER );
+				initialized = true;
+			}
 		}
 		super.setVisible(aFlag);
-	}
-
-	@Override
-	protected void limpiarCamposPantalla() {
-		
-	}
-	
-	@Override
-	public void actualizarPantalla() {
-		
 	}
 
 	public void setClienteController(ClienteController clienteController) {

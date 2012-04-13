@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.ClienteTableModel;
-import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
@@ -29,7 +28,7 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
 
 @Panel("clientePanel")
-public class ClientePanel extends BaseView {
+public class ClientePanel extends BasePanel {
 	
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNumeroDocumento;
@@ -200,5 +199,10 @@ public class ClientePanel extends BaseView {
 		if(Validator.isNotNull(txtNumeroDocumento))
 			txtNumeroDocumento.requestFocus();
 		consultarClientes();
+	}
+	
+	@Override
+	public void setDefaultFocusField() {
+		this.defaultFocusField = txtApellido;
 	}
 }
