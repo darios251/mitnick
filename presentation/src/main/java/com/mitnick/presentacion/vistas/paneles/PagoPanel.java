@@ -28,7 +28,6 @@ import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.PagoTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
-import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -36,7 +35,7 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
 @Panel("pagoPanel")
-public class PagoPanel extends BaseView {
+public class PagoPanel extends BasePanel {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -321,6 +320,11 @@ public class PagoPanel extends BaseView {
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
 		}
+	}
+	
+	@Override
+	public void setDefaultFocusField() {
+		this.defaultFocusField = txtMonto;
 	}
 	
 	public int mostrarMensajeReintentar() {

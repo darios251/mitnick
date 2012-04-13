@@ -27,14 +27,13 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.VentaTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
-import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
 @Panel("ventaPanel")
-public class VentaPanel extends BaseView {
+public class VentaPanel extends BasePanel {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -111,6 +110,7 @@ public class VentaPanel extends BaseView {
 		add(lblCdigo);
 		
 		txtCodigo = new JTextField();
+		txtCodigo.setName("codigoVenta");
 		txtCodigo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -244,8 +244,6 @@ public class VentaPanel extends BaseView {
 			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
 		if(Validator.isNotNull(lblSubtotalValor) && VentaManager.getVentaActual() != null)
 			lblSubtotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
-		if(Validator.isNotNull(txtCodigo))
-			txtCodigo.requestFocus();
 	}
 	
 	public JTable getTable() {
@@ -254,5 +252,10 @@ public class VentaPanel extends BaseView {
 	
 	public VentaTableModel getModel() {
 		return this.model;
+	}
+	
+	@Override
+	public void setDefaultFocusField() {
+		this.defaultFocusField = txtCodigo;
 	}
 }

@@ -15,6 +15,8 @@ public class ProductoView extends BaseView {
 	
 	@Autowired
 	private ProductoController productoController;
+	
+	private boolean initialized = false;
 
 	public ProductoView () {
 		initializeComponents();
@@ -29,20 +31,13 @@ public class ProductoView extends BaseView {
 	
 	public void setVisible(boolean aFlag) {
 		if(aFlag) {
-			this.add( productoController.getProductoPanel(), BorderLayout.CENTER );
-			this.add( productoController.getProductoNuevoPanel(), BorderLayout.CENTER );
+			if(!initialized ){
+				this.add( productoController.getProductoPanel(), BorderLayout.CENTER );
+				this.add( productoController.getProductoNuevoPanel(), BorderLayout.CENTER );
+				initialized = true;
+			}
 		}
 		super.setVisible(aFlag);
-	}
-
-	@Override
-	protected void limpiarCamposPantalla() {
-		
-	}
-	
-	@Override
-	public void actualizarPantalla() {
-		
 	}
 
 	public void setProductoController(ProductoController productoController) {

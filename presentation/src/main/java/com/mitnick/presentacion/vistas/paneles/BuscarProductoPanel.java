@@ -21,14 +21,13 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
-import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoDto;
 
 @Panel("buscarProductoPanel")
-public class BuscarProductoPanel extends BaseView {
+public class BuscarProductoPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
@@ -174,6 +173,11 @@ public class BuscarProductoPanel extends BaseView {
 	@Override
 	public void actualizarPantalla() {
 		
+	}
+	
+	@Override
+	public void setDefaultFocusField() {
+		this.defaultFocusField = txtCodigo;
 	}
 
 	public void setVentasController(VentaController ventasController) {

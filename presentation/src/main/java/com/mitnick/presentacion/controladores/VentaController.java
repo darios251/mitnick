@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.utils.VentaManager;
-import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.presentacion.vistas.VentaView;
+import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.DetalleProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.PagoPanel;
@@ -52,7 +52,7 @@ public class VentaController extends BaseController {
 	@Autowired
 	private IMedioPagoServicio medioPagoServicio;
 	
-	private BaseView ultimoPanelMostrado = null;
+	private BasePanel ultimoPanelMostrado = null;
 	
 	public VentaController() {
 		

@@ -25,7 +25,6 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
-import com.mitnick.presentacion.vistas.BaseView;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
@@ -34,7 +33,7 @@ import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("productoPanel")
-public class ProductoPanel extends BaseView {
+public class ProductoPanel extends BasePanel {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -177,7 +176,7 @@ public class ProductoPanel extends BaseView {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					productoController.eliminarProducto();
+					productoController.editarProducto();
 				}
 				catch(PresentationException ex) {
 					mostrarMensaje(ex);
@@ -266,7 +265,11 @@ public class ProductoPanel extends BaseView {
 	@Override
 	public void actualizarPantalla() {
 		consultarProductos();
-		txtCodigo.requestFocus();
+	}
+	
+	@Override
+	public void setDefaultFocusField() {
+		this.defaultFocusField = txtCodigo; 
 	}
 
 	public void setProductoController(ProductoController productoController) {

@@ -53,10 +53,6 @@ public class ClienteController extends BaseController {
 		
 		return clientes;
 	}
-	
-	public void agregarCliente(String codigo) {
-
-	}
 
 	public ClienteView getClienteView() {
 		return clienteView;
