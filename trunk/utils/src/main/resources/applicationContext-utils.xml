@@ -20,6 +20,7 @@
 				<value>business-errors</value>
 				<value>business-validation</value>
 				<value>business-configuration</value>
+				<value>application</value>
 			</list>
 		</property>
  	</bean>

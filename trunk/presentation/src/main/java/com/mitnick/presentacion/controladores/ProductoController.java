@@ -128,7 +128,7 @@ public class ProductoController extends BaseController {
 		producto.setStock(Integer.parseInt(stock));
 		
 		try {
-			getProductoServicio().altaProducto(producto);
+			getProductoServicio().guardarProducto(producto);
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar dar del alta el producto: " + producto);

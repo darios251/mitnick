@@ -7,10 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -20,12 +20,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
+import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
-import com.mitnick.utils.dtos.MarcaDto;
-import com.mitnick.utils.dtos.ProductoDto;
-import com.mitnick.utils.dtos.TipoDto;
+import com.mitnick.utils.dtos.CiudadDto;
+import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.ProvinciaDto;
+
+import javax.swing.JComboBox;
 
 @Panel("clienteNuevoPanel")
 public class ClienteNuevoPanel extends BasePanel {
@@ -37,17 +41,20 @@ public class ClienteNuevoPanel extends BasePanel {
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 	
-	private JTextField txtCodigo;
-	private JTextField txtDescripcion;
-	private JTextField txtPrecio;
-	private JTextField txtStock;
+	private JTextField txtApellido;
+	private JTextField txtNombre;
+	private JTextField txtDocumento;
+	private JTextField txtCuit;
 
-	private JComboBox<TipoDto> cmbTipo;
-
-	private JComboBox<MarcaDto> cmbMarca;
+	private ClienteDto cliente;
+	private JTextField txtTelefono;
+	private JTextField txtFechaNacimiento;
+	private JTextField txtEmail;
+	private JTextField txtDomicilio;
+	private JTextField txtCodigoPostal;
 	
-	private ProductoDto producto;
-	
+	private JComboBox<CiudadDto> cmbCiudad;
+	private JComboBox<ProvinciaDto> cmbProvincia;
 	/**
 	 * @throws Exception 
 	 * @wbp.parser.constructor
@@ -65,13 +72,16 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	@Override
 	protected void limpiarCamposPantalla() {
-		txtCodigo.setText("");
-		txtDescripcion.setText("");
-		txtPrecio.setText("");
-		txtStock.setText("");
-		cmbMarca.setSelectedIndex(0);
-		cmbTipo.setSelectedIndex(0);
-		producto = null;
+		for (Component component : getComponents()) {
+			if(component instanceof JTextField)
+				((JTextField) component).setText("");
+		}
+		try {
+			cmbCiudad.setSelectedIndex(0);
+			cmbProvincia.setSelectedIndex(0);
+		}
+		catch(Exception e){}
+		cliente = null;
 	}
 	
 	@Override
@@ -79,41 +89,121 @@ public class ClienteNuevoPanel extends BasePanel {
 		setSize(new Dimension(815, 470));
 		setLayout(null);
 		
-		JLabel lblCdigo = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.codigo"));
-		lblCdigo.setBounds(58, 25, 94, 20);
-		add(lblCdigo);
+		JLabel lblApellido = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.apellido"));
+		lblApellido.setBounds(57, 75, 94, 20);
+		add(lblApellido);
 		
-		txtCodigo = new JTextField();
-		txtCodigo.setBounds(162, 25, 105, 20);
-		add(txtCodigo);
-		txtCodigo.setColumns(10);
+		txtApellido = new JTextField();
+		txtApellido.setBounds(161, 75, 105, 20);
+		txtApellido.setColumns(10);
+		add(txtApellido);
 		
-		JLabel lblDescripcin = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.descripcion"));
-		lblDescripcin.setBounds(319, 25, 94, 20);
-		add(lblDescripcin);
+		JLabel lblNombre = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.nombre"));
+		lblNombre.setBounds(57, 122, 94, 20);
+		add(lblNombre);
 		
-		txtDescripcion = new JTextField();
-		txtDescripcion.setColumns(10);
-		txtDescripcion.setBounds(448, 25, 105, 20);
-		add(txtDescripcion);
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(161, 122, 105, 20);
+		add(txtNombre);
 		
-		JLabel lblPrecio = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.precio"));
-		lblPrecio.setBounds(58, 72, 94, 20);
-		add(lblPrecio);
+		JLabel lblDocumento = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.documento"));
+		lblDocumento.setBounds(57, 167, 94, 20);
+		add(lblDocumento);
 		
-		txtPrecio = new JTextField();
-		txtPrecio.setColumns(10);
-		txtPrecio.setBounds(162, 72, 105, 20);
-		add(txtPrecio);
+		txtDocumento = new JTextField();
+		txtDocumento.setColumns(10);
+		txtDocumento.setBounds(161, 167, 105, 20);
+		add(txtDocumento);
 		
-		JLabel lblStock = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.stock"));
-		lblStock.setBounds(319, 72, 73, 20);
-		add(lblStock);
+		JLabel lblCuit = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.cuit"));
+		lblCuit.setBounds(57, 213, 94, 20);
+		add(lblCuit);
 		
-		txtStock = new JTextField();
-		txtStock.setColumns(10);
-		txtStock.setBounds(448, 72, 105, 20);
-		add(txtStock);
+		txtCuit = new JTextField();
+		txtCuit.setColumns(10);
+		txtCuit.setBounds(161, 213, 105, 20);
+		add(txtCuit);
+		
+		JLabel telefono = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.telefono"));
+		telefono.setBounds(57, 259, 94, 20);
+		add(telefono);
+		
+		txtTelefono = new JTextField();
+		txtTelefono.setColumns(10);
+		txtTelefono.setBounds(161, 259, 105, 20);
+		add(txtTelefono);
+		
+		JLabel lblEmail = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.email"));
+		lblEmail.setBounds(57, 306, 94, 20);
+		add(lblEmail);
+		
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(161, 306, 105, 20);
+		add(txtEmail);
+		
+		JLabel lblFechaNacimiento = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.fechaNacimiento"));
+		lblFechaNacimiento.setBounds(57, 351, 94, 20);
+		add(lblFechaNacimiento);
+		
+		txtFechaNacimiento = new JTextField();
+		txtFechaNacimiento.setColumns(10);
+		txtFechaNacimiento.setBounds(161, 351, 105, 20);
+		add(txtFechaNacimiento);
+		
+		JLabel lblDomicilio = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.domicilio"));
+		lblDomicilio.setBounds(392, 75, 94, 20);
+		add(lblDomicilio);
+		
+		txtDomicilio = new JTextField();
+		txtDomicilio.setColumns(10);
+		txtDomicilio.setBounds(496, 75, 105, 20);
+		add(txtDomicilio);
+		
+		JLabel lblCodigoPostal = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.codigoPostal"));
+		lblCodigoPostal.setBounds(392, 118, 94, 20);
+		add(lblCodigoPostal);
+		
+		txtCodigoPostal = new JTextField();
+		txtCodigoPostal.setColumns(10);
+		txtCodigoPostal.setBounds(496, 118, 105, 20);
+		add(txtCodigoPostal);
+		
+		JLabel lblProvincia = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.provincia"));
+		lblProvincia.setBounds(392, 208, 94, 20);
+		add(lblProvincia);
+		
+		cmbProvincia = new JComboBox<ProvinciaDto>();
+		cmbProvincia.setBounds(496, 208, 105, 20);
+		MitnickComboBoxModel<ProvinciaDto> provinciaModel = new MitnickComboBoxModel<ProvinciaDto>();
+		provinciaModel.addItems(clienteController.obtenerProvincias());
+		cmbProvincia.setModel(provinciaModel);
+		cmbProvincia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cmbCiudad.removeAllItems();
+				try {
+					((MitnickComboBoxModel<CiudadDto>)cmbCiudad.getModel()).addItems(clienteController.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
+				}
+				catch(PresentationException ex) {
+					mostrarMensaje(ex);
+				}
+			}
+		});
+		add(cmbProvincia);
+		
+		JLabel lblCiudad = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.ciudad"));
+		lblCiudad.setBounds(392, 160, 94, 20);
+		add(lblCiudad);
+		
+		cmbCiudad = new JComboBox<CiudadDto>();
+		cmbCiudad.setBounds(496, 160, 105, 20);
+		MitnickComboBoxModel<CiudadDto> ciudadModel = new MitnickComboBoxModel<CiudadDto>();
+		ciudadModel.addItems(clienteController.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
+		cmbCiudad.setModel(ciudadModel);
+		add(cmbCiudad);
 		
 		btnAceptar = new JButton(PropertiesManager.getProperty("clienteNuevoPanel.boton.aceptar"));
 //		btnAceptar.setToolTipText(PropertiesManager.getProperty("clienteNuevoPanel.tooltip.aceptar"));
@@ -125,10 +215,10 @@ public class ClienteNuevoPanel extends BasePanel {
 		
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				agregarProducto();
+				agregarCliente();
 			}
 		});
-		btnAceptar.setBounds(277, 272, 60, 60);
+		btnAceptar.setBounds(465, 293, 60, 60);
 		add(btnAceptar);
 		
 		btnCancelar = new JButton(PropertiesManager.getProperty("clienteNuevoPanel.boton.cancelar"));
@@ -146,9 +236,9 @@ public class ClienteNuevoPanel extends BasePanel {
 				clienteController.mostrarClientePanel();
 			}
 		});
-		btnCancelar.setBounds(353, 272, 60, 60);
+		btnCancelar.setBounds(541, 293, 60, 60);
 		add(btnCancelar);
-		
+				
 		addKeyListeners();
 	}
 	
@@ -159,7 +249,7 @@ public class ClienteNuevoPanel extends BasePanel {
 					@Override
 					public void keyPressed(KeyEvent e) {
 						if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-							agregarProducto();
+							agregarCliente();
 						}
 					}
 				});
@@ -167,9 +257,11 @@ public class ClienteNuevoPanel extends BasePanel {
 		}
 	}
 
-	protected void agregarProducto() {
+	protected void agregarCliente() {
 		try {
-			//clienteController.(producto, txtCodigo.getText(), txtDescripcion.getText(), (TipoDto)cmbTipo.getSelectedItem(), (MarcaDto)cmbMarca.getSelectedItem(), txtStock.getText(), txtPrecio.getText());
+			clienteController.guardarCliente(cliente, txtApellido.getText(), txtNombre.getText(), txtDocumento.getText(), txtCuit.getText(),
+						txtTelefono.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
+						txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto)cmbCiudad.getSelectedItem());
 			limpiarCamposPantalla();
 			clienteController.mostrarClientePanel();
 		}
@@ -178,35 +270,42 @@ public class ClienteNuevoPanel extends BasePanel {
 		}
 	}
 	
-	public void setProducto(ProductoDto productoDto) {
-		this.producto = productoDto;
+	public void setCliente(ClienteDto clienteDto) {
+		this.cliente = clienteDto;
 	}
 
 	@Override
 	public void actualizarPantalla() {
-		if(Validator.isNotNull(txtCodigo)) {
-			txtCodigo.requestFocus();
+		if(Validator.isNotNull(txtApellido)) {
+			txtApellido.requestFocus();
 		}
 		
-		if(Validator.isNotNull(producto)) {
-			if(Validator.isNotNull(txtCodigo))
-				txtCodigo.setText(producto.getCodigo());
-			if(Validator.isNotNull(txtDescripcion))
-				txtDescripcion.setText(producto.getDescripcion());
-			if(Validator.isNotNull(txtPrecio))
-				txtPrecio.setText(producto.getPrecio().toString());
-			if(Validator.isNotNull(txtStock))
-				txtStock.setText(producto.getStock() + "");
-			if(Validator.isNotNull(cmbMarca) && cmbMarca.getModel().getSize() > 0)
-				cmbMarca.setSelectedItem(producto.getMarca());
-			if(Validator.isNotNull(cmbTipo) && cmbTipo.getModel().getSize() > 0)
-				cmbMarca.setSelectedItem(producto.getTipo());
+		if(Validator.isNotNull(cliente)) {
+			if(Validator.isNotNull(txtApellido) && Validator.isNotBlankOrNull(cliente.getApellido()))
+				txtApellido.setText(cliente.getApellido());
+			if(Validator.isNotNull(txtNombre) && Validator.isNotBlankOrNull(cliente.getNombre()))
+				txtNombre.setText(cliente.getNombre());
+			if(Validator.isNotNull(txtDocumento) && Validator.isNotBlankOrNull(cliente.getDocumento()))
+				txtDocumento.setText(cliente.getDocumento());
+			if(Validator.isNotNull(txtCuit) && Validator.isNotBlankOrNull(cliente.getCuit()))
+				txtCuit.setText(cliente.getCuit());
+			if(Validator.isNotNull(txtEmail) && Validator.isNotBlankOrNull(cliente.getEmail()))
+				txtEmail.setText(cliente.getEmail());
+			if(Validator.isNotNull(txtFechaNacimiento) && Validator.isNotNull(cliente.getFechaNacimiento()))
+				txtFechaNacimiento.setText(new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(cliente.getFechaNacimiento()));
+			if(Validator.isNotNull(txtDomicilio) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotBlankOrNull(cliente.getDireccion().getDomicilio()))
+				txtDomicilio.setText(cliente.getDireccion().getDomicilio());
+			if(Validator.isNotNull(txtCodigoPostal) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotBlankOrNull(cliente.getDireccion().getCodigoPostal()))
+				txtCodigoPostal.setText(cliente.getDireccion().getCodigoPostal());
+			if(Validator.isNotNull(cmbProvincia) && Validator.isNotNull(cliente.getDireccion()))
+				cmbProvincia.setSelectedItem(cliente.getDireccion().getCiudad().getPrinvinciaDto());
+			if(Validator.isNotNull(cmbCiudad) && Validator.isNotNull(cliente.getDireccion()))
+				cmbProvincia.setSelectedItem(cliente.getDireccion().getCiudad());
 		}
 	}
 	
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtCodigo;
+		this.defaultFocusField = txtApellido;
 	}
-	
 }

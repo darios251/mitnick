@@ -33,6 +33,10 @@ public class ClienteTableModel extends AbstractTableModel implements TableModel{
 		this.data = new ArrayList<ClienteDto>();
 		this.fireTableStructureChanged();
 	}
+	
+	public ClienteDto getCliente(int index) {
+		return this.data.get(index);
+	}
 
 	public List<ClienteDto> getClientes() {
 		return data;

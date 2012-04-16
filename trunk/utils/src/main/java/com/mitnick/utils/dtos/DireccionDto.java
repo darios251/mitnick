@@ -8,8 +8,6 @@ public class DireccionDto extends BaseDto {
 	
 	private CiudadDto ciudad;
 	
-	private String pais;
-	
 	private String codigoPostal;
 
 	public String getDomicilio() {
@@ -18,15 +16,6 @@ public class DireccionDto extends BaseDto {
 
 	public void setDomicilio(String domicilio) {
 		this.domicilio = domicilio;
-	}
-
-	
-	public String getPais() {
-		return pais;
-	}
-
-	public void setPais(String pais) {
-		this.pais = pais;
 	}
 
 	public String getCodigoPostal() {

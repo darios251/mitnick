@@ -25,6 +25,11 @@ public class Validator extends GenericValidator{
 		return !Validator.isNull(object);
 	}
 	
+	public static boolean isNotBlankOrNull(String object)
+	{
+		return !Validator.isBlankOrNull(object);
+	}
+	
 	public static boolean isEmpty(@SuppressWarnings("rawtypes") Collection collection)
 	{
 		return collection.isEmpty();
@@ -53,4 +58,18 @@ public class Validator extends GenericValidator{
 		}
 	}
 
+	public static boolean isCuit(String cuit) {
+		try {
+			return Cuit.validar(cuit);
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
+
+	public static boolean isPhoneNumber(String telefono) {
+		// TODO implementar esta validación
+		return true;
+	}
+	
 }

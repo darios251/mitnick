@@ -9,16 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.persistence.daos.IMedioPagoDAO;
+import com.mitnick.persistence.entities.MedioPago;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.utils.dtos.MedioPagoDto;
 
 @Service("medioPagoServicio")
-public class MedioPagoServicio extends ServicioBase implements IMedioPagoServicio {
+public class MedioPagoServicio extends ServicioBase<MedioPago, MedioPagoDto> implements IMedioPagoServicio {
 
 	@Autowired
 	protected IMedioPagoDAO medioPagoDao;
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<MedioPagoDto> obtenerMediosPagos() {

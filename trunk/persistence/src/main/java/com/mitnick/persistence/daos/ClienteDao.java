@@ -33,6 +33,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		if(!Validator.isBlankOrNull(documento)){
 			criteria.add(Restrictions.ilike("documento", documento));
 		}
+		criteria.add(Restrictions.eq("eliminado", false));
 		criteria.addOrder(Order.desc("apellido"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
@@ -55,6 +56,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			criteria.add(Restrictions.ilike("apellido", "%" + filtro.getApellido().trim() + "%"));
 		}
 
+		criteria.add(Restrictions.eq("eliminado", false));
 		criteria.addOrder(Order.desc("apellido"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}

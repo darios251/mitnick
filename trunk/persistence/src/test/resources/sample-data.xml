@@ -8,15 +8,17 @@
 	  <column>cuit</column>
 	  <column>telefono</column>
 	  <column>email</column>
+	  <column>eliminado</column>
 	  
 	  <row>
 	    <value>1</value>
 	    <value>Agustina</value>
 	    <value>Berraz</value>
 	    <value>28764155</value>
-	    <value>27287641554</value>
+	    <value>27-28764155-4</value>
 	    <value>154071797</value>
-	    <value>agustinabm@gmail.com</value>	    
+	    <value>agustinabm@gmail.com</value>
+	    <value>false</value>	    
 	  </row>
 	</table>
 	<table name="Tipo">
@@ -58,7 +60,7 @@
 	    <value>10</value>
 	    <value>250</value>
 	    <value>52.5</value>
-	    <value>FALSE</value>
+	    <value>false</value>
 	  </row>
 	</table>
 	
@@ -86,6 +88,39 @@
 	    <value>4</value>
 	    <value>Cuenta Corriente</value>
 	    <value>4</value>
+	  </row>
+	</table>
+	<table name="Pais">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  
+	  <row>
+	  	<value>1</value>
+	  	<value>Argentina</value>
+	  </row>
+	</table>
+	<table name="Provincia">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <column>pais_id</column>
+	  
+	  <row>
+	  	<value>1</value>
+	  	<value>Santa Fe</value>
+	  	<value>1</value>
+	  </row>
+	</table>
+	<table name="Ciudad">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <column>codigoPostal</column>
+	  <column>provincia_id</column>
+	  
+	  <row>
+	  	<value>1</value>
+	  	<value>Santa Fe</value>
+	  	<value>3000</value>
+	  	<value>1</value>
 	  </row>
 	</table>
 </dataset>
