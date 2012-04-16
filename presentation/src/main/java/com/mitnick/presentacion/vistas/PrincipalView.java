@@ -219,12 +219,12 @@ public class PrincipalView extends JFrame
 				public void mouseClicked(MouseEvent e)	{
 					if (getJTabbedPane().indexOfComponent(clienteController.getClientePanel()) == -1) {
 						logger.info("Agregando el panel de clientes al tabbedPane");
-						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("cliente.titulo"), clienteController.getClientePanel());
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("cliente.titulo"), clienteController.getClienteView());
 					}
 					logger.info("Mostrando el panel de clientes");
 					getJTabbedPane().setVisible(true);
 					clienteController.mostrarClientePanel();
-					getJTabbedPane().setSelectedComponent(clienteController.getClientePanel());
+					getJTabbedPane().setSelectedComponent(clienteController.getClienteView());
 				}
 			});
 		}

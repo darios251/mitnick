@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.appfuse.model.BaseObject;
 
@@ -27,6 +28,7 @@ public class Ciudad extends BaseObject implements Serializable {
 	private String codigoPostal;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn(name = "provincia_id")
 	private Provincia provincia;
 
 	public Long getId() {

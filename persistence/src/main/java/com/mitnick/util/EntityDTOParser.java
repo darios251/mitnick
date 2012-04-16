@@ -25,6 +25,7 @@ import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
+import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.utils.Validator;
@@ -88,6 +89,10 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (D) getDtoFromEntity((Tipo) entity);
 		else if(entity instanceof Marca)
 			return (D) getDtoFromEntity((Marca) entity);
+		else if(entity instanceof Provincia)
+			return (D) getDtoFromEntity((Provincia) entity);
+		else if(entity instanceof Ciudad)
+			return (D) getDtoFromEntity((Ciudad) entity);
 		else return null;
 	}
 
@@ -115,13 +120,12 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		Cliente cliente = null;
 		if (Validator.isNotNull(clienteDto.getId()))
 			cliente = clienteDao.get(clienteDto.getId());
-
 		else
 			cliente = new Cliente();
 
 		cliente.setApellido(clienteDto.getApellido());
 		cliente.setNombre(clienteDto.getNombre());
-		cliente.setCuit(new Long(clienteDto.getCuit()));
+		cliente.setCuit(clienteDto.getCuit());
 		cliente.setDocumento(clienteDto.getDocumento());
 		cliente.setEmail(clienteDto.getEmail());
 		cliente.setFechaNacimiento(clienteDto.getFechaNacimiento());
@@ -131,6 +135,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 				.getCiudad().getId()));
 
 		Direccion direccion = new Direccion();
+		direccion.setCodigoPostal(clienteDto.getDireccion().getCodigoPostal());
 		direccion.setCiudad(ciudad);
 		direccion.setDomicilio(clienteDto.getDireccion().getDomicilio());
 		cliente.setDireccion(direccion);
@@ -157,13 +162,12 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			provinciaDto.setDescripcion(cliente.getDireccion().getCiudad().getProvincia().getDescripcion());
 			provinciaDto.setId(cliente.getDireccion().getCiudad().getProvincia().getId());
 			ciudadDto.setPrinvinciaDto(provinciaDto);
-			String pais = cliente.getDireccion().getCiudad().getProvincia().getPais().getDescripcion();
 	
 			DireccionDto direccionDto = new DireccionDto();
 			direccionDto.setId(cliente.getDireccion().getId());
 			direccionDto.setDomicilio(cliente.getDireccion().getDomicilio());
+			direccionDto.setCodigoPostal(cliente.getDireccion().getCodigoPostal());
 			direccionDto.setCiudad(ciudadDto);
-			direccionDto.setPais(pais);
 			clienteDto.setDireccion(direccionDto);
 		}
 
@@ -301,6 +305,21 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		pago.setMedioPago(medioPagoDao.get(pagoDto.getMedioPago().getId()));
 		pago.setPago(new Long(pagoDto.getMonto().longValue()));
 		return pago;
+	}
+	
+	private ProvinciaDto getDtoFromEntity(Provincia provincia) {
+		ProvinciaDto provinciaDto = new ProvinciaDto();
+		provinciaDto.setId(provincia.getId());
+		provinciaDto.setDescripcion(provincia.getDescripcion());
+		return provinciaDto;
+	}
+	
+	private CiudadDto getDtoFromEntity(Ciudad ciudad) {
+		CiudadDto ciudadDto = new CiudadDto();
+		ciudadDto.setId(ciudad.getId());
+		ciudadDto.setDescripcion(ciudad.getDescripcion());
+		ciudadDto.setPrinvinciaDto(getDtoFromEntity(ciudad.getProvincia()));
+		return ciudadDto;
 	}
 
 }

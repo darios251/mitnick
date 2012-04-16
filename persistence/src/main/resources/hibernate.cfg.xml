@@ -15,5 +15,9 @@
         <mapping class="com.mitnick.persistence.entities.ProductoVenta"/>
         <mapping class="com.mitnick.persistence.entities.Tipo"/>
         <mapping class="com.mitnick.persistence.entities.Venta"/>
+        <mapping class="com.mitnick.persistence.entities.Direccion"/>
+        <mapping class="com.mitnick.persistence.entities.Pais"/>
+        <mapping class="com.mitnick.persistence.entities.Provincia"/>
+        <mapping class="com.mitnick.persistence.entities.Ciudad"/>
     </session-factory>
 </hibernate-configuration>

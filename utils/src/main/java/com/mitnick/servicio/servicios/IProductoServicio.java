@@ -12,11 +12,9 @@ public interface IProductoServicio {
 
 	List<ProductoDto> consultaProducto(ConsultaProductoDto filtro);
 	
-	ProductoDto altaProducto(ProductoDto producto);
+	ProductoDto guardarProducto(ProductoDto producto);
 	
 	void bajaProducto(ProductoDto producto);
-	
-	void modificarProducto(ProductoDto producto);
 	
 	/**
 	 * Este método modifica la cantidad de stock del producto pasado como parámetro.

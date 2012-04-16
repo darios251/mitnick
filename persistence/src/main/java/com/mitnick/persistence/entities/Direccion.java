@@ -23,6 +23,9 @@ public class Direccion extends BaseObject implements Serializable {
 	@Column(name = "domicilio", length = 255, nullable = false)
 	private String domicilio;
 	
+	@Column(name = "codigoPostal", length = 10, nullable = false)
+	private String codigoPostal;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Ciudad ciudad;
 
@@ -49,12 +52,22 @@ public class Direccion extends BaseObject implements Serializable {
 	public void setCiudad(Ciudad ciudad) {
 		this.ciudad = ciudad;
 	}
+	
+	public String getCodigoPostal() {
+		return codigoPostal;
+	}
+
+	public void setCodigoPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((ciudad == null) ? 0 : ciudad.hashCode());
+		result = prime * result
+				+ ((codigoPostal == null) ? 0 : codigoPostal.hashCode());
 		result = prime * result
 				+ ((domicilio == null) ? 0 : domicilio.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -75,6 +88,11 @@ public class Direccion extends BaseObject implements Serializable {
 				return false;
 		} else if (!ciudad.equals(other.ciudad))
 			return false;
+		if (codigoPostal == null) {
+			if (other.codigoPostal != null)
+				return false;
+		} else if (!codigoPostal.equals(other.codigoPostal))
+			return false;
 		if (domicilio == null) {
 			if (other.domicilio != null)
 				return false;
@@ -90,8 +108,8 @@ public class Direccion extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Direccion [id=" + id + ", domicilio=" + domicilio + ", ciudad="
-				+ ciudad + "]";
+		return "Direccion [id=" + id + ", domicilio=" + domicilio
+				+ ", codigoPostal=" + codigoPostal + ", ciudad=" + ciudad + "]";
 	}
-	
+
 }

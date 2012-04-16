@@ -8,26 +8,48 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
+import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
+import com.mitnick.persistence.daos.IDireccionDao;
+import com.mitnick.persistence.daos.IProvinciaDao;
+import com.mitnick.persistence.entities.Ciudad;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.util.EntityDTOParser;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.ProvinciaDto;
 
 @Service("clienteServicio")
-public class ClienteServicio extends ServicioBase implements IClienteServicio {
+public class ClienteServicio extends ServicioBase<Cliente, ClienteDto> implements IClienteServicio {
 
 	@Autowired
 	protected IClienteDao clienteDao;
+	
+	@Autowired
+	protected IProvinciaDao provinciaDao;
+	
+	@Autowired
+	protected ICiudadDao ciudadDao;
+	
+	@Autowired
+	protected IDireccionDao direccionDao;
+	
+	@Autowired
+	protected EntityDTOParser<Provincia, ProvinciaDto> entityDTOParserProvincia;
+	
+	@Autowired
+	protected EntityDTOParser<Ciudad, CiudadDto> entityDTOParserCiudad;
 
 	@Transactional
 	@Override
-	public ClienteDto altaCliente(ClienteDto clienteDto) {
+	public ClienteDto guardarCliente(ClienteDto clienteDto) {
 		validar(clienteDto);
 		try {
-			@SuppressWarnings("unchecked")
-			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
+			Cliente cliente = entityDTOParser.getEntityFromDto(clienteDto);
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
 		} catch (Exception e) {
@@ -38,36 +60,20 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	@Transactional
 	@Override
-	public void modificarCliente(ClienteDto clienteDto) {
-		if (clienteDto.getId() == null) {
-			throw new BusinessException("error.clienteServicio.id.nulo", "Se invoca la modificacion de un cliente que no existe en la base de datos ya que no se brinda el ID");
-		}
-
-		validar(clienteDto);
-		try {
-			@SuppressWarnings("unchecked")
-			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
-			clienteDao.saveOrUpdate(cliente);
-		} catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
-	}
-
-	@Transactional
-	@Override
 	public void eliminarCliente(ClienteDto clienteDto) {
 		if (clienteDto.getId() == null) {
 			throw new BusinessException("error.clienteServicio.id.nulo", "Se invoca la eliminación de un cliente que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
-			clienteDao.remove(clienteDto.getId());
+			Cliente cliente = entityDTOParser.getEntityFromDto(clienteDto);
+			cliente.setEliminado(true);
+			clienteDao.saveOrUpdate(cliente);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ClienteDto> consultarCliente(ConsultaClienteDto filtro) {
@@ -78,6 +84,16 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
+	}
+	
+	@Override
+	public List<ProvinciaDto> obtenerProvincias() {
+		return entityDTOParserProvincia.getDtosFromEntities(provinciaDao.getAll());
+	}
+	
+	@Override
+	public List<CiudadDto> obtenerCiudades(ProvinciaDto provincia) {
+		return entityDTOParserCiudad.getDtosFromEntities(ciudadDao.getAll());
 	}
 
 	private void validar(ClienteDto clienteDto) {
@@ -98,5 +114,26 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public void setClienteDao(IClienteDao clienteDao) {
 		this.clienteDao = clienteDao;
 	}
+	
+	public void setProvinciaDao(IProvinciaDao provinciaDao) {
+		this.provinciaDao = provinciaDao;
+	}
+	
+	public void setCiudadDao(ICiudadDao ciudadDao) {
+		this.ciudadDao = ciudadDao;
+	}
+	
+	public void setDireccionDao(IDireccionDao direccionDao) {
+		this.direccionDao = direccionDao;
+	}
 
+	public void setEntityDTOParserCiudad(
+			EntityDTOParser<Ciudad, CiudadDto> entityDTOParserCiudad) {
+		this.entityDTOParserCiudad = entityDTOParserCiudad;
+	}
+	
+	public void setEntityDTOParserProvincia(
+			EntityDTOParser<Provincia, ProvinciaDto> entityDTOParserProvincia) {
+		this.entityDTOParserProvincia = entityDTOParserProvincia;
+	}
 }

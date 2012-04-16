@@ -33,7 +33,10 @@ public class CiudadDto extends BaseDto {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return descripcion;
+	}
 
 }

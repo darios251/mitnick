@@ -32,6 +32,7 @@ public class ClienteView extends BaseView {
 		if(aFlag) {
 			if(!initialized) {
 				this.add( clienteController.getClientePanel(), BorderLayout.CENTER );
+				this.add( clienteController.getClienteNuevoPanel(), BorderLayout.CENTER );
 				initialized = true;
 			}
 		}

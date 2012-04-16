@@ -9,9 +9,9 @@ import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 
 public interface IClienteDao extends GenericDao<Cliente, Long>{
 
-	public List<Cliente> findByDocumento(String documento);
+	List<Cliente> findByDocumento(String documento);
 	
-	public List<Cliente> findByFiltro(ConsultaClienteDto filtro);
+	List<Cliente> findByFiltro(ConsultaClienteDto filtro);
 	
-	public Cliente saveOrUpdate(Cliente cliente);
+	Cliente saveOrUpdate(Cliente cliente);
 }

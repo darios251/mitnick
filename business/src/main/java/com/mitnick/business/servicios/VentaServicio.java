@@ -26,7 +26,7 @@ import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Service("ventaServicio")
-public class VentaServicio extends ServicioBase implements IVentaServicio {
+public class VentaServicio extends ServicioBase<Venta, VentaDto> implements IVentaServicio {
 
 	@Autowired
 	protected IVentaDAO ventaDao;
@@ -34,7 +34,6 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	protected IProductoDAO productoDao;
 	@Autowired
 	protected IMovimientoDao movimientoDao;
-	
 	
 	@Override
 	public VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
@@ -52,7 +51,6 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		VentaHelper.calcularTotales(venta);
 		
 		return venta;
-		
 	}
 
 	@Override
@@ -167,8 +165,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	private void guardarVenta(VentaDto ventaDto){
 		VentaHelper.calcularTotales(ventaDto);
 		try {
-			@SuppressWarnings("unchecked")
-			Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
+			Venta venta = entityDTOParser.getEntityFromDto(ventaDto);
 			//Actualizacion de stock
 			Iterator<ProductoVenta> productos = venta.getProductos().iterator();
 			while (productos.hasNext()) {
@@ -178,7 +175,6 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
-		
 	}
 	
 	@Transactional
@@ -203,7 +199,6 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		productoDao.saveOrUpdate(producto);
 		movimientoDao.saveOrUpdate(movimiento);
 	}
-
 
 	public void setVentaDao(IVentaDAO ventaDao) {
 		this.ventaDao = ventaDao;

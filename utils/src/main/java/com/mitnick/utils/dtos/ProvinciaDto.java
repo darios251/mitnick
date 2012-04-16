@@ -1,5 +1,9 @@
 package com.mitnick.utils.dtos;
 
+/**
+ * @author lukasg
+ *
+ */
 public class ProvinciaDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
@@ -24,4 +28,9 @@ public class ProvinciaDto extends BaseDto {
 		this.id = id;
 	}
 
+	@Override
+	public String toString() {
+		return descripcion;
+	}
+	
 }

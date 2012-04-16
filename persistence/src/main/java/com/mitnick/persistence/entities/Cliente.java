@@ -3,11 +3,14 @@ package com.mitnick.persistence.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,28 +24,33 @@ public class Cliente extends BaseObject implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name = "nombre", length = 20, nullable = false)
+	@Column(name = "nombre", length = 30, nullable = false)
 	private String nombre;
 	
-	@Column(name = "apellido", length = 20, nullable = false)
+	@Column(name = "apellido", length = 30, nullable = false)
 	private String apellido;
 	
 	@Column(name = "documento", length = 10, nullable = false, unique = true)
 	private String documento;
 	
-	@Column(name = "cuit", length = 10, nullable = false, unique = true)
-	private Long cuit;
+	@Column(name = "cuit", length = 13, nullable = false, unique = true)
+	private String cuit;
 
-	@Column(name = "telefono", length = 20, nullable = true)
+	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono;
 	
-	@Column(name = "email", length = 20, nullable = true)
+	@Column(name = "email", length = 40, nullable = true)
 	private String email;
+	
+	@Column(name = "eliminado", nullable = false)
+	private boolean eliminado = false;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento", nullable = true)
 	private Date fechaNacimiento;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn(name = "direccion_id")
 	private Direccion direccion;
 
 	public void setNombre(String nombre) {
@@ -77,11 +85,11 @@ public class Cliente extends BaseObject implements Serializable{
 		return id;
 	}
 	
-	public Long getCuit() {
+	public String getCuit() {
 		return cuit;
 	}
 
-	public void setCuit(Long cuit) {
+	public void setCuit(String cuit) {
 		this.cuit = cuit;
 	}
 
@@ -117,6 +125,14 @@ public class Cliente extends BaseObject implements Serializable{
 		this.direccion = direccion;
 	}
 
+	public boolean isEliminado() {
+		return eliminado;
+	}
+
+	public void setEliminado(boolean eliminado) {
+		this.eliminado = eliminado;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -128,6 +144,7 @@ public class Cliente extends BaseObject implements Serializable{
 				+ ((direccion == null) ? 0 : direccion.hashCode());
 		result = prime * result
 				+ ((documento == null) ? 0 : documento.hashCode());
+		result = prime * result + (eliminado ? 1231 : 1237);
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((fechaNacimiento == null) ? 0 : fechaNacimiento.hashCode());
@@ -167,6 +184,8 @@ public class Cliente extends BaseObject implements Serializable{
 				return false;
 		} else if (!documento.equals(other.documento))
 			return false;
+		if (eliminado != other.eliminado)
+			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -200,7 +219,8 @@ public class Cliente extends BaseObject implements Serializable{
 		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido="
 				+ apellido + ", documento=" + documento + ", cuit=" + cuit
 				+ ", telefono=" + telefono + ", email=" + email
-				+ ", fechaNacimiento=" + fechaNacimiento + ", direccion="
-				+ direccion + "]";
+				+ ", eliminado=" + eliminado + ", fechaNacimiento="
+				+ fechaNacimiento + ", direccion=" + direccion + "]";
 	}
+	
 }

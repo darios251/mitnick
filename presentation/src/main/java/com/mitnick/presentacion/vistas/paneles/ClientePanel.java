@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -127,6 +128,11 @@ public class ClientePanel extends BasePanel {
 		btnNuevo.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnNuevo.setMargin(new Insets(-1, -1, -1, -1));
 		btnNuevo.setBounds(735, 115, 60, 60);
+		btnNuevo.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				clienteController.mostrarClienteNuevoPanel();
+			}
+		});
 		add(btnNuevo);
 		
 		btnModificar = new JButton("");
@@ -136,6 +142,17 @@ public class ClientePanel extends BasePanel {
 		btnModificar.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnModificar.setMargin(new Insets(-1, -1, -1, -1));
 		btnModificar.setBounds(735, 185, 60, 60);
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					clienteController.editarCliente();
+				}
+				catch(PresentationException ex) {
+					mostrarMensaje(ex);
+				}
+				actualizarPantalla();
+			}
+		});
 		add(btnModificar);
 		
 		btnEliminar = new JButton("");
@@ -145,6 +162,21 @@ public class ClientePanel extends BasePanel {
 		btnEliminar.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
 		btnEliminar.setBounds(735, 255, 60, 60);
+		btnEliminar.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("clientePanel.dialog.confirm.eliminar"));
+				
+				if ( opcion == JOptionPane.YES_OPTION) {
+					try {
+						clienteController.eliminarCliente();
+						actualizarPantalla();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			}
+		});
 		add(btnEliminar);
 		
 		btnEstadoCuenta = new JButton("");
@@ -192,6 +224,14 @@ public class ClientePanel extends BasePanel {
 			mostrarMensaje(ex);
 			model.setClientes(new ArrayList<ClienteDto>());
 		}
+	}
+	
+	public JTable getTable() {
+		return table;
+	}
+	
+	public ClienteTableModel getTableModel() {
+		return model;
 	}
 
 	@Override
