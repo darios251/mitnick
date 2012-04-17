@@ -247,8 +247,11 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		movimientoDto.setStock(movimiento.getStockAlaFecha());
 		if (movimiento.getTipo() == Movimiento.AJUSTE)
 			movimientoDto.setTipo(AJUSTE);
-		else
+		else {
 			movimientoDto.setTipo(VENTA);
+			movimientoDto.setCantidad(movimiento.getCantidad()*-1);
+		}
+			
 		return movimientoDto;
 	}
 

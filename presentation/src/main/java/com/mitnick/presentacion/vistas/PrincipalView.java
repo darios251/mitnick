@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.controladores.ProductoController;
-import com.mitnick.presentacion.controladores.ReporteController;
+import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
@@ -46,7 +46,7 @@ public class PrincipalView extends JFrame
 	@Autowired
 	private ClienteController clienteController;
 	@Autowired
-	private ReporteController reporteController;
+	private ReporteMovimientosController reporteController;
 	
 	private DetailPanel pnlPrincipal;
 	private DetailPanel pnlToolBar;

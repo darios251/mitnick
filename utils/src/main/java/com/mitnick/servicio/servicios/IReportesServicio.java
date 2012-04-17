@@ -2,6 +2,7 @@ package com.mitnick.servicio.servicios;
 
 import java.util.List;
 
+import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
@@ -22,7 +23,7 @@ public interface IReportesServicio {
 	 * @param filtro
 	 * @return
 	 */
-	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteMovimientosDto filtro);
+	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteDetalleMovimientosDto filtro);
 	
 	/**
 	 * Obtiene el detalle de ventas para la fecha pasada por parámetro.
