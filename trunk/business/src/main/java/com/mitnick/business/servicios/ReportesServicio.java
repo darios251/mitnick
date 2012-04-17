@@ -15,6 +15,7 @@ import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
+import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
 import com.mitnick.util.EntityDTOParser;
@@ -49,7 +50,7 @@ public class ReportesServicio extends ServicioBase<Producto, ProductoDto> implem
 	
 	@Transactional(readOnly=true)
 	@Override
-	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteMovimientosDto filtro) {
+	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteDetalleMovimientosDto filtro) {
 		try{
 			return entityDTOParserMovimiento.getDtosFromEntities(movimientoDao.findByFiltro(filtro));
 		} catch (Exception e) {

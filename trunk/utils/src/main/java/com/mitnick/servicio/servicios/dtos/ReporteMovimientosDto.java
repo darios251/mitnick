@@ -2,7 +2,8 @@ package com.mitnick.servicio.servicios.dtos;
 
 import java.util.Date;
 
-import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.MarcaDto;
+import com.mitnick.utils.dtos.TipoDto;
 
 public class ReporteMovimientosDto extends ServicioBaseDto {
 	
@@ -12,7 +13,14 @@ public class ReporteMovimientosDto extends ServicioBaseDto {
 	
 	private Date fechaFin;
 	
-	private ProductoDto producto;
+	private String descripcion;
+	
+	private String codigo;
+	
+	private MarcaDto marca;
+	
+	private TipoDto tipo;
+	
 
 	public Date getFechaInicio() {
 		return fechaInicio;
@@ -30,18 +38,44 @@ public class ReporteMovimientosDto extends ServicioBaseDto {
 		this.fechaFin = fechaFin;
 	}
 
-	public ProductoDto getProducto() {
-		return producto;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setProducto(ProductoDto producto) {
-		this.producto = producto;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public MarcaDto getMarca() {
+		return marca;
+	}
+
+	public void setMarca(MarcaDto marca) {
+		this.marca = marca;
+	}
+
+	public TipoDto getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoDto tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override
 	public String toString() {
 		return "ReporteMovimientosDto [fechaInicio=" + fechaInicio
-				+ ", fechaFin=" + fechaFin + ", producto=" + producto + "]";
+				+ ", fechaFin=" + fechaFin + ", descripcion=" + descripcion
+				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo
+				+ "]";
 	}
 	
 }

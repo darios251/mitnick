@@ -7,54 +7,48 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import com.mitnick.utils.PropertiesManager;
-import com.mitnick.utils.dtos.MovimientoProductoDto;
+import com.mitnick.utils.dtos.MovimientoDto;
 
-public class MovimientoTableModel extends AbstractTableModel implements TableModel{
+public class DetalleMovimientoTableModel extends AbstractTableModel implements TableModel{
 	
 private static final long serialVersionUID = 1L;
 	
 	private List<String> columnNames;
-	private List<MovimientoProductoDto> data;
+	private List<MovimientoDto> data;
 	
-	public MovimientoTableModel() {
+	public DetalleMovimientoTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.codigo"));
-		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.original"));
-		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.ventas"));
-		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.ajustes"));
-		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.actual"));
-		data = new ArrayList<MovimientoProductoDto>();
+		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.fecha"));
+		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.tipo"));
+		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.cantidad"));
+		data = new ArrayList<MovimientoDto>();
 	}
 	
 	public List<String> getColumnNames() {
 		return columnNames;
 	}
 
-	public MovimientoProductoDto getMovimiento(int index) {
-		return this.data.get(index);
-	}
-	
 	public void setColumnNames(List<String> columnNames) {
 		this.columnNames = columnNames;
-		this.data = new ArrayList<MovimientoProductoDto>();
+		this.data = new ArrayList<MovimientoDto>();
 		this.fireTableStructureChanged();
 	}
 
-	public List<MovimientoProductoDto> getMovimientoProducto() {
+	public List<MovimientoDto> getMovimientoProducto() {
 		return data;
 	}
 
-	public void setProductosMovimientos(List<MovimientoProductoDto> movimientosProducto) {
+	public void setProductosMovimientos(List<MovimientoDto> movimientosProducto) {
 		this.data = movimientosProducto;
 		this.fireTableDataChanged();
 	}
 	
-	public void addMovimientoProducto(MovimientoProductoDto movimientoProducto) {
+	public void addMovimientoProducto(MovimientoDto movimientoProducto) {
 		this.data.add(0, movimientoProducto);
 		this.fireTableRowsInserted(0, 0);
 	}
 	
-	public void addMovimientoProducto(MovimientoProductoDto movimientoProducto, int index) {
+	public void addMovimientoProducto(MovimientoDto movimientoProducto, int index) {
 		this.data.add(index, movimientoProducto);
 		this.fireTableRowsInserted(index, index);
 	}
@@ -65,7 +59,7 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void removeAll() {
-		this.data = new ArrayList<MovimientoProductoDto>();
+		this.data = new ArrayList<MovimientoDto>();
 		this.fireTableDataChanged();
 	}
 	
@@ -91,36 +85,28 @@ private static final long serialVersionUID = 1L;
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		MovimientoProductoDto fila = data.get(rowIndex);
+		MovimientoDto fila = data.get(rowIndex);
 
 		switch(columnIndex) {
 			case 0:
-				return fila.getProducto().getDescripcion(); 
+				return fila.getFecha().toString(); 
 			case 1: 
-				return fila.getStockOriginal();
+				return fila.getTipo();
 			case 2: 
-				return fila.getVentas();			
-			case 3: 
-				return fila.getAjustes();			
-			case 4: 
-				return fila.getStockFinal();			
+				return fila.getCantidad();			
 		}
 		return data.get(-1);
 	}
 	
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		MovimientoProductoDto fila =  data.get(rowIndex);
-		int valor = Integer.parseInt((String)aValue);
+		MovimientoDto fila =  data.get(rowIndex);
+		String valor = (String)aValue;
 		switch(columnIndex) {
-			case 1: 
-				fila.setStockOriginal(valor); break; 
 			case 2: 
-				fila.setVentas(valor); break; 
+				fila.setTipo(valor); break; 
 			case 3: 
-				fila.setAjustes(valor); break; 	
-			case 4: 
-				fila.setStockFinal(valor); break; 				
+				fila.setCantidad(Integer.parseInt(valor)); break; 	
 						
 		}
 		data.set(rowIndex, fila);

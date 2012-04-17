@@ -5,7 +5,7 @@ import java.awt.Dimension;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mitnick.presentacion.controladores.ReporteController;
+import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.utils.anotaciones.View;
 
 @View("reporteMovimientosView")
@@ -14,7 +14,7 @@ public class ReporteMovimientosView extends BaseView {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private ReporteController reporteController;
+	private ReporteMovimientosController reporteController;
 	
 	private boolean initialized = false;
 
@@ -33,17 +33,18 @@ public class ReporteMovimientosView extends BaseView {
 		if(aFlag) {
 			if(!initialized ){
 				this.add( reporteController.getReporteMovimientosPanel(), BorderLayout.CENTER );
+				this.add( reporteController.getReporteDetalleMovimientosPanel(), BorderLayout.CENTER );
 				initialized = true;
 			}
 		}
 		super.setVisible(aFlag);
 	}
 
-	public ReporteController getReporteController() {
+	public ReporteMovimientosController getReporteController() {
 		return reporteController;
 	}
 
-	public void setReporteController(ReporteController reporteController) {
+	public void setReporteController(ReporteMovimientosController reporteController) {
 		this.reporteController = reporteController;
 	}
 
