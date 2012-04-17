@@ -28,6 +28,7 @@ import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.persistence.entities.Venta;
+import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.BaseDto;
@@ -251,10 +252,31 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		return movimientoDto;
 	}
 
-	//TODO:
+
 	private VentaDto getDtoFromEntity(Venta venta) {
 		VentaDto ventaDto = new VentaDto();
+		
+		ventaDto.setProductos((List<ProductoVentaDto>) getDtosFromEntities((List<E>) venta.getProductos()));
+		
+		ventaDto.setSubTotal(new BigDecimal(venta.getSubtotal()));
+		ventaDto.setTotal(new BigDecimal(venta.getTotal()));
+		ventaDto.setImpuesto(new BigDecimal(venta.getImpuesto()));
+		
+		//el descuento se toma por monto para reportes aun cuando fue por porcentaje
+		DescuentoDto descuento = new DescuentoDto();
+		descuento.setTipo(DescuentoDto.MONTO);
+		descuento.setDescuento(new BigDecimal(venta.getDescuento()));
+		ventaDto.setDescuento(descuento);
+		
+		ventaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) venta.getPagos()));
 		ventaDto.setCliente(getDtoFromEntity(venta.getCliente()));
+
+		//estos valores se setean por defecto porq representan el total de dinero ingresado, no es real
+		ventaDto.setPagado(true);
+		ventaDto.setTotalPagado(new BigDecimal(venta.getTotal()));
+		ventaDto.setFaltaPagar(new BigDecimal(0));
+		ventaDto.setVuelto(new BigDecimal(0));
+		
 		return ventaDto;
 	}
 

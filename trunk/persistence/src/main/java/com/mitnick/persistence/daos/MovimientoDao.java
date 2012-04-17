@@ -24,7 +24,7 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 	public List<Movimiento> findByFiltro(ReporteMovimientosDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
 
-		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
+		if(Validator.isNotNull(filtro.getFechaInicio())){
 			criteria.add(Restrictions.gt("fecha", filtro.getFechaInicio()));
 		}
 		if(Validator.isNotNull(filtro.getFechaFin())){

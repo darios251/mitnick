@@ -19,7 +19,6 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.DireccionDto;
-import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
 @Controller("clienteController")
