@@ -64,25 +64,34 @@ public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implem
 		validar(productoDto);
 		try {
 			//TODO: validar el codigo de producto unico
+			
 			//se calcula el impuesto del producto
 			productoDto.setIva(VentaHelper.CalcularImpuesto(productoDto));
 			
-			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
-			//se calcula la cantidad a ajustar
-			//producto.addMovimientos(movimiento);
+			int stockOriginal = productoDto.getStock();
+			//si el producto existe en la base de datos
+			if (Validator.isNotNull(productoDto.getId())) {
+				Producto productoOriginal = productoDao.get(productoDto.getId());
+				stockOriginal = productoOriginal.getStock();
+			}
 			
+			
+			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
+			
+				if (stockOriginal!=productoDto.getStock()){
+					Movimiento movimiento = new Movimiento();
+					movimiento.setStockAlaFecha(stockOriginal);
+					movimiento.setFecha(new Date());
+					movimiento.setTipo(Movimiento.AJUSTE);
+					movimiento.setCantidad(productoDto.getStock()-stockOriginal);
+					movimiento.setProducto(producto);
+					movimientoDao.saveOrUpdate(movimiento);
+				}
+				
 			producto = productoDao.saveOrUpdate(producto);
 			productoDto.setId(producto.getId());
 			
-			Movimiento movimiento = new Movimiento();
-			movimiento.setCantidad(productoDto.getStock());
-			//el primer movimiento al dar de alta el producto es igual al stock ingresado
-			movimiento.setStockAlaFecha(productoDto.getStock());
-			movimiento.setFecha(new Date());
-			movimiento.setTipo(Movimiento.AJUSTE);
-			movimiento.setProducto(producto);
 			
-			movimientoDao.saveOrUpdate(movimiento);
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
@@ -102,53 +111,6 @@ public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implem
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
-	}
-
-	/**
-	 * Este método modifica la cantidad de stock del producto pasado como
-	 * parámetro. 
-	 * 
-	 * @param producto
-	 * @param cantidad
-	 *            puede ser negativa o postiva
-	 */
-	@Transactional
-	@Override
-	public void modificarStock(ProductoDto productoDto, int cantidad) {
-		if (productoDto.getId() == null) {
-			throw new BusinessException("error.productoServicio.id.nulo", "Se invoca la modificacion de un producto que no existe en la base de datos ya que no se brinda el ID");
-		}
-		Producto producto = null;
-		try {
-			
-			producto = productoDao.get(productoDto.getId());
-		} catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
-		
-		producto.setStock(cantidad);
-		
-		try {
-			productoDao.saveOrUpdate(producto);
-			
-			int stockOriginal = producto.getStock();
-			
-			int movimientoCantidad = cantidad - stockOriginal;
-			
-			//se calcula la cantidad a ajustar
-			Movimiento movimiento = new Movimiento();
-			movimiento.setCantidad(movimientoCantidad);
-			movimiento.setFecha(new Date());
-			movimiento.setTipo(Movimiento.AJUSTE);
-			movimiento.setProducto(producto);
-			
-			movimientoDao.saveOrUpdate(movimiento);
-		} catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
-
-		productoDto.setStock(cantidad);
-
 	}
 
 	@Transactional(readOnly=true)

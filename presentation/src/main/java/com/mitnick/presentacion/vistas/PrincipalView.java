@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.controladores.ProductoController;
+import com.mitnick.presentacion.controladores.ReporteController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
@@ -44,6 +45,8 @@ public class PrincipalView extends JFrame
 	private ProductoController productoController;
 	@Autowired
 	private ClienteController clienteController;
+	@Autowired
+	private ReporteController reporteController;
 	
 	private DetailPanel pnlPrincipal;
 	private DetailPanel pnlToolBar;
@@ -58,6 +61,7 @@ public class PrincipalView extends JFrame
 	private JButton btnVentas;
 	private JButton btnProductos;
 	private JButton btnClientes;
+	private JButton btnReporte;
 
 	private JMenuBar menuBar;
 	private JMenu menuProductos;
@@ -201,6 +205,38 @@ public class PrincipalView extends JFrame
 		}
 
 		return btnProductos;
+	}
+	
+	private JButton getBtnReporte()
+	{
+		if(btnReporte == null)
+		{
+			btnReporte = new JButton();
+			btnReporte.setSize(new Dimension(100, 100));
+			btnReporte.setMinimumSize(new Dimension(100, 100));
+			
+			btnReporte.setText(PropertiesManager.getProperty("productoPanel.tooltip.stock"));
+			btnReporte.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
+			
+			btnReporte.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnReporte.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnReporte.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnReporte.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e)	{
+					if (getJTabbedPane().indexOfComponent(reporteController.getReporteMovimientosPanel()) == -1) {
+						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("productoPanel.label.productos"), reporteController.getReporteMovimientosView());
+					}
+					logger.info("Mostrando el panel de Movimientos de productos");
+					getJTabbedPane().setVisible(true);
+					reporteController.mostrarProductosPanel();
+					getJTabbedPane().setSelectedComponent(reporteController.getReporteMovimientosView());
+				}
+			});
+		}
+
+		return btnReporte;
 	}
 	
 	private JButton getBtnClientes()
@@ -371,6 +407,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnVentas());
 			tlbQuickAccess.add(getBtnArticulos());
 			tlbQuickAccess.add(getBtnClientes());
+			tlbQuickAccess.add(getBtnReporte());
 			tlbQuickAccess.setFloatable(false);
 		}
 
