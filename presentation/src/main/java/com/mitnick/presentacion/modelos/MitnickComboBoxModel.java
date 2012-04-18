@@ -16,4 +16,9 @@ public class MitnickComboBoxModel<E> extends DefaultComboBoxModel<E>  {
     	}
     }
     
+    public void setItems(List<E> elements) {
+    	removeAllElements();
+    	addItems(elements);
+    }
+    
 }
