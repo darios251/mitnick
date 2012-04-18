@@ -9,10 +9,10 @@
     <name>Mitnick</name>
 	
 	<modules>
+		<module>./utils</module>
 		<module>./persistence</module>
 		<module>./business</module>
 		<module>./presentation</module>
-		<module>./utils</module>
     </modules>
 
     <prerequisites>
