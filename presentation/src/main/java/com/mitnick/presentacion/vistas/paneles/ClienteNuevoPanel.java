@@ -219,6 +219,7 @@ public class ClienteNuevoPanel extends BasePanel {
 			}
 		});
 		btnAceptar.setBounds(465, 293, 60, 60);
+		btnAceptar.setFocusable(false);
 		add(btnAceptar);
 		
 		btnCancelar = new JButton(PropertiesManager.getProperty("clienteNuevoPanel.boton.cancelar"));
@@ -237,6 +238,7 @@ public class ClienteNuevoPanel extends BasePanel {
 			}
 		});
 		btnCancelar.setBounds(541, 293, 60, 60);
+		btnCancelar.setFocusable(false);
 		add(btnCancelar);
 				
 		addKeyListeners();

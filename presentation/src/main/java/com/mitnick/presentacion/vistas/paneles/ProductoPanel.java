@@ -26,6 +26,7 @@ import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
@@ -106,12 +107,14 @@ public class ProductoPanel extends BasePanel {
 		add(lblTipo);
 		
 		MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
+		modeloTipo.addElement(MitnickConstants.tipoTodos);
 		modeloTipo.addItems(productoController.obtenerTipos());
 		cmbTipo = new JComboBox<TipoDto>(modeloTipo);
 		cmbTipo.setBounds(200, 55, 110, 20);
 		add(cmbTipo);
 		
 		MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
+		modeloMarca.addElement(MitnickConstants.marcaTodos);
 		modeloMarca.addItems(productoController.obtenerMarcas());
 		cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
 		cmbMarca.setBounds(420, 55, 110, 20);

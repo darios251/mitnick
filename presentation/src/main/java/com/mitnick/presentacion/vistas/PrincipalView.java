@@ -3,6 +3,7 @@ package com.mitnick.presentacion.vistas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,6 +29,7 @@ import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.View;
 
@@ -140,19 +142,17 @@ public class PrincipalView extends JFrame
 	{
 		if(btnVentas == null)
 		{
-			int witdh = 100;
-			int height = 100;
 			btnVentas = new JButton();
-			btnVentas.setSize(new Dimension(witdh, height));
-			btnVentas.setMinimumSize(new Dimension(witdh, height));
+			btnVentas.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
+			
 			btnVentas.setText(PropertiesManager.getProperty("principalView.button.ventas"));
-
-			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/bolsa_blanca.png"));
+			
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/shopping_bag.png"));
 //			Image imgagenOriginal = iconoOriginal.getImage();
-//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(witdh-50, height-50, Image.SCALE_DEFAULT);
+//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
 //		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
-
-			btnVentas.setIcon(iconoOriginal);
+		    btnVentas.setIcon(iconoOriginal);
+			
 			btnVentas.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnVentas.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnVentas.setMargin(new Insets(-1, -1, -1, -1));
@@ -181,10 +181,16 @@ public class PrincipalView extends JFrame
 		if(btnProductos == null)
 		{
 			btnProductos = new JButton();
-			btnProductos.setSize(new Dimension(100, 100));
-			btnProductos.setMinimumSize(new Dimension(100, 100));
+			btnProductos.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
+			
 			btnProductos.setText(PropertiesManager.getProperty("principalView.button.productos"));
-			btnProductos.setIcon(new ImageIcon(this.getClass().getResource("/img/remera.png")));
+			
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/productos.png"));
+//			Image imgagenOriginal = iconoOriginal.getImage();
+//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
+//		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+		    btnProductos.setIcon(iconoOriginal);
+			
 			btnProductos.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnProductos.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnProductos.setMargin(new Insets(-1, -1, -1, -1));
@@ -212,11 +218,15 @@ public class PrincipalView extends JFrame
 		if(btnReporte == null)
 		{
 			btnReporte = new JButton();
-			btnReporte.setSize(new Dimension(100, 100));
-			btnReporte.setMinimumSize(new Dimension(100, 100));
+			btnReporte.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
 			
-			btnReporte.setText(PropertiesManager.getProperty("productoPanel.tooltip.stock"));
-			btnReporte.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
+			btnReporte.setText(PropertiesManager.getProperty("productoPanel.etiqueta.reportes"));
+			
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/reportes.png"));
+//			Image imgagenOriginal = iconoOriginal.getImage();
+//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
+//		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+			btnReporte.setIcon(iconoOriginal);
 			
 			btnReporte.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnReporte.setVerticalTextPosition( SwingConstants.BOTTOM );
@@ -244,8 +254,15 @@ public class PrincipalView extends JFrame
 		if(btnClientes == null)
 		{
 			btnClientes = new JButton();
+			btnClientes.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
+			
 			btnClientes.setText(PropertiesManager.getProperty("principalView.button.clientes"));
-			btnClientes.setIcon(new ImageIcon(this.getClass().getResource("/img/clientes.png")));
+			
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/clientes.png"));
+//			Image imgagenOriginal = iconoOriginal.getImage();
+//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
+//		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+		    btnClientes.setIcon(iconoOriginal);
 			
 			btnClientes.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnClientes.setVerticalTextPosition( SwingConstants.BOTTOM );
@@ -408,6 +425,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnArticulos());
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());
+			
 			tlbQuickAccess.setFloatable(false);
 		}
 
