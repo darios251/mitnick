@@ -56,11 +56,11 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 			criteria.add(Restrictions.ilike("descripcion", filtro.getDescripcion()));
 		}
 		
-		if(Validator.isNotNull(filtro.getMarca())){
+		if(Validator.isNotNull(filtro.getMarca()) && filtro.getMarca().getId() > 0){
 			criteria.add(Restrictions.eq("marca.id", filtro.getMarca().getId()));
 		}
 		
-		if(Validator.isNotNull(filtro.getTipo())){
+		if(Validator.isNotNull(filtro.getTipo()) && filtro.getTipo().getId() > 0){
 			criteria.add(Restrictions.eq("tipo.id", filtro.getTipo().getId()));
 		}
 		
