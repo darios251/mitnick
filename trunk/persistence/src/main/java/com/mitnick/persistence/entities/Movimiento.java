@@ -27,7 +27,6 @@ public class Movimiento extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = false)
 	private Date fecha;

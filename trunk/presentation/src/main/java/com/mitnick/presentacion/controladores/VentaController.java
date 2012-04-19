@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -14,14 +13,19 @@ import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.VentaView;
 import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
+import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.DetalleProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.PagoPanel;
+import com.mitnick.presentacion.vistas.paneles.VentaClientePanel;
 import com.mitnick.presentacion.vistas.paneles.VentaPanel;
+import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
+import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -30,8 +34,6 @@ import com.mitnick.utils.dtos.ProductoVentaDto;
 @Controller("ventaController")
 public class VentaController extends BaseController {
 
-	private static Logger logger = Logger.getLogger(VentaController.class);
-	
 	@Autowired
 	private VentaView ventaView;
 	@Autowired
@@ -42,6 +44,10 @@ public class VentaController extends BaseController {
 	private BuscarProductoPanel buscarProductoPanel;
 	@Autowired
 	private DetalleProductoPanel detalleProductoPanel;
+	@Autowired
+	private VentaClientePanel ventaClientePanel;
+	@Autowired
+	private ClienteNuevoPanel clienteNuevoPanel;
 	
 	@Autowired
 	private	IVentaServicio ventaServicio;
@@ -51,6 +57,9 @@ public class VentaController extends BaseController {
 	
 	@Autowired
 	private IMedioPagoServicio medioPagoServicio;
+	
+	@Autowired
+	private IClienteServicio clienteServicio;
 	
 	private BasePanel ultimoPanelMostrado = null;
 	
@@ -63,6 +72,8 @@ public class VentaController extends BaseController {
 		ventaPanel.setVisible(false);
 		pagoPanel.setVisible(false);
 		detalleProductoPanel.setVisible(false);
+		ventaClientePanel.setVisible(false);
+		clienteNuevoPanel.setVisible(false);
 		buscarProductoPanel.setVisible(true);
 		buscarProductoPanel.limpiarCamposPantalla();
 		buscarProductoPanel.actualizarPantalla();
@@ -78,23 +89,51 @@ public class VentaController extends BaseController {
 		buscarProductoPanel.setVisible(false);
 		pagoPanel.setVisible(false);
 		detalleProductoPanel.setVisible(false);
+		ventaClientePanel.setVisible(false);
+		clienteNuevoPanel.setVisible(false);
 		ventaPanel.setVisible(true);
 		ventaPanel.actualizarPantalla();
 	}
 	
 	public void mostrarPagosPanel() {
+		if(!ventaClientePanel.isConsumidorFinal() && Validator.isNull(VentaManager.getVentaActual().getCliente()))
+			throw new PresentationException("error.venta.cliente.null");
+		ultimoPanelMostrado = pagoPanel;
+		buscarProductoPanel.setVisible(false);
+		ventaPanel.setVisible(false);
+		detalleProductoPanel.setVisible(false);
+		ventaClientePanel.setVisible(false);
+		clienteNuevoPanel.setVisible(false);
+		pagoPanel.setVisible(true);
+		pagoPanel.actualizarPantalla();
+	}
+	
+	public void mostrarClienteVenta() {
 		// valido si puede ir o no a la pantalla de pagos
 		if(VentaManager.getVentaActual().getProductos().isEmpty())
 			throw new PresentationException("error.venta.pagos.productos.vacios");
 		else if(BigDecimal.ZERO.equals(VentaManager.getVentaActual().getTotal()))
 			throw new PresentationException("error.venta.pagos.total.cero");
-		
-		ultimoPanelMostrado = pagoPanel;
+		ultimoPanelMostrado = ventaClientePanel;
 		buscarProductoPanel.setVisible(false);
 		ventaPanel.setVisible(false);
 		detalleProductoPanel.setVisible(false);
-		pagoPanel.setVisible(true);
-		pagoPanel.actualizarPantalla();
+		pagoPanel.setVisible(false);
+		clienteNuevoPanel.setVisible(false);
+		ventaClientePanel.setVisible(true);
+		ventaClientePanel.actualizarPantalla();
+	}
+	
+	public void mostrarClienteNuevoPanel() {
+		ultimoPanelMostrado = ventaClientePanel;
+		buscarProductoPanel.setVisible(false);
+		ventaPanel.setVisible(false);
+		detalleProductoPanel.setVisible(false);
+		pagoPanel.setVisible(false);
+		ventaClientePanel.setVisible(false);
+		clienteNuevoPanel.setPanelRetorno(ventaClientePanel);
+		clienteNuevoPanel.setVisible(true);
+		clienteNuevoPanel.actualizarPantalla();
 	}
 	
 	public void mostrarDetalleProductoPanel() {
@@ -156,6 +195,9 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 		
 		if(Validator.isNotEmptyOrNull(productos)) {
 			VentaManager.setVentaActual(ventaServicio.agregarProducto(productos.get(0), VentaManager.getVentaActual()));
@@ -186,6 +228,9 @@ public class VentaController extends BaseController {
 		}
 		catch (BusinessException e) {
 			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 		
 		logger.info("Recalculando totales");
@@ -228,6 +273,9 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(),"Hubo un error al intentar agregar el pago con medio de pago: " + medioPago + " y monto: " + monto);
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 		
 		finalizarVenta();
 		
@@ -266,6 +314,9 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el pago: " + pagoDto);
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 		
 		logger.debug("Saliendo del método quitaPago");
 	}
@@ -288,8 +339,86 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 		
 		logger.debug("Saliendo del método modificarCantidad");
+	}
+
+	public List<ClienteDto> obtenerClientesByFilter(ConsultaClienteDto filtroDto) {
+		logger.debug("Entrando al método consultarClienteByFilter con :" + filtroDto);
+		
+		if(Validator.isNull(filtroDto))
+			throw new PresentationException("error.unknown", "El filtro para la consulta de clientes no puede ser nulo");
+		if(!Validator.isBlankOrNull(filtroDto.getDocumento()) && !Validator.isDocumentNumber(filtroDto.getDocumento()))
+			throw new PresentationException("error.cliente.consulta.documento.format");
+		
+		List<ClienteDto> clientes = null;
+		try {
+			clientes = clienteServicio.consultarCliente(filtroDto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
+		
+		if(Validator.isEmptyOrNull(clientes))
+			throw new PresentationException("error.cliente.consulta.clientes.null");
+		
+		logger.debug("Saliendo del método consultarClienteByFilter");
+		
+		return clientes;
+	}
+	
+	public void quitarCliente() {
+		logger.debug("Entrando al método quitarCliente");
+		
+		try {
+			ventaServicio.quitarCliente(VentaManager.getVentaActual());
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
+		
+		logger.info("El cliente se quitó correctamente de la venta.");
+		logger.debug("Saliendo del método quitarCliente");
+	}
+	
+	public void agregarCliente() {
+		logger.debug("Entrando al método agregarCliente");
+		
+		ClienteDto cliente = null;
+		try {
+			int index = getVentaClientePanel().getTable().getSelectedRow();
+			cliente = getVentaClientePanel().getTableModel().getCliente(index);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getVentaClientePanel().getTableModel().getRowCount() == 0) {
+				throw new PresentationException("error.ventaClientePanel.clientes.vacio");
+			}
+			else {
+				throw new PresentationException("error.ventaClientePanel.cliente.noSeleccionado");
+			}
+		}
+		
+		try {
+			ventaServicio.agregarCliente(cliente, VentaManager.getVentaActual());
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
+		
+		logger.info("El cliente : " + cliente + " se agregó correctamente a la venta.");
+		logger.debug("Saliendo del método agregarCliente");
 	}
 	
 	public VentaView getVentaView() {
@@ -322,6 +451,14 @@ public class VentaController extends BaseController {
 
 	public void setBuscarProductoPanel(BuscarProductoPanel buscarProductoPanel) {
 		this.buscarProductoPanel = buscarProductoPanel;
+	}
+	
+	public VentaClientePanel getVentaClientePanel() {
+		return ventaClientePanel;
+	}
+
+	public void setVentaClientePanel(VentaClientePanel ventaClientePanel) {
+		this.ventaClientePanel = ventaClientePanel;
 	}
 	
 	protected IMedioPagoServicio getMedioPagoServicio() {
@@ -362,6 +499,18 @@ public class VentaController extends BaseController {
 
 	public void setDetalleProductoPanel(DetalleProductoPanel detalleProductoPanel) {
 		this.detalleProductoPanel = detalleProductoPanel;
+	}
+
+	public ClienteNuevoPanel getClienteNuevoPanel() {
+		return clienteNuevoPanel;
+	}
+
+	public void setClienteNuevoPanel(ClienteNuevoPanel clienteNuevoPanel) {
+		this.clienteNuevoPanel = clienteNuevoPanel;
+	}
+
+	public void setClienteServicio(IClienteServicio clienteServicio) {
+		this.clienteServicio = clienteServicio;
 	}
 
 }

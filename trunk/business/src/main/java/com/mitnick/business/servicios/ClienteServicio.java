@@ -24,7 +24,7 @@ import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
 @Service("clienteServicio")
-public class ClienteServicio extends ServicioBase<Cliente, ClienteDto> implements IClienteServicio {
+public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	@Autowired
 	protected IClienteDao clienteDao;
@@ -38,18 +38,13 @@ public class ClienteServicio extends ServicioBase<Cliente, ClienteDto> implement
 	@Autowired
 	protected IDireccionDao direccionDao;
 	
-	@Autowired
-	protected EntityDTOParser<Provincia, ProvinciaDto> entityDTOParserProvincia;
-	
-	@Autowired
-	protected EntityDTOParser<Ciudad, CiudadDto> entityDTOParserCiudad;
-
 	@Transactional
 	@Override
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
 		validar(clienteDto);
 		try {
-			Cliente cliente = entityDTOParser.getEntityFromDto(clienteDto);
+			@SuppressWarnings("unchecked")
+			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
 		} catch (Exception e) {
@@ -65,7 +60,8 @@ public class ClienteServicio extends ServicioBase<Cliente, ClienteDto> implement
 			throw new BusinessException("error.clienteServicio.id.nulo", "Se invoca la eliminación de un cliente que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
-			Cliente cliente = entityDTOParser.getEntityFromDto(clienteDto);
+			@SuppressWarnings("unchecked")
+			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
 			cliente.setEliminado(true);
 			clienteDao.saveOrUpdate(cliente);
 		} catch (Exception e) {
@@ -74,6 +70,7 @@ public class ClienteServicio extends ServicioBase<Cliente, ClienteDto> implement
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ClienteDto> consultarCliente(ConsultaClienteDto filtro) {
@@ -86,14 +83,16 @@ public class ClienteServicio extends ServicioBase<Cliente, ClienteDto> implement
 		return resultado;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ProvinciaDto> obtenerProvincias() {
-		return entityDTOParserProvincia.getDtosFromEntities(provinciaDao.getAll());
+		return entityDTOParser.getDtosFromEntities(provinciaDao.getAll());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<CiudadDto> obtenerCiudades(ProvinciaDto provincia) {
-		return entityDTOParserCiudad.getDtosFromEntities(ciudadDao.getAll());
+		return entityDTOParser.getDtosFromEntities(ciudadDao.getAll());
 	}
 
 	private void validar(ClienteDto clienteDto) {
@@ -127,13 +126,15 @@ public class ClienteServicio extends ServicioBase<Cliente, ClienteDto> implement
 		this.direccionDao = direccionDao;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setEntityDTOParserCiudad(
 			EntityDTOParser<Ciudad, CiudadDto> entityDTOParserCiudad) {
-		this.entityDTOParserCiudad = entityDTOParserCiudad;
+		this.entityDTOParser = entityDTOParserCiudad;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setEntityDTOParserProvincia(
 			EntityDTOParser<Provincia, ProvinciaDto> entityDTOParserProvincia) {
-		this.entityDTOParserProvincia = entityDTOParserProvincia;
+		this.entityDTOParser = entityDTOParserProvincia;
 	}
 }

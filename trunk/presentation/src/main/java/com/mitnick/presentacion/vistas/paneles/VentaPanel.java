@@ -179,7 +179,7 @@ public class VentaPanel extends BasePanel {
 		btnPagos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ventaController.mostrarPagosPanel();
+					ventaController.mostrarClienteVenta();
 				}
 				catch(PresentationException ex) {
 					mostrarMensaje(ex);

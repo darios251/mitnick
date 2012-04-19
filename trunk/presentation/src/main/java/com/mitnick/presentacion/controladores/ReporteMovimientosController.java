@@ -2,7 +2,6 @@ package com.mitnick.presentacion.controladores;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -22,9 +21,6 @@ import com.mitnick.utils.dtos.TipoDto;
 
 @Controller("reporteMovimientosController")
 public class ReporteMovimientosController extends BaseController {
-
-	private static Logger logger = Logger
-			.getLogger(ReporteMovimientosController.class);
 
 	@Autowired
 	private ReporteMovimientosView reporteMovimientosView;
@@ -71,10 +67,12 @@ public class ReporteMovimientosController extends BaseController {
 
 		List<MovimientoProductoDto> resultado = null;
 		try {
-			resultado = getReporteServicio()
-					.reporteMovimientosAgrupadosPorProducto(filtro);
+			resultado = getReporteServicio().reporteMovimientosAgrupadosPorProducto(filtro);
 		} catch (BusinessException e) {
 			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 
 		// chequeo si se encontro o no algo en la busqueda
@@ -84,16 +82,17 @@ public class ReporteMovimientosController extends BaseController {
 		return resultado;
 	}
 
-	public List<MovimientoDto> reporteMovimientosDeProducto(
-			ReporteDetalleMovimientosDto filtro) {
+	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteDetalleMovimientosDto filtro) {
 		logger.info("Consultando movimientos de productos por filtro");
 
 		List<MovimientoDto> resultado = null;
 		try {
-			resultado = getReporteServicio().reporteMovimientosDeProducto(
-					filtro);
+			resultado = getReporteServicio().reporteMovimientosDeProducto(filtro);
 		} catch (BusinessException e) {
 			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 
 		// chequeo si se encontro o no algo en la busqueda
@@ -106,18 +105,24 @@ public class ReporteMovimientosController extends BaseController {
 	public List<MarcaDto> obtenerMarcas() {
 		try {
 			return productoServicio.obtenerMarcas();
-		} catch (BusinessException e) {
-			throw new PresentationException(e.getMessage(),
-					"Hubo un error al intentar obtener las marcas");
+		}
+		catch (BusinessException e) {
+			throw new PresentationException(e.getMessage(),	"Hubo un error al intentar obtener las marcas");
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 
 	public List<TipoDto> obtenerTipos() {
 		try {
 			return productoServicio.obtenerTipos();
-		} catch (BusinessException e) {
-			throw new PresentationException(e.getMessage(),
-					"Hubo un error al intentar obtener los tipos");
+		} 
+		catch (BusinessException e) {
+			throw new PresentationException(e.getMessage(),	"Hubo un error al intentar obtener los tipos");
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 
