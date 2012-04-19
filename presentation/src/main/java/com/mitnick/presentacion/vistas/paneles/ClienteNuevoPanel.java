@@ -55,6 +55,8 @@ public class ClienteNuevoPanel extends BasePanel {
 	
 	private JComboBox<CiudadDto> cmbCiudad;
 	private JComboBox<ProvinciaDto> cmbProvincia;
+	
+	private BasePanel panelRetorno;
 	/**
 	 * @throws Exception 
 	 * @wbp.parser.constructor
@@ -234,7 +236,7 @@ public class ClienteNuevoPanel extends BasePanel {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limpiarCamposPantalla();
-				clienteController.mostrarClientePanel();
+				retornarLLamador();
 			}
 		});
 		btnCancelar.setBounds(541, 293, 60, 60);
@@ -265,13 +267,22 @@ public class ClienteNuevoPanel extends BasePanel {
 						txtTelefono.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
 						txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto)cmbCiudad.getSelectedItem());
 			limpiarCamposPantalla();
-			clienteController.mostrarClientePanel();
+			retornarLLamador();
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
 		}
 	}
 	
+	private void retornarLLamador() {
+		if(panelRetorno == null)
+			clienteController.mostrarClientePanel();
+		else {
+			this.setVisible(false);
+			panelRetorno.setVisible(true);
+		}
+	}
+
 	public void setCliente(ClienteDto clienteDto) {
 		this.cliente = clienteDto;
 	}
@@ -309,5 +320,13 @@ public class ClienteNuevoPanel extends BasePanel {
 	@Override
 	public void setDefaultFocusField() {
 		this.defaultFocusField = txtApellido;
+	}
+
+	public BasePanel getPanelRetorno() {
+		return panelRetorno;
+	}
+
+	public void setPanelRetorno(BasePanel panelRetorno) {
+		this.panelRetorno = panelRetorno;
 	}
 }

@@ -3,7 +3,6 @@ package com.mitnick.presentacion.controladores;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -21,8 +20,6 @@ import com.mitnick.utils.dtos.TipoDto;
 
 @Controller("productoController")
 public class ProductoController extends BaseController {
-	
-	private static Logger logger = Logger.getLogger(ProductoController.class);
 	
 	@Autowired
 	private ProductoView productoView;
@@ -52,7 +49,7 @@ public class ProductoController extends BaseController {
 	}
 	
 	public List<ProductoDto> getProductosByFilter(ConsultaProductoDto dto) {
-		logger.info("Consultando productos por filtro");
+		logger.debug("Entrando al método getProductosByFilter con: " + dto);
 		
 		
 		List<ProductoDto> resultado = null;
@@ -61,6 +58,9 @@ public class ProductoController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 		
 		// chequeo si se encontro o no algo en la busqueda
@@ -77,6 +77,9 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener las marcas");
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 	}
 	
 	public List<TipoDto> obtenerTipos() {
@@ -86,6 +89,9 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los tipos");
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 	}
 	
 	public List<ProductoDto> getAllProductos() {
@@ -94,6 +100,9 @@ public class ProductoController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los productos");
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	
@@ -133,6 +142,9 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar dar del alta el producto: " + producto);
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 	}
 	
 	public void eliminarProducto() {
@@ -155,6 +167,9 @@ public class ProductoController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el producto");
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	
@@ -179,6 +194,9 @@ public class ProductoController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el producto");
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	

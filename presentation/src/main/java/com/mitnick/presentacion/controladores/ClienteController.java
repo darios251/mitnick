@@ -51,6 +51,9 @@ public class ClienteController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 		
 		if(Validator.isEmptyOrNull(clientes))
 			throw new PresentationException("error.cliente.consulta.clientes.null");
@@ -69,6 +72,9 @@ public class ClienteController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
+		}
 		
 		if(Validator.isEmptyOrNull(provincias))
 			throw new PresentationException("error.cliente.nuevo.provincias.null");
@@ -84,6 +90,9 @@ public class ClienteController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 		
 		if(Validator.isEmptyOrNull(ciudades))
@@ -124,6 +133,7 @@ public class ClienteController extends BaseController {
 	
 	public void mostrarClienteNuevoPanel() {
 		clientePanel.setVisible(false);
+		clienteNuevoPanel.setPanelRetorno(null);
 		clienteNuevoPanel.setVisible(true);
 		clienteNuevoPanel.actualizarPantalla();
 	}
@@ -201,10 +211,10 @@ public class ClienteController extends BaseController {
 		}
 		catch (IndexOutOfBoundsException exception) {
 			if(getClientePanel().getTableModel().getRowCount() == 0) {
-				throw new PresentationException("error.clientePanel.clientes.vacio");
+				throw new PresentationException("error.clientePanel.clientes.editar.vacio");
 			}
 			else {
-				throw new PresentationException("error.clientePanel.cliente.noSeleccionado");
+				throw new PresentationException("error.clientePanel.cliente.editar.noSeleccionado");
 			}
 		}
 		
@@ -214,6 +224,9 @@ public class ClienteController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el cliente");
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 
@@ -237,6 +250,9 @@ public class ClienteController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el cliente");
+		}
+		catch(Exception e) {
+			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	
