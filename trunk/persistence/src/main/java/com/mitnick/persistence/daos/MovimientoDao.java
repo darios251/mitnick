@@ -40,6 +40,7 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Movimiento> findByFiltro(ReporteMovimientosDto filtro) { 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
 

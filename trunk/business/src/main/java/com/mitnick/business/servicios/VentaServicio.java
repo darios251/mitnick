@@ -25,8 +25,9 @@ import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
+@SuppressWarnings("rawtypes")
 @Service("ventaServicio")
-public class VentaServicio extends ServicioBase<Venta, VentaDto> implements IVentaServicio {
+public class VentaServicio extends ServicioBase implements IVentaServicio {
 
 	@Autowired
 	protected IVentaDAO ventaDao;
@@ -165,7 +166,8 @@ public class VentaServicio extends ServicioBase<Venta, VentaDto> implements IVen
 	private void guardarVenta(VentaDto ventaDto){
 		VentaHelper.calcularTotales(ventaDto);
 		try {
-			Venta venta = entityDTOParser.getEntityFromDto(ventaDto);
+			@SuppressWarnings("unchecked")
+			Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 			//Actualizacion de stock
 			Iterator<ProductoVenta> productos = venta.getProductos().iterator();
 			while (productos.hasNext()) {

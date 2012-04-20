@@ -256,6 +256,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private VentaDto getDtoFromEntity(Venta venta) {
 		VentaDto ventaDto = new VentaDto();
 		

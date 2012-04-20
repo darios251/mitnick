@@ -13,32 +13,48 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.appfuse.model.BaseObject;
+import org.hibernate.validator.constraints.Email;
 
 @Entity(name = "Cliente")
-public class Cliente extends BaseObject implements Serializable{
+public class Cliente extends BaseObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
+	@NotNull(message="{error.entity.cliente.nombre.null}")
+	@Size(min=3, max=30, message="{error.entity.cliente.nombre.size}")
+	@Pattern(regexp="^[a-zA-Záéíóúñ]*$", message="{error.entity.cliente.nombre.regexp}")
 	@Column(name = "nombre", length = 30, nullable = false)
 	private String nombre;
 	
+	@NotNull(message="{error.entity.cliente.apellido.null}")
+	@Size(min=3, max=30, message="{error.entity.cliente.apellido.size}")
+	@Pattern(regexp="^[a-zA-Záéíóúñ]*$", message="{error.entity.cliente.apellido.regexp}")
 	@Column(name = "apellido", length = 30, nullable = false)
 	private String apellido;
-	
+
+	@NotNull(message="{error.entity.cliente.documento.null}")
+	@Size(min=8, max=10, message="{error.entity.cliente.documento.size}")
 	@Column(name = "documento", length = 10, nullable = false, unique = true)
 	private String documento;
 	
+	@NotNull(message="{error.entity.cliente.cuit.null}")
+	@Size(min=13, max=13, message="{error.entity.cliente.cuit.size}")
 	@Column(name = "cuit", length = 13, nullable = false, unique = true)
 	private String cuit;
 
+	@Size(min=10, max=40, message="{error.entity.cliente.telefono.size}")
 	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono;
 	
+	@Email(message="{error.entity.cliente.email.format}")
 	@Column(name = "email", length = 40, nullable = true)
 	private String email;
 	
