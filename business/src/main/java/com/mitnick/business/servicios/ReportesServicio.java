@@ -12,31 +12,23 @@ import com.mitnick.exceptions.BusinessException;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Movimiento;
-import com.mitnick.persistence.entities.Producto;
-import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
-import com.mitnick.util.EntityDTOParser;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.VentaDto;
 
+@SuppressWarnings("rawtypes")
 @Service("reportesServicio")
-public class ReportesServicio extends ServicioBase<Producto, ProductoDto> implements IReportesServicio {
+public class ReportesServicio extends ServicioBase implements IReportesServicio {
 	
 	@Autowired
 	protected IMovimientoDao movimientoDao;
 	
 	protected IVentaDAO ventaDao;
-	
-	@Autowired
-	protected EntityDTOParser<Venta, VentaDto> entityDTOParserVenta;
-	
-	@Autowired
-	protected EntityDTOParser<Movimiento, MovimientoDto> entityDTOParserMovimiento;
 	
 	@Transactional(readOnly=true)
 	@Override
@@ -48,11 +40,12 @@ public class ReportesServicio extends ServicioBase<Producto, ProductoDto> implem
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteDetalleMovimientosDto filtro) {
 		try{
-			return entityDTOParserMovimiento.getDtosFromEntities(movimientoDao.findByFiltro(filtro));
+			return entityDTOParser.getDtosFromEntities(movimientoDao.findByFiltro(filtro));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  movimiento", e);
 		}
@@ -83,6 +76,7 @@ public class ReportesServicio extends ServicioBase<Producto, ProductoDto> implem
 	 * @param productos
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private MovimientoProductoDto getDetallePorProducto(Movimiento movimiento, List<MovimientoProductoDto> productos){
 		Iterator<MovimientoProductoDto> movProductos = productos.iterator();
 		MovimientoProductoDto movimientoDto = null;
@@ -97,19 +91,20 @@ public class ReportesServicio extends ServicioBase<Producto, ProductoDto> implem
 			movimientoDto.setVentas(0);
 			movimientoDto.setStockFinal(movimiento.getStockAlaFecha());
 			movimientoDto.setStockOriginal(movimiento.getStockAlaFecha());
-			movimientoDto.setProducto(entityDTOParser.getDtoFromEntity(movimiento.getProducto()));
+			movimientoDto.setProducto((ProductoDto) entityDTOParser.getDtoFromEntity(movimiento.getProducto()));
 			productos.add(movimientoDto);
 		}
 		
 		return movimientoDto;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<VentaDto> reporteVentas(ReporteVentaDto filtro) {
 		List<VentaDto> ventas = new ArrayList<VentaDto>();
 		try{
-			ventas.addAll(entityDTOParserVenta.getDtosFromEntities(ventaDao.findByFiltro(filtro)));
+			ventas.addAll(entityDTOParser.getDtosFromEntities(ventaDao.findByFiltro(filtro)));
 		} catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
@@ -127,9 +122,4 @@ public class ReportesServicio extends ServicioBase<Producto, ProductoDto> implem
 		this.ventaDao = ventaDao;
 	}
 	
-	public void setEntityDTOParserVenta(
-			EntityDTOParser<Venta, VentaDto> entityDTOParserVenta) {
-		this.entityDTOParserVenta = entityDTOParserVenta;
-	}
-
 }

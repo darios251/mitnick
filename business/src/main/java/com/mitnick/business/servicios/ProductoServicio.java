@@ -27,8 +27,9 @@ import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
+@SuppressWarnings("rawtypes")
 @Service("productoServicio")
-public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implements IProductoServicio {
+public class ProductoServicio extends ServicioBase implements IProductoServicio {
 
 	@Autowired
 	protected IProductoDAO productoDao;
@@ -48,6 +49,7 @@ public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implem
 	@Autowired
 	private EntityDTOParser<Marca, MarcaDto> entityDTOParserMarca;
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ProductoDto> consultaProducto(ConsultaProductoDto filtro) {
@@ -76,7 +78,8 @@ public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implem
 			}
 			
 			
-			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
+			@SuppressWarnings("unchecked")
+			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			
 				if (stockOriginal!=productoDto.getStock()){
 					Movimiento movimiento = new Movimiento();
@@ -105,7 +108,8 @@ public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implem
 			throw new BusinessException("error.productoServicio.id.nulo", "Se invoca la modificacion de un producto que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
-			Producto producto = entityDTOParser.getEntityFromDto(productoDto);
+			@SuppressWarnings("unchecked")
+			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			producto.setEliminado(true);
 			productoDao.saveOrUpdate(producto);
 		} catch (Exception e) {
@@ -113,6 +117,7 @@ public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implem
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ProductoDto> obtenerStock(ConsultaStockDto filtro) {
@@ -149,6 +154,7 @@ public class ProductoServicio extends ServicioBase<Producto, ProductoDto> implem
 		return resultado;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<ProductoDto> obtenerProductos() {

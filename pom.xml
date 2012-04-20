@@ -98,6 +98,16 @@
             <snapshots>
             </snapshots>
         </repository>
+        <repository>
+	        <id>jboss</id>
+	        <url>http://repository.jboss.com/maven2</url>
+	        <releases>
+	            <enabled>true</enabled>
+	        </releases>
+	        <snapshots>
+	            <enabled>false</enabled>
+	        </snapshots>
+	    </repository>
     </repositories>
 
     <pluginRepositories>
@@ -301,4 +311,53 @@
 		<jdbc.username>postgres</jdbc.username>
 		<jdbc.password>postgres</jdbc.password>
     </properties>
+    
+    <dependencies>
+    	<dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <version>${jmock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
+            <version>${jmock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Upgrade junit-dep used by jmock -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>4.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.hibernate</groupId>
+		  <artifactId>hibernate-validator-annotation-processor</artifactId>
+		  <version>4.1.0.Final</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-api</artifactId>
+		  <version>1.6.4</version>
+		</dependency>
+    </dependencies>
 </project>

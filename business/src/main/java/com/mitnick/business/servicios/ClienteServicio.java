@@ -2,6 +2,9 @@ package com.mitnick.business.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +21,13 @@ import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.util.EntityDTOParser;
+import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
+@SuppressWarnings("rawtypes")
 @Service("clienteServicio")
 public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
@@ -42,9 +47,13 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Override
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
 		validar(clienteDto);
+		@SuppressWarnings("unchecked")
+		Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
+		Set<ConstraintViolation<Cliente>> constraintViolations = entityValidator.validate(cliente);
+		if(Validator.isNotEmptyOrNull(constraintViolations))
+			throw new BusinessException(new ConstraintValidationHelper<Cliente>().getMessage(constraintViolations));
+		
 		try {
-			@SuppressWarnings("unchecked")
-			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
 		} catch (Exception e) {
