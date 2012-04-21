@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
+import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IVentaDAO;
@@ -174,7 +175,11 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				actualizarStock(productos.next());
 			}
 			ventaDao.saveOrUpdate(venta);
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar guardar el cliente");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 	}

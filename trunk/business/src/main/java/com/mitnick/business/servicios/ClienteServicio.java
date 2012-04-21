@@ -2,26 +2,20 @@ package com.mitnick.business.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
+import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.persistence.daos.IDireccionDao;
 import com.mitnick.persistence.daos.IProvinciaDao;
-import com.mitnick.persistence.entities.Ciudad;
 import com.mitnick.persistence.entities.Cliente;
-import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
-import com.mitnick.util.EntityDTOParser;
-import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -49,15 +43,15 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		validar(clienteDto);
 		@SuppressWarnings("unchecked")
 		Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
-		Set<ConstraintViolation<Cliente>> constraintViolations = entityValidator.validate(cliente);
-		if(Validator.isNotEmptyOrNull(constraintViolations))
-			throw new BusinessException(new ConstraintValidationHelper<Cliente>().getMessage(constraintViolations));
 		
 		try {
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar guardar el cliente");
 		} catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
+			throw new BusinessException("error.persistence", "Error al intentar guardar el cliente", e);
 		}
 		return clienteDto;
 	}
@@ -73,7 +67,11 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
 			cliente.setEliminado(true);
 			clienteDao.saveOrUpdate(cliente);
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar eliminar el cliente");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 
@@ -86,7 +84,11 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		List<ClienteDto> resultado = new ArrayList<ClienteDto>();
 		try {
 			resultado = entityDTOParser.getDtosFromEntities(clienteDao.findByFiltro(filtro));
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar consultar clientes");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
@@ -135,15 +137,4 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		this.direccionDao = direccionDao;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setEntityDTOParserCiudad(
-			EntityDTOParser<Ciudad, CiudadDto> entityDTOParserCiudad) {
-		this.entityDTOParser = entityDTOParserCiudad;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void setEntityDTOParserProvincia(
-			EntityDTOParser<Provincia, ProvinciaDto> entityDTOParserProvincia) {
-		this.entityDTOParser = entityDTOParserProvincia;
-	}
 }
