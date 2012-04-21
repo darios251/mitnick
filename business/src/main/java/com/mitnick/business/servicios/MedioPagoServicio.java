@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
+import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.IMedioPagoDAO;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.utils.dtos.MedioPagoDto;
@@ -26,7 +27,11 @@ public class MedioPagoServicio extends ServicioBase implements IMedioPagoServici
 		List<MedioPagoDto> resultado = new ArrayList<MedioPagoDto>();
 		try {
 			resultado.addAll(entityDTOParser.getDtosFromEntities(medioPagoDao.getAll()));
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener medios de pagos");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;

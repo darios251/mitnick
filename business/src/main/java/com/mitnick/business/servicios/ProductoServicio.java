@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
+import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
@@ -55,7 +56,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	public List<ProductoDto> consultaProducto(ConsultaProductoDto filtro) {
 		try{
 			return entityDTOParser.getDtosFromEntities(productoDao.findByFiltro(filtro));
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar consultar productos");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 	}
@@ -95,7 +100,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			productoDto.setId(producto.getId());
 			
 			
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar guardar el producto");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return productoDto;
@@ -112,7 +121,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			producto.setEliminado(true);
 			productoDao.saveOrUpdate(producto);
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar eliminar el producto");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 	}
@@ -124,7 +137,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		List<ProductoDto> resultado = new ArrayList<ProductoDto>();
 		try {
 			resultado.addAll(entityDTOParser.getDtosFromEntities(productoDao.findStockByFiltro(filtro)));
-		} catch (Exception e) {
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el stock");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
@@ -136,7 +153,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		List<TipoDto> resultado = new ArrayList<TipoDto>();
 		try {
 			resultado.addAll(entityDTOParserTipo.getDtosFromEntities(tipoDao.getAll()));
-		} catch (Exception e) {
+		} 
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener los tipos");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
@@ -148,7 +169,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		List<MarcaDto> resultado = new ArrayList<MarcaDto>();
 		try {
 			resultado.addAll(entityDTOParserMarca.getDtosFromEntities(marcaDao.getAll()));
-		} catch (Exception e) {
+		} 
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener las marcas");
+		}
+		catch (Exception e) {
 			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;

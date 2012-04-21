@@ -11,6 +11,16 @@ package com.mitnick.exceptions;
 public class BusinessException extends BaseException {
 	
 	private static final long serialVersionUID = 1L;
+	
+	public BusinessException(PersistenceException e)
+	{
+		super(e.getMessage(), e);
+	}
+	
+	public BusinessException(PersistenceException e, String log)
+	{
+		super(e.getMessage(), log, e);
+	}
 
 	public BusinessException(String key)
 	{
