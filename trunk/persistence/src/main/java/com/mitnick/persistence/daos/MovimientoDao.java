@@ -31,10 +31,11 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
+		criteria.createAlias("producto", "p");
 		if(Validator.isNotNull(filtro.getProducto())){
-			criteria.add(Restrictions.eq("producto.id", filtro.getProducto().getId()));
+			criteria.add(Restrictions.eq("p.id", filtro.getProducto().getId()));
 		}
-		criteria.add(Restrictions.eq("eliminado", false));
+		criteria.add(Restrictions.eq("p.eliminado", false));
 		
 		criteria.addOrder(Order.desc("fecha"));
 		return getHibernateTemplate().findByCriteria(criteria);
