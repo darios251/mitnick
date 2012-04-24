@@ -134,6 +134,7 @@ public class BaseException extends RuntimeException {
 		switch (this.type) {
 		case ERROR:
 			logger.error(message, cause);
+			this.printStackTrace();
 			break;
 		case WARNING:
 			logger.warn(message, cause);
@@ -141,13 +142,11 @@ public class BaseException extends RuntimeException {
 		default:
 			break;
 		}
-		
 	}
 
 	
 	public int getType() {
 		return type;
 	}
-	
 
 }
