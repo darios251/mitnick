@@ -158,7 +158,7 @@ public class VentaController extends BaseController {
 				throw new PresentationException("ventaPanel.dialog.warning.emptyModel");
 			}
 			else {
-				throw new PresentationException("ventaPanel.dialog.warning.noRowSelected");
+				throw new PresentationException("error.venta.producto.cantidad.seleccionarFila");
 			}
 		}
 	}
