@@ -26,8 +26,10 @@ import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.MovimientoTableModel;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
@@ -135,6 +137,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 		txtFechaInicio = new JTextField();
 		txtFechaInicio.setColumns(10);
 		txtFechaInicio.setBounds(200, 95, 110, 20);
+		txtFechaInicio.setText("01/01/1900");
 		add(txtFechaInicio);
 		
 		lblFechaFin = new JLabel("Fin");
@@ -144,6 +147,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 		txtFechaFinal = new JTextField();
 		txtFechaFinal.setColumns(10);
 		txtFechaFinal.setBounds(420, 95, 110, 20);
+		txtFechaFinal.setText(DateHelper.getFecha(new Date()));
 		add(txtFechaFinal);
 		
 		// Creo una tabla con un sorter
@@ -286,10 +290,16 @@ public class ReporteMovimientosPanel extends BasePanel {
 		this.txtFechaFinal = txtFechaFinal;
 	}
 	
+	
 	public Date getFechaInicio(){
-		return null;
+		if (Validator.isNotBlankOrNull(txtFechaInicio.getText()))
+			return DateHelper.getFecha(txtFechaInicio.getText());
+		return null;		
 	}
+	
 	public Date getFechaFinal(){
+		if (Validator.isNotBlankOrNull(txtFechaFinal.getText()))
+			return DateHelper.getFecha(txtFechaFinal.getText());
 		return null;
 	}
 	
