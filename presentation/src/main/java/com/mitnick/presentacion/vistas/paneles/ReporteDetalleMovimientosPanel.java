@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.modelos.DetalleMovimientoTableModel;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MovimientoDto;
@@ -39,6 +41,9 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 	private JLabel lblDescripcin;
 	private JLabel lblStockOriginal;
 	private JLabel lblStokFinal;
+	private JLabel lblFechaInicial;
+	private JLabel lblFechaFinal;
+
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JButton btnExportar;
@@ -48,6 +53,8 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 	private ProductoDto producto;
 	private Date fechaInicio;
 	private Date fechaFin;
+	private int stockOriginal;
+	private int stockFinal;
 	
 	@Autowired
 	public ReporteDetalleMovimientosPanel(@Qualifier ("reporteMovimientosController") ReporteMovimientosController reporteController) {
@@ -74,22 +81,35 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblCdigo = new JLabel(PropertiesManager.getProperty("productoPanel.label.codigo"));
-		lblCdigo.setBounds(125, 15, 60, 20);
+		lblCdigo = new JLabel("Código: " + producto.getCodigo());
+		lblCdigo.setBounds(125, 15, 100, 20);
 		add(lblCdigo);
 		
-		lblDescripcin = new JLabel(PropertiesManager.getProperty("productoPanel.label.descripcion"));
-		lblDescripcin.setBounds(330, 15, 60, 20);
+		lblDescripcin = new JLabel("Descripción: " + producto.getDescripcion());
+		lblDescripcin.setBounds(330, 15, 150, 20);
 		add(lblDescripcin);
-
-		lblStockOriginal = new JLabel("Stock original");
-		lblStockOriginal.setBounds(125, 55, 90, 20);
+		
+		
+		lblStockOriginal = new JLabel("Stock original: " + String.valueOf(stockOriginal));
+		lblStockOriginal.setBounds(125, 35, 100, 20);
 		add(lblStockOriginal);
 		
-		lblStokFinal = new JLabel("Stock final");
-		lblStokFinal.setBounds(330, 55, 60, 20);
+		lblStokFinal = new JLabel("Stock final: " + String.valueOf(stockFinal));
+		lblStokFinal.setBounds(330, 35, 100, 20);
 		add(lblStokFinal);
 		
+		
+		if (fechaInicio!=null) {
+			lblFechaInicial = new JLabel("Desde: " + DateHelper.getFecha(fechaInicio));
+			lblFechaInicial.setBounds(125, 55, 120, 20);
+			add(lblFechaInicial);
+		}
+		
+		if (fechaFin!=null) {	
+			lblFechaFinal = new JLabel("Hasta: " + DateHelper.getFecha(fechaFin));
+			lblFechaFinal.setBounds(330, 55, 120, 20);
+			add(lblFechaFinal);
+		}
 		// Creo una tabla con un sorter
 		model = new DetalleMovimientoTableModel();
         sorter = new TableRowSorter<DetalleMovimientoTableModel>(model);
@@ -133,7 +153,12 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 			dto.setProducto(producto);
 			dto.setFechaInicio(fechaInicio);
 			dto.setFechaFin(fechaFin);
-			model.setProductosMovimientos(reporteController.reporteMovimientosDeProducto(dto));
+			List<MovimientoDto> movimientos = reporteController.reporteMovimientosDeProducto(dto);
+			if (fechaInicio==null)
+				fechaInicio = movimientos.get(0).getFecha();
+			if (fechaFin==null)
+				fechaFin = movimientos.get(movimientos.size()-1).getFecha();
+			model.setProductosMovimientos(movimientos);
 		}
 		catch (PresentationException ex) {
 			mostrarMensaje(ex);
@@ -154,6 +179,22 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		consultarProductos();
 	}
 	
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
 	@Override
 	public void setDefaultFocusField() {
 		
@@ -191,20 +232,20 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		this.producto = producto;
 	}
 
-	public Date getFechaInicio() {
-		return fechaInicio;
+	public int getStockOriginal() {
+		return stockOriginal;
 	}
 
-	public void setFechaInicio(Date fechaInicio) {
-		this.fechaInicio = fechaInicio;
+	public void setStockOriginal(int stockOriginal) {
+		this.stockOriginal = stockOriginal;
 	}
 
-	public Date getFechaFin() {
-		return fechaFin;
+	public int getStockFinal() {
+		return stockFinal;
 	}
 
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
+	public void setStockFinal(int stockFinal) {
+		this.stockFinal = stockFinal;
 	}
 	
 	

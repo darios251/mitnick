@@ -40,8 +40,8 @@ public class ReporteMovimientosController extends BaseController {
 	}
 
 	public void mostrarProductosPanel() {
-		logger.info("Mostrando el panel de productos");
-		reporteMovimientosPanel.setVisible(false);
+		logger.info("Mostrando el panel de productos");		
+		reporteDetalleMovimientosPanel.setVisible(false);
 		reporteMovimientosPanel.setVisible(true);
 		reporteMovimientosPanel.actualizarPantalla();
 	}
@@ -56,6 +56,8 @@ public class ReporteMovimientosController extends BaseController {
 		reporteDetalleMovimientosPanel.setProducto(getReporteMovimientosPanel().getTableModel().getMovimiento(index).getProducto());
 		reporteDetalleMovimientosPanel.setFechaInicio(getReporteMovimientosPanel().getFechaInicio());
 		reporteDetalleMovimientosPanel.setFechaFin(getReporteMovimientosPanel().getFechaFinal());
+		reporteDetalleMovimientosPanel.setStockOriginal(getReporteMovimientosPanel().getTableModel().getMovimiento(index).getStockOriginal());
+		reporteDetalleMovimientosPanel.setStockFinal(getReporteMovimientosPanel().getTableModel().getMovimiento(index).getStockFinal());
 		reporteMovimientosPanel.setVisible(false);
 		reporteDetalleMovimientosPanel.setVisible(true);
 		reporteDetalleMovimientosPanel.actualizarPantalla();
