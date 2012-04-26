@@ -130,7 +130,7 @@ public class ProductoPanel extends BasePanel {
         table = new JTable(model);
         table.setRowSorter(sorter);
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-        table.setFillsViewportHeight(true);
+//        table.setFillsViewportHeight(true);
 		
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(25, 115, 700, 315);

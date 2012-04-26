@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -31,6 +33,7 @@ import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
+import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
@@ -64,6 +67,12 @@ public class PagoPanel extends BasePanel {
 	private JLabel lblTotalAPagar;
 	
 	private PagoTableModel pagoTableModel;
+
+	private JPanel pnlCliente;
+	private JLabel lblApellidoNombre;
+	private JLabel lblDni;
+
+	private JLabel lblConsumidorFinal;
 	
 	@Autowired
 	public PagoPanel(@Qualifier("ventaController") VentaController ventaController) {
@@ -258,6 +267,13 @@ public class PagoPanel extends BasePanel {
 		lblAPagarValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAPagarValor.setBounds(396, 420, 88, 20);
 		add(lblAPagarValor);
+		
+		
+		add(getLblConsumidorFinal());
+		
+		add(getPnlCliente());
+		
+		
 	}
 	
 	protected void agregarPago() {
@@ -305,8 +321,26 @@ public class PagoPanel extends BasePanel {
 			pagoTableModel.setPagos(VentaManager.getVentaActual().getPagos());
 		}
 		if(Validator.isNotNull(txtMonto)) {
-			txtMonto.setText("");
+			txtMonto.setText(VentaManager.getVentaActual().getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			txtMonto.requestFocus();
+			txtMonto.setSelectionStart(0);
+			txtMonto.setSelectionEnd(txtMonto.getText().length());
+		}
+		
+		
+		if(Validator.isNotNull(VentaManager.getVentaActual().getCliente())){
+			ClienteDto cliente = VentaManager.getVentaActual().getCliente();
+			
+			getLblApellidoNombre().setText(cliente.getApellido() + ", " + cliente.getNombre());
+			getLblDni().setText(cliente.getDocumento());
+			
+			getPnlCliente().setVisible(true);
+			getLblConsumidorFinal().setVisible(false);
+		}
+		
+		if(ventaController.getVentaClientePanel().isConsumidorFinal()) {
+			getLblConsumidorFinal().setVisible(true);
+			getPnlCliente().setVisible(false);
 		}
 	}
 	
@@ -331,5 +365,42 @@ public class PagoPanel extends BasePanel {
 	     Object[] options = { PropertiesManager.getProperty( "dialog.error.reintentar" ), PropertiesManager.getProperty( "dialog.error.cancelarVenta" )  };
 	     
 	     return JOptionPane.showOptionDialog( currentView, PropertiesManager.getProperty( "dialog.error.MensajeReintentar" ), PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+	}
+
+	public JPanel getPnlCliente() {
+		if(pnlCliente == null) {
+			pnlCliente = new JPanel();
+			pnlCliente.setLayout(null);
+			pnlCliente.setBounds(44, 299, 202, 160);
+			pnlCliente.add(getLblApellidoNombre());
+			pnlCliente.add(getLblDni());
+		}
+		return pnlCliente;
+	}
+
+	public JLabel getLblApellidoNombre() {
+		if(lblApellidoNombre == null) {
+			lblApellidoNombre = new JLabel("<<Apellido, Nombre>>");
+			lblApellidoNombre.setBounds(10, 11, 182, 14);
+			getPnlCliente().add(lblApellidoNombre);
+		}
+		return lblApellidoNombre;
+	}
+	
+	public JLabel getLblDni() {
+		if(lblDni == null) {
+			lblDni = new JLabel("<<DNI>>");
+			lblDni.setBounds(10, 36, 182, 14);
+			getPnlCliente().add(lblDni);
+		}
+		return lblDni;
+	}
+	
+	public JLabel getLblConsumidorFinal() {
+		if(lblConsumidorFinal == null) {
+			lblConsumidorFinal = new JLabel("Consumidor Final");
+			lblConsumidorFinal.setBounds(44, 276, 115, 14);
+		}
+		return lblConsumidorFinal;
 	}
 }
