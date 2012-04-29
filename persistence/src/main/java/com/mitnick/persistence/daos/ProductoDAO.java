@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -53,7 +54,7 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 		}
 		
 		if(!Validator.isBlankOrNull(filtro.getDescripcion())){
-			criteria.add(Restrictions.ilike("descripcion", filtro.getDescripcion()));
+			criteria.add(Restrictions.ilike("descripcion", filtro.getDescripcion(), MatchMode.ANYWHERE));
 		}
 		
 		if(Validator.isNotNull(filtro.getMarca()) && filtro.getMarca().getId() > 0){
