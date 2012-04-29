@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,7 @@ public class BuscarProductoPanel extends BasePanel {
 		// Creo una tabla con un sorter
 		model = new ProductoTableModel();
         table = new JTable(model);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 //        table.setFillsViewportHeight(true);
 		
@@ -69,6 +71,16 @@ public class BuscarProductoPanel extends BasePanel {
 		add(lblCodigo);
 		
 		txtCodigo = new JTextField();
+		txtCodigo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					buscarProducto();
+				}
+				catch(PresentationException ex) {
+					mostrarMensaje(ex);
+				}
+			}
+		});
 		txtCodigo.setColumns(10);
 		txtCodigo.setBounds(200, 35, 110, 20);
 		add(txtCodigo);
@@ -78,6 +90,16 @@ public class BuscarProductoPanel extends BasePanel {
 		add(lblDescripcion);
 		
 		txtDescripcion = new JTextField();
+		txtDescripcion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					buscarProducto();
+				}
+				catch(PresentationException ex) {
+					mostrarMensaje(ex);
+				}
+			}
+		});
 		txtDescripcion.setColumns(10);
 		txtDescripcion.setBounds(420, 35, 110, 20);
 		add(txtDescripcion);
@@ -92,12 +114,8 @@ public class BuscarProductoPanel extends BasePanel {
 		
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConsultaProductoDto dto = new ConsultaProductoDto();
-				dto.setCodigo(txtCodigo.getText());
-				dto.setDescripcion(txtDescripcion.getText());
-
 				try {
-					model.setProductos(	productoController.getProductosByFilter(dto) );
+					buscarProducto();
 				}
 				catch(PresentationException ex) {
 					mostrarMensaje(ex);
@@ -156,6 +174,14 @@ public class BuscarProductoPanel extends BasePanel {
 		lblProductos = new JLabel(PropertiesManager.getProperty("buscarProductoPanel.etiqueta.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
+	}
+
+	private void buscarProducto() {
+		ConsultaProductoDto dto = new ConsultaProductoDto();
+		dto.setCodigo(txtCodigo.getText());
+		dto.setDescripcion(txtDescripcion.getText());
+	
+		model.setProductos(	productoController.getProductosByFilter(dto) );
 	}
 
 	@Override

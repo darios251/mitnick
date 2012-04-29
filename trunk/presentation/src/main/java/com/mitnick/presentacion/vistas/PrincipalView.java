@@ -219,7 +219,7 @@ public class PrincipalView extends JFrame
 			btnReporte = new JButton();
 			btnReporte.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
 			
-			btnReporte.setText(PropertiesManager.getProperty("productoPanel.etiqueta.reportes"));
+			btnReporte.setText(PropertiesManager.getProperty("principalView.button.reportes"));
 			
 			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/reportes.png"));
 //			Image imgagenOriginal = iconoOriginal.getImage();

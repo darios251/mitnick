@@ -60,11 +60,11 @@ public class DetalleProductoPanel extends BasePanel {
 		
 		lblCantidad = new JLabel(PropertiesManager.getProperty("detalleProductoPanel.etiqueta.cantidad"));
 		lblCantidad.setHorizontalAlignment(SwingConstants.LEFT);
-		lblCantidad.setBounds(44, 105, 110, 20);
+		lblCantidad.setBounds(200, 87, 110, 20);
 		add(lblCantidad);
 		
 		txtCantidad = new JTextField();
-		txtCantidad.setBounds(164, 105, 110, 20);
+		txtCantidad.setBounds(320, 87, 110, 20);
 		txtCantidad.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -89,7 +89,7 @@ public class DetalleProductoPanel extends BasePanel {
 				modificarCantidad();
 			}
 		});
-		btnAceptar.setBounds(324, 35, 60, 60);
+		btnAceptar.setBounds(470, 50, 60, 60);
 		add(btnAceptar);
 		
 		btnVolver = new JButton(PropertiesManager.getProperty("detalleProductoPanel.boton.cancelar"));
@@ -97,7 +97,7 @@ public class DetalleProductoPanel extends BasePanel {
 		btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnVolver.setMargin(new Insets(-1, -1, -1, -1));
-		btnVolver.setBounds(324, 105, 60, 60);
+		btnVolver.setBounds(540, 50, 60, 60);
 		btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -114,12 +114,12 @@ public class DetalleProductoPanel extends BasePanel {
 		
 		lblCodigo = new JLabel(PropertiesManager.getProperty("detalleProductoPanel.etiqueta.codigo"));
 		lblCodigo.setHorizontalAlignment(SwingConstants.LEFT);
-		lblCodigo.setBounds(44, 56, 110, 20);
+		lblCodigo.setBounds(200, 50, 110, 20);
 		add(lblCodigo);
 		
 		lblCodigoValor = new JLabel("<< codigo >>");
 		lblCodigoValor.setHorizontalAlignment(SwingConstants.LEFT);
-		lblCodigoValor.setBounds(164, 56, 110, 20);
+		lblCodigoValor.setBounds(320, 50, 110, 20);
 		add(lblCodigoValor);
 	}
 	

@@ -169,6 +169,7 @@ public class VentaClientePanel extends BasePanel {
 		btnAgregarCliente.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnAgregarCliente.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnAgregarCliente.setMargin(new Insets(-1, -1, -1, -1));
+		btnAgregarCliente.setVisible(false);
 		
 		btnAgregarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -35,30 +35,29 @@ import com.mitnick.utils.dtos.ProductoVentaDto;
 
 @Panel("ventaPanel")
 public class VentaPanel extends BasePanel {
-	
-	private static final long serialVersionUID = 1L;
-	
-	private VentaController ventaController;
-	
-	private JScrollPane scrollPane;
-	private JLabel lblTotal;
-	private JButton btnContinuar;
-	private JLabel lblVenta;
-	private JButton btnQuitar;
-	private JButton btnBuscar;
-	private JLabel lblCdigo;
-	
-	private JTable table;
-	private JTextField txtCodigo;
 
+	private static final long serialVersionUID = 1L;
+
+	private VentaController ventaController;
+
+	private JScrollPane scrollPane;
+	private JTable table;
 	private VentaTableModel model;
 
+	private JLabel lblTotal;
+	private JLabel lblVenta;
+	private JLabel lblCdigo;
 	private JLabel lblTotalValor;
-
-	private JButton btnAgregar;
 	private JLabel lblSutotal;
 	private JLabel lblSubtotalValor;
-	
+
+	private JButton btnContinuar;
+	private JButton btnQuitar;
+	private JButton btnBuscar;
+	private JButton btnAgregar;
+
+	private JTextField txtCodigo;
+
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -67,17 +66,18 @@ public class VentaPanel extends BasePanel {
 		initializeComponents();
 		throw new Exception("Este constructor no debe ser utilizado");
 	}
-	
+
 	@Autowired
-	public VentaPanel(@Qualifier("ventaController") VentaController ventaController) {
+	public VentaPanel(
+			@Qualifier("ventaController") VentaController ventaController) {
 		this.ventaController = ventaController;
 	}
 
 	@Override
 	public void limpiarCamposPantalla() {
-		if(Validator.isNotNull(txtCodigo))
+		if (Validator.isNotNull(txtCodigo))
 			txtCodigo.setText("");
-		if(Validator.isNotNull(getModel()))
+		if (Validator.isNotNull(getModel()))
 			getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
 	}
 
@@ -85,149 +85,19 @@ public class VentaPanel extends BasePanel {
 	protected void initializeComponents() {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
-		
-		model = new VentaTableModel();
-		
-		table = new JTable(model);
-		table.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evento) {
-				if (evento.getClickCount() == 2) {
-					try {
-						ventaController.mostrarDetalleProductoPanel();
-					}
-					catch(PresentationException ex) {
-						mostrarMensaje(ex);
-					}
-				}
-			}
-		});
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-//		table.setFillsViewportHeight(true);
-		table.setCellSelectionEnabled(false);
-		
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(25, 115, 700, 315);
-		add(scrollPane);
-		
-		lblCdigo = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.codigo"));
-		lblCdigo.setBounds(330, 35, 70, 20);
-		add(lblCdigo);
-		
-		txtCodigo = new JTextField();
-		txtCodigo.setName("codigoVenta");
-		txtCodigo.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					agregarProducto();
-				}
-			}
-		});
-		txtCodigo.setBounds(420, 35, 110, 20);
-		txtCodigo.setColumns(10);
-		add(txtCodigo);
-		
-		btnBuscar = new JButton(PropertiesManager.getProperty("ventaPanel.button.buscar"));
-		btnBuscar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.buscar"));
-		
-		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
-		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ventaController.mostrarBuscarArticuloPanel();
-			}
-		});
-		btnBuscar.setBounds(630, 15, 60, 60);
-		add(btnBuscar);
-		
-		btnQuitar = new JButton(PropertiesManager.getProperty("ventaPanel.button.quitar"));
-		btnQuitar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.quitar"));
-		
-		btnQuitar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
-		btnQuitar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnQuitar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnQuitar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnQuitar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evento) {
-				try {
-					int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"));
-					
-					if ( opcion == JOptionPane.YES_OPTION) {
-						ventaController.quitarProductoVentaDto();	
-					}
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		btnQuitar.setBounds(735, 115, 60, 60);
-		add(btnQuitar);
-		
-		lblVenta = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.venta"));
-		lblVenta.setBounds(25, 90, 46, 20);
-		add(lblVenta);
-		
-		btnContinuar = new JButton(PropertiesManager.getProperty("ventaPanel.button.continuar"));
-		btnContinuar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.continuar"));
-		
-		btnContinuar.setIcon(new ImageIcon(this.getClass().getResource("/img/continuar.png")));
-		btnContinuar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnContinuar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnContinuar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					ventaController.mostrarClienteVenta();
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		btnContinuar.setBounds(735, 185, 60, 60);
-		add(btnContinuar);
-		
-		lblSutotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.subtotal"));
-		lblSutotal.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSutotal.setBounds(279, 441, 88, 20);
-		add(lblSutotal);
-		
-		lblSubtotalValor = new JLabel("<< subtotal >>");
-		lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSubtotalValor.setBounds(377, 441, 88, 20);
-		add(lblSubtotalValor);
-		
-		lblTotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.total"));
-		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotal.setBounds(475, 441, 88, 20);
-		add(lblTotal);		
-		
-		lblTotalValor = new JLabel("<< total >>");
-		lblTotalValor.setBounds(625, 441, 88, 20);
-		add(lblTotalValor);
-		
-		btnAgregar = new JButton(PropertiesManager.getProperty("ventaPanel.button.agregar"));
-		btnAgregar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.agregar"));
-		
-		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
-		btnAgregar.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnAgregar.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				agregarProducto();
-			}
-		});
-		btnAgregar.setBounds(560, 15, 60, 60);
-		add(btnAgregar);
+
+		add(getScrollPane());
+		add(getLblCdigo());
+		add(getTxtCodigo());
+		add(getBtnBuscar());
+		add(getBtnQuitar());
+		add(getLblVenta());
+		add(getBtnContinuar());
+		add(getLblSutotal());
+		add(getLblSubtotalValor());
+		add(getLblTotal());
+		add(getLblTotalValor());
+		add(getBtnAgregar());
 	}
 
 	public void agregarProducto() {
@@ -235,30 +105,243 @@ public class VentaPanel extends BasePanel {
 		try {
 			ventaController.agregarProducto(txtCodigo.getText());
 			txtCodigo.setText("");
-		}
-		catch(PresentationException ex) {
+		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
 		logger.debug("saliendo de agregarProducto");
 	}
-	
+
 	public void actualizarPantalla() {
-		if(Validator.isNotNull(getModel()) && VentaManager.getVentaActual() != null)
-			getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
-		if(Validator.isNotNull(lblTotalValor) && VentaManager.getVentaActual() != null)
-			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		if(Validator.isNotNull(lblSubtotalValor) && VentaManager.getVentaActual() != null)
-			lblSubtotalValor.setText(VentaManager.getVentaActual().getTotal().toEngineeringString());
+		if (Validator.isNotNull(getModel())
+				&& VentaManager.getVentaActual() != null)
+			getModel().setProductosVenta(
+					VentaManager.getVentaActual().getProductos());
+		if (Validator.isNotNull(lblTotalValor)
+				&& VentaManager.getVentaActual() != null)
+			lblTotalValor.setText(VentaManager.getVentaActual().getTotal()
+					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		if (Validator.isNotNull(lblSubtotalValor)
+				&& VentaManager.getVentaActual() != null)
+			lblSubtotalValor.setText(VentaManager.getVentaActual().getTotal()
+					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	}
-	
+
 	public JTable getTable() {
+		if(table == null) {
+			table = new JTable(getModel());
+			table.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent evento) {
+					if (evento.getClickCount() == 2) {
+						try {
+							ventaController.mostrarDetalleProductoPanel();
+						} catch (PresentationException ex) {
+							mostrarMensaje(ex);
+						}
+					}
+				}
+			});
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+			// table.setFillsViewportHeight(true);
+		}
 		return table;
 	}
-	
+
 	public VentaTableModel getModel() {
-		return this.model;
+		if(model == null) {
+			model = new VentaTableModel();
+		}
+		return model;
 	}
-	
+
+	public JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane(getTable());
+			scrollPane.setBounds(25, 115, 700, 315);
+		}
+		return scrollPane;
+	}
+
+	public JLabel getLblTotal() {
+		if (lblTotal == null) {
+			lblTotal = new JLabel(
+					PropertiesManager.getProperty("ventaPanel.etiqueta.total"));
+			lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTotal.setBounds(475, 441, 88, 20);
+		}
+		return lblTotal;
+	}
+
+	public JLabel getLblVenta() {
+		if (lblVenta == null) {
+			lblVenta = new JLabel(
+					PropertiesManager.getProperty("ventaPanel.etiqueta.venta"));
+			lblVenta.setBounds(25, 90, 46, 20);
+		}
+		return lblVenta;
+	}
+
+	public JLabel getLblCdigo() {
+		if (lblCdigo == null) {
+			lblCdigo = new JLabel(
+					PropertiesManager.getProperty("ventaPanel.etiqueta.codigo"));
+			lblCdigo.setBounds(330, 35, 70, 20);
+		}
+		return lblCdigo;
+	}
+
+	public JLabel getLblTotalValor() {
+		if (lblTotalValor == null) {
+			lblTotalValor = new JLabel("<< total >>");
+			lblTotalValor.setBounds(625, 441, 88, 20);
+		}
+		return lblTotalValor;
+	}
+
+	public JLabel getLblSutotal() {
+		if (lblSutotal == null) {
+			lblSutotal = new JLabel(
+					PropertiesManager.getProperty("ventaPanel.etiqueta.subtotal"));
+			lblSutotal.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblSutotal.setBounds(279, 441, 88, 20);
+		}
+		return lblSutotal;
+	}
+
+	public JLabel getLblSubtotalValor() {
+		if (lblSubtotalValor == null) {
+			lblSubtotalValor = new JLabel("<< subtotal >>");
+			lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblSubtotalValor.setBounds(377, 441, 88, 20);
+		}
+		return lblSubtotalValor;
+	}
+
+	public JButton getBtnContinuar() {
+		if (btnContinuar == null) {
+			btnContinuar = new JButton(
+					PropertiesManager
+							.getProperty("ventaPanel.button.continuar"));
+			btnContinuar.setToolTipText(PropertiesManager
+					.getProperty("ventaPanel.tooltip.continuar"));
+
+			btnContinuar.setIcon(new ImageIcon(this.getClass().getResource(
+					"/img/continuar.png")));
+			btnContinuar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnContinuar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
+			btnContinuar.setBounds(735, 185, 60, 60);
+
+			btnContinuar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						ventaController.mostrarClienteVenta();
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnContinuar;
+	}
+
+	public JButton getBtnQuitar() {
+		if (btnQuitar == null) {
+			btnQuitar = new JButton(
+					PropertiesManager.getProperty("ventaPanel.button.quitar"));
+			btnQuitar.setToolTipText(PropertiesManager
+					.getProperty("ventaPanel.tooltip.quitar"));
+			btnQuitar.setIcon(new ImageIcon(this.getClass().getResource(
+					"/img/cancelar.png")));
+
+			btnQuitar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnQuitar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnQuitar.setMargin(new Insets(-1, -1, -1, -1));
+			btnQuitar.setBounds(735, 115, 60, 60);
+
+			btnQuitar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					try {
+						int opcion = mostrarMensajeAdvertencia(PropertiesManager
+								.getProperty("ventaPanel.dialog.confirm.quitar"));
+
+						if (opcion == JOptionPane.YES_OPTION) {
+							ventaController.quitarProductoVentaDto();
+						}
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnQuitar;
+	}
+
+	public JButton getBtnBuscar() {
+		if (btnBuscar == null) {
+
+			btnBuscar = new JButton(
+					PropertiesManager.getProperty("ventaPanel.button.buscar"));
+			btnBuscar.setToolTipText(PropertiesManager
+					.getProperty("ventaPanel.tooltip.buscar"));
+			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource(
+					"/img/buscar.png")));
+
+			btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnBuscar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
+			btnBuscar.setBounds(630, 15, 60, 60);
+
+			btnBuscar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ventaController.mostrarBuscarArticuloPanel();
+				}
+			});
+		}
+		return btnBuscar;
+	}
+
+	public JButton getBtnAgregar() {
+		if (btnAgregar == null) {
+			btnAgregar = new JButton(
+					PropertiesManager.getProperty("ventaPanel.button.agregar"));
+			btnAgregar.setToolTipText(PropertiesManager
+					.getProperty("ventaPanel.tooltip.agregar"));
+
+			btnAgregar.setIcon(new ImageIcon(this.getClass().getResource(
+					"/img/agregar.png")));
+			btnAgregar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnAgregar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
+			btnAgregar.setBounds(560, 15, 60, 60);
+
+			btnAgregar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					agregarProducto();
+				}
+			});
+		}
+		return btnAgregar;
+	}
+
+	public JTextField getTxtCodigo() {
+		if (txtCodigo == null) {
+			txtCodigo = new JTextField();
+			txtCodigo.setName("codigoVenta");
+			txtCodigo.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						agregarProducto();
+					}
+				}
+			});
+			txtCodigo.setBounds(420, 35, 110, 20);
+			txtCodigo.setColumns(10);
+		}
+		return txtCodigo;
+	}
+
 	@Override
 	public void setDefaultFocusField() {
 		this.defaultFocusField = txtCodigo;
