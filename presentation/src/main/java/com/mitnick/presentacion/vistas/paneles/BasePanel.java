@@ -40,7 +40,7 @@ public abstract class BasePanel extends JPanel {
 	}
 	
 	protected void initializePanel () {
-
+		setFocusCycleRoot(true);
 	}
 	
 	protected int mostrarMensaje(PresentationException ex) {

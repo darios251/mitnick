@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
@@ -28,8 +30,6 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
-
-import javax.swing.JComboBox;
 
 @Panel("clienteNuevoPanel")
 public class ClienteNuevoPanel extends BasePanel {
@@ -57,6 +57,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	private JComboBox<ProvinciaDto> cmbProvincia;
 	
 	private BasePanel panelRetorno;
+	
 	/**
 	 * @throws Exception 
 	 * @wbp.parser.constructor
@@ -242,9 +243,19 @@ public class ClienteNuevoPanel extends BasePanel {
 		btnCancelar.setBounds(541, 293, 60, 60);
 		btnCancelar.setFocusable(false);
 		add(btnCancelar);
-				
+
 		addKeyListeners();
+		
+		setFocusTraversalPolicy();
 	}
+	
+	public void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtApellido, txtNombre, txtDocumento, txtCuit,
+						txtTelefono, txtEmail, txtFechaNacimiento, txtDomicilio,
+						txtCodigoPostal, cmbCiudad, cmbProvincia}));
+	}
+	
 	
 	private void addKeyListeners() {
 		for(Component component : this.getComponents()) {

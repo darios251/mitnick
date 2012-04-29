@@ -1,6 +1,5 @@
 package com.mitnick.presentacion.vistas.paneles;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -32,38 +31,47 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
+import java.util.ResourceBundle;
 
 @Panel("productoPanel")
 public class ProductoPanel extends BasePanel {
-	
+	private static final ResourceBundle PropertiesManager2 = ResourceBundle.getBundle("com.mitnick.utils.presentation-labels"); //$NON-NLS-1$
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private ProductoController productoController;
+
+	private JScrollPane scrollPane;
+	private JTable table;
+	private TableRowSorter<ProductoTableModel> sorter;
+	private ProductoTableModel model;
 	
 	private JTextField txtCodigo;
 	private JTextField txtDescripcion;
+	
 	private JComboBox<TipoDto> cmbTipo;
 	private JComboBox<MarcaDto> cmbMarca;
+	
 	private JLabel lblMarca;
-	private JButton btnBuscar;
-	private Component lblTipo;
-	private JLabel lblDescripcin;
+	private JLabel lblTipo;
+	private JLabel lblDescripcion;
 	private JLabel lblCdigo;
-	private JScrollPane scrollPane;
-	private JTable table;
+	private JLabel lblArtculos;
+	private JLabel lblProductos;
+	
+	private JButton btnBuscar;
 	private JButton btnAgregar;
 	private JButton btnEditar;
 	private JButton btnEliminar;
-	private JLabel lblArtculos;
-	private TableRowSorter<ProductoTableModel> sorter;
-	private ProductoTableModel model;
 	private JButton btnMovimientos;
-	
+
+
 	@Autowired
-	public ProductoPanel(@Qualifier ("productoController") ProductoController productoController) {
+	public ProductoPanel(
+			@Qualifier("productoController") ProductoController productoController) {
 		this.productoController = productoController;
 	}
-	
+
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -71,11 +79,9 @@ public class ProductoPanel extends BasePanel {
 		initializeComponents();
 	}
 
-	
-
 	@Override
 	protected void limpiarCamposPantalla() {
-		
+
 	}
 
 	@Override
@@ -84,195 +90,309 @@ public class ProductoPanel extends BasePanel {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblCdigo = new JLabel(PropertiesManager.getProperty("productoPanel.label.codigo"));
-		lblCdigo.setBounds(125, 15, 60, 20);
-		add(lblCdigo);
-		
-		txtCodigo = new JTextField();
-		txtCodigo.setColumns(10);
-		txtCodigo.setBounds(200, 15, 110, 20);
-		add(txtCodigo);
-		
-		lblDescripcin = new JLabel(PropertiesManager.getProperty("productoPanel.label.descripcion"));
-		lblDescripcin.setBounds(330, 15, 60, 20);
-		add(lblDescripcin);
-		
-		txtDescripcion = new JTextField();
-		txtDescripcion.setColumns(10);
-		txtDescripcion.setBounds(420, 15, 110, 20);
-		add(txtDescripcion);
-		
-		lblTipo = new JLabel(PropertiesManager.getProperty("productoPanel.label.tipo"));
-		lblTipo.setBounds(125, 55, 90, 20);
-		add(lblTipo);
-		
-		MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
-		modeloTipo.addElement(MitnickConstants.tipoTodos);
-		modeloTipo.addItems(productoController.obtenerTipos());
-		cmbTipo = new JComboBox<TipoDto>(modeloTipo);
-		cmbTipo.setBounds(200, 55, 110, 20);
-		add(cmbTipo);
-		
-		MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
-		modeloMarca.addElement(MitnickConstants.marcaTodos);
-		modeloMarca.addItems(productoController.obtenerMarcas());
-		cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
-		cmbMarca.setBounds(420, 55, 110, 20);
-		add(cmbMarca);
-		
-		lblMarca = new JLabel(PropertiesManager.getProperty("productoPanel.label.marca"));
-		lblMarca.setBounds(330, 55, 60, 20);
-		add(lblMarca);
-		
-		// Creo una tabla con un sorter
-		model = new ProductoTableModel();
-        sorter = new TableRowSorter<ProductoTableModel>(model);
-        table = new JTable(model);
-        table.setRowSorter(sorter);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-//        table.setFillsViewportHeight(true);
-		
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(25, 115, 700, 315);
-		add(scrollPane);
-		
-		btnBuscar = new JButton();
-		btnBuscar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.buscarProducto"));
-		
-		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
-		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evento) {
-				consultarProductos();
-			}
-		});
-		btnBuscar.setBounds(560, 15, 60, 60);
-		add(btnBuscar);
-		
-		btnAgregar = new JButton();
-		btnAgregar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.agregarProducto"));
-		
-		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
-		btnAgregar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnAgregar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				productoController.mostrarProductoNuevoPanel();
-			}
-		});
-		btnAgregar.setBounds(735, 115, 60, 60);
-		add(btnAgregar);
-		
-		btnEditar = new JButton();
-		btnEditar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.modificarProducto"));
-		
-		btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/editar.png")));
-		btnEditar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnEditar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnEditar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					productoController.editarProducto();
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-				actualizarPantalla();
-			}
-		});
-		btnEditar.setBounds(735, 185, 60, 60);
-		add(btnEditar);
-		
-		btnEliminar = new JButton();
-		btnEliminar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.eliminarProducto"));
-		
-		btnEliminar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
-		btnEliminar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnEliminar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-	        	int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("productoPanel.dialog.confirm.eliminar"));
-				
-				if ( opcion == JOptionPane.YES_OPTION) {
-					try {
-						productoController.eliminarProducto();
-						actualizarPantalla();
-					}
-					catch(PresentationException ex) {
-						mostrarMensaje(ex);
-					}
-				}
-	        }
-		});
-		btnEliminar.setBounds(735, 255, 60, 60);
-		add(btnEliminar);
-		
-		btnMovimientos = new JButton();
-		btnMovimientos.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.detallesMovimientos"));
-		
-		btnMovimientos.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
-		btnMovimientos.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnMovimientos.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnMovimientos.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnMovimientos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnMovimientos.setBounds(735, 325, 60, 60);
-		add(btnMovimientos);
-		
-		lblArtculos = new JLabel(PropertiesManager.getProperty("productoPanel.label.productos"));
-		lblArtculos.setBounds(163, 132, 65, 14);
-		add(lblArtculos);
-		
-		JLabel lblProductos = new JLabel(PropertiesManager.getProperty("productoPanel.label.productos"));
-		lblProductos.setBounds(25, 90, 70, 20);
-		add(lblProductos);
-	
+		add(getLblCdigo());
+		add(getTxtCodigo());
+		add(getLblDescripcion());
+		add(getTxtDescripcion());
+		add(getLblTipo());
+		add(getCmbTipo());
+		add(getCmbMarca());
+		add(getLblMarca());
+		add(getScrollPane());
+		add(getBtnBuscar());
+		add(getBtnAgregar());
+		add(getBtnEditar());
+		add(getBtnEliminar());
+		add(getBtnMovimientos());
+		add(getLblArtculos());
+		add(getLblProductos());
 	}
-	
+
 	protected void consultarProductos() {
 		try {
 			ConsultaProductoDto dto = new ConsultaProductoDto();
-			dto.setCodigo(txtCodigo.getText());
-			dto.setDescripcion(txtDescripcion.getText());
-			dto.setMarca((MarcaDto) cmbMarca.getSelectedItem());
-			dto.setTipo((TipoDto) cmbTipo.getSelectedItem());
-			
-			model.setProductos(productoController.getProductosByFilter(dto));
-		}
-		catch (PresentationException ex) {
+			dto.setCodigo(getTxtCodigo().getText());
+			dto.setDescripcion(getTxtDescripcion().getText());
+			dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
+			dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
+
+			getTableModel().setProductos(productoController.getProductosByFilter(dto));
+		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
-			model.setProductos(new ArrayList<ProductoDto>());
+			getTableModel().setProductos(new ArrayList<ProductoDto>());
 		}
 	}
 
-	public JTable getTable() {
-		return table;
+	
+	
+	public JScrollPane getScrollPane() {
+		if(scrollPane == null) {
+			scrollPane = new JScrollPane(getTable());
+			scrollPane.setBounds(25, 115, 700, 315);
+		}
+		return scrollPane;
+	}
+
+	public JTextField getTxtCodigo() {
+		if (txtCodigo == null) {
+			txtCodigo = new JTextField();
+			txtCodigo.setColumns(10);
+			txtCodigo.setBounds(200, 15, 110, 20);
+		}
+		return txtCodigo;
+	}
+
+	public JTextField getTxtDescripcion() {
+		if (txtDescripcion == null) {
+			txtDescripcion = new JTextField();
+			txtDescripcion.setColumns(10);
+			txtDescripcion.setBounds(420, 15, 110, 20);
+		}
+		return txtDescripcion;
+	}
+
+	public JComboBox<TipoDto> getCmbTipo() {
+		if (cmbTipo == null) {
+			MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
+			modeloTipo.addElement(MitnickConstants.tipoTodos);
+			modeloTipo.addItems(productoController.obtenerTipos());
+			cmbTipo = new JComboBox<TipoDto>(modeloTipo);
+			cmbTipo.setBounds(200, 55, 110, 20);
+		}
+		return cmbTipo;
+	}
+
+	public JComboBox<MarcaDto> getCmbMarca() {
+		if (cmbMarca == null) {
+			MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
+			modeloMarca.addElement(MitnickConstants.marcaTodos);
+			modeloMarca.addItems(productoController.obtenerMarcas());
+			cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
+			cmbMarca.setBounds(420, 55, 110, 20);
+		}
+		return cmbMarca;
+	}
+
+	public JLabel getLblMarca() {
+		if (lblMarca == null) {
+			lblMarca = new JLabel(
+					PropertiesManager.getProperty("productoPanel.label.marca"));
+			lblMarca.setBounds(330, 55, 80, 20);
+		}
+		return lblMarca;
+	}
+
+	public JButton getBtnBuscar() {
+		if (btnBuscar == null) {
+			btnBuscar = new JButton(
+					PropertiesManager.getProperty("productoPanel.button.buscar.texto"));
+			btnBuscar.setToolTipText(
+					PropertiesManager.getProperty("productoPanel.button.buscar.tooltip"));
+			btnBuscar.setIcon(
+					new ImageIcon(this.getClass().getResource(
+							PropertiesManager.getProperty("/img/buscar.png"))));
+
+			btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnBuscar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
+			btnBuscar.setBounds(560, 15, 60, 60);
+			
+			btnBuscar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarProductos();
+				}
+			});
+		}
+		return btnBuscar;
+	}
+
+	public JLabel getLblTipo() {
+		if (lblTipo == null) {
+			lblTipo = new JLabel(
+					PropertiesManager.getProperty("productoPanel.label.tipo"));
+			lblTipo.setBounds(125, 55, 60, 20);
+		}
+		return lblTipo;
+	}
+
+	public JLabel getLblDescripcion() {
+		if (lblDescripcion == null) {
+			lblDescripcion = new JLabel(
+					PropertiesManager.getProperty("productoPanel.label.descripcion"));
+			lblDescripcion.setBounds(330, 15, 80, 20);
+		}
+		return lblDescripcion;
+	}
+
+	public JLabel getLblCdigo() {
+		if (lblCdigo == null) {
+			lblCdigo = new JLabel(
+					PropertiesManager.getProperty("productoPanel.label.codigo"));
+			lblCdigo.setBounds(125, 15, 60, 20);
+		}
+		return lblCdigo;
+	}
+
+	public JButton getBtnAgregar() {
+		if (btnAgregar == null) {
+			
+			btnAgregar = new JButton(
+					PropertiesManager.getProperty("productoPanel.button.agregar.texto"));
+			btnAgregar.setToolTipText(
+					PropertiesManager.getProperty("productoPanel.button.agregar.tooltip"));
+			btnAgregar.setIcon(
+					new ImageIcon(this.getClass().getResource("/img/agregar.png")));
+			
+			btnAgregar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnAgregar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
+			btnAgregar.setBounds(735, 115, 60, 60);
+			
+			btnAgregar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					productoController.mostrarProductoNuevoPanel();
+				}
+			});
+		}
+		return btnAgregar;
+	}
+
+	public JButton getBtnEditar() {
+		if (btnEditar == null) {
+			
+			btnEditar = new JButton(
+					PropertiesManager.getProperty("productoPanel.button.editar.texto"));
+			btnEditar.setToolTipText(
+					PropertiesManager.getProperty("productoPanel.button.editar.tooltip"));
+			btnEditar.setIcon(
+					new ImageIcon(this.getClass().getResource("/img/editar.png")));
+			
+			btnEditar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnEditar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnEditar.setMargin(new Insets(-1, -1, -1, -1));
+			btnEditar.setBounds(735, 185, 60, 60);
+
+			btnEditar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						productoController.editarProducto();
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+					actualizarPantalla();
+				}
+			});
+		}
+		return btnEditar;
+	}
+
+	public JButton getBtnEliminar() {
+		if (btnEliminar == null) {
+			btnEliminar = new JButton(
+					PropertiesManager.getProperty("productoPanel.button.eliminar.texto"));
+			btnEliminar.setToolTipText(
+					PropertiesManager.getProperty("productoPanel.button.eliminar.tooltip"));
+			btnEliminar.setIcon(
+					new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+			
+			btnEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
+			btnEliminar.setBounds(735, 255, 60, 60);
+
+			btnEliminar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int opcion = mostrarMensajeConsulta(
+							PropertiesManager.getProperty("productoPanel.dialog.confirm.eliminar"));
+
+					if (opcion == JOptionPane.YES_OPTION) {
+						try {
+							productoController.eliminarProducto();
+							actualizarPantalla();
+						} catch (PresentationException ex) {
+							mostrarMensaje(ex);
+						}
+					}
+				}
+			});
+		}
+		return btnEliminar;
+	}
+
+	public JLabel getLblArtculos() {
+		if (lblArtculos == null) {
+			lblArtculos = new JLabel(
+					PropertiesManager.getProperty("productoPanel.label.productos"));
+			lblArtculos.setBounds(163, 132, 65, 14);
+		}
+		return lblArtculos;
 	}
 	
+	public JLabel getLblProductos() {
+		if (lblProductos == null) {
+			lblProductos = new JLabel(
+					PropertiesManager.getProperty("productoPanel.label.productos"));
+			lblProductos.setBounds(25, 90, 70, 20);
+		}
+		return lblProductos;
+	}
+
+	public JButton getBtnMovimientos() {
+		if (btnMovimientos == null) {
+			
+			btnMovimientos = new JButton(
+					PropertiesManager.getProperty("productoPanel.button.movimientos.texto"));
+			btnMovimientos.setToolTipText(
+					PropertiesManager.getProperty("productoPanel.button.movimientos.tooltip"));
+			btnMovimientos.setIcon(
+					new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
+			
+			btnMovimientos.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnMovimientos.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnMovimientos.setMargin(new Insets(-1, -1, -1, -1));
+			btnMovimientos.setBounds(735, 325, 60, 60);
+
+			btnMovimientos.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			
+		}
+		return btnMovimientos;
+	}
+
+	public JTable getTable() {
+		if(table == null) {
+			table = new JTable(getTableModel());
+			table.setRowSorter(getTableSorter());
+			table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+			// table.setFillsViewportHeight(true);
+		}
+		return table;
+	}
+
 	public ProductoTableModel getTableModel() {
+		if(model == null) {
+			model = new ProductoTableModel();
+		}
 		return model;
 	}
 	
+	public TableRowSorter<ProductoTableModel> getTableSorter() {
+		if(sorter == null) {
+			sorter = new TableRowSorter<ProductoTableModel>(getTableModel());
+		}
+		return sorter;
+	}
+
 	@Override
 	public void actualizarPantalla() {
 		consultarProductos();
 	}
-	
+
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtCodigo; 
+		this.defaultFocusField = txtCodigo;
 	}
 
 	public void setProductoController(ProductoController productoController) {
