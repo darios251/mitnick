@@ -121,17 +121,23 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		ProductoVentaDto fila =  data.get(rowIndex);
 		
+		String nuevoValor = (String)aValue;
 		switch(columnIndex) {
-		case 0: 
-			fila.getProducto().setCodigo((String)aValue);
-		case 1:
-			fila.getProducto().setDescripcion((String)aValue);
-		case 2:
-			fila.getProducto().setPrecio(new BigDecimal((String)aValue));
-		case 3:
-			fila.setCantidad((Integer)aValue);
-		case 4:
-			fila.setPrecioTotal(new BigDecimal((String)aValue));
+			case 0: 
+				fila.getProducto().setCodigo(nuevoValor);
+				break;
+			case 1:
+				fila.getProducto().setDescripcion(nuevoValor);
+				break;
+			case 2:
+				fila.getProducto().setPrecio(new BigDecimal(nuevoValor));
+				break;
+			case 3:
+				fila.setCantidad(new Integer(nuevoValor));
+				break;
+			case 4:
+				fila.setPrecioTotal(new BigDecimal(nuevoValor));
+				break;
 		}
 		
 		data.set(rowIndex, fila);
