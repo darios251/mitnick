@@ -270,10 +270,12 @@ public class PagoPanel extends BasePanel {
 		lblAPagarValor.setBounds(396, 420, 88, 20);
 		add(lblAPagarValor);
 		
-		
+		add(getPnlCliente());
 		add(getLblConsumidorFinal());
 		
-		add(getPnlCliente());
+		JLabel lblCliente = new JLabel("Cliente:");
+		lblCliente.setBounds(107, 23, 46, 14);
+		add(lblCliente);
 		
 		setFocusTraversalPolicy();
 	}
@@ -344,8 +346,7 @@ public class PagoPanel extends BasePanel {
 			getPnlCliente().setVisible(true);
 			getLblConsumidorFinal().setVisible(false);
 		}
-		
-		if(ventaController.getVentaClientePanel().isConsumidorFinal()) {
+		else {
 			getLblConsumidorFinal().setVisible(true);
 			getPnlCliente().setVisible(false);
 		}
@@ -378,7 +379,7 @@ public class PagoPanel extends BasePanel {
 		if(pnlCliente == null) {
 			pnlCliente = new JPanel();
 			pnlCliente.setLayout(null);
-			pnlCliente.setBounds(44, 299, 202, 160);
+			pnlCliente.setBounds(180, 11, 335, 37);
 			pnlCliente.add(getLblApellidoNombre());
 			pnlCliente.add(getLblDni());
 		}
@@ -397,7 +398,7 @@ public class PagoPanel extends BasePanel {
 	public JLabel getLblDni() {
 		if(lblDni == null) {
 			lblDni = new JLabel("<<DNI>>");
-			lblDni.setBounds(10, 36, 182, 14);
+			lblDni.setBounds(143, 11, 182, 14);
 			getPnlCliente().add(lblDni);
 		}
 		return lblDni;
@@ -406,7 +407,7 @@ public class PagoPanel extends BasePanel {
 	public JLabel getLblConsumidorFinal() {
 		if(lblConsumidorFinal == null) {
 			lblConsumidorFinal = new JLabel("Consumidor Final");
-			lblConsumidorFinal.setBounds(44, 276, 115, 14);
+			lblConsumidorFinal.setBounds(180, 23, 115, 14);
 		}
 		return lblConsumidorFinal;
 	}

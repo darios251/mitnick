@@ -38,7 +38,6 @@ public class VentaClientePanel extends BasePanel {
 	private JTextField txtApellido;
 	private JButton btnBuscar;
 	private JButton btnContinuar;
-	private JButton btnAgregarCliente;
 	private JLabel lblNombre;
 	private JLabel lblNumeroDocumento;
 	private JScrollPane scrollPane;
@@ -79,21 +78,21 @@ public class VentaClientePanel extends BasePanel {
 		setSize(new Dimension(815, 470));
 		
 		lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
-		lblNumeroDocumento.setBounds(125, 15, 70, 20);
+		lblNumeroDocumento.setBounds(163, 15, 84, 20);
 		add(lblNumeroDocumento);
 		
 		txtNumeroDocumento = new JTextField();
 		txtNumeroDocumento.setColumns(10);
-		txtNumeroDocumento.setBounds(200, 11, 110, 20);
+		txtNumeroDocumento.setBounds(257, 15, 110, 20);
 		add(txtNumeroDocumento);
 		
 		lblApellido = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.apellido"));
-		lblApellido.setBounds(125, 55, 70, 20);
+		lblApellido.setBounds(163, 55, 84, 20);
 		add(lblApellido);
 		
 		txtApellido = new JTextField();
 		txtApellido.setColumns(10);
-		txtApellido.setBounds(200, 55, 110, 20);
+		txtApellido.setBounds(257, 55, 110, 20);
 		add(txtApellido);
 		
 		btnBuscar = new JButton("");
@@ -102,7 +101,7 @@ public class VentaClientePanel extends BasePanel {
 		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
-		btnBuscar.setBounds(570, 15, 60, 60);
+		btnBuscar.setBounds(627, 15, 60, 60);
 		btnBuscar.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				consultarClientes();
@@ -143,49 +142,26 @@ public class VentaClientePanel extends BasePanel {
 		btnEstadoCuenta.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnEstadoCuenta.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
-		btnEstadoCuenta.setBounds(735, 328, 60, 60);
+		btnEstadoCuenta.setBounds(735, 257, 60, 60);
 		add(btnEstadoCuenta);
 		
 		lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
-		lblNombre.setBounds(330, 55, 60, 20);
+		lblNombre.setBounds(377, 55, 108, 20);
 		add(lblNombre);
 		
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(420, 55, 110, 20);
+		txtNombre.setBounds(495, 55, 110, 20);
 		add(txtNombre);
 		
 		lblNmeroCtaCte = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.cuentaCorriente"));
-		lblNmeroCtaCte.setBounds(330, 15, 80, 20);
+		lblNmeroCtaCte.setBounds(377, 15, 108, 20);
 		add(lblNmeroCtaCte);
 		
 		txtNumeroCtaCte = new JTextField();
 		txtNumeroCtaCte.setColumns(10);
-		txtNumeroCtaCte.setBounds(420, 15, 110, 20);
+		txtNumeroCtaCte.setBounds(495, 15, 110, 20);
 		add(txtNumeroCtaCte);
-		
-		btnAgregarCliente = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.agregarCliente"));
-		btnAgregarCliente.setToolTipText(PropertiesManager.getProperty("ventaClientePanel.tooltip.agregarCliente"));
-		
-		btnAgregarCliente.setIcon(new ImageIcon(this.getClass().getResource("/img/nuevo_cliente.png")));
-		btnAgregarCliente.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnAgregarCliente.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnAgregarCliente.setMargin(new Insets(-1, -1, -1, -1));
-		btnAgregarCliente.setVisible(false);
-		
-		btnAgregarCliente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					ventaController.agregarCliente();
-					mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		btnAgregarCliente.setBounds(735, 186, 60, 60);
-		add(btnAgregarCliente);
 		
 		btnContinuar = new JButton(PropertiesManager.getProperty("ventaPanel.button.continuar"));
 		btnContinuar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.continuar"));
@@ -209,11 +185,11 @@ public class VentaClientePanel extends BasePanel {
 				}
 			}
 		});
-		btnContinuar.setBounds(735, 257, 60, 60);
+		btnContinuar.setBounds(735, 186, 60, 60);
 		add(btnContinuar);
 		
 		chkConsumidorFinal = new JCheckBox(PropertiesManager.getProperty("ventaClientePanel.etiqueta.consumidorFinal"));
-		chkConsumidorFinal.setBounds(653, 54, 156, 23);
+		chkConsumidorFinal.setBounds(18, 38, 156, 23);
 		chkConsumidorFinal.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				try {
@@ -246,7 +222,6 @@ public class VentaClientePanel extends BasePanel {
 		table.setVisible(enabled);
 		btnBuscar.setEnabled(enabled);
 		btnNuevo.setEnabled(enabled);
-		btnAgregarCliente.setEnabled(enabled);
 		btnEstadoCuenta.setEnabled(enabled);
 	}
 
