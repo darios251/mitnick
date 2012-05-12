@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.ClienteTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -225,6 +227,13 @@ public class VentaClientePanel extends BasePanel {
 			}
 		});
 		add(chkConsumidorFinal);
+		
+		setFocusTraversalPolicy();
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre}));
 	}
 	
 	protected void deshabilitarComponentes() {

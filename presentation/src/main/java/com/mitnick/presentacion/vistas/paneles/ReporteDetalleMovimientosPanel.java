@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,7 @@ import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.modelos.DetalleMovimientoTableModel;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.utils.DateHelper;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MovimientoDto;
@@ -145,6 +147,12 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
 	
+		setFocusTraversalPolicy();		
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{}));
 	}
 	
 	protected void consultarProductos() {

@@ -23,6 +23,7 @@ import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -174,6 +175,13 @@ public class BuscarProductoPanel extends BasePanel {
 		lblProductos = new JLabel(PropertiesManager.getProperty("buscarProductoPanel.etiqueta.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
+		
+		setFocusTraversalPolicy();
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtCodigo, txtDescripcion}));
 	}
 
 	private void buscarProducto() {
