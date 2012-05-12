@@ -27,6 +27,7 @@ import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.MovimientoTableModel;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.utils.DateHelper;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
@@ -213,6 +214,13 @@ public class ReporteMovimientosPanel extends BasePanel {
 		btnExportar.setBounds(735, 370, 60, 60);
 		add(btnExportar);
 		
+		setFocusTraversalPolicy();
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtProductoCodigo, txtProductoDescripcion, cmbTipo, cmbMarca, 
+						txtFechaInicio, txtFechaFinal}));
 	}
 	
 	protected void consultarProductos() {

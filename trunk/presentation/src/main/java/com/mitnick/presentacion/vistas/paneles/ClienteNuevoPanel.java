@@ -249,7 +249,7 @@ public class ClienteNuevoPanel extends BasePanel {
 		setFocusTraversalPolicy();
 	}
 	
-	public void setFocusTraversalPolicy() {
+	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
 				new Component[]{txtApellido, txtNombre, txtDocumento, txtCuit,
 						txtTelefono, txtEmail, txtFechaNacimiento, txtDomicilio,

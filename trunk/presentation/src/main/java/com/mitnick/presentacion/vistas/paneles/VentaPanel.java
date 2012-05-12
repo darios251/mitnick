@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.VentaTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -98,6 +100,13 @@ public class VentaPanel extends BasePanel {
 		add(getLblTotal());
 		add(getLblTotalValor());
 		add(getBtnAgregar());
+		
+		setFocusTraversalPolicy();
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtCodigo}));
 	}
 
 	public void agregarProducto() {

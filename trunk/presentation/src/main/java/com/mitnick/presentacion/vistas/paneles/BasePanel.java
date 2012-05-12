@@ -111,5 +111,7 @@ public abstract class BasePanel extends JPanel {
 	}
 
 	public abstract void setDefaultFocusField();
+	
+	protected abstract void setFocusTraversalPolicy();
 
 }

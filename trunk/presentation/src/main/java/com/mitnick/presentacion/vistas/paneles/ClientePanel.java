@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.ClienteTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -94,19 +96,23 @@ public class ClientePanel extends BasePanel {
 		txtApellido.setBounds(200, 55, 110, 20);
 		add(txtApellido);
 		
-		btnBuscar = new JButton("");
-		btnBuscar.setToolTipText("Buscar Cliente");
-		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar cliente.png")));
+		btnBuscar = new JButton(
+				PropertiesManager.getProperty("clientePanel.button.buscar.texto"));
+		btnBuscar.setToolTipText(
+				PropertiesManager.getProperty("clientePanel.button.buscar.tooltip"));
+		btnBuscar.setIcon(
+				new ImageIcon(this.getClass().getResource("/img/buscar cliente.png")));
+		
 		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
 		btnBuscar.setBounds(570, 15, 60, 60);
+		
 		btnBuscar.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				consultarClientes();
 			}
 		});
-		
 		add(btnBuscar);
 		
 		// Creo una tabla con un sorter
@@ -121,13 +127,17 @@ public class ClientePanel extends BasePanel {
 		scrollPane.setBounds(25, 115, 700, 315);
 		add(scrollPane);
 		
-		btnNuevo = new JButton("");
-		btnNuevo.setToolTipText("Agregar Cliente");
+		btnNuevo = new JButton(
+				PropertiesManager.getProperty("productoPanel.button.nuevo.texto"));
+		btnNuevo.setToolTipText(
+				PropertiesManager.getProperty("productoPanel.button.nuevo.tooltip"));
 		btnNuevo.setIcon(new ImageIcon(this.getClass().getResource("/img/nuevo_cliente.png")));
+		
 		btnNuevo.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnNuevo.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnNuevo.setMargin(new Insets(-1, -1, -1, -1));
 		btnNuevo.setBounds(735, 115, 60, 60);
+		
 		btnNuevo.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				clienteController.mostrarClienteNuevoPanel();
@@ -135,13 +145,17 @@ public class ClientePanel extends BasePanel {
 		});
 		add(btnNuevo);
 		
-		btnModificar = new JButton("");
-		btnModificar.setToolTipText("Modificar Cliente");
+		btnModificar = new JButton(
+				PropertiesManager.getProperty("productoPanel.button.modificar.texto"));
+		btnModificar.setToolTipText(
+				PropertiesManager.getProperty("productoPanel.button.modificar.tooltip"));
 		btnModificar.setIcon(new ImageIcon(this.getClass().getResource("/img/modificar_cliente.png")));
+		
 		btnModificar.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnModificar.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnModificar.setMargin(new Insets(-1, -1, -1, -1));
 		btnModificar.setBounds(735, 185, 60, 60);
+		
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -155,13 +169,17 @@ public class ClientePanel extends BasePanel {
 		});
 		add(btnModificar);
 		
-		btnEliminar = new JButton("");
-		btnEliminar.setToolTipText("Eliminar Cliente");
+		btnEliminar = new JButton(
+				PropertiesManager.getProperty("productoPanel.button.eliminar.texto"));
+		btnEliminar.setToolTipText(
+				PropertiesManager.getProperty("productoPanel.button.eliminar.tooltip"));
 		btnEliminar.setIcon(new ImageIcon(this.getClass().getResource("/img/eliminar_cliente.png")));
+		
 		btnEliminar.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnEliminar.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
 		btnEliminar.setBounds(735, 255, 60, 60);
+		
 		btnEliminar.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("clientePanel.dialog.confirm.eliminar"));
@@ -179,13 +197,17 @@ public class ClientePanel extends BasePanel {
 		});
 		add(btnEliminar);
 		
-		btnEstadoCuenta = new JButton("");
-		btnEstadoCuenta.setToolTipText("Estado de la Cuenta");
+		btnEstadoCuenta = new JButton(
+				PropertiesManager.getProperty("productoPanel.button.estado.texto"));
+		btnEstadoCuenta.setToolTipText(
+				PropertiesManager.getProperty("productoPanel.button.estado.tooltip"));
 		btnEstadoCuenta.setIcon(new ImageIcon(this.getClass().getResource("/img/estado_cuenta.png")));
+		
 		btnEstadoCuenta.setHorizontalTextPosition( SwingConstants.CENTER );
 		btnEstadoCuenta.setVerticalTextPosition( SwingConstants.BOTTOM );
 		btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
 		btnEstadoCuenta.setBounds(735, 325, 60, 60);
+		
 		add(btnEstadoCuenta);
 		
 		lblClientes = new JLabel("Clientes");
@@ -209,6 +231,13 @@ public class ClientePanel extends BasePanel {
 		txtNumeroCtaCte.setColumns(10);
 		txtNumeroCtaCte.setBounds(420, 15, 110, 20);
 		add(txtNumeroCtaCte);
+		
+		setFocusTraversalPolicy();
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre}));
 	}
 	
 	protected void consultarClientes() {

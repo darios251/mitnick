@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -121,6 +123,13 @@ public class DetalleProductoPanel extends BasePanel {
 		lblCodigoValor.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCodigoValor.setBounds(320, 50, 110, 20);
 		add(lblCodigoValor);
+		
+		setFocusTraversalPolicy();	
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtCantidad}));
 	}
 	
 	protected void modificarCantidad() {

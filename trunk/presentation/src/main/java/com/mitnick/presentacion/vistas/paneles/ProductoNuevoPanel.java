@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
+import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -172,6 +173,14 @@ public class ProductoNuevoPanel extends BasePanel {
 		add(btnCancelar);
 		
 		addKeyListeners();
+		
+		setFocusTraversalPolicy();
+	}
+	
+	protected void setFocusTraversalPolicy() {
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
+				new Component[]{txtCodigo, txtDescripcion, cmbTipo, cmbMarca, 
+						txtPrecio, txtStock}));
 	}
 	
 	private void addKeyListeners() {
