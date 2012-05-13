@@ -396,10 +396,10 @@ public class VentaController extends BaseController {
 		ClienteDto cliente = null;
 		try {
 			int index = getVentaClientePanel().getTable().getSelectedRow();
-			cliente = getVentaClientePanel().getTableModel().getCliente(index);
+			cliente = getVentaClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
-			if(getVentaClientePanel().getTableModel().getRowCount() == 0) {
+			if(getVentaClientePanel().getModel().getRowCount() == 0) {
 				throw new PresentationException("error.ventaClientePanel.clientes.vacio");
 			}
 			else {

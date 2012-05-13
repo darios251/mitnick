@@ -207,10 +207,10 @@ public class ClienteController extends BaseController {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
-			clienteDto = getClientePanel().getTableModel().getCliente(index);
+			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
-			if(getClientePanel().getTableModel().getRowCount() == 0) {
+			if(getClientePanel().getModel().getRowCount() == 0) {
 				throw new PresentationException("error.clientePanel.clientes.editar.vacio");
 			}
 			else {
@@ -234,10 +234,10 @@ public class ClienteController extends BaseController {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
-			clienteDto = getClientePanel().getTableModel().getCliente(index);
+			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
-			if(getClientePanel().getTableModel().getRowCount() == 0) {
+			if(getClientePanel().getModel().getRowCount() == 0) {
 				throw new PresentationException("error.clientePanel.clientes.vacio");
 			}
 			else {
