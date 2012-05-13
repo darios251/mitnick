@@ -26,7 +26,6 @@ import com.mitnick.presentacion.modelos.ClienteTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
-import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
 
@@ -38,6 +37,7 @@ public class VentaClientePanel extends BasePanel {
 	private JTextField txtApellido;
 	private JButton btnBuscar;
 	private JButton btnContinuar;
+	private JButton btnAgregarCliente;
 	private JLabel lblNombre;
 	private JLabel lblNumeroDocumento;
 	private JScrollPane scrollPane;
@@ -70,6 +70,11 @@ public class VentaClientePanel extends BasePanel {
 
 	@Override
 	protected void limpiarCamposPantalla() {
+		for (Component component : getComponents()) {
+			if (component instanceof JTextField)
+				((JTextField) component).setText("");
+		}
+		getChkConsumidorFinal().setSelected(false);
 	}
 
 	@Override
@@ -77,190 +82,309 @@ public class VentaClientePanel extends BasePanel {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
-		lblNumeroDocumento.setBounds(163, 15, 84, 20);
-		add(lblNumeroDocumento);
+		add(getScrollPane());
 		
-		txtNumeroDocumento = new JTextField();
-		txtNumeroDocumento.setColumns(10);
-		txtNumeroDocumento.setBounds(257, 15, 110, 20);
-		add(txtNumeroDocumento);
+		add(getLblNumeroDocumento());
+		add(getLblApellido());
+		add(getLblNombre());
+		add(getLblNmeroCtaCte());
 		
-		lblApellido = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.apellido"));
-		lblApellido.setBounds(163, 55, 84, 20);
-		add(lblApellido);
+		add(getTxtApellido());
+		add(getTxtNumeroDocumento());
+		add(getTxtNombre());
+		add(getTxtNumeroCtaCte());
 		
-		txtApellido = new JTextField();
-		txtApellido.setColumns(10);
-		txtApellido.setBounds(257, 55, 110, 20);
-		add(txtApellido);
+		add(getBtnAgregarCliente());
+		add(getBtnContinuar());
+		add(getBtnEstadoCuenta());
+		add(getBtnBuscar());
+		add(getBtnNuevo());
 		
-		btnBuscar = new JButton("");
-		btnBuscar.setToolTipText("Buscar Cliente");
-		btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar cliente.png")));
-		btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
-		btnBuscar.setBounds(627, 15, 60, 60);
-		btnBuscar.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				consultarClientes();
-			}
-		});
-		
-		add(btnBuscar);
-		
-		// Creo una tabla con un sorter
-		model = new ClienteTableModel();
-        sorter = new TableRowSorter<ClienteTableModel>(model);
-        table = new JTable(model);
-        table.setRowSorter(sorter);
-		
-		table.setBounds(0, 0, 1, 1);
-		
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(25, 115, 700, 315);
-		add(scrollPane);
-		
-		btnNuevo = new JButton("");
-		btnNuevo.setToolTipText("Agregar Cliente");
-		btnNuevo.setIcon(new ImageIcon(this.getClass().getResource("/img/nuevo_cliente.png")));
-		btnNuevo.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnNuevo.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnNuevo.setMargin(new Insets(-1, -1, -1, -1));
-		btnNuevo.setBounds(735, 115, 60, 60);
-		btnNuevo.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				ventaController.mostrarClienteNuevoPanel();
-			}
-		});
-		add(btnNuevo);
-		
-		btnEstadoCuenta = new JButton("");
-		btnEstadoCuenta.setToolTipText(PropertiesManager.getProperty("clientePanel.tooltip.estadoCuenta"));
-		btnEstadoCuenta.setIcon(new ImageIcon(this.getClass().getResource("/img/estado_cuenta.png")));
-		btnEstadoCuenta.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnEstadoCuenta.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
-		btnEstadoCuenta.setBounds(735, 257, 60, 60);
-		add(btnEstadoCuenta);
-		
-		lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
-		lblNombre.setBounds(377, 55, 108, 20);
-		add(lblNombre);
-		
-		txtNombre = new JTextField();
-		txtNombre.setColumns(10);
-		txtNombre.setBounds(495, 55, 110, 20);
-		add(txtNombre);
-		
-		lblNmeroCtaCte = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.cuentaCorriente"));
-		lblNmeroCtaCte.setBounds(377, 15, 108, 20);
-		add(lblNmeroCtaCte);
-		
-		txtNumeroCtaCte = new JTextField();
-		txtNumeroCtaCte.setColumns(10);
-		txtNumeroCtaCte.setBounds(495, 15, 110, 20);
-		add(txtNumeroCtaCte);
-		
-		btnContinuar = new JButton(PropertiesManager.getProperty("ventaPanel.button.continuar"));
-		btnContinuar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.continuar"));
-		
-		btnContinuar.setIcon(new ImageIcon(this.getClass().getResource("/img/continuar.png")));
-		btnContinuar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnContinuar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnContinuar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if(!isConsumidorFinal()) {
-						ventaController.agregarCliente();
-						mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
-					}
-					ventaController.mostrarPagosPanel();
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		btnContinuar.setBounds(735, 186, 60, 60);
-		add(btnContinuar);
-		
-		chkConsumidorFinal = new JCheckBox(PropertiesManager.getProperty("ventaClientePanel.etiqueta.consumidorFinal"));
-		chkConsumidorFinal.setBounds(18, 38, 156, 23);
-		chkConsumidorFinal.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				try {
-					if(chkConsumidorFinal.isSelected())
-						ventaController.quitarCliente();
-					deshabilitarComponentes();
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		add(chkConsumidorFinal);
+		add(getChkConsumidorFinal());
 		
 		setFocusTraversalPolicy();
 	}
 	
+	
+	public JTextField getTxtNumeroDocumento() {
+		if (txtNumeroDocumento == null) {
+			txtNumeroDocumento = new JTextField();
+			txtNumeroDocumento.setColumns(10);
+			txtNumeroDocumento.setBounds(200, 11, 110, 20);
+		}
+		return txtNumeroDocumento;
+	}
+
+	public JTextField getTxtApellido() {
+		if (txtApellido == null) {
+			txtApellido = new JTextField();
+			txtApellido.setColumns(10);
+			txtApellido.setBounds(200, 55, 110, 20);
+		}
+		return txtApellido;
+	}
+
+	public JButton getBtnBuscar() {
+		if(btnBuscar == null) {
+			btnBuscar = new JButton("");
+			btnBuscar.setToolTipText("Buscar Cliente");
+			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar cliente.png")));
+			btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
+			btnBuscar.setBounds(570, 15, 60, 60);
+			btnBuscar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					consultarClientes();
+				}
+			});
+		}
+		return btnBuscar;
+	}
+
+	public JButton getBtnContinuar() {
+		if (btnContinuar == null) {
+			btnContinuar = new JButton(PropertiesManager.getProperty("ventaPanel.button.continuar"));
+			btnContinuar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.continuar"));
+			
+			btnContinuar.setIcon(new ImageIcon(this.getClass().getResource("/img/continuar.png")));
+			btnContinuar.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnContinuar.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnContinuar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						if(!isConsumidorFinal()) {
+							ventaController.agregarCliente();
+							mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
+						}
+						ventaController.mostrarPagosPanel();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+			btnContinuar.setBounds(735, 257, 60, 60);
+		}
+		return btnContinuar;
+	}
+
+	public JButton getBtnAgregarCliente() {
+		if (btnAgregarCliente == null) {
+			btnAgregarCliente = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.agregarCliente"));
+			btnAgregarCliente.setToolTipText(PropertiesManager.getProperty("ventaClientePanel.tooltip.agregarCliente"));
+			
+			btnAgregarCliente.setIcon(new ImageIcon(this.getClass().getResource("/img/nuevo_cliente.png")));
+			btnAgregarCliente.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnAgregarCliente.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnAgregarCliente.setMargin(new Insets(-1, -1, -1, -1));
+			btnAgregarCliente.setVisible(false);
+			
+			btnAgregarCliente.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						ventaController.agregarCliente();
+						mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+			btnAgregarCliente.setBounds(735, 186, 60, 60);
+		}
+		return btnAgregarCliente;
+	}
+
+	public JLabel getLblNombre() {
+		if (lblNombre == null) {
+			lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
+			lblNombre.setBounds(330, 55, 60, 20);
+		}
+		return lblNombre;
+	}
+
+	public JLabel getLblNumeroDocumento() {
+		if (lblNumeroDocumento == null) {
+			lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
+			lblNumeroDocumento.setBounds(125, 15, 70, 20);
+		}
+		return lblNumeroDocumento;
+	}
+
+	public JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane(getTable());
+			scrollPane.setBounds(25, 115, 700, 315);
+		}
+		return scrollPane;
+	}
+
+	public JButton getBtnNuevo() {
+		if (btnNuevo == null) {
+			btnNuevo = new JButton("");
+			btnNuevo.setToolTipText("Agregar Cliente");
+			btnNuevo.setIcon(new ImageIcon(this.getClass().getResource("/img/nuevo_cliente.png")));
+			btnNuevo.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnNuevo.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnNuevo.setMargin(new Insets(-1, -1, -1, -1));
+			btnNuevo.setBounds(735, 115, 60, 60);
+			btnNuevo.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					ventaController.mostrarClienteNuevoPanel();
+				}
+			});
+		}
+		return btnNuevo;
+	}
+
+	public JTextField getTxtNombre() {
+		if (txtNombre == null) {
+			txtNombre = new JTextField();
+			txtNombre.setColumns(10);
+			txtNombre.setBounds(420, 55, 110, 20);
+		}
+		return txtNombre;
+	}
+
+	public JLabel getLblNmeroCtaCte() {
+		if (lblNmeroCtaCte == null) {
+			lblNmeroCtaCte = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.cuentaCorriente"));
+			lblNmeroCtaCte.setBounds(330, 15, 80, 20);
+		}
+		return lblNmeroCtaCte;
+	}
+
+	public JTextField getTxtNumeroCtaCte() {
+		if (txtNumeroCtaCte == null) {
+			txtNumeroCtaCte = new JTextField();
+			txtNumeroCtaCte.setColumns(10);
+			txtNumeroCtaCte.setBounds(420, 15, 110, 20);
+		}
+		return txtNumeroCtaCte;
+	}
+
+	public JLabel getLblApellido() {
+		if (lblApellido == null) {
+			lblApellido = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.apellido"));
+			lblApellido.setBounds(125, 55, 70, 20);
+		}
+		return lblApellido;
+	}
+
+	public JButton getBtnEstadoCuenta() {
+		if (btnEstadoCuenta == null) {
+			btnEstadoCuenta = new JButton("");
+			btnEstadoCuenta.setToolTipText(PropertiesManager.getProperty("clientePanel.tooltip.estadoCuenta"));
+			btnEstadoCuenta.setIcon(new ImageIcon(this.getClass().getResource("/img/estado_cuenta.png")));
+			btnEstadoCuenta.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnEstadoCuenta.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
+			btnEstadoCuenta.setBounds(735, 328, 60, 60);
+			btnEstadoCuenta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+		}
+		return btnEstadoCuenta;
+	}
+
+	public TableRowSorter<ClienteTableModel> getSorter() {
+		if (sorter == null) {
+			sorter = new TableRowSorter<ClienteTableModel>(getModel());
+		}
+		return sorter;
+	}
+
+	public JCheckBox getChkConsumidorFinal() {
+		if (chkConsumidorFinal == null) {
+			chkConsumidorFinal = new JCheckBox(PropertiesManager.getProperty("ventaClientePanel.etiqueta.consumidorFinal"));
+			chkConsumidorFinal.setBounds(653, 54, 156, 23);
+			chkConsumidorFinal.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					try {
+						if(chkConsumidorFinal.isSelected())
+							ventaController.quitarCliente();
+						deshabilitarComponentes();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return chkConsumidorFinal;
+	}
+
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
 				new Component[]{txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre}));
 	}
 	
 	protected void deshabilitarComponentes() {
-		boolean enabled = !chkConsumidorFinal.isSelected();
+		boolean enabled = !getChkConsumidorFinal().isSelected();
 				
-		txtApellido.setEnabled(enabled);
-		txtNombre.setEnabled(enabled);
-		txtNumeroCtaCte.setEnabled(enabled);
-		txtNumeroDocumento.setEnabled(enabled);
-		table.setVisible(enabled);
-		btnBuscar.setEnabled(enabled);
-		btnNuevo.setEnabled(enabled);
-		btnEstadoCuenta.setEnabled(enabled);
+		getTxtApellido().setEnabled(enabled);
+		getTxtNombre().setEnabled(enabled);
+		getTxtNumeroCtaCte().setEnabled(enabled);
+		getTxtNumeroDocumento().setEnabled(enabled);
+		getTable().setVisible(enabled);
+		getBtnBuscar().setEnabled(enabled);
+		getBtnNuevo().setEnabled(enabled);
+		getBtnAgregarCliente().setEnabled(enabled);
+		getBtnEstadoCuenta().setEnabled(enabled);
 	}
 
 	protected void consultarClientes() {
 		try {
 			ConsultaClienteDto filtroDto = new ConsultaClienteDto();
-			filtroDto.setApellido(txtApellido.getText());
-			filtroDto.setDocumento(txtNumeroDocumento.getText());
-			filtroDto.setNombre(txtNombre.getText());
+			filtroDto.setApellido(getTxtApellido().getText());
+			filtroDto.setDocumento(getTxtNumeroDocumento().getText());
+			filtroDto.setNombre(getTxtNombre().getText());
 			
-			model.setClientes(ventaController.obtenerClientesByFilter(filtroDto));
+			getModel().setClientes(ventaController.obtenerClientesByFilter(filtroDto));
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
-			model.setClientes(new ArrayList<ClienteDto>());
+			getModel().setClientes(new ArrayList<ClienteDto>());
 		}
 	}
 	
 	public JTable getTable() {
+		if (table == null) {
+			table = new JTable(getModel());
+	        table.setRowSorter(getSorter());
+			table.setBounds(0, 0, 1, 1);
+		}
 		return table;
 	}
 	
-	public ClienteTableModel getTableModel() {
+	public ClienteTableModel getModel() {
+		if (model == null) {
+			model = new ClienteTableModel();
+		}
 		return model;
 	}
 
 	@Override
 	public void actualizarPantalla() {
-		if(Validator.isNotNull(txtNumeroDocumento))
-			txtNumeroDocumento.requestFocus();
+		getTxtNumeroDocumento().requestFocus();
 		consultarClientes();
 	}
 	
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtApellido;
+		this.defaultFocusField = getTxtApellido();
 	}
 
 	public boolean isConsumidorFinal() {
-		return chkConsumidorFinal.isSelected();
+		return getChkConsumidorFinal().isSelected();
+	}
+	
+	protected void setDefaultButton() {
+		this.getRootPane().setDefaultButton(getBtnBuscar());
 	}
 }

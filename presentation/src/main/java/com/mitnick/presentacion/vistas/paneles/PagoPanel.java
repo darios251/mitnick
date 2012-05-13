@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +44,10 @@ public class PagoPanel extends BasePanel {
 	
 	private VentaController ventaController;
 	
-	private JTextField txtMonto;
-	private JTable table;
 	private JScrollPane scrollPane;
+	private JTable table;
+	private PagoTableModel model;
+	
 	private JLabel lblPagosRealizados;
 	private JLabel lbl_ST;
 	private JLabel lblSubtotal;
@@ -59,22 +58,25 @@ public class PagoPanel extends BasePanel {
 	private JLabel lblSubtotalValor;
 	private JLabel lblTotalValor;
 	private JLabel lblTotalPagadoValor;
-	private JButton btnAgregar;
 	private JLabel lblMonto;
-	private JComboBox<MedioPagoDto> cmbMedioPago;
 	private JLabel lblMedioPago;
-	private JButton btnVolver;
-	private JButton btnQuitar;
 	private JLabel lblAPagarValor;
 	private JLabel lblTotalAPagar;
 	
-	private PagoTableModel pagoTableModel;
-
+	private JComboBox<MedioPagoDto> cmbMedioPago;
+	
+	private JTextField txtMonto;
+	
+	private JButton btnAgregar;
+	private JButton btnVolver;
+	private JButton btnQuitar;
+	
 	private JPanel pnlCliente;
 	private JLabel lblApellidoNombre;
 	private JLabel lblDni;
 
 	private JLabel lblConsumidorFinal;
+	private JLabel lblCliente;
 	
 	@Autowired
 	public PagoPanel(@Qualifier("ventaController") VentaController ventaController) {
@@ -95,189 +97,303 @@ public class PagoPanel extends BasePanel {
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblMedioPago = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.medioPago"));
-		lblMedioPago.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMedioPago.setBounds(44, 86, 115, 20);
-		add(lblMedioPago);
-		
-		cmbMedioPago = new JComboBox<MedioPagoDto>(new MitnickComboBoxModel<MedioPagoDto>());
-		cmbMedioPago.setBounds(44, 117, 110, 20);
-		add(cmbMedioPago);
-		
-		lblMonto = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.monto"));
-		lblMonto.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMonto.setBounds(44, 148, 80, 20);
-		add(lblMonto);
-		
-		txtMonto = new JTextField();
-		txtMonto.setBounds(44, 176, 110, 20);
-		txtMonto.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					agregarPago();
-				}
-			}
-		});
-		add(txtMonto);
-		txtMonto.setColumns(10);
-		
-		pagoTableModel = new PagoTableModel();
-		
-		table = new JTable(pagoTableModel);
-		table.setBounds(0, 0, 1, 1);
-		
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(269, 115, 516, 143);
-		add(scrollPane);
-		
-		lblPagosRealizados = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.pagosRealizados"));
-		lblPagosRealizados.setBounds(269, 86, 141, 20);
-		add(lblPagosRealizados);
-		
-		lbl_ST = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.subtotal"));
-		lbl_ST.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_ST.setBounds(269, 299, 88, 20);
-		add(lbl_ST);
-		
-		lblSubtotal = new JLabel();
-		lblSubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSubtotal.setBounds(650, 176, 109, 20);
-		add(lblSubtotal);
-		
-		lbl_T = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.total"));
-		lbl_T.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_T.setBounds(269, 348, 88, 20);
-		add(lbl_T);
-		
-		lblTotal = new JLabel();
-		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotal.setBounds(650, 207, 109, 20);
-		add(lblTotal);
-		
-		lbl_TP = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalPagado"));
-		lbl_TP.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_TP.setBounds(269, 384, 88, 20);
-		add(lbl_TP);
-		
-		lblTotalPagado = new JLabel();
-		lblTotalPagado.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotalPagado.setBounds(269, 270, 109, 20);
-		add(lblTotalPagado);
-		
-		lblTotalAPagar = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalAPagar"));
-		lblTotalAPagar.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotalAPagar.setBounds(269, 420, 88, 20);
-		add(lblTotalAPagar);
-		
-		btnAgregar = new JButton(PropertiesManager.getProperty("pagoPanel.boton.agregar"));
-		btnAgregar.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.agregar"));
-		
-		btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
-		btnAgregar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnAgregar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					agregarPago();
-				}
-				catch(PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		btnAgregar.setBounds(188, 86, 60, 60);
-		add(btnAgregar);
-		
-		btnQuitar = new JButton(PropertiesManager.getProperty("pagoPanel.button.quitar"));
-		btnQuitar.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.quitar"));
-		
-		btnQuitar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
-		btnQuitar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnQuitar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnQuitar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnQuitar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evento) {
-				logger.info("Quitando pago ... ");
-
-				try {
-					int index = table.getSelectedRow();
-					PagoDto pagoDto = pagoTableModel.getPago(index);
-					
-					int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("pagoPanel.dialog.confirm.quitar"));
-					
-					if ( opcion == JOptionPane.YES_OPTION) {
-						ventaController.quitarPago(pagoDto);	
-					}
-				}
-				catch (IndexOutOfBoundsException exception) {
-					if(pagoTableModel.getRowCount() == 0) {
-						mostrarMensajeError(PropertiesManager.getProperty("error.pagoPanel.pagos.vacio"));
-					}
-					else {
-						mostrarMensajeError(PropertiesManager.getProperty("error.pagoPanel.pago.noSeleccionado"));
-					}
-				}
-				catch (PresentationException ex) {
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		btnQuitar.setBounds(188, 157, 60, 60);
-		add(btnQuitar);
-		
-		btnVolver = new JButton(PropertiesManager.getProperty("pagoPanel.boton.volver"));
-		btnVolver.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.volver"));
-		btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnVolver.setMargin(new Insets(-1, -1, -1, -1));
-		btnVolver.setBounds(680, 364, 60, 60);
-		btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					ventaController.mostrarVentasPanel();
-				}
-				catch(PresentationException ex) {
-					
-					mostrarMensaje(ex);
-				}
-			}
-		});
-		
-		add(btnVolver);
-		
-		lblSubtotalValor = new JLabel();
-		lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSubtotalValor.setBounds(396, 299, 88, 20);
-		add(lblSubtotalValor);
-		
-		lblTotalValor = new JLabel();
-		lblTotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotalValor.setBounds(396, 348, 88, 20);
-		add(lblTotalValor);
-		
-		lblTotalPagadoValor = new JLabel();
-		lblTotalPagadoValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTotalPagadoValor.setBounds(396, 384, 88, 20);
-		add(lblTotalPagadoValor);
-		
-		lblAPagarValor = new JLabel();
-		lblAPagarValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAPagarValor.setBounds(396, 420, 88, 20);
-		add(lblAPagarValor);
-		
-		add(getPnlCliente());
+		add(getLblMedioPago());
+		add(getCmbMedioPago());
+		add(getLblMonto());
+		add(getTxtMonto());
+		add(getScrollPane());
+		add(getLblPagosRealizados());
+		add(getLbl_ST());
+		add(getLblSubtotal());
+		add(getLbl_T());
+		add(getLblTotal());
+		add(getLbl_TP());
+		add(getLblTotalPagado());
+		add(getLblTotalAPagar());
+		add(getBtnAgregar());
+		add(getBtnQuitar());
+		add(getBtnVolver());
+		add(getLblSubtotalValor());
+		add(getLblTotalValor());
+		add(getLblTotalPagadoValor());
+		add(getLblAPagarValor());
 		add(getLblConsumidorFinal());
-		
-		JLabel lblCliente = new JLabel("Cliente:");
-		lblCliente.setBounds(107, 23, 46, 14);
-		add(lblCliente);
+		add(getPnlCliente());
+		add(getLblCliente());
 		
 		setFocusTraversalPolicy();
+	}
+	
+	private JLabel getLblCliente() {
+		if(lblCliente == null) {
+			lblCliente = new JLabel("Cliente:");
+			lblCliente.setBounds(107, 23, 46, 14);
+		}
+		return lblCliente;
+	}
+
+	public JTextField getTxtMonto() {
+		if(txtMonto == null) {
+			txtMonto = new JTextField();
+			txtMonto.setBounds(44, 176, 110, 20);
+			txtMonto.setColumns(10);
+//			txtMonto.addKeyListener(new KeyAdapter() {
+//				@Override
+//				public void keyPressed(KeyEvent e) {
+//					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//						agregarPago();
+//					}
+//				}
+//			});
+		}
+		return txtMonto;
+	}
+
+	public JTable getTable() {
+		if(table == null) {
+			table = new JTable(getModel());
+			table.setBounds(0, 0, 1, 1);
+		}
+		return table;
+	}
+
+	public JScrollPane getScrollPane() {
+		if(scrollPane == null) {
+			scrollPane = new JScrollPane(getTable());
+			scrollPane.setBounds(269, 115, 516, 143);
+		}
+		return scrollPane;
+	}
+
+	public JLabel getLblPagosRealizados() {
+		if(lblPagosRealizados == null) {
+			lblPagosRealizados = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.pagosRealizados"));
+			lblPagosRealizados.setBounds(269, 86, 141, 20);
+		}
+		return lblPagosRealizados;
+	}
+
+	public JLabel getLbl_ST() {
+		if(lbl_ST == null) {
+			lbl_ST = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.subtotal"));
+			lbl_ST.setHorizontalAlignment(SwingConstants.RIGHT);
+			lbl_ST.setBounds(269, 299, 88, 20);
+		}
+		return lbl_ST;
+	}
+
+	public JLabel getLblSubtotal() {
+		if(lblSubtotal == null) {
+			lblSubtotal = new JLabel();
+			lblSubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblSubtotal.setBounds(650, 176, 109, 20);
+		}
+		return lblSubtotal;
+	}
+
+	public JLabel getLbl_T() {
+		if(lbl_T == null) {
+			lbl_T = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.total"));
+			lbl_T.setHorizontalAlignment(SwingConstants.RIGHT);
+			lbl_T.setBounds(269, 348, 88, 20);
+		}
+		return lbl_T;
+	}
+
+	public JLabel getLblTotal() {
+		if(lblTotal == null) {
+			lblTotal = new JLabel();
+			lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTotal.setBounds(650, 207, 109, 20);
+		}
+		return lblTotal;
+	}
+
+	public JLabel getLbl_TP() {
+		if(lbl_TP == null) {
+			lbl_TP = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalPagado"));
+			lbl_TP.setHorizontalAlignment(SwingConstants.RIGHT);
+			lbl_TP.setBounds(269, 384, 88, 20);
+		}
+		return lbl_TP;
+	}
+
+	public JLabel getLblTotalPagado() {
+		if(lblTotalPagado == null) {
+			lblTotalPagado = new JLabel();
+			lblTotalPagado.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTotalPagado.setBounds(269, 270, 109, 20);
+		}
+		return lblTotalPagado;
+	}
+
+	public JLabel getLblSubtotalValor() {
+		if(lblSubtotalValor == null) {
+			lblSubtotalValor = new JLabel();
+			lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblSubtotalValor.setBounds(396, 299, 88, 20);
+		}
+		return lblSubtotalValor;
+	}
+
+	public JLabel getLblTotalValor() {
+		if(lblTotalValor == null) {
+			lblTotalValor = new JLabel();
+			lblTotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTotalValor.setBounds(396, 348, 88, 20);
+		}
+		return lblTotalValor;
+	}
+
+	public JLabel getLblTotalPagadoValor() {
+		if(lblTotalPagadoValor == null) {
+			lblTotalPagadoValor = new JLabel();
+			lblTotalPagadoValor.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTotalPagadoValor.setBounds(396, 384, 88, 20);
+		}
+		return lblTotalPagadoValor;
+	}
+
+	public JButton getBtnAgregar() {
+		if(btnAgregar == null) {
+			btnAgregar = new JButton(PropertiesManager.getProperty("pagoPanel.boton.agregar"));
+			btnAgregar.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.agregar"));
+			
+			btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
+			btnAgregar.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnAgregar.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnAgregar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						agregarPago();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+			btnAgregar.setBounds(188, 86, 60, 60);
+		}
+		return btnAgregar;
+	}
+
+	public JLabel getLblMonto() {
+		if(lblMonto == null) {
+			lblMonto = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.monto"));
+			lblMonto.setHorizontalAlignment(SwingConstants.LEFT);
+			lblMonto.setBounds(44, 148, 80, 20);
+		}
+		return lblMonto;
+	}
+
+	public JComboBox<MedioPagoDto> getCmbMedioPago() {
+		if(cmbMedioPago == null) {
+			cmbMedioPago = new JComboBox<MedioPagoDto>(new MitnickComboBoxModel<MedioPagoDto>());
+			cmbMedioPago.setBounds(44, 117, 110, 20);
+		}
+		return cmbMedioPago;
+	}
+
+	public JLabel getLblMedioPago() {
+		if(lblMedioPago == null) {
+			lblMedioPago = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.medioPago"));
+			lblMedioPago.setHorizontalAlignment(SwingConstants.LEFT);
+			lblMedioPago.setBounds(44, 86, 115, 20);
+		}
+		return lblMedioPago;
+	}
+
+	public JButton getBtnVolver() {
+		if(btnVolver == null) {
+			btnVolver = new JButton(PropertiesManager.getProperty("pagoPanel.boton.volver"));
+			btnVolver.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.volver"));
+			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnVolver.setMargin(new Insets(-1, -1, -1, -1));
+			btnVolver.setBounds(680, 364, 60, 60);
+			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
+			btnVolver.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						ventaController.mostrarVentasPanel();
+					}
+					catch(PresentationException ex) {
+						
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnVolver;
+	}
+
+	public JButton getBtnQuitar() {
+		if(btnQuitar == null) {
+			btnQuitar = new JButton(PropertiesManager.getProperty("pagoPanel.button.quitar"));
+			btnQuitar.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.quitar"));
+			
+			btnQuitar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+			btnQuitar.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnQuitar.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnQuitar.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnQuitar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					logger.info("Quitando pago ... ");
+
+					try {
+						int index = table.getSelectedRow();
+						PagoDto pagoDto = model.getPago(index);
+						
+						int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("pagoPanel.dialog.confirm.quitar"));
+						
+						if ( opcion == JOptionPane.YES_OPTION) {
+							ventaController.quitarPago(pagoDto);	
+						}
+					}
+					catch (IndexOutOfBoundsException exception) {
+						if(model.getRowCount() == 0) {
+							mostrarMensajeError(PropertiesManager.getProperty("error.pagoPanel.pagos.vacio"));
+						}
+						else {
+							mostrarMensajeError(PropertiesManager.getProperty("error.pagoPanel.pago.noSeleccionado"));
+						}
+					}
+					catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+			btnQuitar.setBounds(188, 157, 60, 60);
+		}
+		return btnQuitar;
+	}
+
+	public JLabel getLblAPagarValor() {
+		if(lblAPagarValor == null) {
+			lblAPagarValor = new JLabel();
+			lblAPagarValor.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblAPagarValor.setBounds(396, 420, 88, 20);
+		}
+		return lblAPagarValor;
+	}
+
+	public JLabel getLblTotalAPagar() {
+		if(lblTotalAPagar == null) {
+			lblTotalAPagar = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalAPagar"));
+			lblTotalAPagar.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTotalAPagar.setBounds(269, 420, 88, 20);
+		}
+		return lblTotalAPagar;
+	}
+
+	public PagoTableModel getModel() {
+		if(model == null) {
+			model = new PagoTableModel();
+		}
+		return model;
 	}
 	
 	protected void setFocusTraversalPolicy() {
@@ -288,8 +404,6 @@ public class PagoPanel extends BasePanel {
 	protected void agregarPago() {
 		try {
 			ventaController.agregarPago((MedioPagoDto)cmbMedioPago.getSelectedItem(), txtMonto.getText());
-			
-			
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -300,8 +414,8 @@ public class PagoPanel extends BasePanel {
 	public void limpiarCamposPantalla() {
 		if(Validator.isNotNull(txtMonto))
 			txtMonto.setText("");
-		if(Validator.isNotNull(pagoTableModel))
-			pagoTableModel.setPagos(new ArrayList<PagoDto>());
+		if(Validator.isNotNull(model))
+			model.setPagos(new ArrayList<PagoDto>());
 	}
 
 	public void actualizarPantalla() {
@@ -326,8 +440,8 @@ public class PagoPanel extends BasePanel {
 			cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());
 			((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).addItems(medioPagoList);
 		}
-		if(Validator.isNotNull(pagoTableModel)) {
-			pagoTableModel.setPagos(VentaManager.getVentaActual().getPagos());
+		if(Validator.isNotNull(model)) {
+			model.setPagos(VentaManager.getVentaActual().getPagos());
 		}
 		if(Validator.isNotNull(txtMonto)) {
 			txtMonto.setText(VentaManager.getVentaActual().getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -410,5 +524,9 @@ public class PagoPanel extends BasePanel {
 			lblConsumidorFinal.setBounds(180, 23, 115, 14);
 		}
 		return lblConsumidorFinal;
+	}
+	
+	protected void setDefaultButton() {
+		this.getRootPane().setDefaultButton(getBtnAgregar());
 	}
 }
