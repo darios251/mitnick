@@ -127,20 +127,8 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		
 		
 
-		btnExportar = new JButton();
-		btnExportar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.detallesMovimientos"));
 		
-		btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
-		btnExportar.setHorizontalTextPosition( SwingConstants.CENTER );
-		btnExportar.setVerticalTextPosition( SwingConstants.BOTTOM );
-		btnExportar.setMargin(new Insets(-1, -1, -1, -1));
-		
-		btnExportar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnExportar.setBounds(735, 325, 60, 60);
-		add(btnExportar);
+		add(getBtnExportar());
 		
 		
 		JLabel lblProductos = new JLabel(PropertiesManager.getProperty("productoPanel.label.productos"));
@@ -150,6 +138,55 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		setFocusTraversalPolicy();		
 	}
 	
+	
+	
+	public JLabel getLblCdigo() {
+		return lblCdigo;
+	}
+
+	public JLabel getLblDescripcin() {
+		return lblDescripcin;
+	}
+
+	public JLabel getLblStockOriginal() {
+		return lblStockOriginal;
+	}
+
+	public JLabel getLblStokFinal() {
+		return lblStokFinal;
+	}
+
+	public JLabel getLblFechaInicial() {
+		return lblFechaInicial;
+	}
+
+	public JLabel getLblFechaFinal() {
+		return lblFechaFinal;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public JButton getBtnExportar() {
+		if(btnExportar == null) {
+			btnExportar = new JButton();
+			btnExportar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.detallesMovimientos"));
+			
+			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
+			btnExportar.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnExportar.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnExportar.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnExportar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			btnExportar.setBounds(735, 325, 60, 60);
+		}
+		return btnExportar;
+	}
+
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
 				new Component[]{}));
@@ -256,5 +293,8 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		this.stockFinal = stockFinal;
 	}
 	
+	protected void setDefaultButton() {
+		this.getRootPane().setDefaultButton(getBtnExportar());
+	}
 	
 }

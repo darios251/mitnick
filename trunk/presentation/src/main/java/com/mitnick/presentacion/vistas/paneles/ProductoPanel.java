@@ -81,7 +81,15 @@ public class ProductoPanel extends BasePanel {
 
 	@Override
 	protected void limpiarCamposPantalla() {
-
+		for (Component component : getComponents()) {
+			if (component instanceof JTextField)
+				((JTextField) component).setText("");
+		}
+		try {
+			getCmbMarca().setSelectedIndex(0);
+			getCmbTipo().setSelectedIndex(0);
+		} catch (Exception e) {
+		}
 	}
 
 	@Override
@@ -397,10 +405,14 @@ public class ProductoPanel extends BasePanel {
 
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtCodigo;
+		this.defaultFocusField = getTxtCodigo();
 	}
 
 	public void setProductoController(ProductoController productoController) {
 		this.productoController = productoController;
+	}
+	
+	protected void setDefaultButton() {
+		this.getRootPane().setDefaultButton(getBtnBuscar());
 	}
 }

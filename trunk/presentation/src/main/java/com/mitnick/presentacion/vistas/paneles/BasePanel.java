@@ -41,7 +41,10 @@ public abstract class BasePanel extends JPanel {
 	
 	protected void initializePanel () {
 		setFocusCycleRoot(true);
+		setFocusTraversalPolicy();
 	}
+	
+	
 	
 	protected int mostrarMensaje(PresentationException ex) {
 		switch(ex.getType()) {
@@ -87,6 +90,7 @@ public abstract class BasePanel extends JPanel {
 			if(!panelInicializado) {
 				initializeComponents();
 				setDefaultFocusField();
+				setDefaultButton();
 			}
 			panelInicializado = true;
 		}
@@ -113,5 +117,8 @@ public abstract class BasePanel extends JPanel {
 	public abstract void setDefaultFocusField();
 	
 	protected abstract void setFocusTraversalPolicy();
+	
+	protected abstract void setDefaultButton();
+	
 
 }

@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -31,7 +29,6 @@ import com.mitnick.presentacion.modelos.VentaTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
-import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
@@ -77,10 +74,8 @@ public class VentaPanel extends BasePanel {
 
 	@Override
 	public void limpiarCamposPantalla() {
-		if (Validator.isNotNull(txtCodigo))
-			txtCodigo.setText("");
-		if (Validator.isNotNull(getModel()))
-			getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
+		getTxtCodigo().setText("");
+		getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
 	}
 
 	@Override
@@ -112,8 +107,8 @@ public class VentaPanel extends BasePanel {
 	public void agregarProducto() {
 		logger.debug("entrado a agregarProducto");
 		try {
-			ventaController.agregarProducto(txtCodigo.getText());
-			txtCodigo.setText("");
+			ventaController.agregarProducto(getTxtCodigo().getText());
+			getTxtCodigo().setText("");
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -121,18 +116,13 @@ public class VentaPanel extends BasePanel {
 	}
 
 	public void actualizarPantalla() {
-		if (Validator.isNotNull(getModel())
-				&& VentaManager.getVentaActual() != null)
-			getModel().setProductosVenta(
-					VentaManager.getVentaActual().getProductos());
-		if (Validator.isNotNull(lblTotalValor)
-				&& VentaManager.getVentaActual() != null)
-			lblTotalValor.setText(VentaManager.getVentaActual().getTotal()
+		if(VentaManager.getVentaActual() != null){
+			getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
+			getLblTotalValor().setText(	VentaManager.getVentaActual().getTotal()
 					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		if (Validator.isNotNull(lblSubtotalValor)
-				&& VentaManager.getVentaActual() != null)
-			lblSubtotalValor.setText(VentaManager.getVentaActual().getTotal()
+			getLblSubtotalValor().setText(VentaManager.getVentaActual().getTotal()
 					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		}
 	}
 
 	public JTable getTable() {
@@ -337,14 +327,6 @@ public class VentaPanel extends BasePanel {
 		if (txtCodigo == null) {
 			txtCodigo = new JTextField();
 			txtCodigo.setName("codigoVenta");
-			txtCodigo.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						agregarProducto();
-					}
-				}
-			});
 			txtCodigo.setBounds(420, 35, 110, 20);
 			txtCodigo.setColumns(10);
 		}
@@ -353,6 +335,10 @@ public class VentaPanel extends BasePanel {
 
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtCodigo;
+		this.defaultFocusField = getTxtCodigo();
+	}
+	
+	protected void setDefaultButton() {
+		this.getRootPane().setDefaultButton(getBtnAgregar());
 	}
 }
