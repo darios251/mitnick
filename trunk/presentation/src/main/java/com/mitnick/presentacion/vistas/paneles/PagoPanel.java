@@ -527,6 +527,7 @@ public class PagoPanel extends BasePanel {
 	}
 	
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnAgregar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnAgregar());
 	}
 }

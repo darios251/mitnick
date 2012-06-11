@@ -314,6 +314,7 @@ public class ProductoNuevoPanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {
+		//this.producto = productoController.reloadProducto(producto);
 		getTxtCodigo().requestFocus();
 
 		if (Validator.isNotNull(producto)) {
@@ -334,7 +335,8 @@ public class ProductoNuevoPanel extends BasePanel {
 	}
 
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnAceptar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnAceptar());
 	}
 
 }

@@ -27,6 +27,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -294,7 +295,8 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 	}
 	
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnExportar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnExportar());
 	}
 	
 }

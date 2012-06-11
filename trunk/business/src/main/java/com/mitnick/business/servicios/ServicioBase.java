@@ -1,5 +1,9 @@
 package com.mitnick.business.servicios;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import org.apache.log4j.Logger;
 import org.appfuse.model.BaseObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,14 @@ public class ServicioBase<E extends BaseObject, D extends BaseDto> {
 
 	public void setEntityDTOParser(EntityDTOParser<E, D> entityDTOParser) {
 		this.entityDTOParser = entityDTOParser;
+	}
+	
+	protected static ValidatorFactory entityValidatorFactory; 
+	protected static Validator entityValidator;
+	
+	static {
+		entityValidatorFactory = Validation.buildDefaultValidatorFactory();
+		entityValidator = entityValidatorFactory.getValidator();
 	}
 	
 }

@@ -25,6 +25,7 @@ import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoDto;
 
@@ -282,6 +283,7 @@ public class BuscarProductoPanel extends BasePanel {
 		this.productoController = productoController;
 	}
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnBuscar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnBuscar());
 	}
 }

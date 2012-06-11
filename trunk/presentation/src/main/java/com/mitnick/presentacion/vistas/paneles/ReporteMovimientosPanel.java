@@ -385,6 +385,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 	}
 
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnBuscar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnBuscar());
 	}
 }

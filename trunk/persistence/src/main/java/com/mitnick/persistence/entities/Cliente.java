@@ -30,13 +30,13 @@ public class Cliente extends BaseObject implements Serializable {
 	
 	@NotNull(message="{error.entity.cliente.nombre.null}")
 	@Size(min=3, max=30, message="{error.entity.cliente.nombre.size}")
-	@Pattern(regexp="^[a-zA-Záéíóúñ]*$", message="{error.entity.cliente.nombre.regexp}")
+	@Pattern(regexp="^[a-zA-Záéíóúñ ]*$", message="{error.entity.cliente.nombre.regexp}")
 	@Column(name = "nombre", length = 30, nullable = false)
 	private String nombre;
 	
 	@NotNull(message="{error.entity.cliente.apellido.null}")
 	@Size(min=3, max=30, message="{error.entity.cliente.apellido.size}")
-	@Pattern(regexp="^[a-zA-Záéíóúñ]*$", message="{error.entity.cliente.apellido.regexp}")
+	@Pattern(regexp="^[a-zA-Záéíóúñ ]*$", message="{error.entity.cliente.apellido.regexp}")
 	@Column(name = "apellido", length = 30, nullable = false)
 	private String apellido;
 

@@ -383,6 +383,7 @@ public class ClientePanel extends BasePanel {
 	}
 
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(this.btnBuscar);
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(this.btnBuscar);
 	}
 }

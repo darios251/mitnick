@@ -41,10 +41,7 @@ public abstract class BasePanel extends JPanel {
 	
 	protected void initializePanel () {
 		setFocusCycleRoot(true);
-		setFocusTraversalPolicy();
 	}
-	
-	
 	
 	protected int mostrarMensaje(PresentationException ex) {
 		switch(ex.getType()) {
@@ -90,15 +87,18 @@ public abstract class BasePanel extends JPanel {
 			if(!panelInicializado) {
 				initializeComponents();
 				setDefaultFocusField();
-				setDefaultButton();
 			}
 			panelInicializado = true;
+			setDefaultButton();
 		}
 		super.setVisible(aFlag);
 		
-		if(aFlag)
+		if(aFlag) {
+			this.actualizarPantalla();
+			setFocusTraversalPolicy();
 			if(Validator.isNotNull(defaultFocusField))
 				defaultFocusField.requestFocus();
+		}
 	}
 	
 	protected void centrarVentana ( Component parent ) {
