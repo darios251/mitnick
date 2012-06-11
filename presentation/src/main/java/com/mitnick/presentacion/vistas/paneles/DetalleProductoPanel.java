@@ -222,6 +222,7 @@ public class DetalleProductoPanel extends BasePanel {
 	}
 
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnAceptar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnAceptar());
 	}
 }

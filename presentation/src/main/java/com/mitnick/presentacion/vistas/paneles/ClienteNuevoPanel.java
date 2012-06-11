@@ -89,8 +89,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	}
 
 	@Autowired(required = true)
-	public ClienteNuevoPanel(
-			@Qualifier("clienteController") ClienteController clienteController) {
+	public ClienteNuevoPanel(@Qualifier("clienteController") ClienteController clienteController) {
 		this.clienteController = clienteController;
 	}
 
@@ -144,8 +143,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public Component getLblCiudad() {
 		if(lblCiudad == null) {
-			lblCiudad = new JLabel(
-					PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.ciudad"));
+			lblCiudad = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.ciudad"));
 			lblCiudad.setBounds(392, 160, 94, 20);
 			
 		}
@@ -154,9 +152,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public Component getLblProvincia() {
 		if(lblProvincia == null) {
-			lblProvincia = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.provincia"));
+			lblProvincia = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.provincia"));
 			lblProvincia.setBounds(392, 208, 94, 20);
 		}
 		return lblProvincia;
@@ -164,9 +160,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblCodigoPostal() {
 		if(lblCodigoPostal == null){
-			lblCodigoPostal = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.codigoPostal"));
+			lblCodigoPostal = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.codigoPostal"));
 			lblCodigoPostal.setBounds(392, 118, 94, 20);
 		}
 		return lblCodigoPostal;
@@ -174,9 +168,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblDomicilio() {
 		if(lblDomicilio == null) {
-			lblDomicilio = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.domicilio"));
+			lblDomicilio = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.domicilio"));
 			lblDomicilio.setBounds(392, 75, 94, 20);
 		}
 		return lblDomicilio;
@@ -184,9 +176,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblFechaNacimiento() {
 		if(lblFechaNacimiento == null) {
-			lblFechaNacimiento = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.fechaNacimiento"));
+			lblFechaNacimiento = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.fechaNacimiento"));
 			lblFechaNacimiento.setBounds(57, 351, 94, 20);
 		}
 		return lblFechaNacimiento;
@@ -194,9 +184,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblEmail() {
 		if(lblEmail == null) {
-			lblEmail = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.email"));
+			lblEmail = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.email"));
 			lblEmail.setBounds(57, 306, 94, 20);
 		}
 		return lblEmail;
@@ -204,9 +192,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblTelefono() {
 		if(lblTelefono == null) {
-			lblTelefono = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.telefono"));
+			lblTelefono = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.telefono"));
 			lblTelefono.setBounds(57, 259, 94, 20);
 		}
 		return lblTelefono;
@@ -214,9 +200,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblCuit() {
 		if(lblCuit == null) {
-			lblCuit = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.cuit"));
+			lblCuit = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.cuit"));
 			lblCuit.setBounds(57, 213, 94, 20);
 		}
 		return lblCuit;
@@ -224,9 +208,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblDocumento() {
 		if(lblDocumento == null) {
-			lblDocumento = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.documento"));
+			lblDocumento = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.documento"));
 			lblDocumento.setBounds(57, 167, 94, 20);
 		}
 		return lblDocumento;
@@ -234,20 +216,15 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JLabel getLblNombre() {
 		if(lblNombre == null) {
-			lblNombre = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.nombre"));
+			lblNombre = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.nombre"));
 			lblNombre.setBounds(57, 122, 94, 20);
-			
 		}
 		return lblNombre;
 	}
 
 	public JLabel getLblApellido() {
 		if(lblApellido == null) {
-			lblApellido = new JLabel(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.etiqueta.apellido"));
+			lblApellido = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.apellido"));
 			lblApellido.setBounds(57, 75, 94, 20);
 			
 		}
@@ -256,13 +233,10 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JButton getBtnAceptar() {
 		if (btnAceptar == null) {
-			btnAceptar = new JButton(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.boton.aceptar"));
+			btnAceptar = new JButton(PropertiesManager.getProperty("clienteNuevoPanel.boton.aceptar"));
 			// btnAceptar.setToolTipText(PropertiesManager.getProperty("clienteNuevoPanel.tooltip.aceptar"));
 
-			btnAceptar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/aceptar.png")));
+			btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
 			btnAceptar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnAceptar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
@@ -281,14 +255,11 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JButton getBtnCancelar() {
 		if (btnCancelar == null) {
-			btnCancelar = new JButton(
-					PropertiesManager
-							.getProperty("clienteNuevoPanel.boton.cancelar"));
+			btnCancelar = new JButton(PropertiesManager.getProperty("clienteNuevoPanel.boton.cancelar"));
 
 			// btnAceptar.setToolTipText(PropertiesManager.getProperty("clienteNuevoPanel.tooltip.cancelar"));
 
-			btnCancelar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/cancelar.png")));
+			btnCancelar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 			btnCancelar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnCancelar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCancelar.setMargin(new Insets(-1, -1, -1, -1));
@@ -391,9 +362,7 @@ public class ClienteNuevoPanel extends BasePanel {
 			cmbCiudad = new JComboBox<CiudadDto>();
 			cmbCiudad.setBounds(496, 160, 105, 20);
 			MitnickComboBoxModel<CiudadDto> ciudadModel = new MitnickComboBoxModel<CiudadDto>();
-			ciudadModel.addItems(clienteController
-					.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia
-							.getSelectedItem()));
+			ciudadModel.addItems(clienteController.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
 			cmbCiudad.setModel(ciudadModel);
 		}
 		return cmbCiudad;
@@ -413,8 +382,7 @@ public class ClienteNuevoPanel extends BasePanel {
 					cmbCiudad.removeAllItems();
 					try {
 						((MitnickComboBoxModel<CiudadDto>) cmbCiudad.getModel()).addItems(clienteController
-								.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia
-										.getSelectedItem()));
+								.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -425,20 +393,15 @@ public class ClienteNuevoPanel extends BasePanel {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[] { txtApellido, txtNombre, txtDocumento,
-						txtCuit, txtTelefono, txtEmail, txtFechaNacimiento,
-						txtDomicilio, txtCodigoPostal, cmbCiudad, cmbProvincia }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtApellido, txtNombre, txtDocumento,
+						txtCuit, txtTelefono, txtEmail, txtFechaNacimiento,	txtDomicilio, txtCodigoPostal, cmbCiudad, cmbProvincia }));
 	}
 
 	protected void agregarCliente() {
 		try {
-			clienteController.guardarCliente(cliente, txtApellido.getText(),
-					txtNombre.getText(), txtDocumento.getText(),
-					txtCuit.getText(), txtTelefono.getText(),
-					txtEmail.getText(), txtFechaNacimiento.getText(),
-					txtDomicilio.getText(), txtCodigoPostal.getText(),
-					(CiudadDto) cmbCiudad.getSelectedItem());
+			clienteController.guardarCliente(cliente, txtApellido.getText(), txtNombre.getText(), txtDocumento.getText(),
+					txtCuit.getText(), txtTelefono.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
+					txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto) cmbCiudad.getSelectedItem());
 			limpiarCamposPantalla();
 			retornarLLamador();
 		} catch (PresentationException ex) {
@@ -466,45 +429,26 @@ public class ClienteNuevoPanel extends BasePanel {
 		}
 
 		if (Validator.isNotNull(cliente)) {
-			if (Validator.isNotNull(txtApellido)
-					&& Validator.isNotBlankOrNull(cliente.getApellido()))
+			if (Validator.isNotNull(txtApellido) && Validator.isNotBlankOrNull(cliente.getApellido()))
 				txtApellido.setText(cliente.getApellido());
-			if (Validator.isNotNull(txtNombre)
-					&& Validator.isNotBlankOrNull(cliente.getNombre()))
+			if (Validator.isNotNull(txtNombre) && Validator.isNotBlankOrNull(cliente.getNombre()))
 				txtNombre.setText(cliente.getNombre());
-			if (Validator.isNotNull(txtDocumento)
-					&& Validator.isNotBlankOrNull(cliente.getDocumento()))
+			if (Validator.isNotNull(txtDocumento) && Validator.isNotBlankOrNull(cliente.getDocumento()))
 				txtDocumento.setText(cliente.getDocumento());
-			if (Validator.isNotNull(txtCuit)
-					&& Validator.isNotBlankOrNull(cliente.getCuit()))
+			if (Validator.isNotNull(txtCuit) && Validator.isNotBlankOrNull(cliente.getCuit()))
 				txtCuit.setText(cliente.getCuit());
-			if (Validator.isNotNull(txtEmail)
-					&& Validator.isNotBlankOrNull(cliente.getEmail()))
+			if (Validator.isNotNull(txtEmail) && Validator.isNotBlankOrNull(cliente.getEmail()))
 				txtEmail.setText(cliente.getEmail());
-			if (Validator.isNotNull(txtFechaNacimiento)
-					&& Validator.isNotNull(cliente.getFechaNacimiento()))
-				txtFechaNacimiento.setText(new SimpleDateFormat(
-						MitnickConstants.DATE_FORMAT).format(cliente
-						.getFechaNacimiento()));
-			if (Validator.isNotNull(txtDomicilio)
-					&& Validator.isNotNull(cliente.getDireccion())
-					&& Validator.isNotBlankOrNull(cliente.getDireccion()
-							.getDomicilio()))
+			if (Validator.isNotNull(txtFechaNacimiento)	&& Validator.isNotNull(cliente.getFechaNacimiento()))
+				txtFechaNacimiento.setText(new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(cliente.getFechaNacimiento()));
+			if (Validator.isNotNull(txtDomicilio) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotBlankOrNull(cliente.getDireccion().getDomicilio()))
 				txtDomicilio.setText(cliente.getDireccion().getDomicilio());
-			if (Validator.isNotNull(txtCodigoPostal)
-					&& Validator.isNotNull(cliente.getDireccion())
-					&& Validator.isNotBlankOrNull(cliente.getDireccion()
-							.getCodigoPostal()))
-				txtCodigoPostal.setText(cliente.getDireccion()
-						.getCodigoPostal());
-			if (Validator.isNotNull(cmbProvincia)
-					&& Validator.isNotNull(cliente.getDireccion()))
-				cmbProvincia.setSelectedItem(cliente.getDireccion().getCiudad()
-						.getPrinvinciaDto());
-			if (Validator.isNotNull(cmbCiudad)
-					&& Validator.isNotNull(cliente.getDireccion()))
-				cmbProvincia
-						.setSelectedItem(cliente.getDireccion().getCiudad());
+			if (Validator.isNotNull(txtCodigoPostal) && Validator.isNotNull(cliente.getDireccion())	&& Validator.isNotBlankOrNull(cliente.getDireccion().getCodigoPostal()))
+				txtCodigoPostal.setText(cliente.getDireccion().getCodigoPostal());
+			if (Validator.isNotNull(cmbProvincia) && Validator.isNotNull(cliente.getDireccion()))
+				cmbProvincia.setSelectedItem(cliente.getDireccion().getCiudad().getPrinvinciaDto());
+			if (Validator.isNotNull(cmbCiudad) && Validator.isNotNull(cliente.getDireccion()))
+				cmbProvincia.setSelectedItem(cliente.getDireccion().getCiudad());
 		}
 	}
 
@@ -522,6 +466,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	}
 
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnAceptar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnAceptar());
 	}
 }

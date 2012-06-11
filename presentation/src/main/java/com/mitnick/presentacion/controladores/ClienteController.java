@@ -148,28 +148,28 @@ public class ClienteController extends BaseController {
 
 	public void guardarCliente(ClienteDto cliente, String apellido, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
-		if(Validator.isBlankOrNull(apellido))
-			throw new PresentationException("error.cliente.nuevo.apellido.null");
-		else if(Validator.isBlankOrNull(nombre))
-			throw new PresentationException("error.cliente.nuevo.nombre.null");
-		else if(Validator.isBlankOrNull(documento))
-			throw new PresentationException("error.cliente.nuevo.documento.null");
-		else if(Validator.isNotBlankOrNull(cuit) && !Validator.isCuit(cuit))
-			throw new PresentationException("error.cliente.nuevo.cuit.format");
-		else if(Validator.isNotBlankOrNull(telefono) && !Validator.isPhoneNumber(telefono))
-			throw new PresentationException("error.cliente.nuevo.telefono.format");
-		else if(Validator.isNotBlankOrNull(email) && !Validator.isEmail(email))
-			throw new PresentationException("error.cliente.nuevo.email.format");
-		else if(Validator.isNotBlankOrNull(fechaNacimiento) && !Validator.isDate(fechaNacimiento, MitnickConstants.DATE_FORMAT, true))
-			throw new PresentationException("error.cliente.nuevo.fechaNacimiento.format");
-		else if(Validator.isBlankOrNull(domicilio))
-			throw new PresentationException("error.cliente.nuevo.domicilio.null");
-		else if(Validator.isBlankOrNull(codigoPostal))
-			throw new PresentationException("error.cliente.nuevo.codigoPostal.null");
-		else if(!Validator.isInt(codigoPostal))
-			throw new PresentationException("error.cliente.nuevo.codigoPostal.format");
-		else if(Validator.isNull(ciudad))
-			throw new PresentationException("error.cliente.nuevo.ciudad.null");
+//		if(Validator.isBlankOrNull(apellido))
+//			throw new PresentationException("error.cliente.nuevo.apellido.null");
+//		else if(Validator.isBlankOrNull(nombre))
+//			throw new PresentationException("error.cliente.nuevo.nombre.null");
+//		else if(Validator.isBlankOrNull(documento))
+//			throw new PresentationException("error.cliente.nuevo.documento.null");
+//		else if(Validator.isNotBlankOrNull(cuit) && !Validator.isCuit(cuit))
+//			throw new PresentationException("error.cliente.nuevo.cuit.format");
+//		else if(Validator.isNotBlankOrNull(telefono) && !Validator.isPhoneNumber(telefono))
+//			throw new PresentationException("error.cliente.nuevo.telefono.format");
+//		else if(Validator.isNotBlankOrNull(email) && !Validator.isEmail(email))
+//			throw new PresentationException("error.cliente.nuevo.email.format");
+//		else if(Validator.isNotBlankOrNull(fechaNacimiento) && !Validator.isDate(fechaNacimiento, MitnickConstants.DATE_FORMAT, true))
+//			throw new PresentationException("error.cliente.nuevo.fechaNacimiento.format");
+//		else if(Validator.isBlankOrNull(domicilio))
+//			throw new PresentationException("error.cliente.nuevo.domicilio.null");
+//		else if(Validator.isBlankOrNull(codigoPostal))
+//			throw new PresentationException("error.cliente.nuevo.codigoPostal.null");
+//		else if(!Validator.isInt(codigoPostal))
+//			throw new PresentationException("error.cliente.nuevo.codigoPostal.format");
+//		else if(Validator.isNull(ciudad))
+//			throw new PresentationException("error.cliente.nuevo.ciudad.null");
 		
 		if(Validator.isNull(cliente))
 			cliente = new ClienteDto();

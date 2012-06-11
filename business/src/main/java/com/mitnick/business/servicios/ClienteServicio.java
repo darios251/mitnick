@@ -2,6 +2,9 @@ package com.mitnick.business.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +43,18 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Transactional
 	@Override
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
-		validar(clienteDto);
+		//validar(clienteDto);
 		@SuppressWarnings("unchecked")
 		Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
+		Set<ConstraintViolation<Cliente>> constraintViolations = entityValidator.validate(cliente);
+		
+		if(Validator.isNotEmptyOrNull(constraintViolations)) {
+			StringBuffer buffer = new StringBuffer();
+			for(ConstraintViolation<Cliente> constraint : constraintViolations) {
+				buffer.append(constraint.getMessage()).append("\n");
+			}
+			throw new BusinessException(buffer.toString());
+		}
 		
 		try {
 			cliente = clienteDao.saveOrUpdate(cliente);

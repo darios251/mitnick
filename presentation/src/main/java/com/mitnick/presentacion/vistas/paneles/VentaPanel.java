@@ -29,6 +29,7 @@ import com.mitnick.presentacion.modelos.VentaTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
@@ -67,8 +68,7 @@ public class VentaPanel extends BasePanel {
 	}
 
 	@Autowired
-	public VentaPanel(
-			@Qualifier("ventaController") VentaController ventaController) {
+	public VentaPanel(@Qualifier("ventaController") VentaController ventaController) {
 		this.ventaController = ventaController;
 	}
 
@@ -100,8 +100,7 @@ public class VentaPanel extends BasePanel {
 	}
 	
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{txtCodigo}));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodigo}));
 	}
 
 	public void agregarProducto() {
@@ -118,10 +117,8 @@ public class VentaPanel extends BasePanel {
 	public void actualizarPantalla() {
 		if(VentaManager.getVentaActual() != null){
 			getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
-			getLblTotalValor().setText(	VentaManager.getVentaActual().getTotal()
-					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			getLblSubtotalValor().setText(VentaManager.getVentaActual().getTotal()
-					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			getLblTotalValor().setText(	VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			getLblSubtotalValor().setText(VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		}
 	}
 
@@ -163,8 +160,7 @@ public class VentaPanel extends BasePanel {
 
 	public JLabel getLblTotal() {
 		if (lblTotal == null) {
-			lblTotal = new JLabel(
-					PropertiesManager.getProperty("ventaPanel.etiqueta.total"));
+			lblTotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.total"));
 			lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblTotal.setBounds(475, 441, 88, 20);
 		}
@@ -173,8 +169,7 @@ public class VentaPanel extends BasePanel {
 
 	public JLabel getLblVenta() {
 		if (lblVenta == null) {
-			lblVenta = new JLabel(
-					PropertiesManager.getProperty("ventaPanel.etiqueta.venta"));
+			lblVenta = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.venta"));
 			lblVenta.setBounds(25, 90, 46, 20);
 		}
 		return lblVenta;
@@ -182,8 +177,7 @@ public class VentaPanel extends BasePanel {
 
 	public JLabel getLblCdigo() {
 		if (lblCdigo == null) {
-			lblCdigo = new JLabel(
-					PropertiesManager.getProperty("ventaPanel.etiqueta.codigo"));
+			lblCdigo = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.codigo"));
 			lblCdigo.setBounds(330, 35, 70, 20);
 		}
 		return lblCdigo;
@@ -199,8 +193,7 @@ public class VentaPanel extends BasePanel {
 
 	public JLabel getLblSutotal() {
 		if (lblSutotal == null) {
-			lblSutotal = new JLabel(
-					PropertiesManager.getProperty("ventaPanel.etiqueta.subtotal"));
+			lblSutotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.subtotal"));
 			lblSutotal.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblSutotal.setBounds(279, 441, 88, 20);
 		}
@@ -218,14 +211,10 @@ public class VentaPanel extends BasePanel {
 
 	public JButton getBtnContinuar() {
 		if (btnContinuar == null) {
-			btnContinuar = new JButton(
-					PropertiesManager
-							.getProperty("ventaPanel.button.continuar"));
-			btnContinuar.setToolTipText(PropertiesManager
-					.getProperty("ventaPanel.tooltip.continuar"));
+			btnContinuar = new JButton(PropertiesManager.getProperty("ventaPanel.button.continuar"));
+			btnContinuar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.continuar"));
 
-			btnContinuar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/continuar.png")));
+			btnContinuar.setIcon(new ImageIcon(this.getClass().getResource("/img/continuar.png")));
 			btnContinuar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnContinuar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
@@ -246,12 +235,9 @@ public class VentaPanel extends BasePanel {
 
 	public JButton getBtnQuitar() {
 		if (btnQuitar == null) {
-			btnQuitar = new JButton(
-					PropertiesManager.getProperty("ventaPanel.button.quitar"));
-			btnQuitar.setToolTipText(PropertiesManager
-					.getProperty("ventaPanel.tooltip.quitar"));
-			btnQuitar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/cancelar.png")));
+			btnQuitar = new JButton(PropertiesManager.getProperty("ventaPanel.button.quitar"));
+			btnQuitar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.quitar"));
+			btnQuitar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 
 			btnQuitar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnQuitar.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -261,8 +247,7 @@ public class VentaPanel extends BasePanel {
 			btnQuitar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
 					try {
-						int opcion = mostrarMensajeAdvertencia(PropertiesManager
-								.getProperty("ventaPanel.dialog.confirm.quitar"));
+						int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"));
 
 						if (opcion == JOptionPane.YES_OPTION) {
 							ventaController.quitarProductoVentaDto();
@@ -278,13 +263,9 @@ public class VentaPanel extends BasePanel {
 
 	public JButton getBtnBuscar() {
 		if (btnBuscar == null) {
-
-			btnBuscar = new JButton(
-					PropertiesManager.getProperty("ventaPanel.button.buscar"));
-			btnBuscar.setToolTipText(PropertiesManager
-					.getProperty("ventaPanel.tooltip.buscar"));
-			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/buscar.png")));
+			btnBuscar = new JButton(PropertiesManager.getProperty("ventaPanel.button.buscar"));
+			btnBuscar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.buscar"));
+			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar.png")));
 
 			btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnBuscar.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -307,8 +288,7 @@ public class VentaPanel extends BasePanel {
 			btnAgregar.setToolTipText(PropertiesManager
 					.getProperty("ventaPanel.tooltip.agregar"));
 
-			btnAgregar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/agregar.png")));
+			btnAgregar.setIcon(new ImageIcon(this.getClass().getResource("/img/agregar.png")));
 			btnAgregar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnAgregar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnAgregar.setMargin(new Insets(-1, -1, -1, -1));
@@ -339,6 +319,7 @@ public class VentaPanel extends BasePanel {
 	}
 	
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnAgregar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnAgregar());
 	}
 }

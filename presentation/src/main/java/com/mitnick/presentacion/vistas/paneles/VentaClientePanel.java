@@ -26,6 +26,7 @@ import com.mitnick.presentacion.modelos.ClienteTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
 
@@ -37,7 +38,6 @@ public class VentaClientePanel extends BasePanel {
 	private JTextField txtApellido;
 	private JButton btnBuscar;
 	private JButton btnContinuar;
-	private JButton btnAgregarCliente;
 	private JLabel lblNombre;
 	private JLabel lblNumeroDocumento;
 	private JScrollPane scrollPane;
@@ -93,8 +93,6 @@ public class VentaClientePanel extends BasePanel {
 		add(getTxtNumeroDocumento());
 		add(getTxtNombre());
 		add(getTxtNumeroCtaCte());
-		
-		add(getBtnAgregarCliente());
 		add(getBtnContinuar());
 		add(getBtnEstadoCuenta());
 		add(getBtnBuscar());
@@ -110,7 +108,7 @@ public class VentaClientePanel extends BasePanel {
 		if (txtNumeroDocumento == null) {
 			txtNumeroDocumento = new JTextField();
 			txtNumeroDocumento.setColumns(10);
-			txtNumeroDocumento.setBounds(200, 11, 110, 20);
+			txtNumeroDocumento.setBounds(269, 15, 110, 20);
 		}
 		return txtNumeroDocumento;
 	}
@@ -119,7 +117,7 @@ public class VentaClientePanel extends BasePanel {
 		if (txtApellido == null) {
 			txtApellido = new JTextField();
 			txtApellido.setColumns(10);
-			txtApellido.setBounds(200, 55, 110, 20);
+			txtApellido.setBounds(269, 55, 110, 20);
 		}
 		return txtApellido;
 	}
@@ -132,7 +130,7 @@ public class VentaClientePanel extends BasePanel {
 			btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
-			btnBuscar.setBounds(570, 15, 60, 60);
+			btnBuscar.setBounds(665, 15, 60, 60);
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					consultarClientes();
@@ -166,42 +164,15 @@ public class VentaClientePanel extends BasePanel {
 					}
 				}
 			});
-			btnContinuar.setBounds(735, 257, 60, 60);
+			btnContinuar.setBounds(735, 186, 60, 60);
 		}
 		return btnContinuar;
-	}
-
-	public JButton getBtnAgregarCliente() {
-		if (btnAgregarCliente == null) {
-			btnAgregarCliente = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.agregarCliente"));
-			btnAgregarCliente.setToolTipText(PropertiesManager.getProperty("ventaClientePanel.tooltip.agregarCliente"));
-			
-			btnAgregarCliente.setIcon(new ImageIcon(this.getClass().getResource("/img/nuevo_cliente.png")));
-			btnAgregarCliente.setHorizontalTextPosition( SwingConstants.CENTER );
-			btnAgregarCliente.setVerticalTextPosition( SwingConstants.BOTTOM );
-			btnAgregarCliente.setMargin(new Insets(-1, -1, -1, -1));
-			btnAgregarCliente.setVisible(false);
-			
-			btnAgregarCliente.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						ventaController.agregarCliente();
-						mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
-					}
-					catch(PresentationException ex) {
-						mostrarMensaje(ex);
-					}
-				}
-			});
-			btnAgregarCliente.setBounds(735, 186, 60, 60);
-		}
-		return btnAgregarCliente;
 	}
 
 	public JLabel getLblNombre() {
 		if (lblNombre == null) {
 			lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
-			lblNombre.setBounds(330, 55, 60, 20);
+			lblNombre.setBounds(403, 55, 118, 20);
 		}
 		return lblNombre;
 	}
@@ -209,7 +180,7 @@ public class VentaClientePanel extends BasePanel {
 	public JLabel getLblNumeroDocumento() {
 		if (lblNumeroDocumento == null) {
 			lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
-			lblNumeroDocumento.setBounds(125, 15, 70, 20);
+			lblNumeroDocumento.setBounds(174, 15, 85, 20);
 		}
 		return lblNumeroDocumento;
 	}
@@ -244,7 +215,7 @@ public class VentaClientePanel extends BasePanel {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
 			txtNombre.setColumns(10);
-			txtNombre.setBounds(420, 55, 110, 20);
+			txtNombre.setBounds(533, 55, 110, 20);
 		}
 		return txtNombre;
 	}
@@ -252,7 +223,7 @@ public class VentaClientePanel extends BasePanel {
 	public JLabel getLblNmeroCtaCte() {
 		if (lblNmeroCtaCte == null) {
 			lblNmeroCtaCte = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.cuentaCorriente"));
-			lblNmeroCtaCte.setBounds(330, 15, 80, 20);
+			lblNmeroCtaCte.setBounds(403, 15, 118, 20);
 		}
 		return lblNmeroCtaCte;
 	}
@@ -261,7 +232,7 @@ public class VentaClientePanel extends BasePanel {
 		if (txtNumeroCtaCte == null) {
 			txtNumeroCtaCte = new JTextField();
 			txtNumeroCtaCte.setColumns(10);
-			txtNumeroCtaCte.setBounds(420, 15, 110, 20);
+			txtNumeroCtaCte.setBounds(533, 15, 110, 20);
 		}
 		return txtNumeroCtaCte;
 	}
@@ -269,7 +240,7 @@ public class VentaClientePanel extends BasePanel {
 	public JLabel getLblApellido() {
 		if (lblApellido == null) {
 			lblApellido = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.apellido"));
-			lblApellido.setBounds(125, 55, 70, 20);
+			lblApellido.setBounds(174, 55, 85, 20);
 		}
 		return lblApellido;
 	}
@@ -282,7 +253,7 @@ public class VentaClientePanel extends BasePanel {
 			btnEstadoCuenta.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnEstadoCuenta.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
-			btnEstadoCuenta.setBounds(735, 328, 60, 60);
+			btnEstadoCuenta.setBounds(735, 257, 60, 60);
 			btnEstadoCuenta.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
@@ -302,7 +273,7 @@ public class VentaClientePanel extends BasePanel {
 	public JCheckBox getChkConsumidorFinal() {
 		if (chkConsumidorFinal == null) {
 			chkConsumidorFinal = new JCheckBox(PropertiesManager.getProperty("ventaClientePanel.etiqueta.consumidorFinal"));
-			chkConsumidorFinal.setBounds(653, 54, 156, 23);
+			chkConsumidorFinal.setBounds(25, 28, 135, 23);
 			chkConsumidorFinal.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
@@ -334,7 +305,6 @@ public class VentaClientePanel extends BasePanel {
 		getTable().setVisible(enabled);
 		getBtnBuscar().setEnabled(enabled);
 		getBtnNuevo().setEnabled(enabled);
-		getBtnAgregarCliente().setEnabled(enabled);
 		getBtnEstadoCuenta().setEnabled(enabled);
 	}
 
@@ -385,6 +355,7 @@ public class VentaClientePanel extends BasePanel {
 	}
 	
 	protected void setDefaultButton() {
-		this.getRootPane().setDefaultButton(getBtnBuscar());
+		if(Validator.isNotNull(this.getRootPane()))
+			this.getRootPane().setDefaultButton(getBtnBuscar());
 	}
 }

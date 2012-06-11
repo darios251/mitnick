@@ -234,4 +234,11 @@ public class ProductoController extends BaseController {
 		return productoServicio;
 	}
 
+	public ProductoDto reloadProducto(ProductoDto producto) {
+		
+		//productoServicio.obtenerProductoPorId(producto.get)
+		
+		return null;
+	}
+
 }
