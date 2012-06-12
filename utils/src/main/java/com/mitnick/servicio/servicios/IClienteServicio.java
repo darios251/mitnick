@@ -18,4 +18,6 @@ public interface IClienteServicio {
 	List<CiudadDto> obtenerCiudades(ProvinciaDto provincia);
 	
 	List<ProvinciaDto> obtenerProvincias();
+
+	void cargarReporte();
 }
