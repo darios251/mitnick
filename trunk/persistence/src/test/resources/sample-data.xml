@@ -20,13 +20,45 @@
 	    <value>agustinabm@gmail.com</value>
 	    <value>false</value>	    
 	  </row>
+	  <row>
+	    <value>2</value>
+	    <value>Lucas</value>
+	    <value>García</value>
+	    <value>31115019</value>
+	    <value>20-31115019-8</value>
+	    <value>154469075</value>
+	    <value>lukasg04@gmail.com</value>
+	    <value>false</value>	    
+	  </row>
+	  <row>
+	    <value>3</value>
+	    <value>Manuel</value>
+	    <value>Pretto</value>
+	    <value>314332799</value>
+	    <value>20-31432799-4</value>
+	    <value>154444556</value>
+	    <value>manuelpretto@gmail.com</value>
+	    <value>false</value>	    
+	  </row>
 	</table>
 	<table name="Tipo">
 	  <column>id</column>
 	  <column>descripcion</column>
 	  <row>
 	  	<value>1</value>
-	  	<value>primer tipo</value>
+	  	<value>Camisas</value>
+	  </row>
+	  <row>
+	  	<value>2</value>
+	  	<value>Pantalones</value>
+	  </row>
+	  <row>
+	  	<value>3</value>
+	  	<value>Remeras</value>
+	  </row>
+	   <row>
+	  	<value>4</value>
+	  	<value>Zapatillas</value>
 	  </row>
 	</table>
 	<table name="Marca">
@@ -34,7 +66,19 @@
 	  <column>descripcion</column>
 	  <row>
 	  	<value>1</value>
-	  	<value>primer marca</value>
+	  	<value>Inside</value>
+	  </row>
+	  <row>
+	  	<value>2</value>
+	  	<value>Levi's</value>
+	  </row>
+	  <row>
+	  	<value>3</value>
+	  	<value>Chanel</value>
+	  </row>
+	  <row>
+	  	<value>4</value>
+	  	<value>Prada</value>
 	  </row>
 	</table>
 	<table name="Producto">
@@ -52,7 +96,7 @@
 	  <row>
 	    <value>1</value>
 	    <value>1</value>
-	    <value>pantalon</value>
+	    <value>Pantalón</value>
 	    <value>1</value>
 	    <value>1</value>
 	    <value>10</value>
@@ -106,7 +150,117 @@
 	  
 	  <row>
 	  	<value>1</value>
+	  	<value>Buenos Aires</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>2</value>
+	  	<value>Catamarca</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>3</value>
+	  	<value>Chaco</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>4</value>
+	  	<value>Chubut</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>5</value>
+	  	<value>Corrientes</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>6</value>
+	  	<value>Córdoba</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>7</value>
+	  	<value>Entre Ríos</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>8</value>
+	  	<value>Formosa</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>9</value>
+	  	<value>Jujuy</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>10</value>
+	  	<value>La Pampa</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>11</value>
+	  	<value>La Rioja</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>12</value>
+	  	<value>Mendoza</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>13</value>
+	  	<value>Misiones</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>14</value>
+	  	<value>Neuquén</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>15</value>
+	  	<value>Río Negro</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>16</value>
+	  	<value>Salta</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>17</value>
+	  	<value>San Juan</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>18</value>
+	  	<value>San Luis</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>19</value>
+	  	<value>Santa Cruz</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>20</value>
 	  	<value>Santa Fe</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>21</value>
+	  	<value>Santiago del Estero</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>22</value>
+	  	<value>Tierra del Fuego</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>23</value>
+	  	<value>Tucumán</value>
 	  	<value>1</value>
 	  </row>
 	</table>
@@ -120,7 +274,31 @@
 	  	<value>1</value>
 	  	<value>Santa Fe</value>
 	  	<value>3000</value>
-	  	<value>1</value>
+	  	<value>20</value>
+	  </row>
+	  <row>
+	  	<value>2</value>
+	  	<value>Rafaela</value>
+	  	<value>2300</value>
+	  	<value>20</value>
+	  </row>
+	  <row>
+	  	<value>3</value>
+	  	<value>Rosario</value>
+	  	<value>2000</value>
+	  	<value>20</value>
+	  </row>
+	  <row>
+	  	<value>4</value>
+	  	<value>San Justo</value>
+	  	<value>3040</value>
+	  	<value>20</value>
+	  </row>
+	  <row>
+	  	<value>5</value>
+	  	<value>Paraná</value>
+	  	<value>3100</value>
+	  	<value>7</value>
 	  </row>
 	</table>
 </dataset>

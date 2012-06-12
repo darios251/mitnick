@@ -133,7 +133,7 @@ public class ClienteController extends BaseController {
 	
 	public void mostrarClienteNuevoPanel() {
 		clientePanel.setVisible(false);
-		clienteNuevoPanel.setPanelRetorno(null);
+		//clienteNuevoPanel.setPanelRetorno(null);
 		clienteNuevoPanel.setVisible(true);
 		clienteNuevoPanel.actualizarPantalla();
 	}
@@ -254,6 +254,10 @@ public class ClienteController extends BaseController {
 		catch(Exception e) {
 			throw new PresentationException("error.unkwon", e.getMessage());
 		}
+	}
+
+	public void cargarReporte() {
+		clienteServicio.cargarReporte();		
 	}
 	
 }

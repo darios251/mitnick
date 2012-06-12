@@ -149,4 +149,9 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		this.direccionDao = direccionDao;
 	}
 
+	@Override
+	public void cargarReporte() {
+		clienteDao.cargarReporte();
+	}
+
 }

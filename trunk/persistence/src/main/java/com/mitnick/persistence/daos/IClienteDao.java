@@ -14,4 +14,6 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	List<Cliente> findByFiltro(ConsultaClienteDto filtro);
 	
 	Cliente saveOrUpdate(Cliente cliente);
+
+	void cargarReporte();
 }

@@ -1,10 +1,22 @@
 package com.mitnick.persistence.daos;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
@@ -76,6 +88,25 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		
 		getHibernateTemplate().saveOrUpdate(cliente);
 		return cliente;
+	}
+
+	@Override
+	public void cargarReporte() {
+		try {
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/report1.jasper"));
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, super.getHibernateTemplate().getSessionFactory().getCurrentSession().connection());
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("reportePDF.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("reportePDF.pdf");
+			Desktop.getDesktop().open(file);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 	}
 
 }

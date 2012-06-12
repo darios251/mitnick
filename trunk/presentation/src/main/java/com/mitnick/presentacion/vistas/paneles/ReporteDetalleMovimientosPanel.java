@@ -71,8 +71,6 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		initializeComponents();
 	}
 
-	
-
 	@Override
 	protected void limpiarCamposPantalla() {
 		
