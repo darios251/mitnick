@@ -143,15 +143,9 @@ public class PrincipalView extends JFrame
 		{
 			btnVentas = new JButton();
 			btnVentas.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
-			
 			btnVentas.setText(PropertiesManager.getProperty("principalView.button.ventas"));
-			
 			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/shopping_bag.png"));
-//			Image imgagenOriginal = iconoOriginal.getImage();
-//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
-//		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
 		    btnVentas.setIcon(iconoOriginal);
-			
 			btnVentas.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnVentas.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnVentas.setMargin(new Insets(-1, -1, -1, -1));

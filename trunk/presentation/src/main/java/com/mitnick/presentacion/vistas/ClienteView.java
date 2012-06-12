@@ -16,8 +16,6 @@ public class ClienteView extends BaseView {
 	@Autowired
 	private ClienteController clienteController;
 	
-	private boolean initialized = false;
-
 	public ClienteView () {
 		initializeComponents();
 	}

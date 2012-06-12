@@ -28,12 +28,15 @@ public class VentaView extends BaseView {
 	
 	public void setVisible(boolean aFlag) {
 		if(aFlag) {
-			this.add( ventaController.getVentaPanel(), BorderLayout.CENTER );
-			this.add( ventaController.getBuscarProductoPanel(), BorderLayout.CENTER );
-			this.add( ventaController.getPagoPanel(), BorderLayout.CENTER );
-			this.add( ventaController.getDetalleProductoPanel(), BorderLayout.CENTER );
-			this.add( ventaController.getVentaClientePanel(), BorderLayout.CENTER );
-			this.add( ventaController.getClienteNuevoPanel(), BorderLayout.CENTER );
+			if(!initialized) {
+				this.add( ventaController.getVentaPanel(), BorderLayout.CENTER );
+				this.add( ventaController.getBuscarProductoPanel(), BorderLayout.CENTER );
+				this.add( ventaController.getPagoPanel(), BorderLayout.CENTER );
+				this.add( ventaController.getDetalleProductoPanel(), BorderLayout.CENTER );
+				this.add( ventaController.getVentaClientePanel(), BorderLayout.CENTER );
+				this.add( ventaController.getClienteNuevoPanel(), BorderLayout.CENTER );
+				initialized = true;
+			}
 		}
 		super.setVisible(aFlag);
 	}
