@@ -37,7 +37,7 @@ public class ClienteController extends BaseController {
 	}
 	
 	public List<ClienteDto> obtenerClientesByFilter(ConsultaClienteDto filtroDto) {
-		logger.debug("Entrando al método consultarClienteByFilter con :" + filtroDto);
+		logger.debug("Entrando al método obtenerClientesByFilter con :" + filtroDto);
 		
 		if(Validator.isNull(filtroDto))
 			throw new PresentationException("error.unknown", "El filtro para la consulta de clientes no puede ser nulo");
@@ -128,7 +128,6 @@ public class ClienteController extends BaseController {
 	public void mostrarClientePanel() {
 		clienteNuevoPanel.setVisible(false);
 		clientePanel.setVisible(true);
-		clientePanel.actualizarPantalla();
 	}
 	
 	public void mostrarClienteNuevoPanel() {
@@ -201,6 +200,11 @@ public class ClienteController extends BaseController {
 		catch(Exception ex) {
 			throw new PresentationException("error.unknown", "Hubo un error al inetntar guardar el cliente.", ex);
 		}
+	}
+	
+	public void nuevoCliente() {
+		clienteNuevoPanel.setCliente(null);
+		mostrarClienteNuevoPanel();
 	}
 
 	public void editarCliente() {

@@ -16,6 +16,8 @@ import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
@@ -30,6 +32,7 @@ import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
 @Panel("clienteNuevoPanel")
+@Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
 public class ClienteNuevoPanel extends BasePanel {
 
 	private static final long serialVersionUID = 1L;
@@ -104,7 +107,6 @@ public class ClienteNuevoPanel extends BasePanel {
 			cmbProvincia.setSelectedIndex(0);
 		} catch (Exception e) {
 		}
-		cliente = null;
 	}
 
 	@Override
@@ -424,6 +426,8 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {
+		limpiarCamposPantalla();
+		
 		if (Validator.isNotNull(txtApellido)) {
 			txtApellido.requestFocus();
 		}

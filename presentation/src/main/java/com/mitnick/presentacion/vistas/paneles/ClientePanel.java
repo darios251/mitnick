@@ -198,7 +198,7 @@ public class ClientePanel extends BasePanel {
 
 			btnNuevo.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					clienteController.mostrarClienteNuevoPanel();
+					clienteController.nuevoCliente();
 				}
 			});
 		}
