@@ -107,7 +107,7 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		case 1:
 			return fila.getProducto().getDescripcion();
 		case 2:
-			return fila.getProducto().getPrecio().setScale (2, BigDecimal.ROUND_HALF_UP);
+			return fila.getProducto().getPrecioVenta().setScale (2, BigDecimal.ROUND_HALF_UP);
 		case 3:
 			return fila.getCantidad();
 		case 4:
@@ -130,7 +130,7 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 				fila.getProducto().setDescripcion(nuevoValor);
 				break;
 			case 2:
-				fila.getProducto().setPrecio(new BigDecimal(nuevoValor));
+				fila.getProducto().setPrecioVenta(new BigDecimal(nuevoValor));
 				break;
 			case 3:
 				fila.setCantidad(new Integer(nuevoValor));

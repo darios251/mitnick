@@ -17,6 +17,7 @@ import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.persistence.daos.IDireccionDao;
 import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.Validator;
@@ -115,7 +116,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CiudadDto> obtenerCiudades(ProvinciaDto provincia) {
-		return entityDTOParser.getDtosFromEntities(ciudadDao.getAll());
+		return entityDTOParser.getDtosFromEntities(ciudadDao.getByProvincia((Provincia) entityDTOParser.getEntityFromDto(provincia)));
 	}
 
 	private void validar(ClienteDto clienteDto) {

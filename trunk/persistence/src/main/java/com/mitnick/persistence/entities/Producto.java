@@ -1,6 +1,7 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,25 +39,27 @@ public class Producto extends BaseObject implements Serializable {
 	@Column(name = "stock", nullable = false)
 	private int stock;
 	
-	@Column(name = "precio", nullable = false)
-	private Long precio;
+	@Column(name = "stockMinimo", nullable = false)
+	private int stockMinimo = -1;
+	
+	@Column(name = "stockCompra", nullable = false)
+	private int stockCompra = -1;
+	
+	@Column(name = "precioVenta", nullable = false)
+	private BigDecimal precioVenta;
+	
+	@Column(name = "precioCompra", nullable = false)
+	private BigDecimal precioCompra;
 
 	@Column(name = "iva", nullable = false)
 	private Long iva;
 	
-	@Column(name = "stockMinimo", nullable = false)
-	private int stockMinimo=-1;
-	
 	@Column(name = "eliminado", nullable = false)
 	private boolean eliminado = false;
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@ManyToOne
+	@PrimaryKeyJoinColumn(name = "proveedor_id")
+	private Proveedor proveedor;
 
 	public String getDescripcion() {
 		return descripcion;
@@ -64,6 +67,14 @@ public class Producto extends BaseObject implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public Marca getMarca() {
@@ -90,14 +101,6 @@ public class Producto extends BaseObject implements Serializable {
 		this.stock = stock;
 	}
 
-	public Long getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(Long precio) {
-		this.precio = precio;
-	}
-
 	public int getStockMinimo() {
 		return stockMinimo;
 	}
@@ -106,12 +109,28 @@ public class Producto extends BaseObject implements Serializable {
 		this.stockMinimo = stockMinimo;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public int getStockCompra() {
+		return stockCompra;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setStockCompra(int stockCompra) {
+		this.stockCompra = stockCompra;
+	}
+
+	public BigDecimal getPrecioVenta() {
+		return precioVenta;
+	}
+
+	public void setPrecioVenta(BigDecimal precioVenta) {
+		this.precioVenta = precioVenta;
+	}
+
+	public BigDecimal getPrecioCompra() {
+		return precioCompra;
+	}
+
+	public void setPrecioCompra(BigDecimal precioCompra) {
+		this.precioCompra = precioCompra;
 	}
 
 	public Long getIva() {
@@ -130,6 +149,18 @@ public class Producto extends BaseObject implements Serializable {
 		this.eliminado = eliminado;
 	}
 
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -141,8 +172,14 @@ public class Producto extends BaseObject implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((iva == null) ? 0 : iva.hashCode());
 		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
-		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
+		result = prime * result
+				+ ((precioCompra == null) ? 0 : precioCompra.hashCode());
+		result = prime * result
+				+ ((precioVenta == null) ? 0 : precioVenta.hashCode());
+		result = prime * result
+				+ ((proveedor == null) ? 0 : proveedor.hashCode());
 		result = prime * result + stock;
+		result = prime * result + stockCompra;
 		result = prime * result + stockMinimo;
 		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		return result;
@@ -184,12 +221,24 @@ public class Producto extends BaseObject implements Serializable {
 				return false;
 		} else if (!marca.equals(other.marca))
 			return false;
-		if (precio == null) {
-			if (other.precio != null)
+		if (precioCompra == null) {
+			if (other.precioCompra != null)
 				return false;
-		} else if (!precio.equals(other.precio))
+		} else if (!precioCompra.equals(other.precioCompra))
+			return false;
+		if (precioVenta == null) {
+			if (other.precioVenta != null)
+				return false;
+		} else if (!precioVenta.equals(other.precioVenta))
+			return false;
+		if (proveedor == null) {
+			if (other.proveedor != null)
+				return false;
+		} else if (!proveedor.equals(other.proveedor))
 			return false;
 		if (stock != other.stock)
+			return false;
+		if (stockCompra != other.stockCompra)
 			return false;
 		if (stockMinimo != other.stockMinimo)
 			return false;
@@ -205,9 +254,11 @@ public class Producto extends BaseObject implements Serializable {
 	public String toString() {
 		return "Producto [id=" + id + ", descripcion=" + descripcion
 				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo
-				+ ", stock=" + stock + ", precio=" + precio + ", iva=" + iva
-				+ ", stockMinimo=" + stockMinimo + ", eliminado=" + eliminado
+				+ ", stock=" + stock + ", stockMinimo=" + stockMinimo
+				+ ", stockCompra=" + stockCompra + ", precioVenta="
+				+ precioVenta + ", precioCompra=" + precioCompra + ", iva="
+				+ iva + ", eliminado=" + eliminado + ", proveedor=" + proveedor
 				+ "]";
 	}
-
+	
 }

@@ -1,139 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<table name="Cliente">
-	  <column>id</column>
-	  <column>nombre</column>
-	  <column>apellido</column>
-	  <column>documento</column>
-	  <column>cuit</column>
-	  <column>telefono</column>
-	  <column>email</column>
-	  <column>eliminado</column>
-	  
-	  <row>
-	    <value>1</value>
-	    <value>Agustina</value>
-	    <value>Berraz</value>
-	    <value>28764155</value>
-	    <value>27-28764155-4</value>
-	    <value>154071797</value>
-	    <value>agustinabm@gmail.com</value>
-	    <value>false</value>	    
-	  </row>
-	  <row>
-	    <value>2</value>
-	    <value>Lucas</value>
-	    <value>García</value>
-	    <value>31115019</value>
-	    <value>20-31115019-8</value>
-	    <value>154469075</value>
-	    <value>lukasg04@gmail.com</value>
-	    <value>false</value>	    
-	  </row>
-	  <row>
-	    <value>3</value>
-	    <value>Manuel</value>
-	    <value>Pretto</value>
-	    <value>314332799</value>
-	    <value>20-31432799-4</value>
-	    <value>154444556</value>
-	    <value>manuelpretto@gmail.com</value>
-	    <value>false</value>	    
-	  </row>
-	</table>
-	<table name="Tipo">
-	  <column>id</column>
-	  <column>descripcion</column>
-	  <row>
-	  	<value>1</value>
-	  	<value>Camisas</value>
-	  </row>
-	  <row>
-	  	<value>2</value>
-	  	<value>Pantalones</value>
-	  </row>
-	  <row>
-	  	<value>3</value>
-	  	<value>Remeras</value>
-	  </row>
-	   <row>
-	  	<value>4</value>
-	  	<value>Zapatillas</value>
-	  </row>
-	</table>
-	<table name="Marca">
-	  <column>id</column>
-	  <column>descripcion</column>
-	  <row>
-	  	<value>1</value>
-	  	<value>Inside</value>
-	  </row>
-	  <row>
-	  	<value>2</value>
-	  	<value>Levi's</value>
-	  </row>
-	  <row>
-	  	<value>3</value>
-	  	<value>Chanel</value>
-	  </row>
-	  <row>
-	  	<value>4</value>
-	  	<value>Prada</value>
-	  </row>
-	</table>
-	<table name="Producto">
-	  <column>id</column>
-	  <column>codigo</column>
-	  <column>descripcion</column>
-	  <column>marca_id</column>
-	  <column>tipo_id</column>
-	  <column>stock</column>	  
-	  <column>stockminimo</column>
-	  <column>precio</column>
-	  <column>iva</column>
-	  <column>eliminado</column>
-	  
-	  <row>
-	    <value>1</value>
-	    <value>1</value>
-	    <value>Pantalón</value>
-	    <value>1</value>
-	    <value>1</value>
-	    <value>10</value>
-	    <value>10</value>
-	    <value>10</value>
-	    <value>250</value>
-	    <value>52.5</value>
-	    <value>false</value>
-	  </row>
-	</table>
-	
-	<table name="Medio_Pago">
-	  <column>id</column>
-	  <column>descripcion</column>
-	  <column>codigo</column>
-	  
-	  <row>
-	    <value>1</value>
-	    <value>Efectivo</value>
-	    <value>1</value>
-	  </row>
-	  <row>
-	    <value>2</value>
-	    <value>Tarjeta Débito</value>
-	    <value>2</value>
-	  </row>
-	  <row>
-	    <value>3</value>
-	    <value>Tarjeta Crédito</value>
-	    <value>3</value>
-	  </row>
-	  <row>
-	    <value>4</value>
-	    <value>Cuenta Corriente</value>
-	    <value>4</value>
-	  </row>
-	</table>
 	<table name="Pais">
 	  <column>id</column>
 	  <column>descripcion</column>
@@ -299,6 +165,187 @@
 	  	<value>Paraná</value>
 	  	<value>3100</value>
 	  	<value>7</value>
+	  </row>
+	</table>
+	<table name="Direccion">
+		<column>id</column>
+		<column>domicilio</column>
+		<column>codigopostal</column>
+		<column>ciudad_id</column>
+		
+		<row>
+			<value>1</value>
+			<value>1° de Mayo 2163 - 6to C</value>
+			<value>3000</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>General López 2546 - 2do D</value>
+			<value>3000</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>25° de Mayo 2737 - 6to B</value>
+			<value>3000</value>
+			<value>1</value>
+		</row>
+	</table>
+	<table name="Cliente">
+	  <column>id</column>
+	  <column>nombre</column>
+	  <column>apellido</column>
+	  <column>documento</column>
+	  <column>cuit</column>
+	  <column>telefono</column>
+	  <column>email</column>
+	  <column>eliminado</column>
+	  <column>direccion_id</column>
+	  
+	  <row>
+	    <value>1</value>
+	    <value>Agustina</value>
+	    <value>Berraz</value>
+	    <value>28764155</value>
+	    <value>27-28764155-4</value>
+	    <value>154071797</value>
+	    <value>agustinabm@gmail.com</value>
+	    <value>false</value>	
+	    <value>1</value>    
+	  </row>
+	  <row>
+	    <value>2</value>
+	    <value>Lucas</value>
+	    <value>García</value>
+	    <value>31115019</value>
+	    <value>20-31115019-8</value>
+	    <value>154469075</value>
+	    <value>lukasg04@gmail.com</value>
+	    <value>false</value>	
+	    <value>2</value>    
+	  </row>
+	  <row>
+	    <value>3</value>
+	    <value>Manuel</value>
+	    <value>Pretto</value>
+	    <value>314332799</value>
+	    <value>20-31432799-4</value>
+	    <value>154444556</value>
+	    <value>manuelpretto@gmail.com</value>
+	    <value>false</value>	    
+	    <value>3</value>
+	  </row>
+	</table>
+	<table name="Tipo">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <row>
+	  	<value>1</value>
+	  	<value>Camisas</value>
+	  </row>
+	  <row>
+	  	<value>2</value>
+	  	<value>Pantalones</value>
+	  </row>
+	  <row>
+	  	<value>3</value>
+	  	<value>Remeras</value>
+	  </row>
+	   <row>
+	  	<value>4</value>
+	  	<value>Zapatillas</value>
+	  </row>
+	</table>
+	<table name="Marca">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <row>
+	  	<value>1</value>
+	  	<value>Inside</value>
+	  </row>
+	  <row>
+	  	<value>2</value>
+	  	<value>Levi's</value>
+	  </row>
+	  <row>
+	  	<value>3</value>
+	  	<value>Chanel</value>
+	  </row>
+	  <row>
+	  	<value>4</value>
+	  	<value>Prada</value>
+	  </row>
+	</table>
+	<table name="Proveedor">
+		<column>id</column>
+		<column>codigo</column>
+		<column>nombre</column>
+		<column>telefono</column>
+		
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>Proveedor1</value>
+			<value>342154469075</value>
+		</row>
+	</table>
+	<table name="Producto">
+	  <column>id</column>
+	  <column>codigo</column>
+	  <column>descripcion</column>
+	  <column>marca_id</column>
+	  <column>tipo_id</column>
+	  <column>stock</column>	  
+	  <column>stockminimo</column>
+	  <column>stockcompra</column>
+	  <column>preciocompra</column>
+	  <column>precioventa</column>
+	  <column>iva</column>
+	  <column>eliminado</column>
+	  <column>proveedor_id</column>
+	  
+	  <row>
+	    <value>1</value>
+	    <value>1</value>
+	    <value>Pantalón</value>
+	    <value>1</value>
+	    <value>1</value>
+	    <value>10</value>
+	    <value>5</value>
+	    <value>7</value>
+	    <value>210</value>
+	    <value>250</value>
+	    <value>52.5</value>
+	    <value>false</value>
+	    <value>1</value>
+	  </row>
+	</table>
+	
+	<table name="Medio_Pago">
+	  <column>id</column>
+	  <column>descripcion</column>
+	  <column>codigo</column>
+	  
+	  <row>
+	    <value>1</value>
+	    <value>Efectivo</value>
+	    <value>1</value>
+	  </row>
+	  <row>
+	    <value>2</value>
+	    <value>Tarjeta Débito</value>
+	    <value>2</value>
+	  </row>
+	  <row>
+	    <value>3</value>
+	    <value>Tarjeta Crédito</value>
+	    <value>3</value>
+	  </row>
+	  <row>
+	    <value>4</value>
+	    <value>Cuenta Corriente</value>
+	    <value>4</value>
 	  </row>
 	</table>
 </dataset>

@@ -146,7 +146,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	public Component getLblCiudad() {
 		if(lblCiudad == null) {
 			lblCiudad = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.ciudad"));
-			lblCiudad.setBounds(392, 160, 94, 20);
+			lblCiudad.setBounds(392, 197, 94, 20);
 			
 		}
 		return lblCiudad;
@@ -155,7 +155,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	public Component getLblProvincia() {
 		if(lblProvincia == null) {
 			lblProvincia = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.provincia"));
-			lblProvincia.setBounds(392, 208, 94, 20);
+			lblProvincia.setBounds(392, 157, 94, 20);
 		}
 		return lblProvincia;
 	}
@@ -362,9 +362,8 @@ public class ClienteNuevoPanel extends BasePanel {
 	public JComboBox<CiudadDto> getCmbCiudad() {
 		if (cmbCiudad == null) {
 			cmbCiudad = new JComboBox<CiudadDto>();
-			cmbCiudad.setBounds(496, 160, 105, 20);
+			cmbCiudad.setBounds(496, 197, 105, 20);
 			MitnickComboBoxModel<CiudadDto> ciudadModel = new MitnickComboBoxModel<CiudadDto>();
-			ciudadModel.addItems(clienteController.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
 			cmbCiudad.setModel(ciudadModel);
 		}
 		return cmbCiudad;
@@ -373,7 +372,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	public JComboBox<ProvinciaDto> getCmbProvincia() {
 		if (cmbProvincia == null) {
 			cmbProvincia = new JComboBox<ProvinciaDto>();
-			cmbProvincia.setBounds(496, 208, 105, 20);
+			cmbProvincia.setBounds(496, 157, 105, 20);
 			MitnickComboBoxModel<ProvinciaDto> provinciaModel = new MitnickComboBoxModel<ProvinciaDto>();
 			provinciaModel.addItems(clienteController.obtenerProvincias());
 			cmbProvincia.setModel(provinciaModel);
@@ -383,8 +382,7 @@ public class ClienteNuevoPanel extends BasePanel {
 				public void actionPerformed(ActionEvent e) {
 					cmbCiudad.removeAllItems();
 					try {
-						((MitnickComboBoxModel<CiudadDto>) cmbCiudad.getModel()).addItems(clienteController
-								.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
+						((MitnickComboBoxModel<CiudadDto>) cmbCiudad.getModel()).addItems(clienteController.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -426,8 +424,6 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {
-		limpiarCamposPantalla();
-		
 		if (Validator.isNotNull(txtApellido)) {
 			txtApellido.requestFocus();
 		}
@@ -441,6 +437,8 @@ public class ClienteNuevoPanel extends BasePanel {
 				txtDocumento.setText(cliente.getDocumento());
 			if (Validator.isNotNull(txtCuit) && Validator.isNotBlankOrNull(cliente.getCuit()))
 				txtCuit.setText(cliente.getCuit());
+			if(Validator.isNotNull(txtTelefono) && Validator.isNotNull(cliente.getTelefono()))
+				txtTelefono.setText(cliente.getTelefono());
 			if (Validator.isNotNull(txtEmail) && Validator.isNotBlankOrNull(cliente.getEmail()))
 				txtEmail.setText(cliente.getEmail());
 			if (Validator.isNotNull(txtFechaNacimiento)	&& Validator.isNotNull(cliente.getFechaNacimiento()))
@@ -450,9 +448,9 @@ public class ClienteNuevoPanel extends BasePanel {
 			if (Validator.isNotNull(txtCodigoPostal) && Validator.isNotNull(cliente.getDireccion())	&& Validator.isNotBlankOrNull(cliente.getDireccion().getCodigoPostal()))
 				txtCodigoPostal.setText(cliente.getDireccion().getCodigoPostal());
 			if (Validator.isNotNull(cmbProvincia) && Validator.isNotNull(cliente.getDireccion()))
-				cmbProvincia.setSelectedItem(cliente.getDireccion().getCiudad().getPrinvinciaDto());
+				cmbProvincia.getModel().setSelectedItem(cliente.getDireccion().getCiudad().getPrinvincia());
 			if (Validator.isNotNull(cmbCiudad) && Validator.isNotNull(cliente.getDireccion()))
-				cmbProvincia.setSelectedItem(cliente.getDireccion().getCiudad());
+				cmbCiudad.getModel().setSelectedItem(cliente.getDireccion().getCiudad());
 		}
 	}
 

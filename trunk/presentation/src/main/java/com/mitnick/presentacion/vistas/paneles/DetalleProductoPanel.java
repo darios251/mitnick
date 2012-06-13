@@ -44,8 +44,7 @@ public class DetalleProductoPanel extends BasePanel {
 	private ProductoVentaDto producto;
 
 	@Autowired
-	public DetalleProductoPanel(
-			@Qualifier("ventaController") VentaController ventaController) {
+	public DetalleProductoPanel(@Qualifier("ventaController") VentaController ventaController) {
 		this.ventaController = ventaController;
 	}
 
@@ -80,25 +79,14 @@ public class DetalleProductoPanel extends BasePanel {
 			txtCantidad = new JTextField();
 			txtCantidad.setBounds(320, 87, 110, 20);
 			txtCantidad.setColumns(10);
-			txtCantidad.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						modificarCantidad();
-					}
-				}
-			});
 		}
 		return txtCantidad;
 	}
 
 	public JButton getBtnAceptar() {
 		if (btnAceptar == null) {
-			btnAceptar = new JButton(
-					PropertiesManager
-							.getProperty("detalleProductoPanel.boton.aceptar"));
-			btnAceptar.setToolTipText(PropertiesManager
-					.getProperty("detalleProductoPanel.tooltip.aceptar"));
+			btnAceptar = new JButton(PropertiesManager.getProperty("detalleProductoPanel.boton.aceptar"));
+			btnAceptar.setToolTipText(PropertiesManager.getProperty("detalleProductoPanel.tooltip.aceptar"));
 
 			btnAceptar.setIcon(new ImageIcon(this.getClass().getResource(
 					"/img/aceptar.png")));
@@ -119,9 +107,7 @@ public class DetalleProductoPanel extends BasePanel {
 
 	public JLabel getLblCantidad() {
 		if (lblCantidad == null) {
-			lblCantidad = new JLabel(
-					PropertiesManager
-							.getProperty("detalleProductoPanel.etiqueta.cantidad"));
+			lblCantidad = new JLabel(PropertiesManager.getProperty("detalleProductoPanel.etiqueta.cantidad"));
 			lblCantidad.setHorizontalAlignment(SwingConstants.LEFT);
 			lblCantidad.setBounds(200, 87, 110, 20);
 		}
@@ -130,13 +116,9 @@ public class DetalleProductoPanel extends BasePanel {
 
 	public JButton getBtnVolver() {
 		if (btnVolver == null) {
-			btnVolver = new JButton(
-					PropertiesManager
-							.getProperty("detalleProductoPanel.boton.cancelar"));
-			btnVolver.setToolTipText(PropertiesManager
-					.getProperty("detalleProductoPanel.tooltip.cancelar"));
-			btnVolver.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/cancelar.png")));
+			btnVolver = new JButton(PropertiesManager.getProperty("detalleProductoPanel.boton.cancelar"));
+			btnVolver.setToolTipText(PropertiesManager.getProperty("detalleProductoPanel.tooltip.cancelar"));
+			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 			
 			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -158,9 +140,7 @@ public class DetalleProductoPanel extends BasePanel {
 
 	public JLabel getLblCodigo() {
 		if (lblCodigo == null) {
-			lblCodigo = new JLabel(
-					PropertiesManager
-							.getProperty("detalleProductoPanel.etiqueta.codigo"));
+			lblCodigo = new JLabel(PropertiesManager.getProperty("detalleProductoPanel.etiqueta.codigo"));
 			lblCodigo.setHorizontalAlignment(SwingConstants.LEFT);
 			lblCodigo.setBounds(200, 50, 110, 20);
 		}
@@ -177,14 +157,12 @@ public class DetalleProductoPanel extends BasePanel {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[] { txtCantidad }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtCantidad }));
 	}
 
 	protected void modificarCantidad() {
 		try {
-			ventaController.modificarCantidad(getProducto(),
-					txtCantidad.getText());
+			ventaController.modificarCantidad(getProducto(), txtCantidad.getText());
 			ventaController.mostrarVentasPanel();
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
@@ -207,8 +185,7 @@ public class DetalleProductoPanel extends BasePanel {
 
 	public ProductoVentaDto getProducto() {
 		if (Validator.isNull(producto))
-			throw new PresentationException("error.unknown",
-					"El producto es nulo");
+			throw new PresentationException("error.unknown", "El producto es nulo");
 		return producto;
 	}
 

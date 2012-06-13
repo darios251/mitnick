@@ -16,7 +16,9 @@ public class ProductoDto extends BaseDto {
 	
 	private MarcaDto marca;
 	
-	private BigDecimal precio;
+	private BigDecimal precioVenta;
+	
+	private BigDecimal precioCompra;
 	
 	private BigDecimal iva;
 	
@@ -26,6 +28,8 @@ public class ProductoDto extends BaseDto {
 	
 	private int stockMinimo=-1;
 	
+	private int stockCompra;
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -66,12 +70,28 @@ public class ProductoDto extends BaseDto {
 		this.marca = marca;
 	}
 
-	public BigDecimal getPrecio() {
-		return precio;
+	public BigDecimal getPrecioVenta() {
+		return precioVenta;
 	}
 
-	public void setPrecio(BigDecimal precio) {
-		this.precio = precio;
+	public void setPrecioVenta(BigDecimal precioVenta) {
+		this.precioVenta = precioVenta;
+	}
+
+	public BigDecimal getPrecioCompra() {
+		return precioCompra;
+	}
+
+	public void setPrecioCompra(BigDecimal precioCompra) {
+		this.precioCompra = precioCompra;
+	}
+
+	public BigDecimal getIva() {
+		return iva;
+	}
+
+	public void setIva(BigDecimal iva) {
+		this.iva = iva;
 	}
 
 	public BigDecimal getDescuento() {
@@ -98,11 +118,22 @@ public class ProductoDto extends BaseDto {
 		this.stockMinimo = stockMinimo;
 	}
 
-	public BigDecimal getIva() {
-		return iva;
+	public int getStockCompra() {
+		return stockCompra;
 	}
 
-	public void setIva(BigDecimal iva) {
-		this.iva = iva;
+	public void setStockCompra(int stockCompra) {
+		this.stockCompra = stockCompra;
 	}
+
+	@Override
+	public String toString() {
+		return "ProductoDto [codigo=" + codigo + ", descripcion=" + descripcion
+				+ ", tipo=" + tipo + ", talle=" + talle + ", marca=" + marca
+				+ ", precioVenta=" + precioVenta + ", precioCompra="
+				+ precioCompra + ", iva=" + iva + ", descuento=" + descuento
+				+ ", stock=" + stock + ", stockMinimo=" + stockMinimo
+				+ ", stockCompra=" + stockCompra + "]";
+	}
+	
 }
