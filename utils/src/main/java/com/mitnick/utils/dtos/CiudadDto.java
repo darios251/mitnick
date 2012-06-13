@@ -10,11 +10,11 @@ public class CiudadDto extends BaseDto {
 	
 	private ProvinciaDto prinvinciaDto;
 
-	public ProvinciaDto getPrinvinciaDto() {
+	public ProvinciaDto getPrinvincia() {
 		return prinvinciaDto;
 	}
 
-	public void setPrinvinciaDto(ProvinciaDto prinvinciaDto) {
+	public void setPrinvincia(ProvinciaDto prinvinciaDto) {
 		this.prinvinciaDto = prinvinciaDto;
 	}
 

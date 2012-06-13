@@ -144,12 +144,13 @@ public class VentaController extends BaseController {
 			int index = ventaPanel.getTable().getSelectedRow();
 			ProductoVentaDto productoVentaDto = ventaPanel.getModel().getProductosVenta(index);
 			
+			detalleProductoPanel.setProducto(productoVentaDto);
 			ultimoPanelMostrado = detalleProductoPanel;
 			buscarProductoPanel.setVisible(false);
 			ventaPanel.setVisible(false);
 			pagoPanel.setVisible(false);
 			detalleProductoPanel.setVisible(true);
-			detalleProductoPanel.setProducto(productoVentaDto);
+			
 			detalleProductoPanel.limpiarCamposPantalla();
 			detalleProductoPanel.actualizarPantalla();
 		}

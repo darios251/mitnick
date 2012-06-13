@@ -45,7 +45,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			
 			productoVenta.setProducto(producto);
 			productoVenta.setCantidad(1);
-			productoVenta.setPrecioTotal(producto.getPrecio());
+			productoVenta.setPrecioTotal(producto.getPrecioVenta());
 			venta.addProducto(productoVenta);
 		} else
 			productoVenta.setCantidad(productoVenta.getCantidad()+1);

@@ -199,7 +199,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			throw new BusinessException("error.productoServicio.marca.nulo");	
 		if (Validator.isNull(productoDto.getTipo()))
 			throw new BusinessException("error.productoServicio.tipo.nulo");	
-		if (Validator.isNull(productoDto.getPrecio()))
+		if (Validator.isNull(productoDto.getPrecioVenta()))
 			throw new BusinessException("error.productoServicio.precio.nulo");	
 		if (Validator.isNull(productoDto.getStock()))
 			throw new BusinessException("error.productoServicio.stock.nulo");	

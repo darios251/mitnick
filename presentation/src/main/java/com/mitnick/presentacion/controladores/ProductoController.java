@@ -106,7 +106,9 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
-	public void guardarProducto(ProductoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, String stock, String precio) {
+	public void guardarProducto(ProductoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
+			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra) {
+		
 		if(Validator.isBlankOrNull(codigo))
 			throw new PresentationException("error.producto.nuevo.codigo.null");
 		if(Validator.isBlankOrNull(descripcion))
@@ -119,22 +121,37 @@ public class ProductoController extends BaseController {
 			throw new PresentationException("error.producto.nuevo.stock.null");
 		if(!Validator.isInt(stock))
 			throw new PresentationException("error.producto.nuevo.stock.format");
+		if(Validator.isBlankOrNull(stockMinimo))
+			throw new PresentationException("error.producto.nuevo.stockMinimo.null");
+		if(!Validator.isInt(stockMinimo))
+			throw new PresentationException("error.producto.nuevo.stockMinimo.format");
+		if(Validator.isBlankOrNull(stockCompra))
+			throw new PresentationException("error.producto.nuevo.stockCompra.null");
+		if(!Validator.isInt(stockCompra))
+			throw new PresentationException("error.producto.nuevo.stockCompra.format");
 		if(!Validator.isBlankOrNull(stock) && !Validator.isInRange(Integer.parseInt(stock), 0, 10000))
 			throw new PresentationException("error.producto.nuevo.stock.rangoEntero", new Object[]{"0", "10000"});
-		if(Validator.isBlankOrNull(precio))
-			throw new PresentationException("error.producto.nuevo.precio.null");
-		if(!Validator.isDouble(precio))
-			throw new PresentationException("error.producto.nuevo.precio.format");
+		if(Validator.isBlankOrNull(precioVenta))
+			throw new PresentationException("error.producto.nuevo.precioVenta.null");
+		if(!Validator.isDouble(precioVenta))
+			throw new PresentationException("error.producto.nuevo.precioVenta.format");
+		if(Validator.isBlankOrNull(precioCompra))
+			throw new PresentationException("error.producto.nuevo.precioCompra.null");
+		if(!Validator.isDouble(precioCompra))
+			throw new PresentationException("error.producto.nuevo.precioCompra.format");
 		
 		if(Validator.isNull(producto))
 			producto = new ProductoDto();
 		
 		producto.setCodigo(codigo);
 		producto.setDescripcion(descripcion);
-		producto.setPrecio(new BigDecimal(Double.parseDouble(precio)));
+		producto.setPrecioVenta(new BigDecimal(Double.parseDouble(precioVenta)));
+		producto.setPrecioCompra(new BigDecimal(Double.parseDouble(precioCompra)));
 		producto.setTipo(tipo);
 		producto.setMarca(marca);
 		producto.setStock(Integer.parseInt(stock));
+		producto.setStockMinimo(Integer.parseInt(stockMinimo));
+		producto.setStockCompra(Integer.parseInt(stockCompra));
 		
 		try {
 			getProductoServicio().guardarProducto(producto);

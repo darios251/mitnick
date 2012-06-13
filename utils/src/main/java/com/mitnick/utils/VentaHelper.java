@@ -36,8 +36,7 @@ public class VentaHelper {
 				.iterator();
 		while (productos.hasNext()) {
 			ProductoVentaDto producto = productos.next();
-			BigDecimal precioTotal = producto.getProducto().getPrecio()
-					.multiply(new BigDecimal(producto.getCantidad()));
+			BigDecimal precioTotal = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
 			producto.setPrecioTotal(precioTotal);
 			subTotal = subTotal.add(precioTotal);
 			producto.setIva(CalcularImpuesto(producto));
@@ -81,9 +80,8 @@ public class VentaHelper {
 		String ivaString = PropertiesManager
 				.getProperty("applicationConfiguration.impuesto.porcentaje");
 		if (!Validator.isBlankOrNull(ivaString)) {
-			BigDecimal iva = new BigDecimal(ivaString).divide(new BigDecimal(
-					100));
-			impuesto = productoDto.getPrecio().multiply(iva);
+			BigDecimal iva = new BigDecimal(ivaString).divide(new BigDecimal(100));
+			impuesto = productoDto.getPrecioVenta().multiply(iva);
 		}
 		return impuesto;
 	}

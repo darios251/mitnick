@@ -95,7 +95,7 @@ public class ClienteController extends BaseController {
 			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 		
-		if(Validator.isEmptyOrNull(ciudades))
+		if(Validator.isNull(ciudades))
 			throw new PresentationException("error.cliente.nuevo.ciudades.null");
 		
 		return ciudades;

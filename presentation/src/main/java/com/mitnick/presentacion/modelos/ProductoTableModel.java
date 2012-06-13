@@ -24,7 +24,6 @@ public class ProductoTableModel extends AbstractTableModel implements TableModel
 		columnNames.add(PropertiesManager.getProperty("productoTableModel.codigo"));
 		columnNames.add(PropertiesManager.getProperty("productoTableModel.descripcion"));
 		columnNames.add(PropertiesManager.getProperty("productoTableModel.tipo"));
-		columnNames.add(PropertiesManager.getProperty("productoTableModel.talle"));
 		columnNames.add(PropertiesManager.getProperty("productoTableModel.marca"));
 		columnNames.add(PropertiesManager.getProperty("productoTableModel.precio"));
 		columnNames.add(PropertiesManager.getProperty("productoTableModel.stock"));
@@ -107,12 +106,10 @@ public class ProductoTableModel extends AbstractTableModel implements TableModel
 			case 2: 
 				return fila.getTipo();			
 			case 3: 
-				return fila.getTalle();
-			case 4: 
 				return fila.getMarca();
-			case 5:
-				return fila.getPrecio(); 
-			case 6: 
+			case 4:
+				return fila.getPrecioVenta(); 
+			case 5: 
 				return fila.getStock();			
 		}
 		return data.get(-1);
@@ -130,12 +127,10 @@ public class ProductoTableModel extends AbstractTableModel implements TableModel
 		case 2: 
 			fila.setTipo((TipoDto)aValue); break;			
 		case 3: 
-			fila.setTalle((String)aValue); break;
-		case 4: 
 			fila.setMarca((MarcaDto)aValue); break;
-		case 5:
-			fila.setPrecio((BigDecimal)aValue); break; 
-		case 6: 
+		case 4:
+			fila.setPrecioVenta((BigDecimal)aValue); break; 
+		case 5: 
 			fila.getStock();			
 		}
 		data.set(rowIndex, fila);
