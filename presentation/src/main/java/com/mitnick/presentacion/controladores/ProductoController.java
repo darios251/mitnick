@@ -16,6 +16,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Controller("productoController")
@@ -50,7 +51,6 @@ public class ProductoController extends BaseController {
 	
 	public List<ProductoDto> getProductosByFilter(ConsultaProductoDto dto) {
 		logger.debug("Entrando al método getProductosByFilter con: " + dto);
-		
 		
 		List<ProductoDto> resultado = null;
 		try {
@@ -107,7 +107,7 @@ public class ProductoController extends BaseController {
 	}
 	
 	public void guardarProducto(ProductoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
-			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra) {
+			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor) {
 		
 		if(Validator.isBlankOrNull(codigo))
 			throw new PresentationException("error.producto.nuevo.codigo.null");
@@ -152,6 +152,7 @@ public class ProductoController extends BaseController {
 		producto.setStock(Integer.parseInt(stock));
 		producto.setStockMinimo(Integer.parseInt(stockMinimo));
 		producto.setStockCompra(Integer.parseInt(stockCompra));
+		producto.setProveedor(proveedor);
 		
 		try {
 			getProductoServicio().guardarProducto(producto);

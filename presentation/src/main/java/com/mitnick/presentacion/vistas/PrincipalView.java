@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.controladores.ProductoController;
+import com.mitnick.presentacion.controladores.ProveedorController;
 import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
@@ -39,7 +40,6 @@ public class PrincipalView extends JFrame
 	
 	private static Logger logger = Logger.getLogger(PrincipalView.class);
 
-	//	 declaraciones de inyecciones de spring
 	@Autowired
 	private VentaController ventaController;
 	@Autowired
@@ -48,6 +48,8 @@ public class PrincipalView extends JFrame
 	private ClienteController clienteController;
 	@Autowired
 	private ReporteMovimientosController reporteController;
+	@Autowired
+	private ProveedorController proveedorController;
 	
 	private DetailPanel pnlPrincipal;
 	private DetailPanel pnlToolBar;
@@ -63,6 +65,7 @@ public class PrincipalView extends JFrame
 	private JButton btnProductos;
 	private JButton btnClientes;
 	private JButton btnReporte;
+	private JButton btnProveedores;
 
 	private JMenuBar menuBar;
 	private JMenu menuProductos;
@@ -74,22 +77,14 @@ public class PrincipalView extends JFrame
 	
 	public PrincipalView()
 	{
-		super();
-//		addComponentListener(new ComponentAdapter() {
-//			@Override
-//			public void componentResized(ComponentEvent e) {
-//				logger.info(getJTabbedPane().size());
-//			}
-//		});
 		initialize();
 	}
 
 	private void initialize()
 	{
 		this.setTitle(PropertiesManager.getProperty("principalView.titulo"));
-		this.setMinimumSize(new Dimension(990,600));
+		this.setMinimumSize(new Dimension(1000,600));
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//		this.setExtendedState(MAXIMIZED_BOTH);
 		this.setLocationRelativeTo(null);
 		this.setJMenuBar(getMenuBarra());
 		this.setContentPane(getJContentPane());
@@ -175,15 +170,9 @@ public class PrincipalView extends JFrame
 		{
 			btnProductos = new JButton();
 			btnProductos.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
-			
 			btnProductos.setText(PropertiesManager.getProperty("principalView.button.productos"));
-			
 			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/productos.png"));
-//			Image imgagenOriginal = iconoOriginal.getImage();
-//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
-//		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
 		    btnProductos.setIcon(iconoOriginal);
-			
 			btnProductos.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnProductos.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnProductos.setMargin(new Insets(-1, -1, -1, -1));
@@ -216,9 +205,6 @@ public class PrincipalView extends JFrame
 			btnReporte.setText(PropertiesManager.getProperty("principalView.button.reportes"));
 			
 			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/reportes.png"));
-//			Image imgagenOriginal = iconoOriginal.getImage();
-//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
-//		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
 			btnReporte.setIcon(iconoOriginal);
 			
 			btnReporte.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -229,7 +215,7 @@ public class PrincipalView extends JFrame
 				public void mouseClicked(MouseEvent e)	{
 					if (getJTabbedPane().indexOfComponent(reporteController.getReporteMovimientosPanel()) == -1) {
 						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
-						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("productoPanel.label.productos"), reporteController.getReporteMovimientosView());
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reporteController.getReporteMovimientosView());
 					}
 					logger.info("Mostrando el panel de Movimientos de productos");
 					getJTabbedPane().setVisible(true);
@@ -242,6 +228,39 @@ public class PrincipalView extends JFrame
 		return btnReporte;
 	}
 	
+	private JButton getBtnProveedores()
+	{
+		if(btnProveedores == null)
+		{
+			btnProveedores = new JButton();
+			btnProveedores.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
+			
+			btnProveedores.setText(PropertiesManager.getProperty("principalView.button.proveedores"));
+			
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/reportes.png"));
+			btnProveedores.setIcon(iconoOriginal);
+			
+			btnProveedores.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnProveedores.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnProveedores.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnProveedores.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e)	{
+					if (getJTabbedPane().indexOfComponent(proveedorController.getProveedorView()) == -1) {
+						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("proveedorPanel.label.proveedores"), proveedorController.getProveedorView());
+					}
+					logger.info("Mostrando el panel de Movimientos de productos");
+					getJTabbedPane().setVisible(true);
+					proveedorController.mostrarProveedorPanel();
+					getJTabbedPane().setSelectedComponent(proveedorController.getProveedorView());
+				}
+			});
+		}
+
+		return btnProveedores;
+	}
+	
 	private JButton getBtnClientes()
 	{
 		if(btnClientes == null)
@@ -252,9 +271,6 @@ public class PrincipalView extends JFrame
 			btnClientes.setText(PropertiesManager.getProperty("principalView.button.clientes"));
 			
 			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/clientes.png"));
-//			Image imgagenOriginal = iconoOriginal.getImage();
-//		    Image imagenEscalada = imgagenOriginal.getScaledInstance(MitnickConstants.ACCESS_BAR_ICON_WIDTH, MitnickConstants.ACCESS_BAR_ICON_HEIGHT, Image.SCALE_DEFAULT);
-//		    ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
 		    btnClientes.setIcon(iconoOriginal);
 			
 			btnClientes.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -313,7 +329,6 @@ public class PrincipalView extends JFrame
 		if(lblLogo == null)
 		{
 			lblLogo = new JLabel();
-//			lblLogo.setIcon(new ImageIcon(this.getClass().getResource("/img/logo.png")));
 		}	
 		return lblLogo;
 	}
@@ -360,21 +375,13 @@ public class PrincipalView extends JFrame
 				{
 					if(pnlToolBar.isVisible())
 					{
-						//jToolBar.setVisible(false);
 						pnlToolBar.setVisible(false);
-						//panelFondo2.setPreferredSize(new Dimension(jContentPane.getWidth() - 23, 0));
-						//panelFondo2.setBorder(BorderFactory.createEmptyBorder(17, 14, 0, 14));
-						//jTabbedPane.setPreferredSize(new Dimension(jContentPane.getWidth() - 68, jContentPane.getHeight() - 48));
 						lblArrow.setIcon(new ImageIcon(this.getClass().getResource("/img/flecha_derecha.jpg")));
 						pnlArrow.setBorder(BorderFactory.createEmptyBorder(23, 3, 0, 0));
 					}
 					else
 					{
-						//jToolBar.setVisible(true);
 						pnlToolBar.setVisible(true);
-						//panelFondo2.setPreferredSize(new Dimension(jContentPane.getWidth() - 163, 0));
-						//panelFondo2.setBorder(BorderFactory.createEmptyBorder(17, 14, 0, 14));
-						//jTabbedPane.setPreferredSize(new Dimension(jContentPane.getWidth() - 207, jContentPane.getHeight() - 48));
 						lblArrow.setIcon(new ImageIcon(this.getClass().getResource("/img/flecha_izquierda.jpg")));
 						pnlArrow.setBorder(BorderFactory.createEmptyBorder(23, 0, 0, 0));
 					}
@@ -395,7 +402,6 @@ public class PrincipalView extends JFrame
 		if(jTabbedPaneConBoton == null)
 		{	
 			jTabbedPaneConBoton = new JTabbedPaneConBoton();
-//			jtbPrincipalPanel.setTabLayoutPolicy(JTabbedPaneConBoton.SCROLL_TAB_LAYOUT);
 			jTabbedPaneConBoton.setTabLayoutPolicy(JTabbedPaneConBoton.CENTER);	
 			jTabbedPaneConBoton.setVisible(false);
 		}
@@ -418,6 +424,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnArticulos());
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());
+			tlbQuickAccess.add(getBtnProveedores());
 			
 			tlbQuickAccess.setFloatable(false);
 		}

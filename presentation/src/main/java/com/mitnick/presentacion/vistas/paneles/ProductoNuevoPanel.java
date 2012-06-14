@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ProductoController;
+import com.mitnick.presentacion.controladores.ProveedorController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
@@ -25,6 +26,7 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("productoNuevoPanel")
@@ -33,6 +35,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	private static final long serialVersionUID = 1L;
 
 	private ProductoController productoController;
+	private ProveedorController proveedorController;
 
 	private ProductoDto producto;
 
@@ -61,7 +64,10 @@ public class ProductoNuevoPanel extends BasePanel {
 	private JTextField txtStockMinimo;
 	private JLabel lblStockCompra;
 	private JTextField txtStockCompra;
-
+	private JLabel lblProveedores;
+	private JComboBox<ProveedorDto> cmbProveedor;
+	private MitnickComboBoxModel<ProveedorDto> modelCmbProveedor;
+	
 	/**
 	 * @throws Exception
 	 * @wbp.parser.constructor
@@ -73,8 +79,10 @@ public class ProductoNuevoPanel extends BasePanel {
 	}
 
 	@Autowired(required = true)
-	public ProductoNuevoPanel(@Qualifier("productoController") ProductoController productoController) {
+	public ProductoNuevoPanel(@Qualifier("productoController") ProductoController productoController,
+			@Qualifier("proveedorController") ProveedorController proveedorController) {
 		this.productoController = productoController;
+		this.proveedorController = proveedorController;
 	}
 
 	@Override
@@ -120,6 +128,9 @@ public class ProductoNuevoPanel extends BasePanel {
 		add(getLblStockCompra());
 		add(getTxtStockCompra());
 		
+		add(getLblProveedores());
+		add(getCmbProveedores());
+		
 		setFocusTraversalPolicy();
 	}
 
@@ -150,7 +161,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JLabel getLblMarca() {
 		if (lblMarca == null) {
 			lblMarca = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.marca"));
-			lblMarca.setBounds(319, 87, 73, 20);
+			lblMarca.setBounds(319, 87, 94, 20);
 		}
 		return lblMarca;
 	}
@@ -174,7 +185,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JLabel getLblStock() {
 		if (lblStock == null) {
 			lblStock = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stock"));
-			lblStock.setBounds(319, 118, 73, 20);
+			lblStock.setBounds(319, 118, 94, 20);
 		}
 		return lblStock;
 	}
@@ -182,7 +193,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JLabel getLblStockMinimo() {
 		if (lblStockMinimo == null) {
 			lblStockMinimo = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stockMinimo"));
-			lblStockMinimo.setBounds(319, 149, 73, 20);
+			lblStockMinimo.setBounds(319, 149, 94, 20);
 		}
 		return lblStockMinimo;
 	}
@@ -190,9 +201,15 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JLabel getLblStockCompra() {
 		if (lblStockCompra == null) {
 			lblStockCompra = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stockCompra"));
-			lblStockCompra.setBounds(319, 180, 73, 20);
+			lblStockCompra.setBounds(319, 180, 94, 20);
 		}
 		return lblStockCompra;
+	}
+	
+	public JLabel getLblProveedores() {
+		lblProveedores = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.proveedores"));
+		lblProveedores.setBounds(58, 180, 94, 20);
+		return lblProveedores;
 	}
 
 	public MitnickComboBoxModel<TipoDto> getModelCmbTipo() {
@@ -209,6 +226,14 @@ public class ProductoNuevoPanel extends BasePanel {
 			modelCmbMarca.addItems(productoController.obtenerMarcas());
 		}
 		return modelCmbMarca;
+	}
+	
+	public MitnickComboBoxModel<ProveedorDto> getModelCmbProveedores() {
+		if (modelCmbProveedor == null) {
+			modelCmbProveedor = new MitnickComboBoxModel<ProveedorDto>();
+			modelCmbProveedor.addItems(proveedorController.obtenerProveedores());
+		}
+		return modelCmbProveedor;
 	}
 
 	public JButton getBtnAceptar() {
@@ -256,7 +281,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JTextField getTxtCodigo() {
 		if (txtCodigo == null) {
 			txtCodigo = new JTextField();
-			txtCodigo.setBounds(162, 25, 86, 20);
+			txtCodigo.setBounds(162, 25, 102, 20);
 			txtCodigo.setColumns(10);
 		}
 		return txtCodigo;
@@ -266,7 +291,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtDescripcion == null) {
 			txtDescripcion = new JTextField();
 			txtDescripcion.setColumns(10);
-			txtDescripcion.setBounds(162, 56, 326, 20);
+			txtDescripcion.setBounds(162, 56, 352, 20);
 		}
 		return txtDescripcion;
 	}
@@ -275,7 +300,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtPrecioVenta == null) {
 			txtPrecioVenta = new JTextField();
 			txtPrecioVenta.setColumns(10);
-			txtPrecioVenta.setBounds(162, 118, 86, 20);
+			txtPrecioVenta.setBounds(162, 118, 102, 20);
 		}
 		return txtPrecioVenta;
 	}
@@ -284,7 +309,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtPrecioCompra == null) {
 			txtPrecioCompra = new JTextField();
 			txtPrecioCompra.setColumns(10);
-			txtPrecioCompra.setBounds(162, 149, 86, 20);
+			txtPrecioCompra.setBounds(162, 149, 102, 20);
 		}
 		return txtPrecioCompra;
 	}
@@ -293,7 +318,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtStock == null) {
 			txtStock = new JTextField();
 			txtStock.setColumns(10);
-			txtStock.setBounds(402, 118, 86, 20);
+			txtStock.setBounds(412, 118, 102, 20);
 		}
 		return txtStock;
 	}
@@ -302,7 +327,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtStockMinimo == null) {
 			txtStockMinimo = new JTextField();
 			txtStockMinimo.setColumns(10);
-			txtStockMinimo.setBounds(402, 149, 86, 20);
+			txtStockMinimo.setBounds(412, 149, 102, 20);
 		}
 		return txtStockMinimo;
 	}
@@ -311,7 +336,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtStockCompra == null) {
 			txtStockCompra = new JTextField();
 			txtStockCompra.setColumns(10);
-			txtStockCompra.setBounds(402, 180, 86, 20);
+			txtStockCompra.setBounds(412, 180, 102, 20);
 		}
 		return txtStockCompra;
 	}
@@ -319,7 +344,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JComboBox<TipoDto> getCmbTipo() {
 		if (cmbTipo == null) {
 			cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
-			cmbTipo.setBounds(162, 87, 86, 20);
+			cmbTipo.setBounds(162, 87, 102, 20);
 		}
 		return cmbTipo;
 	}
@@ -327,20 +352,30 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JComboBox<MarcaDto> getCmbMarca() {
 		if (cmbMarca == null) {
 			cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
-			cmbMarca.setBounds(402, 87, 86, 20);
+			cmbMarca.setBounds(412, 87, 102, 20);
 		}
 		return cmbMarca;
 	}
+	
+	public JComboBox<ProveedorDto> getCmbProveedores() {
+		if (cmbProveedor == null) {
+			cmbProveedor = new JComboBox<ProveedorDto>(getModelCmbProveedores());
+			cmbProveedor.setBounds(162, 180, 102, 20);
+		}
+		return cmbProveedor;
+	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtCodigo, txtDescripcion, cmbTipo, cmbMarca,	txtPrecioVenta, txtStock }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtCodigo, txtDescripcion, cmbTipo, cmbMarca,	txtPrecioVenta, txtPrecioCompra, cmbProveedor,
+				txtStock, txtStockMinimo, txtStockCompra, btnAceptar, btnCancelar }));
 	}
 
 	protected void agregarProducto() {
 		try {
 			productoController.guardarProducto(producto, getTxtCodigo().getText(), getTxtDescripcion().getText(),
 					(TipoDto) getCmbTipo().getSelectedItem(), (MarcaDto) getCmbMarca().getSelectedItem(), getTxtStock().getText(),
-					getTxtStockMinimo().getText(), getTxtStockCompra().getText(), getTxtPrecioVenta().getText(), getTxtPrecioCompra().getText());
+					getTxtStockMinimo().getText(), getTxtStockCompra().getText(), getTxtPrecioVenta().getText(),
+					getTxtPrecioCompra().getText(), (ProveedorDto)getCmbProveedores().getSelectedItem());
 			limpiarCamposPantalla();
 			productoController.mostrarProductosPanel();
 		} catch (PresentationException ex) {
@@ -354,7 +389,6 @@ public class ProductoNuevoPanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {
-		//this.producto = productoController.reloadProducto(producto);
 		getTxtCodigo().requestFocus();
 
 		if (Validator.isNotNull(producto)) {
@@ -369,6 +403,8 @@ public class ProductoNuevoPanel extends BasePanel {
 				getCmbMarca().setSelectedItem(producto.getMarca());
 			if (getCmbTipo().getModel().getSize() > 0)
 				getCmbMarca().setSelectedItem(producto.getTipo());
+			if (getCmbProveedores().getModel().getSize() > 0)
+				getCmbProveedores().setSelectedItem(producto.getProveedor());
 		}
 	}
 
@@ -381,5 +417,4 @@ public class ProductoNuevoPanel extends BasePanel {
 		if(Validator.isNotNull(this.getRootPane()))
 			this.getRootPane().setDefaultButton(getBtnAceptar());
 	}
-	
 }

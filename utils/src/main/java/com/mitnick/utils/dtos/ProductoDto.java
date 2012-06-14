@@ -29,6 +29,8 @@ public class ProductoDto extends BaseDto {
 	private int stockMinimo=-1;
 	
 	private int stockCompra;
+	
+	private ProveedorDto proveedor;
 
 	public String getCodigo() {
 		return codigo;
@@ -125,6 +127,14 @@ public class ProductoDto extends BaseDto {
 	public void setStockCompra(int stockCompra) {
 		this.stockCompra = stockCompra;
 	}
+	
+	public void setProveedor(ProveedorDto proveedorDto) {
+		this.proveedor = proveedorDto;
+	}
+	
+	public ProveedorDto getProveedor() {
+		return proveedor;
+	}
 
 	@Override
 	public String toString() {
@@ -133,7 +143,8 @@ public class ProductoDto extends BaseDto {
 				+ ", precioVenta=" + precioVenta + ", precioCompra="
 				+ precioCompra + ", iva=" + iva + ", descuento=" + descuento
 				+ ", stock=" + stock + ", stockMinimo=" + stockMinimo
-				+ ", stockCompra=" + stockCompra + "]";
+				+ ", stockCompra=" + stockCompra + ", proveedorDto="
+				+ proveedor + "]";
 	}
-	
+
 }

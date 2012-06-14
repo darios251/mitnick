@@ -282,12 +282,21 @@
 		<column>codigo</column>
 		<column>nombre</column>
 		<column>telefono</column>
+		<column>eliminado</column>
 		
 		<row>
 			<value>1</value>
 			<value>1</value>
-			<value>Proveedor1</value>
+			<value>Proveedor 1</value>
 			<value>342154469075</value>
+			<value>false</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>2</value>
+			<value>Proveedor 2</value>
+			<value>342154469075</value>
+			<value>false</value>
 		</row>
 	</table>
 	<table name="Producto">

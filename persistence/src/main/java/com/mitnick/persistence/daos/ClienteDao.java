@@ -2,14 +2,12 @@ package com.mitnick.persistence.daos;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -95,6 +93,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		try {
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/report1.jasper"));
 			
+			@SuppressWarnings("deprecation")
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, super.getHibernateTemplate().getSessionFactory().getCurrentSession().connection());
 			
 			JRExporter exporter = new JRPdfExporter();
