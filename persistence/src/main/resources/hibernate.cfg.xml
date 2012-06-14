@@ -20,5 +20,6 @@
         <mapping class="com.mitnick.persistence.entities.Provincia"/>
         <mapping class="com.mitnick.persistence.entities.Ciudad"/>
         <mapping class="com.mitnick.persistence.entities.Proveedor"/>
+        <mapping class="com.mitnick.persistence.entities.Configuracion"/>
     </session-factory>
 </hibernate-configuration>
