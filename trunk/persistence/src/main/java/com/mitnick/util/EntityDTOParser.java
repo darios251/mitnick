@@ -15,6 +15,7 @@ import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IMedioPagoDAO;
 import com.mitnick.persistence.daos.IProductoDAO;
+import com.mitnick.persistence.daos.IProveedorDAO;
 import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Ciudad;
@@ -26,6 +27,7 @@ import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
+import com.mitnick.persistence.entities.Proveedor;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.persistence.entities.Venta;
@@ -42,6 +44,7 @@ import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
+import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 import com.mitnick.utils.dtos.TipoDto;
 import com.mitnick.utils.dtos.VentaDto;
@@ -55,6 +58,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	protected ICiudadDao ciudadDao;
 	@Autowired
 	protected IProductoDAO productoDao;
+	@Autowired
+	protected IProveedorDAO proveedorDao;
 	@Autowired
 	protected IMarcaDao marcaDao;
 	@Autowired
@@ -97,6 +102,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (D) getDtoFromEntity((Provincia) entity);
 		else if(entity instanceof Ciudad)
 			return (D) getDtoFromEntity((Ciudad) entity);
+		else if(entity instanceof Proveedor)
+			return (D) getDtoFromEntity((Proveedor) entity);
 		else return null;
 	}
 
@@ -115,6 +122,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (E) getEntityFromDto((ClienteDto) dto);
 		else if(dto instanceof ProductoDto)
 			return (E) getEntityFromDto((ProductoDto) dto);
+		else if(dto instanceof ProveedorDto)
+			return (E) getEntityFromDto((ProveedorDto) dto);
 		else if(dto instanceof VentaDto)
 			return (E) getEntityFromDto((VentaDto) dto);
 		else if(dto instanceof ProvinciaDto)
@@ -193,8 +202,20 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoDto.setStockCompra(producto.getStockCompra());
 		productoDto.setMarca(getDtoFromEntity(producto.getMarca()));
 		productoDto.setTipo(getDtoFromEntity(producto.getTipo()));
+		productoDto.setProveedor(getDtoFromEntity(producto.getProveedor()));
 
 		return productoDto;
+	}
+	
+	private ProveedorDto getDtoFromEntity(Proveedor proveedor) {
+		ProveedorDto proveedorDto = new ProveedorDto();
+
+		proveedorDto.setId(proveedor.getId());
+		proveedorDto.setCodigo(proveedor.getCodigo());
+		proveedorDto.setNombre(proveedor.getNombre());
+		proveedorDto.setTelefono(proveedor.getTelefono());
+
+		return proveedorDto;
 	}
 	
 	private TipoDto getDtoFromEntity(Tipo tipo) {
@@ -235,7 +256,24 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
 		producto.setTipo(tipo);
+		
+		producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
+		
 		return producto;
+	}
+	
+	private Proveedor getEntityFromDto(ProveedorDto proveedorDto) {
+		Proveedor proveedor = null;
+		if (Validator.isNotNull(proveedorDto.getId()))
+			proveedor = proveedorDao.get(proveedorDto.getId());
+
+		else
+			proveedor = new Proveedor();
+
+		proveedor.setCodigo(proveedorDto.getCodigo());
+		proveedor.setNombre(proveedorDto.getNombre());
+		proveedor.setTelefono(proveedorDto.getTelefono());
+		return proveedor;
 	}
 
 	private MovimientoDto getDtoFromEntity(Movimiento movimiento) {
