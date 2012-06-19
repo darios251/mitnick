@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,12 +17,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.controladores.ProductoController;
@@ -50,6 +55,8 @@ public class PrincipalView extends JFrame
 	private ReporteMovimientosController reporteController;
 	@Autowired
 	private ProveedorController proveedorController;
+	@Autowired
+	private LoginView loginView;
 	
 	private DetailPanel pnlPrincipal;
 	private DetailPanel pnlToolBar;
@@ -75,8 +82,11 @@ public class PrincipalView extends JFrame
 	private JLabel lblArrow;
 	public static JLabel lblLogo;
 	
+	private PrincipalView thisView;
+	
 	public PrincipalView()
 	{
+		thisView = this;
 		initialize();
 	}
 
@@ -127,7 +137,25 @@ public class PrincipalView extends JFrame
 		{
 			menuArchivo = new JMenu();
 			menuArchivo.setText(PropertiesManager.getProperty("principalView.menu.archivo"));
-			menuArchivo.add(PropertiesManager.getProperty("principalView.menu.archivo.salir"));
+			JMenuItem item = new JMenuItem();
+			item.setText(PropertiesManager.getProperty("principalView.menu.archivo.logout"));
+			item.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					thisView.setVisible(false);
+					SecurityContextHolder.getContext().setAuthentication(null);
+					loginView.setVisible(true);
+				}
+			});
+			menuArchivo.add(item);
+			
+			item = new JMenuItem();
+			item.setText(PropertiesManager.getProperty("principalView.menu.archivo.salir"));
+			item.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					System.exit(0);
+				}
+			});
+			menuArchivo.add(item);
 		}
 		return menuArchivo;
 	}
@@ -460,5 +488,27 @@ public class PrincipalView extends JFrame
 
 	public void setClienteController(ClienteController clienteController) {
 		this.clienteController = clienteController;
+	}
+	
+	public void setLoginView(LoginView loginView) {
+		this.loginView = loginView;
+	}
+	
+	private void showAdminButtons(boolean show) {
+		getBtnReporte().setVisible(show);
+		getBtnArticulos().setVisible(show);
+		getBtnProveedores().setVisible(show);
+	}
+	
+	@Override
+	public void setVisible(boolean b) {
+		if(b) {
+			showAdminButtons(false);
+			for(GrantedAuthority grantedAuthority : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+				if(MitnickConstants.Role.ADMIN.equals(grantedAuthority.getAuthority()))
+					showAdminButtons(true);
+			}
+		}
+		super.setVisible(b);
 	}
 }

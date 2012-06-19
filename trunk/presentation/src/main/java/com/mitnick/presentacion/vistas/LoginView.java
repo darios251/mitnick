@@ -73,21 +73,17 @@ public class LoginView extends JDialog {
 						PrincipalView principalView = (PrincipalView) BeanLocator.getBean("principalView");
 						thisView.setVisible(false);
 						principalView.setVisible(true);
-						thisView.dispose();
 					}
 					else {
-						txtUser.setText("");
-						txtPassword.setText("");
-						txtUser.requestFocus();
 						JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
 					}
 				}
 				catch(BadCredentialsException e1) {
-					txtUser.setText("");
-					txtPassword.setText("");
-					txtUser.requestFocus();
 					JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
 				}
+				txtUser.setText("");
+				txtPassword.setText("");
+				txtUser.requestFocus();
 			}
 		});
 		getContentPane().add(btnNewButton);
