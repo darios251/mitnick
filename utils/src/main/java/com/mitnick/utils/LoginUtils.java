@@ -19,8 +19,8 @@ public class LoginUtils {
 	@Autowired
 	private DefaultAuthenticationEventPublisher defaultAuthenticationEventPublisher;
 	
-	@Autowired
-	private ShaPasswordEncoder passwordEncoderBean;
+//	@Autowired
+//	private ShaPasswordEncoder passwordEncoderBean;
 
 	public Authentication authenticate(String username, String password) {
 		//password = passwordEncoderBean.encodePassword(password, username);
