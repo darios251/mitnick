@@ -21,11 +21,18 @@
     
     <security:global-method-security secured-annotations="enabled" />
     
+    <bean id="passwordEncoderBean" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+        <constructor-arg value="256" />
+    </bean>
+    
     <security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider>
+			<security:password-encoder ref="passwordEncoderBean" hash="sha-256">
+				<security:salt-source user-property='username'/>
+			</security:password-encoder>
 			<security:user-service>
-				<security:user name="admin" password="admin" authorities="ROLE_ADMIN"/>
-				<security:user name="user" password="user" authorities="ROLE_USER"/>
+				<security:user name="admin" password="a4a88c0872bf652bb9ed803ece5fd6e82354838a9bf59ab4babb1dab322154e1" authorities="ROLE_ADMIN"/>
+				<security:user name="user" password="a5700387a0b64f00ff5fe28ee22eb088c2f684a7ad9645d231bdac76b9456c7f" authorities="ROLE_USER"/>
 			</security:user-service>
 		</security:authentication-provider>
 	</security:authentication-manager>

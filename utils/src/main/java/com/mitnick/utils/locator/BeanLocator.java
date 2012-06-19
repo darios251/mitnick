@@ -1,7 +1,7 @@
 package com.mitnick.utils.locator;
 
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BeanLocator {
 	
@@ -15,9 +15,8 @@ public class BeanLocator {
 	private static BeanFactory getFactory() {
 		if(factory == null)
 		{
-			factory = new FileSystemXmlApplicationContext("../utils/src/main/resources/applicationContext-utils.xml", "src/main/resources/applicationContext-presentation.xml",
-					"../business/src/main/resources/applicationContext-business.xml",
-					"../persistence/src/main/resources/applicationContext-persistence.xml");
+			factory = new ClassPathXmlApplicationContext("applicationContext-presentation.xml", "applicationContext-utils.xml",
+					"applicationContext-business.xml", "applicationContext-persistence.xml");
 		}
 		return factory;
 	}
