@@ -44,7 +44,6 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Transactional
 	@Override
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
-		//validar(clienteDto);
 		@SuppressWarnings("unchecked")
 		Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
 		Set<ConstraintViolation<Cliente>> constraintViolations = entityValidator.validate(cliente);
@@ -63,8 +62,6 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar guardar el cliente");
-		} catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error al intentar guardar el cliente", e);
 		}
 		return clienteDto;
 	}
@@ -84,9 +81,6 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar eliminar el cliente");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,9 +93,6 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar consultar clientes");
-		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
 	}
@@ -117,21 +108,6 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public List<CiudadDto> obtenerCiudades(ProvinciaDto provincia) {
 		return entityDTOParser.getDtosFromEntities(ciudadDao.getByProvincia((Provincia) entityDTOParser.getEntityFromDto(provincia)));
 	}
-
-//	private void validar(ClienteDto clienteDto) {
-//		if (Validator.isBlankOrNull(clienteDto.getApellido()))
-//			throw new BusinessException("error.clienteServicio.apellido.nulo");	
-//		if (Validator.isBlankOrNull(clienteDto.getNombre()))
-//			throw new BusinessException("error.clienteServicio.nombre.nulo");		
-//		if (Validator.isBlankOrNull(clienteDto.getTelefono()))
-//			throw new BusinessException("error.clienteServicio.telefono.nulo");		
-//		if (Validator.isNull(clienteDto.getDireccion()))
-//			throw new BusinessException("error.clienteServicio.direccion.nulo");		
-//		if (Validator.isBlankOrNull(clienteDto.getDireccion().getDomicilio()))
-//			throw new BusinessException("error.clienteServicio.direccion.nulo");		
-//		if (Validator.isNull(clienteDto.getDireccion().getCiudad()))
-//			throw new BusinessException("error.clienteServicio.direccion.nulo");		
-//	}
 
 	@Override
 	public void cargarReporte() {

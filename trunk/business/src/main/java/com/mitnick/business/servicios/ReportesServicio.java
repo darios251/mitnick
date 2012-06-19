@@ -40,9 +40,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de movimientos agrupados por producto");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  movimiento", e);
-		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -54,9 +51,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de movimientos de producto");
-		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  movimiento", e);
 		}
 	} 
 	/**
@@ -118,21 +112,9 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 		
 		return ventas;
 		
-	}
-
-	public void setMovimientoDao(IMovimientoDao movimientoDao) {
-		this.movimientoDao = movimientoDao;
-	}
-
-
-	public void setVentaDao(IVentaDAO ventaDao) {
-		this.ventaDao = ventaDao;
 	}
 	
 }

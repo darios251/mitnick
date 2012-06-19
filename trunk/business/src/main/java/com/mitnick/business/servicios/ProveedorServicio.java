@@ -46,8 +46,6 @@ public class ProveedorServicio extends ServicioBase implements IProveedorServici
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar guardar el cliente");
-		} catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error al intentar guardar el cliente", e);
 		}
 		return proveedorDto;
 	}
@@ -67,9 +65,6 @@ public class ProveedorServicio extends ServicioBase implements IProveedorServici
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar eliminar el proveedor");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de proveedor", e);
-		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -88,9 +83,6 @@ public class ProveedorServicio extends ServicioBase implements IProveedorServici
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar consultar productos");
-		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 	}
 	

@@ -2,6 +2,8 @@ package com.mitnick.servicio.servicios;
 
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
+
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
@@ -16,6 +18,7 @@ public interface IReportesServicio {
 	 * @param filtro
 	 * @return
 	 */
+	@Secured(value={"ROLE_ADMIN"})
 	public List<MovimientoProductoDto> reporteMovimientosAgrupadosPorProducto(ReporteMovimientosDto filtro);
 	
 	/**
@@ -23,6 +26,7 @@ public interface IReportesServicio {
 	 * @param filtro
 	 * @return
 	 */
+	@Secured(value={"ROLE_ADMIN"})
 	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteDetalleMovimientosDto filtro);
 	
 	/**
@@ -30,6 +34,7 @@ public interface IReportesServicio {
 	 * @param filtro
 	 * @return
 	 */
+	@Secured(value={"ROLE_ADMIN"})
 	public List<VentaDto> reporteVentas(ReporteVentaDto filtro);
 
 }

@@ -59,9 +59,6 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 		
 		// chequeo si se encontro o no algo en la busqueda
 		if(resultado == null || resultado.isEmpty())
@@ -77,9 +74,6 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener las marcas");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 	
 	public List<TipoDto> obtenerTipos() {
@@ -89,9 +83,6 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los tipos");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 	
 	public List<ProductoDto> getAllProductos() {
@@ -100,9 +91,6 @@ public class ProductoController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los productos");
-		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	
@@ -160,9 +148,6 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar dar del alta el producto: " + producto);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 	
 	public void eliminarProducto() {
@@ -185,9 +170,6 @@ public class ProductoController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el producto");
-		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	
@@ -213,39 +195,20 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el producto");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 	
 	public ProductoView getProductoView() {
 		return productoView;
 	}
 
-	public void setProductoView(ProductoView productoView) {
-		this.productoView = productoView;
-	}
-
 	public ProductoPanel getProductoPanel() {
 		return productoPanel;
-	}
-
-	public void setProductoPanel(ProductoPanel productoPanel) {
-		this.productoPanel = productoPanel;
 	}
 
 	public ProductoNuevoPanel getProductoNuevoPanel() {
 		return productoNuevoPanel;
 	}
 
-	public void setProductoNuevoPanel(ProductoNuevoPanel productoNuevoPanel) {
-		this.productoNuevoPanel = productoNuevoPanel;
-	}
-
-	public void setProductoServicio(IProductoServicio productoServicio) {
-		this.productoServicio = productoServicio;
-	}
-	
 	protected IProductoServicio getProductoServicio() {
 		if(productoServicio == null)
 			throw new PresentationException("error.unknown", "El servicio: " + productoServicio.getClass().getSimpleName() + "");

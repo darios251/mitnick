@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,9 +61,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar consultar productos");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 	}
 
 	@Transactional
@@ -81,7 +79,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 				Producto productoOriginal = productoDao.get(productoDto.getId());
 				stockOriginal = productoOriginal.getStock();
 			}
-			
 			
 			@SuppressWarnings("unchecked")
 			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
@@ -104,9 +101,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar guardar el producto");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 		return productoDto;
 	}
 
@@ -125,9 +119,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar eliminar el producto");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -140,9 +131,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el stock");
-		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
 		}
 		return resultado;
 	}
@@ -157,9 +145,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener los tipos");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 		return resultado;
 	}
 
@@ -173,9 +158,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener las marcas");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 		return resultado;
 	}
 	
@@ -184,9 +166,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	@Override
 	public List<ProductoDto> obtenerProductos() {
 		List<ProductoDto> productos = new ArrayList<ProductoDto>();
-		
 		productos.addAll(entityDTOParser.getDtosFromEntities(productoDao.getAll()));
-		
 		return productos;
 	}
 	
@@ -203,22 +183,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			throw new BusinessException("error.productoServicio.precio.nulo");	
 		if (Validator.isNull(productoDto.getStock()))
 			throw new BusinessException("error.productoServicio.stock.nulo");	
-	}
-
-	public void setProductoDao(IProductoDAO productoDao) {
-		this.productoDao = productoDao;
-	}
-
-	public void setMarcaDao(IMarcaDao marcaDao) {
-		this.marcaDao = marcaDao;
-	}
-
-	public void setTipoDao(ITipoDao tipoDao) {
-		this.tipoDao = tipoDao;
-	}
-
-	public void setMovimientoDao(IMovimientoDao movimientoDao) {
-		this.movimientoDao = movimientoDao;
 	}
 
 }
