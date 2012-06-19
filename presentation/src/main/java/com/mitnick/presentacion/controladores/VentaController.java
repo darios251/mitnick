@@ -196,9 +196,6 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 		
 		if(Validator.isNotEmptyOrNull(productos)) {
 			VentaManager.setVentaActual(ventaServicio.agregarProducto(productos.get(0), VentaManager.getVentaActual()));
@@ -229,9 +226,6 @@ public class VentaController extends BaseController {
 		}
 		catch (BusinessException e) {
 			throw new PresentationException(e);
-		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 		
 		logger.info("Recalculando totales");
@@ -274,9 +268,6 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(),"Hubo un error al intentar agregar el pago con medio de pago: " + medioPago + " y monto: " + monto);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 		
 		finalizarVenta();
 		
@@ -315,9 +306,6 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el pago: " + pagoDto);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 		
 		logger.debug("Saliendo del método quitaPago");
 	}
@@ -340,9 +328,6 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 		
 		logger.debug("Saliendo del método modificarCantidad");
 	}
@@ -362,9 +347,6 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 		
 		if(Validator.isEmptyOrNull(clientes))
 			throw new PresentationException("error.cliente.consulta.clientes.null");
@@ -382,9 +364,6 @@ public class VentaController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);
-		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 		
 		logger.info("El cliente se quitó correctamente de la venta.");
@@ -414,9 +393,6 @@ public class VentaController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 		
 		logger.info("El cliente : " + cliente + " se agregó correctamente a la venta.");
 		logger.debug("Saliendo del método agregarCliente");
@@ -426,50 +402,26 @@ public class VentaController extends BaseController {
 		return ventaView;
 	}
 
-	public void setVentaView(VentaView ventaView) {
-		this.ventaView = ventaView;
-	}
-
 	public VentaPanel getVentaPanel() {
 		return ventaPanel;
-	}
-
-	public void setVentaPanel(VentaPanel ventaPanel) {
-		this.ventaPanel = ventaPanel;
 	}
 
 	public PagoPanel getPagoPanel() {
 		return pagoPanel;
 	}
 
-	public void setPagoPanel(PagoPanel pagoPanel) {
-		this.pagoPanel = pagoPanel;
-	}
-
 	public BuscarProductoPanel getBuscarProductoPanel() {
 		return buscarProductoPanel;
 	}
 
-	public void setBuscarProductoPanel(BuscarProductoPanel buscarProductoPanel) {
-		this.buscarProductoPanel = buscarProductoPanel;
-	}
-	
 	public VentaClientePanel getVentaClientePanel() {
 		return ventaClientePanel;
 	}
 
-	public void setVentaClientePanel(VentaClientePanel ventaClientePanel) {
-		this.ventaClientePanel = ventaClientePanel;
-	}
-	
 	protected IMedioPagoServicio getMedioPagoServicio() {
 		if(Validator.isNull(medioPagoServicio))
 			throw new PresentationException("error.unknown", "El servicio: " + medioPagoServicio.getClass().getSimpleName() + " no ha sido inyectado.");
 		return medioPagoServicio;
-	}
-	
-	public void setMedioPagoServicio(IMedioPagoServicio medioPagoServicio) {
-		this.medioPagoServicio = medioPagoServicio;
 	}
 	
 	protected IVentaServicio getVentaServicio() {
@@ -478,18 +430,10 @@ public class VentaController extends BaseController {
 		return ventaServicio;
 	}
 	
-	public void setVentaServicio(IVentaServicio ventaServicio) {
-		this.ventaServicio = ventaServicio;
-	}
-	
 	protected IProductoServicio getProductoServicio() {
 		if(Validator.isNull(productoServicio))
 			throw new PresentationException("error.unknown", "El servicio: " + productoServicio.getClass().getSimpleName() + " no ha sido inyectado.");
 		return productoServicio;
-	}
-
-	public void setProductoServicio(IProductoServicio productoServicio) {
-		this.productoServicio = productoServicio;
 	}
 
 	public DetalleProductoPanel getDetalleProductoPanel() {
@@ -498,20 +442,8 @@ public class VentaController extends BaseController {
 		return detalleProductoPanel;
 	}
 
-	public void setDetalleProductoPanel(DetalleProductoPanel detalleProductoPanel) {
-		this.detalleProductoPanel = detalleProductoPanel;
-	}
-
 	public ClienteNuevoPanel getClienteNuevoPanel() {
 		return clienteNuevoPanel;
-	}
-
-	public void setClienteNuevoPanel(ClienteNuevoPanel clienteNuevoPanel) {
-		this.clienteNuevoPanel = clienteNuevoPanel;
-	}
-
-	public void setClienteServicio(IClienteServicio clienteServicio) {
-		this.clienteServicio = clienteServicio;
 	}
 
 }

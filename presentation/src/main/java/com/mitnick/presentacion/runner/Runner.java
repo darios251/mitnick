@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import com.mitnick.persistence.daos.IConfiguracionDAO;
 import com.mitnick.persistence.entities.Configuracion;
 import com.mitnick.presentacion.utils.DBInitialization;
-import com.mitnick.presentacion.vistas.PrincipalView;
 import com.mitnick.utils.DiskUtils;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.locator.BeanLocator;
@@ -15,8 +14,6 @@ public class Runner {
 	private static Logger logger = Logger.getLogger(Runner.class);
 	
 	public static void main(String[] args) {
-		
-		checkForRun();
 		logger.info("Iniciando la aplicación: Applicación del proyecto mitnick...");
 		logger.info("Inicializando el propertiesManager...");
 		BeanLocator.getBean("propertiesManager");
@@ -25,11 +22,11 @@ public class Runner {
 		DBInitialization dbInitialization = (DBInitialization) BeanLocator.getBean("dbInitialization");
 		dbInitialization.initializeDB();
 		
-		logger.info("Iniciando la pantalla principal...");
-		PrincipalView principalView = (PrincipalView) BeanLocator.getBean("principalView");
-		principalView.setVisible(true);
-		
 		Thread.currentThread().setName(PropertiesManager.getProperty("application.name"));
+		
+		checkForRun();
+		
+		BeanLocator.getBean("loginView");
 	}
 
 	private static void checkForRun() {

@@ -207,12 +207,4 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		movimientoDao.saveOrUpdate(movimiento);
 	}
 
-	public void setVentaDao(IVentaDAO ventaDao) {
-		this.ventaDao = ventaDao;
-	}
-
-	public void setProductoDao(IProductoDAO productoDao) {
-		this.productoDao = productoDao;
-	}
-
 }

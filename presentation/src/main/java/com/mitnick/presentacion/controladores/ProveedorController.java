@@ -52,9 +52,6 @@ public class ProveedorController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los proveedores");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 	
 	public List<ProveedorDto> getProveedorsByFilter(ConsultaProveedorDto dto) {
@@ -67,9 +64,6 @@ public class ProveedorController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);
-		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 		
 		// chequeo si se encontro o no algo en la busqueda
@@ -100,9 +94,6 @@ public class ProveedorController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar dar del alta el producto: " + proveedor);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 	
 	public void eliminarProveedor() {
@@ -125,9 +116,6 @@ public class ProveedorController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el proveedor");
-		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	
@@ -153,9 +141,6 @@ public class ProveedorController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el proveedor");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 	
 	public List<ProveedorDto> obtenerProveedores() {
@@ -164,9 +149,6 @@ public class ProveedorController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los proveedores");
-		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
 		}
 	}
 	

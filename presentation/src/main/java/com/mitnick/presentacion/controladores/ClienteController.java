@@ -101,30 +101,6 @@ public class ClienteController extends BaseController {
 		return ciudades;
 	}
 
-	public ClienteView getClienteView() {
-		return clienteView;
-	}
-
-	public void setClienteView(ClienteView clienteView) {
-		this.clienteView = clienteView;
-	}
-
-	public ClientePanel getClientePanel() {
-		return clientePanel;
-	}
-
-	public void setClientePanel(ClientePanel clientePanel) {
-		this.clientePanel = clientePanel;
-	}
-	
-	public ClienteNuevoPanel getClienteNuevoPanel() {
-		return clienteNuevoPanel;
-	}
-
-	public void setClienteNuevoPanel(ClienteNuevoPanel clienteNuevoPanel) {
-		this.clienteNuevoPanel = clienteNuevoPanel;
-	}
-
 	public void mostrarClientePanel() {
 		clienteNuevoPanel.setVisible(false);
 		clientePanel.setVisible(true);
@@ -132,44 +108,12 @@ public class ClienteController extends BaseController {
 	
 	public void mostrarClienteNuevoPanel() {
 		clientePanel.setVisible(false);
-		//clienteNuevoPanel.setPanelRetorno(null);
 		clienteNuevoPanel.setVisible(true);
 		clienteNuevoPanel.actualizarPantalla();
 	}
 	
-	protected IClienteServicio getClienteServicio() {
-		return clienteServicio;
-	}
-
-	public void setClienteServicio(IClienteServicio clienteServicio) {
-		this.clienteServicio = clienteServicio;
-	}
-
 	public void guardarCliente(ClienteDto cliente, String apellido, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
-//		if(Validator.isBlankOrNull(apellido))
-//			throw new PresentationException("error.cliente.nuevo.apellido.null");
-//		else if(Validator.isBlankOrNull(nombre))
-//			throw new PresentationException("error.cliente.nuevo.nombre.null");
-//		else if(Validator.isBlankOrNull(documento))
-//			throw new PresentationException("error.cliente.nuevo.documento.null");
-//		else if(Validator.isNotBlankOrNull(cuit) && !Validator.isCuit(cuit))
-//			throw new PresentationException("error.cliente.nuevo.cuit.format");
-//		else if(Validator.isNotBlankOrNull(telefono) && !Validator.isPhoneNumber(telefono))
-//			throw new PresentationException("error.cliente.nuevo.telefono.format");
-//		else if(Validator.isNotBlankOrNull(email) && !Validator.isEmail(email))
-//			throw new PresentationException("error.cliente.nuevo.email.format");
-//		else if(Validator.isNotBlankOrNull(fechaNacimiento) && !Validator.isDate(fechaNacimiento, MitnickConstants.DATE_FORMAT, true))
-//			throw new PresentationException("error.cliente.nuevo.fechaNacimiento.format");
-//		else if(Validator.isBlankOrNull(domicilio))
-//			throw new PresentationException("error.cliente.nuevo.domicilio.null");
-//		else if(Validator.isBlankOrNull(codigoPostal))
-//			throw new PresentationException("error.cliente.nuevo.codigoPostal.null");
-//		else if(!Validator.isInt(codigoPostal))
-//			throw new PresentationException("error.cliente.nuevo.codigoPostal.format");
-//		else if(Validator.isNull(ciudad))
-//			throw new PresentationException("error.cliente.nuevo.ciudad.null");
-		
 		if(Validator.isNull(cliente))
 			cliente = new ClienteDto();
 		
@@ -196,9 +140,6 @@ public class ClienteController extends BaseController {
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);
-		}
-		catch(Exception ex) {
-			throw new PresentationException("error.unknown", "Hubo un error al inetntar guardar el cliente.", ex);
 		}
 	}
 	
@@ -229,9 +170,6 @@ public class ClienteController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el cliente");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 
 	public void eliminarCliente() {
@@ -255,13 +193,25 @@ public class ClienteController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el cliente");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 
 	public void cargarReporte() {
 		clienteServicio.cargarReporte();		
 	}
 	
+	protected IClienteServicio getClienteServicio() {
+		return clienteServicio;
+	}
+	
+	public ClienteView getClienteView() {
+		return clienteView;
+	}
+
+	public ClientePanel getClientePanel() {
+		return clientePanel;
+	}
+
+	public ClienteNuevoPanel getClienteNuevoPanel() {
+		return clienteNuevoPanel;
+	}
 }

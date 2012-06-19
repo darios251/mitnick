@@ -73,9 +73,6 @@ public class ReporteMovimientosController extends BaseController {
 		} catch (BusinessException e) {
 			throw new PresentationException(e);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 
 		// chequeo si se encontro o no algo en la busqueda
 		if (resultado == null || resultado.isEmpty())
@@ -93,9 +90,6 @@ public class ReporteMovimientosController extends BaseController {
 		} catch (BusinessException e) {
 			throw new PresentationException(e);
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 
 		// chequeo si se encontro o no algo en la busqueda
 		if (resultado == null || resultado.isEmpty())
@@ -111,9 +105,6 @@ public class ReporteMovimientosController extends BaseController {
 		catch (BusinessException e) {
 			throw new PresentationException(e.getMessage(),	"Hubo un error al intentar obtener las marcas");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
 	}
 
 	public List<TipoDto> obtenerTipos() {
@@ -123,21 +114,10 @@ public class ReporteMovimientosController extends BaseController {
 		catch (BusinessException e) {
 			throw new PresentationException(e.getMessage(),	"Hubo un error al intentar obtener los tipos");
 		}
-		catch(Exception e) {
-			throw new PresentationException("error.unkwon", e.getMessage());
-		}
-	}
-
-	public void setReporteServicio(IReportesServicio reporteServicio) {
-		this.reporteServicio = reporteServicio;
 	}
 
 	public IReportesServicio getReporteServicio() {
 		return reporteServicio;
-	}
-
-	public void setProductoServicio(IProductoServicio productoServicio) {
-		this.productoServicio = productoServicio;
 	}
 
 	public ReporteMovimientosView getReporteMovimientosView() {
@@ -148,22 +128,12 @@ public class ReporteMovimientosController extends BaseController {
 		return reporteMovimientosPanel;
 	}
 
-	public void setReporteMovimientosPanel(
-			ReporteMovimientosPanel reporteMovimientosPanel) {
-		this.reporteMovimientosPanel = reporteMovimientosPanel;
-	}
-
 	public IProductoServicio getProductoServicio() {
 		return productoServicio;
 	}
 
 	public ReporteDetalleMovimientosPanel getReporteDetalleMovimientosPanel() {
 		return reporteDetalleMovimientosPanel;
-	}
-
-	public void setReporteDetalleMovimientosPanel(
-			ReporteDetalleMovimientosPanel reporteDetalleMovimientosPanel) {
-		this.reporteDetalleMovimientosPanel = reporteDetalleMovimientosPanel;
 	}
 
 }

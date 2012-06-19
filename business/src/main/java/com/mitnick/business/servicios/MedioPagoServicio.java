@@ -31,14 +31,7 @@ public class MedioPagoServicio extends ServicioBase implements IMedioPagoServici
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener medios de pagos");
 		}
-		catch (Exception e) {
-			throw new BusinessException("error.persistence", "Error en capa de persistencia de  cliente", e);
-		}
 		return resultado;
-	}
-
-	public void setMedioPagoDao(IMedioPagoDAO medioPagoDao) {
-		this.medioPagoDao = medioPagoDao;
 	}
 
 }
