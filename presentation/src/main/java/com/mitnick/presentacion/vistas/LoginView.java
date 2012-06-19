@@ -73,6 +73,7 @@ public class LoginView extends JDialog {
 						PrincipalView principalView = (PrincipalView) BeanLocator.getBean("principalView");
 						thisView.setVisible(false);
 						principalView.setVisible(true);
+						thisView.dispose();
 					}
 					else {
 						JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
