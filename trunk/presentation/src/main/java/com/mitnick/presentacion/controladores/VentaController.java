@@ -398,6 +398,10 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarCliente");
 	}
 	
+	public BasePanel getUltimoPanelMostrado() {
+		return ultimoPanelMostrado;
+	}
+	
 	public VentaView getVentaView() {
 		return ventaView;
 	}
@@ -445,5 +449,5 @@ public class VentaController extends BaseController {
 	public ClienteNuevoPanel getClienteNuevoPanel() {
 		return clienteNuevoPanel;
 	}
-
+	
 }

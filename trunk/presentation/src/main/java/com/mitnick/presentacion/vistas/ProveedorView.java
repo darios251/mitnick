@@ -36,6 +36,8 @@ public class ProveedorView extends BaseView {
 				this.add( proveedorController.getProveedorNuevoPanel(), BorderLayout.CENTER );
 				initialized = true;
 			}
+			if(proveedorController.getUltimoPanelMostrado() != null)
+				proveedorController.getUltimoPanelMostrado().setVisible(aFlag);
 		}
 		super.setVisible(aFlag);
 	}

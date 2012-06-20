@@ -498,6 +498,7 @@ public class PrincipalView extends JFrame
 		getBtnReporte().setVisible(show);
 		getBtnArticulos().setVisible(show);
 		getBtnProveedores().setVisible(show);
+		getBtnClientes().setVisible(show);
 	}
 	
 	@Override

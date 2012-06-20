@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ReporteMovimientosView;
+import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ReporteDetalleMovimientosPanel;
 import com.mitnick.presentacion.vistas.paneles.ReporteMovimientosPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
@@ -34,13 +35,16 @@ public class ReporteMovimientosController extends BaseController {
 
 	@Autowired
 	private IProductoServicio productoServicio;
+	
+	private BasePanel ultimoPanelMostrado;
 
 	public ReporteMovimientosController() {
 
 	}
 
 	public void mostrarProductosPanel() {
-		logger.info("Mostrando el panel de productos");		
+		logger.info("Mostrando el panel de productos");
+		ultimoPanelMostrado = reporteMovimientosPanel;
 		reporteDetalleMovimientosPanel.setVisible(false);
 		reporteMovimientosPanel.setVisible(true);
 		reporteMovimientosPanel.actualizarPantalla();
@@ -59,6 +63,7 @@ public class ReporteMovimientosController extends BaseController {
 		reporteDetalleMovimientosPanel.setStockOriginal(getReporteMovimientosPanel().getModel().getMovimiento(index).getStockOriginal());
 		reporteDetalleMovimientosPanel.setStockFinal(getReporteMovimientosPanel().getModel().getMovimiento(index).getStockFinal());
 		reporteMovimientosPanel.setVisible(false);
+		ultimoPanelMostrado = reporteDetalleMovimientosPanel;
 		reporteDetalleMovimientosPanel.setVisible(true);
 		reporteDetalleMovimientosPanel.actualizarPantalla();
 	}
@@ -114,6 +119,14 @@ public class ReporteMovimientosController extends BaseController {
 		catch (BusinessException e) {
 			throw new PresentationException(e.getMessage(),	"Hubo un error al intentar obtener los tipos");
 		}
+	}
+	
+	public BasePanel getUltimoPanelMostrado() {
+		return ultimoPanelMostrado;
+	}
+	
+	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
+		this.ultimoPanelMostrado = ultimoPanelMostrado;
 	}
 
 	public IReportesServicio getReporteServicio() {
