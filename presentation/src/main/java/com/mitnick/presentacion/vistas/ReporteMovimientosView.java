@@ -36,6 +36,8 @@ public class ReporteMovimientosView extends BaseView {
 				this.add( reporteController.getReporteDetalleMovimientosPanel(), BorderLayout.CENTER );
 				initialized = true;
 			}
+			if(reporteController.getUltimoPanelMostrado() != null)
+				reporteController.getUltimoPanelMostrado().setVisible(aFlag);
 		}
 		super.setVisible(aFlag);
 	}

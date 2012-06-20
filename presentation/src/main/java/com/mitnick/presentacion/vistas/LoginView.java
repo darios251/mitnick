@@ -2,6 +2,8 @@ package com.mitnick.presentacion.vistas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -61,35 +63,46 @@ public class LoginView extends JDialog {
 		txtPassword.setBounds(131, 60, 86, 20);
 		getContentPane().add(txtPassword);
 		txtPassword.setColumns(10);
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if((int)e.getKeyChar() == KeyEvent.VK_ENTER)
+					doLogin();
+			}
+		});
 		
 		btnNewButton = new JButton(PropertiesManager.getProperty("loginView.button.login"));
 		btnNewButton.setBounds(131, 91, 85, 23);
 		btnNewButton.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			@Override public void actionPerformed(ActionEvent e) {
-				try {
-					if(loginUtils.authenticate(txtUser.getText(), txtPassword.getText()) != null) {
-						logger.info("Iniciando la pantalla principal...");
-						PrincipalView principalView = (PrincipalView) BeanLocator.getBean("principalView");
-						thisView.setVisible(false);
-						principalView.setVisible(true);
-						thisView.dispose();
-					}
-					else {
-						JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
-					}
-				}
-				catch(BadCredentialsException e1) {
-					JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
-				}
-				txtUser.setText("");
-				txtPassword.setText("");
-				txtUser.requestFocus();
+				doLogin();
 			}
 		});
 		getContentPane().add(btnNewButton);
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	@SuppressWarnings("deprecation")
+	protected void doLogin() {
+		try {
+			if(loginUtils.authenticate(txtUser.getText(), txtPassword.getText()) != null) {
+				logger.info("Iniciando la pantalla principal...");
+				PrincipalView principalView = (PrincipalView) BeanLocator.getBean("principalView");
+				thisView.setVisible(false);
+				principalView.setVisible(true);
+				thisView.dispose();
+			}
+			else {
+				JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
+			}
+		}
+		catch(BadCredentialsException e1) {
+			JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
+		}
+		txtUser.setText("");
+		txtPassword.setText("");
+		txtUser.requestFocus();
 	}
 }

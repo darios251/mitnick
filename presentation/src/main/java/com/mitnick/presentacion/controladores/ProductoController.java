@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ProductoView;
+import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
@@ -31,12 +32,15 @@ public class ProductoController extends BaseController {
 	@Autowired
 	private IProductoServicio productoServicio;
 	
+	private BasePanel ultimoPanelMostrado = null;
+	
 	public ProductoController() {
 		
 	}
 	
 	public void mostrarProductoNuevoPanel() {
 		logger.info("Mostrando el panel de producto nuevo");
+		ultimoPanelMostrado = productoNuevoPanel;
 		productoPanel.setVisible(false);
 		productoNuevoPanel.setVisible(true);
 		productoNuevoPanel.actualizarPantalla();
@@ -44,6 +48,7 @@ public class ProductoController extends BaseController {
 
 	public void mostrarProductosPanel() {
 		logger.info("Mostrando el panel de productos");
+		ultimoPanelMostrado = productoPanel;
 		productoNuevoPanel.setVisible(false);
 		productoPanel.setVisible(true);
 		productoPanel.actualizarPantalla();
@@ -195,6 +200,14 @@ public class ProductoController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el producto");
 		}
+	}
+	
+	public BasePanel getUltimoPanelMostrado() {
+		return ultimoPanelMostrado;
+	}
+	
+	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
+		this.ultimoPanelMostrado = ultimoPanelMostrado;
 	}
 	
 	public ProductoView getProductoView() {

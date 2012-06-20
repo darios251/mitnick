@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ClienteView;
+import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ClientePanel;
 import com.mitnick.servicio.servicios.IClienteServicio;
@@ -31,6 +32,8 @@ public class ClienteController extends BaseController {
 	@Autowired private ClienteNuevoPanel clienteNuevoPanel;
 	
 	@Autowired private IClienteServicio clienteServicio;
+	
+	private BasePanel ultimoPanelMostrado = null;
 	
 	public ClienteController() {
 		
@@ -102,11 +105,13 @@ public class ClienteController extends BaseController {
 	}
 
 	public void mostrarClientePanel() {
+		ultimoPanelMostrado = clientePanel;
 		clienteNuevoPanel.setVisible(false);
 		clientePanel.setVisible(true);
 	}
 	
 	public void mostrarClienteNuevoPanel() {
+		ultimoPanelMostrado = clienteNuevoPanel;
 		clientePanel.setVisible(false);
 		clienteNuevoPanel.setVisible(true);
 		clienteNuevoPanel.actualizarPantalla();
@@ -195,6 +200,14 @@ public class ClienteController extends BaseController {
 		}
 	}
 
+	public BasePanel getUltimoPanelMostrado() {
+		return ultimoPanelMostrado;
+	}
+	
+	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
+		this.ultimoPanelMostrado = ultimoPanelMostrado;
+	}
+	
 	public void cargarReporte() {
 		clienteServicio.cargarReporte();		
 	}

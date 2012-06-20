@@ -34,6 +34,8 @@ public class ClienteView extends BaseView {
 				initialized = true;
 			}
 		}
+		if(clienteController.getUltimoPanelMostrado() != null)
+			clienteController.getUltimoPanelMostrado().setVisible(aFlag);
 		super.setVisible(aFlag);
 	}
 

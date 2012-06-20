@@ -17,28 +17,28 @@ public class ExceptionAspect {
 	@AfterThrowing(pointcut = "execution(* com.mitnick.presentacion.controladores..*(..))", throwing = "exception")
 	public void presentationExceptionAspect(JoinPoint joinPoint, final Exception exception) throws Throwable {
 		if(exception instanceof AccessDeniedException) {
-			throw new PresentationException("error.access.denied", "El usuario no tiene los permisos necesarios para realizar la acción");
+			throw new PresentationException("error.access.denied", "El usuario no tiene los permisos necesarios para realizar la acción", exception);
 		}
 		else if(!(exception instanceof PresentationException))
-			throw new PresentationException("error.unknown", exception.getMessage());
+			throw new PresentationException("error.unknown", exception.getMessage(), exception);
     }
 	
 	@AfterThrowing(pointcut = "execution(* com.mitnick.business.servicios..*(..))", throwing = "exception")
 	public void businessExceptionAspect(JoinPoint joinPoint, final Exception exception) throws Throwable {
 		if(exception instanceof AccessDeniedException) {
-			throw new BusinessException("error.access.denied", "El usuario no tiene los permisos necesarios para realizar la acción");
+			throw new BusinessException("error.access.denied", "El usuario no tiene los permisos necesarios para realizar la acción", exception);
 		}
 		else if(!(exception instanceof BusinessException))
-			throw new BusinessException("error.unknown", exception.getMessage());
+			throw new BusinessException("error.unknown", exception.getMessage(), exception);
     }
 	
 	@AfterThrowing(pointcut = "execution(* com.mitnick.persistence.daos..*(..))", throwing = "exception")
 	public void persistenceExceptionAspect(JoinPoint joinPoint, final Exception exception) throws Throwable {
 		if(exception instanceof AccessDeniedException) {
-			throw new PersistenceException("error.access.denied", "El usuario no tiene los permisos necesarios para realizar la acción");
+			throw new PersistenceException("error.access.denied", "El usuario no tiene los permisos necesarios para realizar la acción", exception);
 		}
 		else if(!(exception instanceof PersistenceException))
-			throw new PersistenceException("error.unknown", exception.getMessage());
+			throw new PersistenceException("error.unknown", exception.getMessage(), exception);
     }
 	
 }

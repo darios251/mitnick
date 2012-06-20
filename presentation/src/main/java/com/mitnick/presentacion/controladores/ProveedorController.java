@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ProveedorView;
+import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ProveedorNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProveedorPanel;
 import com.mitnick.servicio.servicios.IProveedorServicio;
@@ -27,12 +28,15 @@ public class ProveedorController extends BaseController {
 	@Autowired
 	private IProveedorServicio proveedorServicio;
 	
+	private BasePanel ultimoPanelMostrado = null;
+	
 	public ProveedorController() {
 		
 	}
 	
 	public void mostrarProveedorNuevoPanel() {
 		logger.info("Mostrando el panel de proveedor nuevo");
+		ultimoPanelMostrado = proveedorNuevoPanel;
 		proveedorPanel.setVisible(false);
 		proveedorNuevoPanel.setVisible(true);
 		proveedorNuevoPanel.actualizarPantalla();
@@ -40,6 +44,7 @@ public class ProveedorController extends BaseController {
 
 	public void mostrarProveedorPanel() {
 		logger.info("Mostrando el panel de proveedores");
+		ultimoPanelMostrado = proveedorPanel;
 		proveedorNuevoPanel.setVisible(false);
 		proveedorPanel.setVisible(true);
 		proveedorPanel.actualizarPantalla();
@@ -150,6 +155,14 @@ public class ProveedorController extends BaseController {
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los proveedores");
 		}
+	}
+	
+	public BasePanel getUltimoPanelMostrado() {
+		return ultimoPanelMostrado;
+	}
+	
+	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
+		this.ultimoPanelMostrado = ultimoPanelMostrado;
 	}
 	
 	public ProveedorView getProveedorView() {

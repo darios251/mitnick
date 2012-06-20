@@ -34,7 +34,6 @@ public abstract class BasePanel extends JPanel {
 	}
 	
 	public BasePanel ( Component parent ){
-		
 		this.centrarVentana(parent);
 		initializePanel();
 	}

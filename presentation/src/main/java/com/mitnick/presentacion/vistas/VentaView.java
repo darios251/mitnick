@@ -15,7 +15,6 @@ public class VentaView extends BaseView {
 	@Autowired
 	private VentaController ventaController;
 	
-
 	public VentaView () {
 		initializeComponents();
 	}
@@ -38,9 +37,11 @@ public class VentaView extends BaseView {
 				initialized = true;
 			}
 		}
+		if(ventaController.getUltimoPanelMostrado() != null)
+			ventaController.getUltimoPanelMostrado().setVisible(aFlag);
 		super.setVisible(aFlag);
 	}
-
+	
 	public void setVentaController(VentaController ventaController) {
 		this.ventaController = ventaController;
 	}
