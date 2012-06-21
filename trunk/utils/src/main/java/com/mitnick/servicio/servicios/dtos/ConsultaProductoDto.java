@@ -1,6 +1,7 @@
 package com.mitnick.servicio.servicios.dtos;
 
 import com.mitnick.utils.dtos.MarcaDto;
+import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 
@@ -15,6 +16,8 @@ public class ConsultaProductoDto extends ServicioBaseDto {
 	private MarcaDto marca;
 	
 	private TipoDto tipo;
+	
+	private ProveedorDto proveedor;
 
 	public String getCodigo() {
 		return codigo;
@@ -47,11 +50,20 @@ public class ConsultaProductoDto extends ServicioBaseDto {
 	public void setTipo(TipoDto tipo) {
 		this.tipo = tipo;
 	}
+	
+	public ProveedorDto getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(ProveedorDto proveedor) {
+		this.proveedor = proveedor;
+	}
 
 	@Override
 	public String toString() {
 		return "ConsultaProductoDto [codigo=" + codigo + ", descripcion="
-				+ descripcion + ", marca=" + marca + ", tipo=" + tipo + "]";
+				+ descripcion + ", marca=" + marca + ", tipo=" + tipo
+				+ ", proveedor=" + proveedor + "]";
 	}
 	
 }

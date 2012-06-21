@@ -58,6 +58,7 @@ public class ProveedorPanel extends BasePanel {
 	private JButton btnAgregar;
 	private JButton btnEditar;
 	private JButton btnEliminar;
+	private JButton btnVerProductos;
 
 	@Autowired
 	public ProveedorPanel(@Qualifier("proveedorController") ProveedorController proveedorController) {
@@ -97,6 +98,7 @@ public class ProveedorPanel extends BasePanel {
 		add(getBtnEditar());
 		add(getBtnEliminar());
 		add(getLblProveedores());
+		add(getBtnVerProductos());
 		
 		setFocusTraversalPolicy();
 	}
@@ -252,6 +254,29 @@ public class ProveedorPanel extends BasePanel {
 			});
 		}
 		return btnEliminar;
+	}
+	
+	public JButton getBtnVerProductos() {
+		if(btnVerProductos == null) {
+			btnVerProductos = new JButton(PropertiesManager.getProperty("proveedorPanel.button.verProductos.texto"));
+			btnVerProductos.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnVerProductos.setIcon(new ImageIcon(this.getClass().getResource("/img/verProductos.png")));
+			btnVerProductos.setToolTipText(PropertiesManager.getProperty("proveedorPanel.button.verProductos.tooltip"));
+			btnVerProductos.setMargin(new Insets(-1, -1, -1, -1));
+			btnVerProductos.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnVerProductos.setBounds(735, 324, 60, 60);
+			
+			btnVerProductos.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					try {
+						proveedorController.verProductosProveedor();
+					}catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnVerProductos;
 	}
 
 	public JLabel getLblProveedores() {

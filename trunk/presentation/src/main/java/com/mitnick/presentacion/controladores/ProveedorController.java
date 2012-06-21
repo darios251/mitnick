@@ -11,6 +11,7 @@ import com.mitnick.presentacion.vistas.ProveedorView;
 import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ProveedorNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProveedorPanel;
+import com.mitnick.presentacion.vistas.paneles.ProveedorProductoPanel;
 import com.mitnick.servicio.servicios.IProveedorServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProveedorDto;
 import com.mitnick.utils.Validator;
@@ -27,6 +28,8 @@ public class ProveedorController extends BaseController {
 	private ProveedorNuevoPanel proveedorNuevoPanel;
 	@Autowired
 	private IProveedorServicio proveedorServicio;
+	@Autowired
+	private ProveedorProductoPanel proveedorProductoPanel;
 	
 	private BasePanel ultimoPanelMostrado = null;
 	
@@ -38,6 +41,7 @@ public class ProveedorController extends BaseController {
 		logger.info("Mostrando el panel de proveedor nuevo");
 		ultimoPanelMostrado = proveedorNuevoPanel;
 		proveedorPanel.setVisible(false);
+		proveedorProductoPanel.setVisible(false);
 		proveedorNuevoPanel.setVisible(true);
 		proveedorNuevoPanel.actualizarPantalla();
 	}
@@ -46,8 +50,18 @@ public class ProveedorController extends BaseController {
 		logger.info("Mostrando el panel de proveedores");
 		ultimoPanelMostrado = proveedorPanel;
 		proveedorNuevoPanel.setVisible(false);
+		proveedorProductoPanel.setVisible(false);
 		proveedorPanel.setVisible(true);
 		proveedorPanel.actualizarPantalla();
+	}
+	
+	public void mostrarProveedorProductoPanel() {
+		logger.info("Mostrando el panel de productos de proveedor");
+		ultimoPanelMostrado = proveedorProductoPanel;
+		proveedorNuevoPanel.setVisible(false);
+		proveedorPanel.setVisible(false);
+		proveedorProductoPanel.setVisible(true);
+		proveedorProductoPanel.actualizarPantalla();
 	}
 	
 	public List<ProveedorDto> getAllProveedores() {
@@ -148,6 +162,25 @@ public class ProveedorController extends BaseController {
 		}
 	}
 	
+	public void verProductosProveedor() {
+		ProveedorDto proveedorDto = null;
+		try {
+			int index = getProveedorPanel().getTable().getSelectedRow();
+			proveedorDto = getProveedorPanel().getTableModel().getProveedor(index);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getProveedorPanel().getTableModel().getRowCount() == 0) {
+				throw new PresentationException("error.proveedorPanel.proveedor.verProductos.vacio");
+			}
+			else {
+				throw new PresentationException("error.proveedorPanel.proveedor.verProductos.noSeleccionado");
+			}
+		}
+		
+		getProveedorProductoPanel().setProveedor(proveedorDto);
+		mostrarProveedorProductoPanel();
+	}
+	
 	public List<ProveedorDto> obtenerProveedores() {
 		try {
 			return proveedorServicio.obtenerProveedores();
@@ -175,6 +208,10 @@ public class ProveedorController extends BaseController {
 
 	public ProveedorNuevoPanel getProveedorNuevoPanel() {
 		return proveedorNuevoPanel;
+	}
+	
+	public ProveedorProductoPanel getProveedorProductoPanel() {
+		return proveedorProductoPanel;
 	}
 
 }
