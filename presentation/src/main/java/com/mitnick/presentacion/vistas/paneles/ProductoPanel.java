@@ -293,7 +293,6 @@ public class ProductoPanel extends BasePanel {
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
-					actualizarPantalla();
 				}
 			});
 		}

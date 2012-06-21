@@ -93,6 +93,7 @@ public abstract class BasePanel extends JPanel {
 		super.setVisible(aFlag);
 		
 		if(aFlag) {
+			this.limpiarCamposPantalla();
 			this.actualizarPantalla();
 			setFocusTraversalPolicy();
 			if(Validator.isNotNull(defaultFocusField))

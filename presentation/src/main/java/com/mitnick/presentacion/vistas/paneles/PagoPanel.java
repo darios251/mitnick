@@ -127,7 +127,7 @@ public class PagoPanel extends BasePanel {
 	private JLabel getLblCliente() {
 		if(lblCliente == null) {
 			lblCliente = new JLabel("Cliente:");
-			lblCliente.setBounds(107, 23, 46, 14);
+			lblCliente.setBounds(113, 36, 46, 14);
 		}
 		return lblCliente;
 	}
@@ -137,14 +137,6 @@ public class PagoPanel extends BasePanel {
 			txtMonto = new JTextField();
 			txtMonto.setBounds(44, 176, 110, 20);
 			txtMonto.setColumns(10);
-//			txtMonto.addKeyListener(new KeyAdapter() {
-//				@Override
-//				public void keyPressed(KeyEvent e) {
-//					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//						agregarPago();
-//					}
-//				}
-//			});
 		}
 		return txtMonto;
 	}
@@ -177,7 +169,7 @@ public class PagoPanel extends BasePanel {
 		if(lbl_ST == null) {
 			lbl_ST = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.subtotal"));
 			lbl_ST.setHorizontalAlignment(SwingConstants.RIGHT);
-			lbl_ST.setBounds(269, 299, 88, 20);
+			lbl_ST.setBounds(269, 300, 88, 20);
 		}
 		return lbl_ST;
 	}
@@ -195,7 +187,7 @@ public class PagoPanel extends BasePanel {
 		if(lbl_T == null) {
 			lbl_T = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.total"));
 			lbl_T.setHorizontalAlignment(SwingConstants.RIGHT);
-			lbl_T.setBounds(269, 348, 88, 20);
+			lbl_T.setBounds(269, 340, 88, 20);
 		}
 		return lbl_T;
 	}
@@ -213,7 +205,7 @@ public class PagoPanel extends BasePanel {
 		if(lbl_TP == null) {
 			lbl_TP = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalPagado"));
 			lbl_TP.setHorizontalAlignment(SwingConstants.RIGHT);
-			lbl_TP.setBounds(269, 384, 88, 20);
+			lbl_TP.setBounds(269, 380, 88, 20);
 		}
 		return lbl_TP;
 	}
@@ -231,7 +223,7 @@ public class PagoPanel extends BasePanel {
 		if(lblSubtotalValor == null) {
 			lblSubtotalValor = new JLabel();
 			lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblSubtotalValor.setBounds(396, 299, 88, 20);
+			lblSubtotalValor.setBounds(396, 300, 88, 20);
 		}
 		return lblSubtotalValor;
 	}
@@ -240,7 +232,7 @@ public class PagoPanel extends BasePanel {
 		if(lblTotalValor == null) {
 			lblTotalValor = new JLabel();
 			lblTotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTotalValor.setBounds(396, 348, 88, 20);
+			lblTotalValor.setBounds(396, 340, 88, 20);
 		}
 		return lblTotalValor;
 	}
@@ -249,7 +241,7 @@ public class PagoPanel extends BasePanel {
 		if(lblTotalPagadoValor == null) {
 			lblTotalPagadoValor = new JLabel();
 			lblTotalPagadoValor.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTotalPagadoValor.setBounds(396, 384, 88, 20);
+			lblTotalPagadoValor.setBounds(396, 380, 88, 20);
 		}
 		return lblTotalPagadoValor;
 	}
@@ -274,7 +266,7 @@ public class PagoPanel extends BasePanel {
 					}
 				}
 			});
-			btnAgregar.setBounds(188, 86, 60, 60);
+			btnAgregar.setBounds(188, 117, 60, 60);
 		}
 		return btnAgregar;
 	}
@@ -283,7 +275,7 @@ public class PagoPanel extends BasePanel {
 		if(lblMonto == null) {
 			lblMonto = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.monto"));
 			lblMonto.setHorizontalAlignment(SwingConstants.LEFT);
-			lblMonto.setBounds(44, 148, 80, 20);
+			lblMonto.setBounds(44, 148, 110, 20);
 		}
 		return lblMonto;
 	}
@@ -366,7 +358,7 @@ public class PagoPanel extends BasePanel {
 					}
 				}
 			});
-			btnQuitar.setBounds(188, 157, 60, 60);
+			btnQuitar.setBounds(188, 186, 60, 60);
 		}
 		return btnQuitar;
 	}
@@ -493,7 +485,7 @@ public class PagoPanel extends BasePanel {
 		if(pnlCliente == null) {
 			pnlCliente = new JPanel();
 			pnlCliente.setLayout(null);
-			pnlCliente.setBounds(180, 11, 335, 37);
+			pnlCliente.setBounds(188, 23, 335, 37);
 			pnlCliente.add(getLblApellidoNombre());
 			pnlCliente.add(getLblDni());
 		}
@@ -521,7 +513,7 @@ public class PagoPanel extends BasePanel {
 	public JLabel getLblConsumidorFinal() {
 		if(lblConsumidorFinal == null) {
 			lblConsumidorFinal = new JLabel("Consumidor Final");
-			lblConsumidorFinal.setBounds(180, 23, 115, 14);
+			lblConsumidorFinal.setBounds(188, 36, 115, 14);
 		}
 		return lblConsumidorFinal;
 	}

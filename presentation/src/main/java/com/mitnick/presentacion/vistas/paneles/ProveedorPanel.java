@@ -219,7 +219,6 @@ public class ProveedorPanel extends BasePanel {
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
-					actualizarPantalla();
 				}
 			});
 		}
