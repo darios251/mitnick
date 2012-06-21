@@ -5,14 +5,18 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +26,8 @@ import org.springframework.context.annotation.Scope;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
+import com.mitnick.presentacion.vistas.formatters.EmailFormatter;
+import com.mitnick.presentacion.vistas.formatters.FormattedDateField;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
@@ -45,12 +51,12 @@ public class ClienteNuevoPanel extends BasePanel {
 	private JTextField txtApellido;
 	private JTextField txtNombre;
 	private JTextField txtDocumento;
-	private JTextField txtCuit;
+	private JFormattedTextField txtCuit;
 
 	private ClienteDto cliente;
 	private JTextField txtTelefono;
-	private JTextField txtFechaNacimiento;
-	private JTextField txtEmail;
+	private JFormattedTextField txtFechaNacimiento;
+	private JFormattedTextField txtEmail;
 	private JTextField txtDomicilio;
 	private JTextField txtCodigoPostal;
 
@@ -307,9 +313,12 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JTextField getTxtCuit() {
 		if (txtCuit == null) {
-			txtCuit = new JTextField();
-			txtCuit.setColumns(10);
-			txtCuit.setBounds(161, 213, 105, 20);
+			try {
+				txtCuit = new JFormattedTextField(new MaskFormatter("##_########_#"));
+				txtCuit.setColumns(10);
+				txtCuit.setBounds(161, 213, 105, 20);
+			} catch (ParseException e) {
+			}
 		}
 		return txtCuit;
 	}
@@ -325,16 +334,21 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	public JTextField getTxtFechaNacimiento() {
 		if (txtFechaNacimiento == null) {
-			txtFechaNacimiento = new JTextField();
-			txtFechaNacimiento.setColumns(10);
-			txtFechaNacimiento.setBounds(161, 351, 105, 20);
+			try {
+				txtFechaNacimiento = new FormattedDateField();
+				txtFechaNacimiento.setColumns(10);
+				txtFechaNacimiento.setBounds(161, 351, 105, 20);
+			} catch (ParseException e) {}
 		}
 		return txtFechaNacimiento;
 	}
 
 	public JTextField getTxtEmail() {
 		if (txtEmail == null) {
-			txtEmail = new JTextField();
+			txtEmail = new JFormattedTextField();
+			EmailFormatter emailFormatter = new EmailFormatter(txtEmail);
+			DefaultFormatterFactory dff = new DefaultFormatterFactory(emailFormatter);
+			txtEmail.setFormatterFactory(dff);
 			txtEmail.setColumns(10);
 			txtEmail.setBounds(161, 306, 105, 20);
 		}

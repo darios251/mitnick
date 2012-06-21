@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
@@ -38,7 +40,8 @@ public class LoginView extends JDialog {
 	
 	private LoginView thisView;
 	
-	public LoginView() {
+	public LoginView() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		thisView = this;
 		
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

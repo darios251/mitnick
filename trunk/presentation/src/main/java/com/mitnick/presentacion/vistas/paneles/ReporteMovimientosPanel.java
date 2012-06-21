@@ -336,7 +336,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {
-		consultarProductos();
+		//consultarProductos();
 	}
 
 	@Override
