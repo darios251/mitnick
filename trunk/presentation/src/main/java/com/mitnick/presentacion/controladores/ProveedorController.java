@@ -109,10 +109,10 @@ public class ProveedorController extends BaseController {
 		}
 		catch (IndexOutOfBoundsException exception) {
 			if(getProveedorPanel().getTableModel().getRowCount() == 0) {
-				throw new PresentationException("error.proveedorPanel.proveedor.vacio");
+				throw new PresentationException("error.proveedorPanel.proveedor.eliminar.vacio");
 			}
 			else {
-				throw new PresentationException("error.proveedorPanel.proveedor.noSeleccionado");
+				throw new PresentationException("error.proveedorPanel.proveedor.eliminar.noSeleccionado");
 			}
 		}
 		
@@ -132,10 +132,10 @@ public class ProveedorController extends BaseController {
 		}
 		catch (IndexOutOfBoundsException exception) {
 			if(getProveedorPanel().getTableModel().getRowCount() == 0) {
-				throw new PresentationException("error.proveedorPanel.proveedor.vacio");
+				throw new PresentationException("error.proveedorPanel.proveedor.editar.vacio");
 			}
 			else {
-				throw new PresentationException("error.proveedorPanel.proveedor.noSeleccionado");
+				throw new PresentationException("error.proveedorPanel.proveedor.editar.noSeleccionado");
 			}
 		}
 		

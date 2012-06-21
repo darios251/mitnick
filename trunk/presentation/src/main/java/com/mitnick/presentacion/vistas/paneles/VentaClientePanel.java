@@ -75,6 +75,7 @@ public class VentaClientePanel extends BasePanel {
 				((JTextField) component).setText("");
 		}
 		getChkConsumidorFinal().setSelected(false);
+		deshabilitarComponentes();
 	}
 
 	@Override

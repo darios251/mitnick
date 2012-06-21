@@ -186,10 +186,10 @@ public class ProductoController extends BaseController {
 		}
 		catch (IndexOutOfBoundsException exception) {
 			if(getProductoPanel().getTableModel().getRowCount() == 0) {
-				throw new PresentationException("error.productoPanel.productos.vacio");
+				throw new PresentationException("error.productoPanel.productos.editar.vacio");
 			}
 			else {
-				throw new PresentationException("error.productoPanel.producto.noSeleccionado");
+				throw new PresentationException("error.productoPanel.producto.editar.noSeleccionado");
 			}
 		}
 		
