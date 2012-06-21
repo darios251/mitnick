@@ -184,6 +184,7 @@ public class PrincipalView extends JFrame
 					logger.info("Mostrando el panel de ventas");
 					getJTabbedPane().setVisible(true);
 					ventaController.mostrarUltimoPanelMostrado();
+					ventaController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
 				}
 			});
@@ -215,6 +216,7 @@ public class PrincipalView extends JFrame
 					logger.info("Mostrando el panel de articulos");
 					getJTabbedPane().setVisible(true);
 					productoController.mostrarProductosPanel();
+					productoController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(productoController.getProductoView());
 				}
 			});
@@ -248,6 +250,7 @@ public class PrincipalView extends JFrame
 					logger.info("Mostrando el panel de Movimientos de productos");
 					getJTabbedPane().setVisible(true);
 					reporteController.mostrarProductosPanel();
+					reporteController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(reporteController.getReporteMovimientosView());
 				}
 			});
@@ -265,7 +268,7 @@ public class PrincipalView extends JFrame
 			
 			btnProveedores.setText(PropertiesManager.getProperty("principalView.button.proveedores"));
 			
-			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/reportes.png"));
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/proveedores.png"));
 			btnProveedores.setIcon(iconoOriginal);
 			
 			btnProveedores.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -281,6 +284,7 @@ public class PrincipalView extends JFrame
 					logger.info("Mostrando el panel de Movimientos de productos");
 					getJTabbedPane().setVisible(true);
 					proveedorController.mostrarProveedorPanel();
+					proveedorController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(proveedorController.getProveedorView());
 				}
 			});
@@ -314,6 +318,7 @@ public class PrincipalView extends JFrame
 					logger.info("Mostrando el panel de clientes");
 					getJTabbedPane().setVisible(true);
 					clienteController.mostrarClientePanel();
+					clienteController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(clienteController.getClienteView());
 				}
 			});
