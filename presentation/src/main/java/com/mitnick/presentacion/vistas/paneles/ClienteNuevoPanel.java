@@ -408,7 +408,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtApellido, txtNombre, txtDocumento,
-						txtCuit, txtTelefono, txtEmail, txtFechaNacimiento,	txtDomicilio, txtCodigoPostal, cmbCiudad, cmbProvincia,
+						txtCuit, txtTelefono, txtEmail, txtFechaNacimiento,	txtDomicilio, txtCodigoPostal, cmbProvincia, cmbCiudad,
 						btnAceptar, btnCancelar}));
 	}
 

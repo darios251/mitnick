@@ -1,5 +1,9 @@
 package com.mitnick.exceptions;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
 
 /**
  * Esta clase tiene la responsabilidad de representar la excepci�n por defecto
@@ -15,6 +19,10 @@ public class BusinessException extends BaseException {
 	public BusinessException(PersistenceException e)
 	{
 		super(e.getMessage(), e);
+	}
+	
+	public BusinessException(Set<ConstraintViolation<Object>> constraintViolations) {
+		super(constraintViolations);
 	}
 	
 	public BusinessException(PersistenceException e, String log)

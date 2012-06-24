@@ -1,6 +1,7 @@
 package com.mitnick.exceptions;
 
 
+
 /**
  * Esta clase tiene la responsabilidad de representar la excepci�n por defecto
  * que debe lanzarse en la capa de persistencia.

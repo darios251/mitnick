@@ -1,5 +1,10 @@
 package com.mitnick.exceptions;
 
+import java.lang.reflect.Field;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
 import org.apache.log4j.Logger;
 
 import com.mitnick.utils.PropertiesManager;
@@ -28,6 +33,26 @@ public class BaseException extends RuntimeException {
 		super(PropertiesManager.getProperty(key));
 		this.type = ERROR;
 		logException(PropertiesManager.getProperty(key), null);
+	}
+	
+	public BaseException(Set<ConstraintViolation<Object>> constraintViolations)
+	{
+		if(com.mitnick.utils.Validator.isNotEmptyOrNull(constraintViolations)) {
+			StringBuffer buffer = new StringBuffer();
+			for(ConstraintViolation<?> constraint : constraintViolations)
+				buffer.append(constraint.getMessage()).append("\n");
+			
+			fillInStackTrace();
+			try {
+				Field detailMessageField = this.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("detailMessage");
+				detailMessageField.setAccessible(true);
+				detailMessageField.set(this, buffer.toString());
+				
+				this.type = ERROR;
+				logException(buffer.toString(), null);
+			}
+			catch(Exception e) {}
+		}
 	}
 	
 	public BaseException(String key, String log, int type)

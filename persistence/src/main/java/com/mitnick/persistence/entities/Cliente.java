@@ -13,12 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.appfuse.model.BaseObject;
-import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.MitnickTextField;
+import org.hibernate.validator.constraints.MitnickTextField.FieldType;
 
 @Entity(name = "Cliente")
 public class Cliente extends BaseObject implements Serializable {
@@ -28,33 +26,27 @@ public class Cliente extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@NotNull(message="{error.entity.cliente.nombre.null}")
-	@Size(min=3, max=30, message="{error.entity.cliente.nombre.size}")
-	@Pattern(regexp="^[a-zA-Záéíóúñ ]*$", message="{error.entity.cliente.nombre.regexp}")
+	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
 	@Column(name = "nombre", length = 30, nullable = false)
 	private String nombre;
 	
-	@NotNull(message="{error.entity.cliente.apellido.null}")
-	@Size(min=3, max=30, message="{error.entity.cliente.apellido.size}")
-	@Pattern(regexp="^[a-zA-Záéíóúñ ]*$", message="{error.entity.cliente.apellido.regexp}")
+	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
 	@Column(name = "apellido", length = 30, nullable = false)
 	private String apellido;
 
-	@NotNull(message="{error.entity.cliente.documento.null}")
-	@Size(min=8, max=10, message="{error.entity.cliente.documento.size}")
+	@MitnickTextField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
 	@Column(name = "documento", length = 10, nullable = false, unique = true)
 	private String documento;
 	
-	@NotNull(message="{error.entity.cliente.cuit.null}")
-	@Size(min=13, max=13, message="{error.entity.cliente.cuit.size}")
+	@MitnickTextField(required=true, min=12, max=13, fieldType=FieldType.CUIT)
 	@Column(name = "cuit", length = 13, nullable = false, unique = true)
 	private String cuit;
 
-	@Size(min=10, max=40, message="{error.entity.cliente.telefono.size}")
+	@MitnickTextField(min=10, max=40, fieldType=FieldType.PHONE_NUMBER)
 	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono;
 	
-	@Email(message="{error.entity.cliente.email.format}")
+	@MitnickTextField(min=3, max=40, fieldType=FieldType.EMAIL)
 	@Column(name = "email", length = 40, nullable = true)
 	private String email;
 	
