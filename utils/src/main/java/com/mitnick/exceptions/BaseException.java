@@ -50,7 +50,7 @@ public class BaseException extends RuntimeException {
 			try {
 				Field detailMessageField = this.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("detailMessage");
 				detailMessageField.setAccessible(true);
-				detailMessageField.set(this, buffer.toString());
+				detailMessageField.set(this, "Ocurrieron errores durante las validaciones");
 				
 				this.type = ERROR;
 				logException(buffer.toString(), null);

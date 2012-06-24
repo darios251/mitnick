@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -74,7 +75,21 @@ public abstract class BasePanel extends JPanel {
 					Field fieldError = this.getClass().getDeclaredField("txt" + fieldName);
 					fieldError.setAccessible(true);
 					JTextField field = (JTextField) fieldError.get(this);
+//					field.setSize(field.getWidth() + 150, field.getHeight() + 20);
+//					field.setLocation(field.getX(), field.getY() - 12);
 					field.setBorder(BorderFactory.createLineBorder(Color.red));
+					
+					Field lblFieldError = this.getClass().getDeclaredField("lblErrorTxt" + fieldName);
+					lblFieldError.setAccessible(true);
+					JLabel lblError = (JLabel) lblFieldError.get(this);
+					lblError.setText(constraintViolation.getMessage());
+					lblError.setForeground(Color.red);
+//					TitledBorder titled;
+//
+//			        titled = BorderFactory.createTitledBorder(constraintViolation.getMessage());
+//			        titled.setTitleColor(Color.red);
+//			        titled.setBorder(BorderFactory.createLineBorder(Color.red));
+//			        field.setBorder(titled);
 				} catch (Exception e) {
 					Field fieldError;
 					try {
@@ -83,6 +98,12 @@ public abstract class BasePanel extends JPanel {
 						@SuppressWarnings("rawtypes")
 						JComboBox field = (JComboBox) fieldError.get(this);
 						field.setBorder(BorderFactory.createLineBorder(Color.red));
+						
+						Field lblFieldError = this.getClass().getDeclaredField("lblErrorCmb" + fieldName);
+						lblFieldError.setAccessible(true);
+						JLabel lblError = (JLabel) lblFieldError.get(this);
+						lblError.setText(constraintViolation.getMessage());
+						lblError.setForeground(Color.red);
 					} catch (Exception e1) {
 					}
 				}

@@ -14,7 +14,7 @@ public class DireccionDto extends BaseDto {
 	@Required
 	private CiudadDto ciudad;
 	
-	@MitnickTextField(required=true, fieldType=FieldType.INTEGER, min=3, max=5)
+	@MitnickTextField(required=true, propertyName="clienteNuevoPanel.etiqueta.codigoPostal",fieldType=FieldType.INTEGER, min=3, max=5)
 	private String codigoPostal;
 
 	public String getDomicilio() {
