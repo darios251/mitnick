@@ -1,13 +1,20 @@
 package com.mitnick.utils.dtos;
 
+import org.hibernate.validator.constraints.MitnickTextField;
+import org.hibernate.validator.constraints.Required;
+import org.hibernate.validator.constraints.MitnickTextField.FieldType;
+
 public class DireccionDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 	
+	@MitnickTextField(required=true, fieldType=FieldType.APHANUMERIC, min=3, max=30)
 	private String domicilio;
 	
+	@Required
 	private CiudadDto ciudad;
 	
+	@MitnickTextField(required=true, fieldType=FieldType.INTEGER, min=3, max=5)
 	private String codigoPostal;
 
 	public String getDomicilio() {

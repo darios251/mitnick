@@ -1,5 +1,9 @@
 package com.mitnick.presentacion.controladores;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -11,4 +15,12 @@ import org.apache.log4j.Logger;
  */
 abstract class BaseController {
 	protected Logger logger = Logger.getLogger(this.getClass());
+	
+	protected static ValidatorFactory entityValidatorFactory; 
+	protected static Validator entityValidator;
+	
+	static {
+		entityValidatorFactory = Validation.buildDefaultValidatorFactory();
+		entityValidator = entityValidatorFactory.getValidator();
+	}
 }

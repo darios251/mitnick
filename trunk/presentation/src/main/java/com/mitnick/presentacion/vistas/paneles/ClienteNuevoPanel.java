@@ -314,7 +314,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	public JTextField getTxtCuit() {
 		if (txtCuit == null) {
 			try {
-				txtCuit = new JFormattedTextField(new MaskFormatter("##_########_#"));
+				txtCuit = new JFormattedTextField(new MaskFormatter("##-########-#"));
 				txtCuit.setColumns(10);
 				txtCuit.setBounds(161, 213, 105, 20);
 			} catch (ParseException e) {
