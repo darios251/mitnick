@@ -49,19 +49,38 @@ public class ClienteNuevoPanel extends BasePanel {
 	private JButton btnCancelar;
 
 	private JTextField txtApellido;
+	private JLabel lblErrorTxtApellido;
+	
 	private JTextField txtNombre;
+	private JLabel lblErrorTxtNombre;
+	
 	private JTextField txtDocumento;
+	private JLabel lblErrorTxtDocumento;
+	
 	private JFormattedTextField txtCuit;
+	private JLabel lblErrorTxtCuit;
 
 	private ClienteDto cliente;
 	private JTextField txtTelefono;
+	private JLabel lblErrorTxtTelefono;
+	
 	private JFormattedTextField txtFechaNacimiento;
+	private JLabel lblErrorTxtFechaNacimiento;
+	
 	private JFormattedTextField txtEmail;
+	private JLabel lblErrorTxtEmail;
+	
 	private JTextField txtDomicilio;
+	private JLabel lblErrorTxtDomicilio;
+	
 	private JTextField txtCodigoPostal;
+	private JLabel lblErrorTxtCodigoPostal;
 
 	private JComboBox<CiudadDto> cmbCiudad;
+	private JLabel lblErrorCmbCiudad;
+	
 	private JComboBox<ProvinciaDto> cmbProvincia;
+	private JLabel lblErrorCmbProvincia;
 
 	private BasePanel panelRetorno;
 
@@ -113,6 +132,8 @@ public class ClienteNuevoPanel extends BasePanel {
 			cmbProvincia.setSelectedIndex(0);
 		} catch (Exception e) {
 		}
+		
+		clienteController.cleanFields(cliente);
 	}
 
 	@Override
@@ -147,6 +168,18 @@ public class ClienteNuevoPanel extends BasePanel {
 
 		add(getBtnAceptar());
 		add(getBtnCancelar());
+		
+		add(getLblErrorTxtApellido());
+		add(getLblErrorTxtNombre());
+		add(getLblErrorTxtDocumento());
+		add(getLblErrorTxtCuit());
+		add(getLblErrorTxtTelefono());
+		add(getLblErrorTxtEmail());
+		add(getLblErrorTxtFechaNacimiento());
+		add(getLblErrorTxtDomicilio());
+		add(getLblErrorTxtCodigoPostal());
+		add(getLblErrorCmbProvincia());
+		add(getLblErrorCmbCiudad());
 	}
 
 	public Component getLblCiudad() {
@@ -292,7 +325,15 @@ public class ClienteNuevoPanel extends BasePanel {
 		}
 		return txtApellido;
 	}
-
+	
+	public JLabel getLblErrorTxtApellido() {
+		if (lblErrorTxtApellido == null) {
+			lblErrorTxtApellido = new JLabel("");
+			lblErrorTxtApellido.setBounds(57, 97, 300, 14);
+		}
+		return lblErrorTxtApellido;
+	}
+	
 	public JTextField getTxtNombre() {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
@@ -300,6 +341,14 @@ public class ClienteNuevoPanel extends BasePanel {
 			txtNombre.setBounds(161, 122, 105, 20);
 		}
 		return txtNombre;
+	}
+	
+	public JLabel getLblErrorTxtNombre() {
+		if (lblErrorTxtNombre == null) {
+			lblErrorTxtNombre = new JLabel("");
+			lblErrorTxtNombre.setBounds(57, 142, 300, 14);
+		}
+		return lblErrorTxtNombre;
 	}
 
 	public JTextField getTxtDocumento() {
@@ -309,6 +358,14 @@ public class ClienteNuevoPanel extends BasePanel {
 			txtDocumento.setBounds(161, 167, 105, 20);
 		}
 		return txtDocumento;
+	}
+	
+	public JLabel getLblErrorTxtDocumento() {
+		if (lblErrorTxtDocumento == null) {
+			lblErrorTxtDocumento = new JLabel("");
+			lblErrorTxtDocumento.setBounds(57, 187, 300, 14);
+		}
+		return lblErrorTxtDocumento;
 	}
 
 	public JTextField getTxtCuit() {
@@ -322,6 +379,14 @@ public class ClienteNuevoPanel extends BasePanel {
 		}
 		return txtCuit;
 	}
+	
+	public JLabel getLblErrorTxtCuit() {
+		if (lblErrorTxtCuit == null) {
+			lblErrorTxtCuit = new JLabel("");
+			lblErrorTxtCuit.setBounds(57, 233, 300, 14);
+		}
+		return lblErrorTxtCuit;
+	}
 
 	public JTextField getTxtTelefono() {
 		if (txtTelefono == null) {
@@ -330,6 +395,14 @@ public class ClienteNuevoPanel extends BasePanel {
 			txtTelefono.setBounds(161, 259, 105, 20);
 		}
 		return txtTelefono;
+	}
+	
+	public JLabel getLblErrorTxtTelefono() {
+		if (lblErrorTxtTelefono == null) {
+			lblErrorTxtTelefono = new JLabel("");
+			lblErrorTxtTelefono.setBounds(57, 279, 300, 14);
+		}
+		return lblErrorTxtTelefono;
 	}
 
 	public JTextField getTxtFechaNacimiento() {
@@ -341,6 +414,14 @@ public class ClienteNuevoPanel extends BasePanel {
 			} catch (ParseException e) {}
 		}
 		return txtFechaNacimiento;
+	}
+	
+	public JLabel getLblErrorTxtFechaNacimiento() {
+		if (lblErrorTxtFechaNacimiento == null) {
+			lblErrorTxtFechaNacimiento = new JLabel("");
+			lblErrorTxtFechaNacimiento.setBounds(57, 371, 300, 14);
+		}
+		return lblErrorTxtFechaNacimiento;
 	}
 
 	public JTextField getTxtEmail() {
@@ -354,6 +435,14 @@ public class ClienteNuevoPanel extends BasePanel {
 		}
 		return txtEmail;
 	}
+	
+	public JLabel getLblErrorTxtEmail() {
+		if (lblErrorTxtEmail == null) {
+			lblErrorTxtEmail = new JLabel("");
+			lblErrorTxtEmail.setBounds(57, 326, 300, 14);
+		}
+		return lblErrorTxtEmail;
+	}
 
 	public JTextField getTxtDomicilio() {
 		if (txtDomicilio == null) {
@@ -362,6 +451,14 @@ public class ClienteNuevoPanel extends BasePanel {
 			txtDomicilio.setBounds(496, 75, 105, 20);
 		}
 		return txtDomicilio;
+	}
+	
+	public JLabel getLblErrorTxtDomicilio() {
+		if (lblErrorTxtDomicilio == null) {
+			lblErrorTxtDomicilio = new JLabel("");
+			lblErrorTxtDomicilio.setBounds(392, 95, 300, 14);
+		}
+		return lblErrorTxtDomicilio;
 	}
 
 	public JTextField getTxtCodigoPostal() {
@@ -372,6 +469,14 @@ public class ClienteNuevoPanel extends BasePanel {
 		}
 		return txtCodigoPostal;
 	}
+	
+	public JLabel getLblErrorTxtCodigoPostal() {
+		if (lblErrorTxtCodigoPostal == null) {
+			lblErrorTxtCodigoPostal = new JLabel("");
+			lblErrorTxtCodigoPostal.setBounds(392, 138, 300, 14);
+		}
+		return lblErrorTxtCodigoPostal;
+	}
 
 	public JComboBox<CiudadDto> getCmbCiudad() {
 		if (cmbCiudad == null) {
@@ -381,6 +486,14 @@ public class ClienteNuevoPanel extends BasePanel {
 			cmbCiudad.setModel(ciudadModel);
 		}
 		return cmbCiudad;
+	}
+	
+	public JLabel getLblErrorCmbCiudad() {
+		if (lblErrorCmbCiudad == null) {
+			lblErrorCmbCiudad = new JLabel("");
+			lblErrorCmbCiudad.setBounds(392, 217, 300, 14);
+		}
+		return lblErrorCmbCiudad;
 	}
 
 	public JComboBox<ProvinciaDto> getCmbProvincia() {
@@ -404,6 +517,14 @@ public class ClienteNuevoPanel extends BasePanel {
 			});
 		}
 		return cmbProvincia;
+	}
+	
+	public JLabel getLblErrorCmbProvincia() {
+		if (lblErrorCmbProvincia == null) {
+			lblErrorCmbProvincia = new JLabel("");
+			lblErrorCmbProvincia.setBounds(392, 177, 300, 14);
+		}
+		return lblErrorCmbProvincia;
 	}
 
 	protected void setFocusTraversalPolicy() {

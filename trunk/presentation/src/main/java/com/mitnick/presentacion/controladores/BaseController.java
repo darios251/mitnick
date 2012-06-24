@@ -4,7 +4,9 @@ import java.lang.reflect.Field;
 import java.util.Set;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -55,23 +57,34 @@ abstract class BaseController {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void cleanFields(Object dto) {
+	public void cleanFields(Object dto) {
 		if(ultimoPanelMostrado != null) {
 			Field[] fields = ultimoPanelMostrado.getClass().getDeclaredFields();
 			
 			for(Field fieldError : fields) {
 	    		 try {
 					fieldError.setAccessible(true);
-					JTextField textField = (JTextField) fieldError.get(ultimoPanelMostrado);
-					textField.setBorder(new JTextField().getBorder());
-				} catch (Exception e) {
-					JComboBox textField;
-					try {
-						textField = (JComboBox) fieldError.get(ultimoPanelMostrado);
-						textField.setBorder(new JComboBox().getBorder());
-					} catch (Exception e1) {
-						
+					
+					Object field = fieldError.get(ultimoPanelMostrado);
+					if(field instanceof JTextField) {
+						JTextField textField = (JTextField) field;
+						textField.setBorder(new JTextField().getBorder());
+						if(textField.getBorder() instanceof TitledBorder) {
+							textField.setSize(textField.getWidth() - 150, textField.getHeight() - 20);
+							textField.setLocation(textField.getX(), textField.getY() + 12);
+						}
 					}
+					else if(field instanceof JComboBox ) {
+						JComboBox textField = (JComboBox) field;
+						textField.setBorder(new JComboBox().getBorder());
+					}
+					else if(field instanceof JLabel ) {
+						if(fieldError.getName().startsWith("lblError")) {
+							JLabel lblError = (JLabel) field;
+							lblError.setText("");
+						}
+					}
+				} catch (Exception e) {
 				}
 			}
 		}
