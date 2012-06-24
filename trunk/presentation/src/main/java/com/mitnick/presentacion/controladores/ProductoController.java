@@ -32,8 +32,6 @@ public class ProductoController extends BaseController {
 	@Autowired
 	private IProductoServicio productoServicio;
 	
-	private BasePanel ultimoPanelMostrado = null;
-	
 	public ProductoController() {
 		
 	}

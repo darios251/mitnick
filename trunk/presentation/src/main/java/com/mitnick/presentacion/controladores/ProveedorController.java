@@ -31,8 +31,6 @@ public class ProveedorController extends BaseController {
 	@Autowired
 	private ProveedorProductoPanel proveedorProductoPanel;
 	
-	private BasePanel ultimoPanelMostrado = null;
-	
 	public ProveedorController() {
 		
 	}

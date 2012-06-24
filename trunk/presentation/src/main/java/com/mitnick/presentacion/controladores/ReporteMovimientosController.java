@@ -36,8 +36,6 @@ public class ReporteMovimientosController extends BaseController {
 	@Autowired
 	private IProductoServicio productoServicio;
 	
-	private BasePanel ultimoPanelMostrado;
-
 	public ReporteMovimientosController() {
 
 	}

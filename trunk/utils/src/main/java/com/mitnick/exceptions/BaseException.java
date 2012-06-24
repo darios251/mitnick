@@ -28,6 +28,8 @@ public class BaseException extends RuntimeException {
 	
 	private Logger logger = Logger.getLogger(BaseException.class);
 	
+	private Set<ConstraintViolation<Object>> constraintViolations;
+	
 	public BaseException(String key)
 	{
 		super(PropertiesManager.getProperty(key));
@@ -38,6 +40,8 @@ public class BaseException extends RuntimeException {
 	public BaseException(Set<ConstraintViolation<Object>> constraintViolations)
 	{
 		if(com.mitnick.utils.Validator.isNotEmptyOrNull(constraintViolations)) {
+			this.constraintViolations = constraintViolations;
+			
 			StringBuffer buffer = new StringBuffer();
 			for(ConstraintViolation<?> constraint : constraintViolations)
 				buffer.append(constraint.getMessage()).append("\n");
@@ -172,6 +176,10 @@ public class BaseException extends RuntimeException {
 	
 	public int getType() {
 		return type;
+	}
+	
+	public Set<ConstraintViolation<Object>> getConstraintViolations() {
+		return constraintViolations;
 	}
 
 }
