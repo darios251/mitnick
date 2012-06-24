@@ -1,11 +1,16 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.lang.reflect.Field;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.validation.ConstraintViolation;
 
 import org.apache.log4j.Logger;
 
@@ -48,15 +53,43 @@ public abstract class BasePanel extends JPanel {
 			return mostrarMensajeAdvertencia(ex.getMessage());
 		case BaseException.ERROR:
 		default:
-			return mostrarMensajeError(ex.getMessage());
+			return mostrarMensajeError(ex);
 		}
 	}
 	
 	protected int mostrarMensajeError ( String message ) {
+		Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
+		
+		return JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+	}
+	
+	protected int mostrarMensajeError ( PresentationException ex ) {
 		//Primero despliego un mensaje para confirmar la operacion
 	     Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 	     
-	     return JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+	     if(Validator.isNotEmptyOrNull(ex.getConstraintViolations())) {
+	    	 for(ConstraintViolation<Object> constraintViolation : ex.getConstraintViolations()) {
+	    		 String fieldName = constraintViolation.getPropertyPath().toString().substring(0, 1).toUpperCase() + constraintViolation.getPropertyPath().toString().substring(1);
+	    		 try {
+					Field fieldError = this.getClass().getDeclaredField("txt" + fieldName);
+					fieldError.setAccessible(true);
+					JTextField field = (JTextField) fieldError.get(this);
+					field.setBorder(BorderFactory.createLineBorder(Color.red));
+				} catch (Exception e) {
+					Field fieldError;
+					try {
+						fieldError = this.getClass().getDeclaredField("cmb" + fieldName);
+						fieldError.setAccessible(true);
+						@SuppressWarnings("rawtypes")
+						JComboBox field = (JComboBox) fieldError.get(this);
+						field.setBorder(BorderFactory.createLineBorder(Color.red));
+					} catch (Exception e1) {
+					}
+				}
+	    	 }
+	     }
+	     
+	     return JOptionPane.showOptionDialog( currentView, ex.getMessage(), PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected int mostrarMensajeAdvertencia ( String message ) {

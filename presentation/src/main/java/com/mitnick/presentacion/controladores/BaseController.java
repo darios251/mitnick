@@ -3,6 +3,8 @@ package com.mitnick.presentacion.controladores;
 import java.lang.reflect.Field;
 import java.util.Set;
 
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -11,6 +13,7 @@ import javax.validation.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.utils.dtos.BaseDto;
 
 /**
@@ -22,6 +25,8 @@ import com.mitnick.utils.dtos.BaseDto;
  */
 abstract class BaseController {
 	protected Logger logger = Logger.getLogger(this.getClass());
+	
+	protected BasePanel ultimoPanelMostrado = null;
 	
 	protected static ValidatorFactory entityValidatorFactory; 
 	protected static Validator entityValidator;
@@ -43,9 +48,33 @@ abstract class BaseController {
 	}
 	
 	protected void validateDto(Object dto) throws PresentationException {
+		cleanFields(dto);
 		Set<ConstraintViolation<Object>> constraintViolations = validateDto(dto, null);
 		if(com.mitnick.utils.Validator.isNotEmptyOrNull(constraintViolations))
 			throw new PresentationException(constraintViolations);
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void cleanFields(Object dto) {
+		if(ultimoPanelMostrado != null) {
+			Field[] fields = ultimoPanelMostrado.getClass().getDeclaredFields();
+			
+			for(Field fieldError : fields) {
+	    		 try {
+					fieldError.setAccessible(true);
+					JTextField textField = (JTextField) fieldError.get(ultimoPanelMostrado);
+					textField.setBorder(new JTextField().getBorder());
+				} catch (Exception e) {
+					JComboBox textField;
+					try {
+						textField = (JComboBox) fieldError.get(ultimoPanelMostrado);
+						textField.setBorder(new JComboBox().getBorder());
+					} catch (Exception e1) {
+						
+					}
+				}
+			}
+		}
 	}
 
 	private void validateChildrens(Object dto, Set<ConstraintViolation<Object>> constraintViolations) {

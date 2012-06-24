@@ -61,8 +61,6 @@ public class VentaController extends BaseController {
 	@Autowired
 	private IClienteServicio clienteServicio;
 	
-	private BasePanel ultimoPanelMostrado = null;
-	
 	public VentaController() {
 		
 	}

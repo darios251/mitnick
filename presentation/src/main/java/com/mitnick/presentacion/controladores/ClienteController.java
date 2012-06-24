@@ -33,8 +33,6 @@ public class ClienteController extends BaseController {
 	
 	@Autowired private IClienteServicio clienteServicio;
 	
-	private BasePanel ultimoPanelMostrado = null;
-	
 	public ClienteController() {
 		
 	}
