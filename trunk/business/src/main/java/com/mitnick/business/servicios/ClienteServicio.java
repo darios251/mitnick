@@ -2,9 +2,6 @@ package com.mitnick.business.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +17,6 @@ import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
-import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
@@ -46,15 +42,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
 		@SuppressWarnings("unchecked")
 		Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
-		Set<ConstraintViolation<Cliente>> constraintViolations = entityValidator.validate(cliente);
-		
-		if(Validator.isNotEmptyOrNull(constraintViolations)) {
-			StringBuffer buffer = new StringBuffer();
-			for(ConstraintViolation<Cliente> constraint : constraintViolations) {
-				buffer.append(constraint.getMessage()).append("\n");
-			}
-			throw new BusinessException(buffer.toString());
-		}
+		validateEntity(cliente);
 		
 		try {
 			cliente = clienteDao.saveOrUpdate(cliente);

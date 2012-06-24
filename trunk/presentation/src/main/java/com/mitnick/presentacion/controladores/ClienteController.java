@@ -3,9 +3,6 @@ package com.mitnick.presentacion.controladores;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -143,17 +140,8 @@ public class ClienteController extends BaseController {
 		cliente.getDireccion().setCodigoPostal(codigoPostal);
 		cliente.getDireccion().setCiudad(ciudad);
 		
-		Set<ConstraintViolation<DireccionDto>> constraintViolationsDireccion = entityValidator.validate(cliente.getDireccion());
-		Set<ConstraintViolation<ClienteDto>> constraintViolations = entityValidator.validate(cliente);
-		
-		if(Validator.isNotEmptyOrNull(constraintViolations)) {
-			StringBuffer buffer = new StringBuffer();
-			for(ConstraintViolation<ClienteDto> constraint : constraintViolations)
-				buffer.append(constraint.getMessage()).append("\n");
-			for(ConstraintViolation<DireccionDto> constraint : constraintViolationsDireccion)
-				buffer.append(constraint.getMessage()).append("\n");
-			throw new PresentationException(buffer.toString());
-		}
+		//valido el dto
+		validateDto(cliente);
 		
 		try {
 			clienteServicio.guardarCliente(cliente);
