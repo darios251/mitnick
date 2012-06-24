@@ -2,24 +2,35 @@ package com.mitnick.utils.dtos;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.MitnickTextField;
+import org.hibernate.validator.constraints.MitnickTextField.FieldType;
+import org.hibernate.validator.constraints.Required;
+
 public class ClienteDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 
+	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
 	private String nombre;
 	
+	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
 	private String apellido;
 	
+	@MitnickTextField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
 	private String documento;
 	
+	@MitnickTextField(required=true, min=12, max=13, fieldType=FieldType.CUIT)
 	private String cuit;
 	
+	@MitnickTextField(min=10, max=40, fieldType=FieldType.PHONE_NUMBER)
 	private String telefono;
 	
+	@MitnickTextField(min=3, max=40, fieldType=FieldType.EMAIL)
 	private String email;
 	
 	private Date fechaNacimiento;
 	
+	@Required
 	private DireccionDto direccion;
 
 	public String getNombre() {

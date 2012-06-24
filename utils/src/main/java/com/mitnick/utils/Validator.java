@@ -68,8 +68,33 @@ public class Validator extends GenericValidator{
 	}
 
 	public static boolean isPhoneNumber(String telefono) {
-		// TODO implementar esta validaci�n
+		// TODO implementar esta validaci�n
 		return true;
+	}
+	
+	public static boolean isAlphanumeric(String value) {
+		if(isNull(value))
+			return false;
+		if(isBlankOrNull(value))
+			return true;
+		
+		return value.matches("[a-zA-Z0-9áéíóúñ,. ]*");
+	}
+	
+	public static boolean isAlphabetic(String value) {
+		if(isNull(value))
+			return false;
+		if(isBlankOrNull(value))
+			return true;
+		
+		return value.matches("[a-zA-Záéíóúñ,. ]*");
+	}
+	
+	public static boolean isNumeric(String value) {
+		if(isBlankOrNull(value))
+			return true;
+		
+		return value.matches("[0-9,.]*");
 	}
 	
 }
