@@ -10,10 +10,10 @@ public class ClienteDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 
-	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
+	@MitnickTextField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	private String nombre;
 	
-	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
+	@MitnickTextField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	private String apellido;
 	
 	@MitnickTextField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
@@ -22,7 +22,7 @@ public class ClienteDto extends BaseDto {
 	@MitnickTextField(required=true, min=12, max=13, fieldType=FieldType.CUIT)
 	private String cuit;
 	
-	@MitnickTextField(min=10, max=40, fieldType=FieldType.PHONE_NUMBER)
+	@MitnickTextField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
 	private String telefono;
 	
 	@MitnickTextField(min=3, max=40, fieldType=FieldType.EMAIL)

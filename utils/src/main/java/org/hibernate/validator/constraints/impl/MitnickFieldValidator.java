@@ -115,7 +115,7 @@ public class MitnickFieldValidator implements ConstraintValidator<MitnickTextFie
 				case FieldTypeValues.ALPHABETIC_VALUE:
 					return Validator.isAlphabetic(value);
 				case FieldTypeValues.NUMERIC_VALUE:
-					return Validator.isNumeric(value);
+					return Validator.isName(value);
 			}
 		}
 		

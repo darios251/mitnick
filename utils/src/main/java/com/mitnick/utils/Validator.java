@@ -78,7 +78,7 @@ public class Validator extends GenericValidator{
 		if(isBlankOrNull(value))
 			return true;
 		
-		return value.matches("[a-zA-Z0-9áéíóúñ,. ]*");
+		return value.matches(PropertiesManager.getProperty("application.alphanumeric.pattern"));
 	}
 	
 	public static boolean isAlphabetic(String value) {
@@ -87,14 +87,23 @@ public class Validator extends GenericValidator{
 		if(isBlankOrNull(value))
 			return true;
 		
-		return value.matches("[a-zA-Záéíóúñ,. ]*");
+		return value.matches(PropertiesManager.getProperty("application.alphabetic.pattern"));
 	}
 	
 	public static boolean isNumeric(String value) {
 		if(isBlankOrNull(value))
 			return true;
 		
-		return value.matches("[0-9,.]*");
+		return value.matches(PropertiesManager.getProperty("application.numeric.pattern"));
+	}
+	
+	public static boolean isName(String value) {
+		if(isNull(value))
+			return false;
+		if(isBlankOrNull(value))
+			return true;
+		
+		return value.matches(PropertiesManager.getProperty("application.name.pattern"));
 	}
 	
 }
