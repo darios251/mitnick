@@ -26,11 +26,11 @@ public class Cliente extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
+	@MitnickTextField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	@Column(name = "nombre", length = 30, nullable = false)
 	private String nombre;
 	
-	@MitnickTextField(required=true, regexp="^[a-zA-Záéíóúñ ]*$", min=3, max=30)
+	@MitnickTextField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	@Column(name = "apellido", length = 30, nullable = false)
 	private String apellido;
 
@@ -42,7 +42,7 @@ public class Cliente extends BaseObject implements Serializable {
 	@Column(name = "cuit", length = 13, nullable = false, unique = true)
 	private String cuit;
 
-	@MitnickTextField(min=10, max=40, fieldType=FieldType.PHONE_NUMBER)
+	@MitnickTextField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
 	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono;
 	

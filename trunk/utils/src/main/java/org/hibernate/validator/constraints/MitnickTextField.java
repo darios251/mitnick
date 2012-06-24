@@ -65,6 +65,7 @@ public @interface MitnickTextField {
 		public static final int APHANUMERIC_VALUE = 12;
 		public static final int NUMERIC_VALUE = 13;
 		public static final int ALPHABETIC_VALUE = 14;
+		public static final int NAME_VALUE = 15;
 	}
 	
 	public static enum FieldType {
@@ -82,7 +83,8 @@ public @interface MitnickTextField {
 		PHONE_NUMBER(FieldTypeValues.PHONE_NUMBER_VALUE),
 		APHANUMERIC(FieldTypeValues.APHANUMERIC_VALUE),
 		NUMERIC(FieldTypeValues.NUMERIC_VALUE),
-		ALPHABETIC(FieldTypeValues.ALPHABETIC_VALUE);
+		ALPHABETIC(FieldTypeValues.ALPHABETIC_VALUE),
+		NAME(FieldTypeValues.NAME_VALUE);
 		
 		private final int value;
 		
