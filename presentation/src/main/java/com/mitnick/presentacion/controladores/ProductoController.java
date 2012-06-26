@@ -1,6 +1,5 @@
 package com.mitnick.presentacion.controladores;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
@@ -97,53 +97,23 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
-	public void guardarProducto(ProductoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
+	public void guardarProducto(ProductoNuevoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
 			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor) {
-		
-		if(Validator.isBlankOrNull(codigo))
-			throw new PresentationException("error.producto.nuevo.codigo.null");
-		if(Validator.isBlankOrNull(descripcion))
-			throw new PresentationException("error.producto.nuevo.descripcion.null");
-		if(Validator.isNull(tipo))
-			throw new PresentationException("error.producto.nuevo.tipo.null");
-		if(Validator.isNull(marca))
-			throw new PresentationException("error.producto.nuevo.marca.null");
-		if(Validator.isBlankOrNull(stock))
-			throw new PresentationException("error.producto.nuevo.stock.null");
-		if(!Validator.isInt(stock))
-			throw new PresentationException("error.producto.nuevo.stock.format");
-		if(Validator.isBlankOrNull(stockMinimo))
-			throw new PresentationException("error.producto.nuevo.stockMinimo.null");
-		if(!Validator.isInt(stockMinimo))
-			throw new PresentationException("error.producto.nuevo.stockMinimo.format");
-		if(Validator.isBlankOrNull(stockCompra))
-			throw new PresentationException("error.producto.nuevo.stockCompra.null");
-		if(!Validator.isInt(stockCompra))
-			throw new PresentationException("error.producto.nuevo.stockCompra.format");
-		if(!Validator.isBlankOrNull(stock) && !Validator.isInRange(Integer.parseInt(stock), 0, 10000))
-			throw new PresentationException("error.producto.nuevo.stock.rangoEntero", new Object[]{"0", "10000"});
-		if(Validator.isBlankOrNull(precioVenta))
-			throw new PresentationException("error.producto.nuevo.precioVenta.null");
-		if(!Validator.isDouble(precioVenta))
-			throw new PresentationException("error.producto.nuevo.precioVenta.format");
-		if(Validator.isBlankOrNull(precioCompra))
-			throw new PresentationException("error.producto.nuevo.precioCompra.null");
-		if(!Validator.isDouble(precioCompra))
-			throw new PresentationException("error.producto.nuevo.precioCompra.format");
-		
 		if(Validator.isNull(producto))
-			producto = new ProductoDto();
+			producto = new ProductoNuevoDto();
 		
 		producto.setCodigo(codigo);
 		producto.setDescripcion(descripcion);
-		producto.setPrecioVenta(new BigDecimal(Double.parseDouble(precioVenta)));
-		producto.setPrecioCompra(new BigDecimal(Double.parseDouble(precioCompra)));
+		producto.setPrecioVenta(precioVenta);
+		producto.setPrecioCompra(precioCompra);
 		producto.setTipo(tipo);
 		producto.setMarca(marca);
-		producto.setStock(Integer.parseInt(stock));
-		producto.setStockMinimo(Integer.parseInt(stockMinimo));
-		producto.setStockCompra(Integer.parseInt(stockCompra));
+		producto.setStock(stock);
+		producto.setStockMinimo(stockMinimo);
+		producto.setStockCompra(stockCompra);
 		producto.setProveedor(proveedor);
+		
+		validateDto(producto);
 		
 		try {
 			getProductoServicio().guardarProducto(producto);
@@ -176,6 +146,11 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
+	public void altaProducto() {
+		productoNuevoPanel.setProducto(null);
+		mostrarProductoNuevoPanel();
+	}
+	
 	public void editarProducto() {
 		ProductoDto productoDto = null;
 		try {
@@ -192,11 +167,20 @@ public class ProductoController extends BaseController {
 		}
 		
 		try {
-			productoNuevoPanel.setProducto(productoDto);
+			productoNuevoPanel.setProducto(getProductoNuevo(productoDto));
 			mostrarProductoNuevoPanel();
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el producto");
+		}
+	}
+	
+	protected ProductoNuevoDto getProductoNuevo(ProductoDto productoDto) {
+		try {
+			return productoServicio.getProductoNuevo(productoDto);
+		}
+		catch (BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener el producto");
 		}
 	}
 	

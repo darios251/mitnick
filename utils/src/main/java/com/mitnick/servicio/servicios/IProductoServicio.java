@@ -8,6 +8,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.servicio.servicios.dtos.ConsultaStockDto;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 public interface IProductoServicio {
@@ -16,7 +17,7 @@ public interface IProductoServicio {
 	List<ProductoDto> consultaProducto(ConsultaProductoDto filtro);
 	
 	@Secured(value={"ROLE_ADMIN"})
-	ProductoDto guardarProducto(ProductoDto producto);
+	ProductoNuevoDto guardarProducto(ProductoNuevoDto producto);
 	
 	@Secured(value={"ROLE_ADMIN"})
 	void bajaProducto(ProductoDto producto);
@@ -32,4 +33,7 @@ public interface IProductoServicio {
 
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	List<ProductoDto> obtenerProductos();
+	
+	@Secured(value={"ROLE_ADMIN"})
+	ProductoNuevoDto getProductoNuevo(ProductoDto producto);
 }

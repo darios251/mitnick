@@ -2,30 +2,30 @@ package com.mitnick.utils.dtos;
 
 import java.util.Date;
 
-import org.hibernate.validator.constraints.MitnickTextField;
-import org.hibernate.validator.constraints.MitnickTextField.FieldType;
+import org.hibernate.validator.constraints.MitnickField;
+import org.hibernate.validator.constraints.MitnickField.FieldType;
 import org.hibernate.validator.constraints.Required;
 
 public class ClienteDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 
-	@MitnickTextField(required=true, fieldType=FieldType.NAME, min=3, max=30)
+	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	private String nombre;
 	
-	@MitnickTextField(required=true, fieldType=FieldType.NAME, min=3, max=30)
+	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	private String apellido;
 	
-	@MitnickTextField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
+	@MitnickField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
 	private String documento;
 	
-	@MitnickTextField(required=true, min=12, max=13, fieldType=FieldType.CUIT)
+	@MitnickField(required=true, min=12, max=13, fieldType=FieldType.CUIT)
 	private String cuit;
 	
-	@MitnickTextField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
+	@MitnickField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
 	private String telefono;
 	
-	@MitnickTextField(min=3, max=40, fieldType=FieldType.EMAIL)
+	@MitnickField(min=3, max=40, fieldType=FieldType.EMAIL)
 	private String email;
 	
 	private Date fechaNacimiento;

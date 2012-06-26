@@ -7,25 +7,25 @@ import java.util.regex.PatternSyntaxException;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.hibernate.validator.constraints.MitnickTextField;
-import org.hibernate.validator.constraints.MitnickTextField.FieldType;
-import org.hibernate.validator.constraints.MitnickTextField.FieldTypeValues;
+import org.hibernate.validator.constraints.MitnickField;
+import org.hibernate.validator.constraints.MitnickField.FieldType;
+import org.hibernate.validator.constraints.MitnickField.FieldTypeValues;
 
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 
-public class MitnickFieldValidator implements ConstraintValidator<MitnickTextField, String> {
+public class MitnickFieldValidator implements ConstraintValidator<MitnickField, String> {
 	
-	private MitnickTextField annotation;
+	private MitnickField annotation;
 	private java.util.regex.Pattern pattern;
 
-	public void initialize(MitnickTextField annotation) {
+	public void initialize(MitnickField annotation) {
 		this.annotation = annotation;
 		validateParameters();
 		
-		MitnickTextField.RegexFlag flags[] = annotation.flags();
+		MitnickField.RegexFlag flags[] = annotation.flags();
 		int intFlag = 0;
-		for ( MitnickTextField.RegexFlag flag : flags ) {
+		for ( MitnickField.RegexFlag flag : flags ) {
 			intFlag = intFlag | flag.getValue();
 		}
 
@@ -116,6 +116,8 @@ public class MitnickFieldValidator implements ConstraintValidator<MitnickTextFie
 					return Validator.isAlphabetic(value);
 				case FieldTypeValues.NUMERIC_VALUE:
 					return Validator.isName(value);
+				case FieldTypeValues.BIGDECIMAL_VALUE:
+					return Validator.isBigDecimal(value);
 			}
 		}
 		

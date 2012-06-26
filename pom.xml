@@ -75,10 +75,24 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.0.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
+<!--             <plugin> -->
+<!-- 		        <groupId>org.codehaus.mojo</groupId> -->
+<!-- 		        <artifactId>native2ascii-maven-plugin</artifactId> -->
+<!-- 		        <executions> -->
+<!-- 		          <execution> -->
+<!-- 		            <goals> -->
+<!-- 		              <goal>native2ascii</goal> -->
+<!-- 		            </goals> -->
+<!-- 		            <configuration> -->
+		              
+<!-- 		            </configuration> -->
+<!-- 		          </execution> -->
+<!-- 		        </executions> -->
+<!-- 		    </plugin> -->
         </plugins>
         <testResources>
             <testResource>
@@ -283,7 +297,7 @@
     <properties>
         <!-- Application settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <copyright.year>2011</copyright.year>
+        <copyright.year>2012</copyright.year>
         <dao.framework>hibernate</dao.framework>
         <amp.genericCore>true</amp.genericCore>
         <amp.fullSource>true</amp.fullSource>
