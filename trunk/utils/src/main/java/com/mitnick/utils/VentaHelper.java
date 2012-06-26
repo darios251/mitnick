@@ -6,6 +6,7 @@ import java.util.Iterator;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -75,6 +76,16 @@ public class VentaHelper {
 
 	}
 
+	public static BigDecimal CalcularImpuesto(ProductoNuevoDto productoDto) {
+		BigDecimal impuesto = new BigDecimal(0);
+		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
+		if (!Validator.isBlankOrNull(ivaString)) {
+			BigDecimal iva = new BigDecimal(ivaString).divide(new BigDecimal(100));
+			impuesto = new BigDecimal(productoDto.getPrecioVenta()).multiply(iva);
+		}
+		return impuesto;
+	}
+	
 	public static BigDecimal CalcularImpuesto(ProductoDto productoDto) {
 		BigDecimal impuesto = new BigDecimal(0);
 		String ivaString = PropertiesManager

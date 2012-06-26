@@ -23,10 +23,10 @@ import org.hibernate.validator.constraints.impl.MitnickFieldValidator;
  * @author Hardy Ferentschik
  */
 @Documented
-@Constraint(validatedBy = MitnickFieldValidator.class)
+@Constraint(validatedBy = {MitnickFieldValidator.class, MitnickFieldValidator.class})
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
 @Retention(RUNTIME)
-public @interface MitnickTextField {
+public @interface MitnickField {
 	
 	String message() default "";
 	
@@ -66,6 +66,7 @@ public @interface MitnickTextField {
 		public static final int NUMERIC_VALUE = 13;
 		public static final int ALPHABETIC_VALUE = 14;
 		public static final int NAME_VALUE = 15;
+		public static final int BIGDECIMAL_VALUE = 16;	
 	}
 	
 	public static enum FieldType {
@@ -84,7 +85,8 @@ public @interface MitnickTextField {
 		APHANUMERIC(FieldTypeValues.APHANUMERIC_VALUE),
 		NUMERIC(FieldTypeValues.NUMERIC_VALUE),
 		ALPHABETIC(FieldTypeValues.ALPHABETIC_VALUE),
-		NAME(FieldTypeValues.NAME_VALUE);
+		NAME(FieldTypeValues.NAME_VALUE),
+		BIGDECIMAL(FieldTypeValues.BIGDECIMAL_VALUE);
 		
 		private final int value;
 		
@@ -182,6 +184,6 @@ public @interface MitnickTextField {
 	@Retention(RUNTIME)
 	@Documented
 	public @interface List {
-		MitnickTextField[] value();
+		MitnickField[] value();
 	}
 }

@@ -264,7 +264,7 @@ public class ProductoPanel extends BasePanel {
 			
 			btnAgregar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					productoController.mostrarProductoNuevoPanel();
+					productoController.altaProducto();
 				}
 			});
 		}

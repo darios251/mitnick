@@ -43,6 +43,7 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
@@ -122,6 +123,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (E) getEntityFromDto((ClienteDto) dto);
 		else if(dto instanceof ProductoDto)
 			return (E) getEntityFromDto((ProductoDto) dto);
+		else if(dto instanceof ProductoNuevoDto)
+			return (E) getEntityFromDto((ProductoNuevoDto) dto);
 		else if(dto instanceof ProveedorDto)
 			return (E) getEntityFromDto((ProveedorDto) dto);
 		else if(dto instanceof VentaDto)
@@ -196,10 +199,29 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoDto.setDescripcion(producto.getDescripcion());
 		productoDto.setPrecioVenta(producto.getPrecioVenta());
 		productoDto.setPrecioCompra(producto.getPrecioCompra());
-		productoDto.setIva(new BigDecimal(producto.getIva()));
+		productoDto.setIva(producto.getIva());
 		productoDto.setStock(producto.getStock());
 		productoDto.setStockMinimo(producto.getStockMinimo());
 		productoDto.setStockCompra(producto.getStockCompra());
+		productoDto.setMarca(getDtoFromEntity(producto.getMarca()));
+		productoDto.setTipo(getDtoFromEntity(producto.getTipo()));
+		productoDto.setProveedor(getDtoFromEntity(producto.getProveedor()));
+
+		return productoDto;
+	}
+	
+	public ProductoNuevoDto getProductoNuevoDtoFromProducto(Producto producto) {
+		ProductoNuevoDto productoDto = new ProductoNuevoDto();
+
+		productoDto.setId(producto.getId());
+		productoDto.setCodigo(producto.getCodigo());
+		productoDto.setDescripcion(producto.getDescripcion());
+		productoDto.setPrecioVenta(producto.getPrecioVenta().toString());
+		productoDto.setPrecioCompra(producto.getPrecioCompra().toString());
+		productoDto.setIva(producto.getIva().toString());
+		productoDto.setStock(producto.getStock() + "");
+		productoDto.setStockMinimo(producto.getStockMinimo() + "");
+		productoDto.setStockCompra(producto.getStockCompra() + "");
 		productoDto.setMarca(getDtoFromEntity(producto.getMarca()));
 		productoDto.setTipo(getDtoFromEntity(producto.getTipo()));
 		productoDto.setProveedor(getDtoFromEntity(producto.getProveedor()));
@@ -245,11 +267,41 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setPrecioVenta(productoDto.getPrecioVenta());
 		producto.setPrecioCompra(productoDto.getPrecioCompra());
 
-		producto.setIva(new Long(productoDto.getIva().longValue()));
+		producto.setIva(productoDto.getIva());
 
 		producto.setStock(productoDto.getStock());
 		producto.setStockMinimo(productoDto.getStockMinimo());
 		producto.setStockCompra(productoDto.getStockCompra());
+
+		Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
+		producto.setMarca(marca);
+
+		Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
+		producto.setTipo(tipo);
+		
+		producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
+		
+		return producto;
+	}
+	
+	private Producto getEntityFromDto(ProductoNuevoDto productoDto) {
+		Producto producto = null;
+		if (Validator.isNotNull(productoDto.getId()))
+			producto = productoDao.get(productoDto.getId());
+
+		else
+			producto = new Producto();
+
+		producto.setCodigo(productoDto.getCodigo());
+		producto.setDescripcion(productoDto.getDescripcion());
+		producto.setPrecioVenta(new BigDecimal(productoDto.getPrecioVenta()));
+		producto.setPrecioCompra(new BigDecimal(productoDto.getPrecioCompra()));
+
+		producto.setIva(new BigDecimal(productoDto.getIva()));
+
+		producto.setStock(Integer.parseInt(productoDto.getStock()));
+		producto.setStockMinimo(Integer.parseInt(productoDto.getStockMinimo()));
+		producto.setStockCompra(Integer.parseInt(productoDto.getStockCompra()));
 
 		Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
 		producto.setMarca(marca);

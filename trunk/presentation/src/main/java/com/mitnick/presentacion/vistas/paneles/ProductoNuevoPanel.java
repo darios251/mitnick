@@ -25,7 +25,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
-import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
@@ -37,7 +37,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	private ProductoController productoController;
 	private ProveedorController proveedorController;
 
-	private ProductoDto producto;
+	private ProductoNuevoDto producto;
 
 	private JButton btnAceptar;
 	private JButton btnCancelar;
@@ -96,7 +96,6 @@ public class ProductoNuevoPanel extends BasePanel {
 			cmbTipo.setSelectedIndex(0);
 		} catch (Exception e) {
 		}
-		producto = null;
 	}
 
 	@Override
@@ -383,7 +382,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		}
 	}
 
-	public void setProducto(ProductoDto productoDto) {
+	public void setProducto(ProductoNuevoDto productoDto) {
 		this.producto = productoDto;
 	}
 
@@ -394,11 +393,11 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (Validator.isNotNull(producto)) {
 			getTxtCodigo().setText(producto.getCodigo());
 			getTxtDescripcion().setText(producto.getDescripcion());
-			getTxtPrecioVenta().setText(producto.getPrecioVenta().toString());
-			getTxtPrecioCompra().setText(producto.getPrecioCompra().toString());
-			getTxtStock().setText(producto.getStock() + "");
-			getTxtStockMinimo().setText(producto.getStockMinimo() + "");
-			getTxtStockCompra().setText(producto.getStockCompra() + "");
+			getTxtPrecioVenta().setText(producto.getPrecioVenta());
+			getTxtPrecioCompra().setText(producto.getPrecioCompra());
+			getTxtStock().setText(producto.getStock());
+			getTxtStockMinimo().setText(producto.getStockMinimo());
+			getTxtStockCompra().setText(producto.getStockCompra());
 			if (getCmbMarca().getModel().getSize() > 0)
 				getCmbMarca().setSelectedItem(producto.getMarca());
 			if (getCmbTipo().getModel().getSize() > 0)

@@ -1,5 +1,6 @@
 package com.mitnick.utils;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 import org.apache.commons.validator.GenericValidator;
@@ -104,6 +105,20 @@ public class Validator extends GenericValidator{
 			return true;
 		
 		return value.matches(PropertiesManager.getProperty("application.name.pattern"));
+	}
+	
+	public static boolean isBigDecimal(String value) {
+		if(isBlankOrNull(value))
+			return false;
+		
+		try {
+			new BigDecimal(value);
+		}
+		catch(Exception e) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 }

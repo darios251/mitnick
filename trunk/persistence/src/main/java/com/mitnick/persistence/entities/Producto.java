@@ -52,7 +52,7 @@ public class Producto extends BaseObject implements Serializable {
 	private BigDecimal precioCompra;
 
 	@Column(name = "iva", nullable = false)
-	private Long iva;
+	private BigDecimal iva;
 	
 	@Column(name = "eliminado", nullable = false)
 	private boolean eliminado = false;
@@ -133,11 +133,11 @@ public class Producto extends BaseObject implements Serializable {
 		this.precioCompra = precioCompra;
 	}
 
-	public Long getIva() {
+	public BigDecimal getIva() {
 		return iva;
 	}
 
-	public void setIva(Long iva) {
+	public void setIva(BigDecimal iva) {
 		this.iva = iva;
 	}
 

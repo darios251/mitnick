@@ -1,5 +1,6 @@
 package com.mitnick.business.servicios;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @SuppressWarnings("rawtypes")
@@ -64,15 +66,16 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 	@Transactional
 	@Override
-	public ProductoDto guardarProducto(ProductoDto productoDto) {
-		validar(productoDto);
+	public ProductoNuevoDto guardarProducto(ProductoNuevoDto productoDto) {
+		validateEntity(productoDto);
 		try {
 			//TODO: validar el codigo de producto unico
 			
 			//se calcula el impuesto del producto
-			productoDto.setIva(VentaHelper.CalcularImpuesto(productoDto));
+			BigDecimal iva = VentaHelper.CalcularImpuesto(productoDto);
+			productoDto.setIva("0"); // se setea para que no salga un error de conversión luego se sobreescribe
 			
-			int stockOriginal = productoDto.getStock();
+			int stockOriginal = Integer.parseInt(productoDto.getStock());
 			//si el producto existe en la base de datos
 			if (Validator.isNotNull(productoDto.getId())) {
 				Producto productoOriginal = productoDao.get(productoDto.getId());
@@ -82,20 +85,20 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			@SuppressWarnings("unchecked")
 			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			
-				if (stockOriginal!=productoDto.getStock()){
-					Movimiento movimiento = new Movimiento();
-					movimiento.setStockAlaFecha(stockOriginal);
-					movimiento.setFecha(new Date());
-					movimiento.setTipo(Movimiento.AJUSTE);
-					movimiento.setCantidad(productoDto.getStock()-stockOriginal);
-					movimiento.setProducto(producto);
-					movimientoDao.saveOrUpdate(movimiento);
-				}
+			producto.setIva(iva);
+			
+			if (stockOriginal != producto.getStock()){
+				Movimiento movimiento = new Movimiento();
+				movimiento.setStockAlaFecha(stockOriginal);
+				movimiento.setFecha(new Date());
+				movimiento.setTipo(Movimiento.AJUSTE);
+				movimiento.setCantidad(producto.getStock() - stockOriginal);
+				movimiento.setProducto(producto);
+				movimientoDao.saveOrUpdate(movimiento);
+			}
 				
 			producto = productoDao.saveOrUpdate(producto);
 			productoDto.setId(producto.getId());
-			
-			
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar guardar el producto");
@@ -169,19 +172,15 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		return productos;
 	}
 	
-	private void validar(ProductoDto productoDto) {
-		if (Validator.isBlankOrNull(productoDto.getDescripcion()))
-			throw new BusinessException("error.productoServicio.descripcion.nulo");	
-		if (Validator.isBlankOrNull(productoDto.getCodigo()))
-			throw new BusinessException("error.productoServicio.codigo.nulo");	
-		if (Validator.isNull(productoDto.getMarca()))
-			throw new BusinessException("error.productoServicio.marca.nulo");	
-		if (Validator.isNull(productoDto.getTipo()))
-			throw new BusinessException("error.productoServicio.tipo.nulo");	
-		if (Validator.isNull(productoDto.getPrecioVenta()))
-			throw new BusinessException("error.productoServicio.precio.nulo");	
-		if (Validator.isNull(productoDto.getStock()))
-			throw new BusinessException("error.productoServicio.stock.nulo");	
+	@Transactional(readOnly=true)
+	@Override
+	public ProductoNuevoDto getProductoNuevo(ProductoDto productoDto) {
+		if(Validator.isNull(productoDto) || Validator.isNull(productoDto.getId()))
+			throw new BusinessException("error.producto.id.null", "El producto o el id es nulo");
+		
+		Producto producto = productoDao.get(productoDto.getId());
+		
+		return entityDTOParser.getProductoNuevoDtoFromProducto(producto);
 	}
 
 }
