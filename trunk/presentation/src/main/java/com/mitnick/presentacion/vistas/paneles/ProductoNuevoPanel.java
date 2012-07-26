@@ -43,29 +43,50 @@ public class ProductoNuevoPanel extends BasePanel {
 	private JButton btnCancelar;
 
 	private JTextField txtCodigo;
+	private JLabel lblErrorTxtCodigo;
+	
 	private JTextField txtDescripcion;
+	private JLabel lblErrorTxtDescripcion;
+	
 	private JTextField txtPrecioVenta;
+	private JLabel lblErrorTxtPrecioVenta;
+	
 	private JTextField txtStock;
+	private JLabel lblErrorTxtStock;
 
 	private JComboBox<TipoDto> cmbTipo;
+	private JLabel lblErrorCmbTipo;
+	
 	private MitnickComboBoxModel<TipoDto> modelCmbTipo;
 	private JComboBox<MarcaDto> cmbMarca;
+	private JLabel lblErrorCmbMarca;
+	
 	private MitnickComboBoxModel<MarcaDto> modelCmbMarca;
 
 	private JLabel lblCodigo;
-	private JLabel lblDescripcin;
+	private JLabel lblDescripcion;
 	private JLabel lblTipo;
 	private JLabel lblMarca;
 	private JLabel lblPrecioVenta;
 	private JLabel lblPrecioCompra;
 	private JLabel lblStock;
+	
 	private JTextField txtPrecioCompra;
+	private JLabel lblErrorTxtPrecioCompra;
+	
 	private JLabel lblStockMinimo;
+	
 	private JTextField txtStockMinimo;
+	private JLabel lblErrorTxtStockMinimo;
+	
 	private JLabel lblStockCompra;
 	private JTextField txtStockCompra;
+	private JLabel lblErrorTxtStockCompra;
+	
 	private JLabel lblProveedores;
 	private JComboBox<ProveedorDto> cmbProveedor;
+	private JLabel lblErrorCmbProveedor;
+	
 	private MitnickComboBoxModel<ProveedorDto> modelCmbProveedor;
 	
 	/**
@@ -104,7 +125,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		setLayout(null);
 
 		add(getLblCodigo());
-		add(getLblDescripcin());
+		add(getLblDescripcion());
 		add(getLblTipo());
 		add(getLblMarca());
 		add(getLblPrecioVenta());
@@ -127,6 +148,17 @@ public class ProductoNuevoPanel extends BasePanel {
 		add(getLblStockCompra());
 		add(getTxtStockCompra());
 		
+		add(getLblErrorCmbMarca());
+		add(getLblErrorCmbProveedor());
+		add(getLblErrorCmbTipo());
+		add(getLblErrorTxtCodigo());
+		add(getLblErrorTxtDescripcion());
+		add(getLblErrorTxtPrecioCompra());
+		add(getLblErrorTxtPrecioVenta());
+		add(getLblErrorTxtStock());
+		add(getLblErrorTxtStockCompra());
+		add(getLblErrorTxtStockMinimo());
+		
 		add(getLblProveedores());
 		add(getCmbProveedores());
 		
@@ -140,75 +172,155 @@ public class ProductoNuevoPanel extends BasePanel {
 		}
 		return lblCodigo;
 	}
-
-	public JLabel getLblDescripcin() {
-		if (lblDescripcin == null) {
-			lblDescripcin = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.descripcion"));
-			lblDescripcin.setBounds(58, 56, 94, 20);
+	
+	public JLabel getLblErrorTxtCodigo() {
+		if (lblErrorTxtCodigo == null) {
+			lblErrorTxtCodigo = new JLabel("");
+			lblErrorTxtCodigo.setBounds(58, 50, 300, 14);
 		}
-		return lblDescripcin;
+		return lblErrorTxtCodigo;
+	}
+
+	public JLabel getLblDescripcion() {
+		if (lblDescripcion == null) {
+			lblDescripcion = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.descripcion"));
+			lblDescripcion.setBounds(58, 70, 94, 20);
+		}
+		return lblDescripcion;
+	}
+	
+	public JLabel getLblErrorTxtDescripcion() {
+		if (lblErrorTxtDescripcion == null) {
+			lblErrorTxtDescripcion = new JLabel("");
+			lblErrorTxtDescripcion.setBounds(58, 95, 300, 14);
+		}
+		return lblErrorTxtDescripcion;
 	}
 
 	public JLabel getLblTipo() {
 		if (lblTipo == null) {
 			lblTipo = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.tipo"));
-			lblTipo.setBounds(58, 87, 94, 20);
+			lblTipo.setBounds(58, 115, 94, 20);
 		}
 		return lblTipo;
 	}
-
+	
+	public JLabel getLblErrorCmbTipo() {
+		if (lblErrorCmbTipo == null) {
+			lblErrorCmbTipo = new JLabel("");
+			lblErrorCmbTipo.setBounds(58, 140, 300, 14);
+		}
+		return lblErrorCmbTipo;
+	}
+	
 	public JLabel getLblMarca() {
 		if (lblMarca == null) {
 			lblMarca = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.marca"));
-			lblMarca.setBounds(319, 87, 94, 20);
+			lblMarca.setBounds(319, 115, 94, 20);
 		}
 		return lblMarca;
+	}
+	
+	public JLabel getLblErrorCmbMarca() {
+		if (lblErrorCmbMarca == null) {
+			lblErrorCmbMarca = new JLabel("");
+			lblErrorCmbMarca.setBounds(58, 140, 300, 14);
+		}
+		return lblErrorCmbMarca;
 	}
 
 	public JLabel getLblPrecioVenta() {
 		if (lblPrecioVenta == null) {
 			lblPrecioVenta = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.precioVenta"));
-			lblPrecioVenta.setBounds(58, 118, 94, 20);
+			lblPrecioVenta.setBounds(58, 160, 94, 20);
 		}
 		return lblPrecioVenta;
+	}
+	
+	public JLabel getLblErrorTxtPrecioVenta() {
+		if (lblErrorTxtPrecioVenta == null) {
+			lblErrorTxtPrecioVenta = new JLabel("");
+			lblErrorTxtPrecioVenta.setBounds(58, 185, 300, 14);
+		}
+		return lblErrorTxtPrecioVenta;
 	}
 	
 	public JLabel getLblPrecioCompra() {
 		if (lblPrecioCompra == null) {
 			lblPrecioCompra = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.precioCompra"));
-			lblPrecioCompra.setBounds(58, 149, 94, 20);
+			lblPrecioCompra.setBounds(58, 205, 94, 20);
 		}
 		return lblPrecioCompra;
+	}
+	
+	public JLabel getLblErrorTxtPrecioCompra() {
+		if (lblErrorTxtPrecioCompra == null) {
+			lblErrorTxtPrecioCompra = new JLabel("");
+			lblErrorTxtPrecioCompra.setBounds(58, 230, 300, 14);
+		}
+		return lblErrorTxtPrecioCompra;
 	}
 
 	public JLabel getLblStock() {
 		if (lblStock == null) {
 			lblStock = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stock"));
-			lblStock.setBounds(319, 118, 94, 20);
+			lblStock.setBounds(319, 160, 94, 20);
 		}
 		return lblStock;
+	}
+	
+	public JLabel getLblErrorTxtStock() {
+		if (lblErrorTxtStock == null) {
+			lblErrorTxtStock = new JLabel("");
+			lblErrorTxtStock.setBounds(319, 185, 300, 14);
+		}
+		return lblErrorTxtStock;
 	}
 	
 	public JLabel getLblStockMinimo() {
 		if (lblStockMinimo == null) {
 			lblStockMinimo = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stockMinimo"));
-			lblStockMinimo.setBounds(319, 149, 94, 20);
+			lblStockMinimo.setBounds(319, 205, 94, 20);
 		}
 		return lblStockMinimo;
+	}
+	
+	public JLabel getLblErrorTxtStockMinimo() {
+		if (lblErrorTxtStockMinimo == null) {
+			lblErrorTxtStockMinimo = new JLabel("");
+			lblErrorTxtStockMinimo.setBounds(319, 230, 300, 14);
+		}
+		return lblErrorTxtStockMinimo;
 	}
 	
 	public JLabel getLblStockCompra() {
 		if (lblStockCompra == null) {
 			lblStockCompra = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.stockCompra"));
-			lblStockCompra.setBounds(319, 180, 94, 20);
+			lblStockCompra.setBounds(319, 250, 94, 20);
 		}
 		return lblStockCompra;
 	}
 	
+	public JLabel getLblErrorTxtStockCompra() {
+		if (lblErrorTxtStockCompra == null) {
+			lblErrorTxtStockCompra = new JLabel("");
+			lblErrorTxtStockCompra.setBounds(319, 275, 300, 14);
+		}
+		return lblErrorTxtStockCompra;
+	}
+	
 	public JLabel getLblProveedores() {
 		lblProveedores = new JLabel(PropertiesManager.getProperty("productoNuevoPanel.etiqueta.proveedores"));
-		lblProveedores.setBounds(58, 180, 94, 20);
+		lblProveedores.setBounds(58, 250, 94, 20);
 		return lblProveedores;
+	}
+	
+	public JLabel getLblErrorCmbProveedor() {
+		if (lblErrorCmbProveedor == null) {
+			lblErrorCmbProveedor = new JLabel("");
+			lblErrorCmbProveedor.setBounds(58, 275, 300, 14);
+		}
+		return lblErrorCmbProveedor;
 	}
 
 	public MitnickComboBoxModel<TipoDto> getModelCmbTipo() {
@@ -218,7 +330,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		}
 		return modelCmbTipo;
 	}
-
+	
 	public MitnickComboBoxModel<MarcaDto> getModelCmbMarca() {
 		if (modelCmbMarca == null) {
 			modelCmbMarca = new MitnickComboBoxModel<MarcaDto>();
@@ -290,7 +402,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtDescripcion == null) {
 			txtDescripcion = new JTextField();
 			txtDescripcion.setColumns(10);
-			txtDescripcion.setBounds(162, 56, 352, 20);
+			txtDescripcion.setBounds(162, 70, 352, 20);
 		}
 		return txtDescripcion;
 	}
@@ -299,7 +411,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtPrecioVenta == null) {
 			txtPrecioVenta = new JTextField();
 			txtPrecioVenta.setColumns(10);
-			txtPrecioVenta.setBounds(162, 118, 102, 20);
+			txtPrecioVenta.setBounds(162, 160, 102, 20);
 		}
 		return txtPrecioVenta;
 	}
@@ -308,7 +420,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtPrecioCompra == null) {
 			txtPrecioCompra = new JTextField();
 			txtPrecioCompra.setColumns(10);
-			txtPrecioCompra.setBounds(162, 149, 102, 20);
+			txtPrecioCompra.setBounds(162, 205, 102, 20);
 		}
 		return txtPrecioCompra;
 	}
@@ -317,7 +429,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtStock == null) {
 			txtStock = new JTextField();
 			txtStock.setColumns(10);
-			txtStock.setBounds(412, 118, 102, 20);
+			txtStock.setBounds(412, 160, 102, 20);
 		}
 		return txtStock;
 	}
@@ -326,7 +438,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtStockMinimo == null) {
 			txtStockMinimo = new JTextField();
 			txtStockMinimo.setColumns(10);
-			txtStockMinimo.setBounds(412, 149, 102, 20);
+			txtStockMinimo.setBounds(412, 205, 102, 20);
 		}
 		return txtStockMinimo;
 	}
@@ -335,7 +447,7 @@ public class ProductoNuevoPanel extends BasePanel {
 		if (txtStockCompra == null) {
 			txtStockCompra = new JTextField();
 			txtStockCompra.setColumns(10);
-			txtStockCompra.setBounds(412, 180, 102, 20);
+			txtStockCompra.setBounds(412, 250, 102, 20);
 		}
 		return txtStockCompra;
 	}
@@ -343,7 +455,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JComboBox<TipoDto> getCmbTipo() {
 		if (cmbTipo == null) {
 			cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
-			cmbTipo.setBounds(162, 87, 102, 20);
+			cmbTipo.setBounds(162, 115, 102, 20);
 		}
 		return cmbTipo;
 	}
@@ -351,7 +463,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JComboBox<MarcaDto> getCmbMarca() {
 		if (cmbMarca == null) {
 			cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
-			cmbMarca.setBounds(412, 87, 102, 20);
+			cmbMarca.setBounds(412, 115, 102, 20);
 		}
 		return cmbMarca;
 	}
@@ -359,7 +471,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public JComboBox<ProveedorDto> getCmbProveedores() {
 		if (cmbProveedor == null) {
 			cmbProveedor = new JComboBox<ProveedorDto>(getModelCmbProveedores());
-			cmbProveedor.setBounds(162, 180, 102, 20);
+			cmbProveedor.setBounds(162, 250, 102, 20);
 		}
 		return cmbProveedor;
 	}
