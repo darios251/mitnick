@@ -1,11 +1,14 @@
 package com.mitnick.presentacion.runner;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import com.mitnick.persistence.daos.IConfiguracionDAO;
 import com.mitnick.persistence.entities.Configuracion;
 import com.mitnick.presentacion.utils.DBInitialization;
 import com.mitnick.utils.DiskUtils;
+import com.mitnick.utils.MacUtils;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.locator.BeanLocator;
 
@@ -31,10 +34,17 @@ public class Runner {
 
 	private static void checkForRun() {
 		IConfiguracionDAO configuracionDao = (IConfiguracionDAO) BeanLocator.getBean("configuracionDao");
-		
 		Configuracion configuracion = configuracionDao.getConfiguracion();
 		
-		if(!configuracion.getNumeroSerieDisco().equals(DiskUtils.getSerialNumber("C:"))) {
+		String systemUsername = System.getProperty("user.name");
+		String diskSerialNumber = DiskUtils.getSerialNumber("C:");
+		String macNumber = MacUtils.getMac();
+		
+		ShaPasswordEncoder passwordEncoderBean = (ShaPasswordEncoder) BeanLocator.getBean("passwordEncoderBean");
+		
+		String magicValue = passwordEncoderBean.encodePassword(systemUsername + diskSerialNumber + macNumber, configuracion.getSalt());
+		
+		if(!configuracion.getMagicValue().equals(magicValue)) {
 			javax.swing.JOptionPane.showConfirmDialog((java.awt.Component) null,
 					"La copia del software no es legal.\nConsulte con los administradores de http://www.mitnick.com.ar", "Alerta!!",
 					javax.swing.JOptionPane.DEFAULT_OPTION);

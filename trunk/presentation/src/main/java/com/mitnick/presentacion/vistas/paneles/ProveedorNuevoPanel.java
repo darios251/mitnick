@@ -36,11 +36,14 @@ public class ProveedorNuevoPanel extends BasePanel {
 	private JButton btnCancelar;
 
 	private JTextField txtCodigo;
+	private JLabel lblErrorTxtCodigo;
 	private JTextField txtNombre;
+	private JLabel lblErrorTxtNombre;
 
 	private JLabel lblCodigo;
 	private JLabel lblNombre;
 	private JTextField txtTelefono;
+	private JLabel lblErrorTxtTelefono;
 	private JLabel lblTelefono;
 
 	/**
@@ -83,9 +86,10 @@ public class ProveedorNuevoPanel extends BasePanel {
 		add(getBtnCancelar());
 		
 		add(getLblNombre());
-		
-		add(txtTelefono);
 		add(getLblTelefono());
+		add(getLblErrorTxtCodigo());
+		add(getLblErrorTxtNombre());
+		add(getLblErrorTxtTelefono());
 		
 		setFocusTraversalPolicy();
 	}
@@ -97,13 +101,29 @@ public class ProveedorNuevoPanel extends BasePanel {
 		}
 		return lblCodigo;
 	}
+	
+	public JLabel getLblErrorTxtCodigo() {
+		if (lblErrorTxtCodigo == null) {
+			lblErrorTxtCodigo = new JLabel("");
+			lblErrorTxtCodigo.setBounds(58, 50, 300, 14);
+		}
+		return lblErrorTxtCodigo;
+	}
 
 	public JLabel getLblNombre() {
 		if (lblNombre == null) {
 			lblNombre = new JLabel(PropertiesManager.getProperty("proveedorNuevoPanel.etiqueta.nombre"));
-			lblNombre.setBounds(58, 56, 94, 20);
+			lblNombre.setBounds(58, 70, 94, 20);
 		}
 		return lblNombre;
+	}
+	
+	public JLabel getLblErrorTxtNombre() {
+		if (lblErrorTxtNombre == null) {
+			lblErrorTxtNombre = new JLabel("");
+			lblErrorTxtNombre.setBounds(58, 95, 300, 14);
+		}
+		return lblErrorTxtNombre;
 	}
 
 	public JButton getBtnAceptar() {
@@ -161,7 +181,7 @@ public class ProveedorNuevoPanel extends BasePanel {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
 			txtNombre.setColumns(10);
-			txtNombre.setBounds(162, 56, 86, 20);
+			txtNombre.setBounds(162, 70, 86, 20);
 		}
 		return txtNombre;
 	}
@@ -170,7 +190,7 @@ public class ProveedorNuevoPanel extends BasePanel {
 		if(txtTelefono == null) {
 			txtTelefono = new JTextField();
 			txtTelefono.setColumns(10);
-			txtTelefono.setBounds(162, 87, 86, 20);
+			txtTelefono.setBounds(162, 115, 86, 20);
 		}
 		return txtTelefono;
 	}
@@ -178,9 +198,17 @@ public class ProveedorNuevoPanel extends BasePanel {
 	private JLabel getLblTelefono() {
 		if (lblTelefono == null) {
 			lblTelefono = new JLabel(PropertiesManager.getProperty("proveedorNuevoPanel.etiqueta.telefono"));
-			lblTelefono.setBounds(58, 87, 94, 20);
+			lblTelefono.setBounds(58, 115, 94, 20);
 		}
 		return lblTelefono;
+	}
+	
+	public JLabel getLblErrorTxtTelefono() {
+		if (lblErrorTxtTelefono == null) {
+			lblErrorTxtTelefono = new JLabel("");
+			lblErrorTxtTelefono.setBounds(58, 140, 300, 14);
+		}
+		return lblErrorTxtTelefono;
 	}
 
 	protected void setFocusTraversalPolicy() {

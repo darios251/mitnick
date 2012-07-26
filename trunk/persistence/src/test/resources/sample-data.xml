@@ -2,11 +2,13 @@
 <dataset>
 	<table name="Configuracion">
 		<column>id</column>
-		<column>nmsd</column>
+		<column>mgcvl</column>
+		<column>salt</column>
 		
 		<row>
 			<value>1</value>
-			<value>340285115</value>
+			<value>574c0f58e8318683e7c2698671ac54a97890f5bd265f35e2f1f7b0a982ea348c</value>
+			<value>newSaltValue</value>
 		</row>
 	</table>
 	<table name="Pais">
