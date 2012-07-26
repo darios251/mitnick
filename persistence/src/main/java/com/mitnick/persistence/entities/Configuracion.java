@@ -17,8 +17,11 @@ public class Configuracion extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name = "nmsd", length = 30, nullable = false)
-	private String numeroSerieDisco;
+	@Column(name = "mgcvl", length = 80, nullable = false)
+	private String magicaValue;
+	
+	@Column(name = "salt", length = 20, nullable = false)
+	private String salt;
 
 	public Long getId() {
 		return id;
@@ -28,12 +31,20 @@ public class Configuracion extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	public String getNumeroSerieDisco() {
-		return numeroSerieDisco;
+	public String getMagicValue() {
+		return magicaValue;
 	}
 
-	public void setNumeroSerieDisco(String numeroSerieDisco) {
-		this.numeroSerieDisco = numeroSerieDisco;
+	public void setMagicValue(String magicValue) {
+		this.magicaValue = magicValue;
+	}
+	
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
+	public String getSalt() {
+		return salt;
 	}
 
 	@Override
@@ -41,9 +52,9 @@ public class Configuracion extends BaseObject implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime
-				* result
-				+ ((numeroSerieDisco == null) ? 0 : numeroSerieDisco.hashCode());
+		result = prime * result
+				+ ((magicaValue == null) ? 0 : magicaValue.hashCode());
+		result = prime * result + ((salt == null) ? 0 : salt.hashCode());
 		return result;
 	}
 
@@ -61,18 +72,23 @@ public class Configuracion extends BaseObject implements Serializable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (numeroSerieDisco == null) {
-			if (other.numeroSerieDisco != null)
+		if (magicaValue == null) {
+			if (other.magicaValue != null)
 				return false;
-		} else if (!numeroSerieDisco.equals(other.numeroSerieDisco))
+		} else if (!magicaValue.equals(other.magicaValue))
+			return false;
+		if (salt == null) {
+			if (other.salt != null)
+				return false;
+		} else if (!salt.equals(other.salt))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Configuracion [id=" + id + ", numeroSerieDisco="
-				+ numeroSerieDisco + "]";
+		return "Configuracion [id=" + id + ", magicaValue=" + magicaValue
+				+ ", salt=" + salt + "]";
 	}
-	
+
 }

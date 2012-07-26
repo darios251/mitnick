@@ -91,19 +91,14 @@ public class ProveedorController extends BaseController {
 	}
 	
 	public void guardarProveedor(ProveedorDto proveedor, String codigo, String nombre, String telefono) {
-		if(Validator.isBlankOrNull(codigo))
-			throw new PresentationException("error.proveedor.nuevo.codigo.null");
-		if(Validator.isBlankOrNull(nombre))
-			throw new PresentationException("error.proveedor.nuevo.nombre.null");
-		if(Validator.isBlankOrNull(telefono))
-			throw new PresentationException("error.proveedor.nuevo.telefono.null");
-		
 		if(Validator.isNull(proveedor))
 			proveedor = new ProveedorDto();
 		
 		proveedor.setCodigo(codigo);
 		proveedor.setNombre(nombre);
 		proveedor.setTelefono(telefono);
+		
+		validateDto(proveedor);
 		
 		try {
 			proveedorServicio.guardarProveedor(proveedor);

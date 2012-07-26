@@ -1,25 +1,21 @@
 package com.mitnick.utils.dtos;
 
+import org.hibernate.validator.constraints.MitnickField;
+import org.hibernate.validator.constraints.MitnickField.FieldType;
+
 
 public class ProveedorDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
-
+	@MitnickField(required=true, fieldType=FieldType.APHANUMERIC, min=3, max=30)
 	private String codigo;
 	
+	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	private String nombre;
 	
+	@MitnickField(required=true, fieldType=FieldType.PHONE_NUMBER, min=3, max=30)
 	private String telefono;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCodigo() {
 		return codigo;
