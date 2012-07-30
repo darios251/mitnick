@@ -46,9 +46,19 @@ public class ProductoNuevoDto extends BaseDto {
 	
 	@Required
 	private ProveedorDto proveedor;
+	
+	private boolean confirmado = false;
 
 	public String getCodigo() {
 		return codigo;
+	}
+
+	public boolean isConfirmado() {
+		return confirmado;
+	}
+
+	public void setConfirmado(boolean confirmado) {
+		this.confirmado = confirmado;
 	}
 
 	public void setCodigo(String codigo) {
