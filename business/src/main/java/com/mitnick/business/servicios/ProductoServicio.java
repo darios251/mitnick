@@ -13,10 +13,12 @@ import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
+import com.mitnick.persistence.daos.IParametroDAO;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Movimiento;
+import com.mitnick.persistence.entities.Parametro;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.servicio.servicios.IProductoServicio;
@@ -46,6 +48,9 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	@Autowired
 	private IMovimientoDao movimientoDao;
 	
+	@Autowired
+	private IParametroDAO parametroDao;
+		
 	@Autowired
 	private EntityDTOParser<Tipo, TipoDto> entityDTOParserTipo;
 	
@@ -86,13 +91,20 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			
 			producto.setIva(iva);
+			int cantidad = producto.getStock() - stockOriginal;
+
+			Parametro parConfigurable = parametroDao.getByName("producto.cantidad.warning");
+			if (parConfigurable!=null){
+				if (!productoDto.isConfirmado() && cantidad < parConfigurable.getIntValor())
+					throw new BusinessException("producto.edit.max.cantidad");
+			}
 			
 			if (stockOriginal != producto.getStock()){
 				Movimiento movimiento = new Movimiento();
 				movimiento.setStockAlaFecha(stockOriginal);
 				movimiento.setFecha(new Date());
 				movimiento.setTipo(Movimiento.AJUSTE);
-				movimiento.setCantidad(producto.getStock() - stockOriginal);
+				movimiento.setCantidad(cantidad);
 				movimiento.setProducto(producto);
 				movimientoDao.saveOrUpdate(movimiento);
 			}

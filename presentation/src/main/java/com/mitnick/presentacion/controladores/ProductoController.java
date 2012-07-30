@@ -98,7 +98,7 @@ public class ProductoController extends BaseController {
 	}
 	
 	public void guardarProducto(ProductoNuevoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
-			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor) {
+			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor, boolean confirmado) {
 		if(Validator.isNull(producto))
 			producto = new ProductoNuevoDto();
 		
@@ -112,6 +112,7 @@ public class ProductoController extends BaseController {
 		producto.setStockMinimo(stockMinimo);
 		producto.setStockCompra(stockCompra);
 		producto.setProveedor(proveedor);
+		producto.setConfirmado(confirmado);
 		
 		validateDto(producto);
 		

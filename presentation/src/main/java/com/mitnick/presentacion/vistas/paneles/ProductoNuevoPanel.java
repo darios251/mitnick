@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -89,6 +90,8 @@ public class ProductoNuevoPanel extends BasePanel {
 	
 	private MitnickComboBoxModel<ProveedorDto> modelCmbProveedor;
 	
+	private boolean confirmado = false;
+	
 	/**
 	 * @throws Exception
 	 * @wbp.parser.constructor
@@ -108,6 +111,7 @@ public class ProductoNuevoPanel extends BasePanel {
 
 	@Override
 	protected void limpiarCamposPantalla() {
+		setConfirmado(false);
 		for (Component component : getComponents()) {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
@@ -486,11 +490,19 @@ public class ProductoNuevoPanel extends BasePanel {
 			productoController.guardarProducto(producto, getTxtCodigo().getText(), getTxtDescripcion().getText(),
 					(TipoDto) getCmbTipo().getSelectedItem(), (MarcaDto) getCmbMarca().getSelectedItem(), getTxtStock().getText(),
 					getTxtStockMinimo().getText(), getTxtStockCompra().getText(), getTxtPrecioVenta().getText(),
-					getTxtPrecioCompra().getText(), (ProveedorDto)getCmbProveedores().getSelectedItem());
+					getTxtPrecioCompra().getText(), (ProveedorDto)getCmbProveedores().getSelectedItem(), isConfirmado());
 			limpiarCamposPantalla();
 			productoController.mostrarProductosPanel();
 		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
+			if (ex.getMessage().equals("producto.edit.max.cantidad")){
+				int opcion = mostrarMensajeConsulta(
+						PropertiesManager.getProperty("productoPanel.dialog.confirm.edit"));
+				if (opcion == JOptionPane.YES_OPTION) {
+					setConfirmado(true);
+					agregarProducto();
+				}
+			} else
+				mostrarMensaje(ex);
 		}
 	}
 
@@ -527,5 +539,13 @@ public class ProductoNuevoPanel extends BasePanel {
 	protected void setDefaultButton() {
 		if(Validator.isNotNull(this.getRootPane()))
 			this.getRootPane().setDefaultButton(getBtnAceptar());
+	}
+
+	public boolean isConfirmado() {
+		return confirmado;
+	}
+
+	public void setConfirmado(boolean confirmado) {
+		this.confirmado = confirmado;
 	}
 }
