@@ -2,6 +2,7 @@ package com.mitnick.persistence.daos;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -91,17 +92,21 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 	@Override
 	public void cargarReporte() {
 		try {
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/report1.jasper"));
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/listaClientes.jasper"));
 			
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+		    			
 			@SuppressWarnings("deprecation")
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, super.getHibernateTemplate().getSessionFactory().getCurrentSession().connection());
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, super.getHibernateTemplate().getSessionFactory().getCurrentSession().connection());
+			
+			String fileName = System.currentTimeMillis() + "-clientes.pdf";
 			
 			JRExporter exporter = new JRPdfExporter();
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("reportePDF.pdf"));
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(fileName));
 			exporter.exportReport();
 			
-			File file = new File("reportePDF.pdf");
+			File file = new File(fileName);
 			Desktop.getDesktop().open(file);
 		} catch (Exception e1) {
 			e1.printStackTrace();

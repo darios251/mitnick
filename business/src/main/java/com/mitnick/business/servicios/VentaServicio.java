@@ -147,7 +147,9 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		if (!ventaDto.isPagado()){
 			throw new BusinessException("error.ventaServicio.facturar", "No se puede facturar la venta ya que no se pago el total");
 		}
-		guardarVenta(ventaDto);
+		Venta venta = guardarVenta(ventaDto);
+		
+		ventaDao.generarFactura(venta);
 		return ventaDto;
 
 	}
@@ -164,7 +166,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 	
 	@Transactional
-	private void guardarVenta(VentaDto ventaDto){
+	private Venta guardarVenta(VentaDto ventaDto){
 		VentaHelper.calcularTotales(ventaDto);
 		try {
 			@SuppressWarnings("unchecked")
@@ -175,6 +177,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				actualizarStock(productos.next());
 			}
 			ventaDao.saveOrUpdate(venta);
+			
+			return venta;
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar guardar el cliente");
