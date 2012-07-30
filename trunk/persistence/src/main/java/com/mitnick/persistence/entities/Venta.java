@@ -1,6 +1,7 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -40,16 +41,16 @@ public class Venta extends BaseObject implements Serializable {
 	private Date fecha;
 	
 	@Column(name = "subtotal", nullable = false)
-	private Long subtotal;
+	private BigDecimal subtotal;
 	
 	@Column(name = "descuento", nullable = false)
-	private Long descuento;
+	private BigDecimal descuento;
 	
 	@Column(name = "impuesto", nullable = false)
-	private Long impuesto;
+	private BigDecimal impuesto;
 	
 	@Column(name = "total", nullable = false)
-	private Long total;
+	private BigDecimal total;
 	
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "cliente_id")
@@ -89,35 +90,35 @@ public class Venta extends BaseObject implements Serializable {
 		this.fecha = fecha;
 	}
 
-	public Long getSubtotal() {
+	public BigDecimal getSubtotal() {
 		return subtotal;
 	}
 
-	public void setSubtotal(Long subtotal) {
+	public void setSubtotal(BigDecimal subtotal) {
 		this.subtotal = subtotal;
 	}
 
-	public Long getDescuento() {
+	public BigDecimal getDescuento() {
 		return descuento;
 	}
 
-	public void setDescuento(Long descuento) {
+	public void setDescuento(BigDecimal descuento) {
 		this.descuento = descuento;
 	}
 
-	public Long getImpuesto() {
+	public BigDecimal getImpuesto() {
 		return impuesto;
 	}
 
-	public void setImpuesto(Long impuesto) {
+	public void setImpuesto(BigDecimal impuesto) {
 		this.impuesto = impuesto;
 	}
 
-	public Long getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Long total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 

@@ -9,8 +9,10 @@ import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
 
 public interface IVentaDAO extends GenericDao<Venta, Long>{
 
-	public List<Venta> findByFiltro(ReporteVentaDto filtro);
+	List<Venta> findByFiltro(ReporteVentaDto filtro);
 	
-	public Venta saveOrUpdate(Venta venta);
+	Venta saveOrUpdate(Venta venta);
+	
+	void generarFactura(Venta venta);
 	
 }

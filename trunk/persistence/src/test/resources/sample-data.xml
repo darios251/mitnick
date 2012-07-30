@@ -177,6 +177,12 @@
 	  	<value>3100</value>
 	  	<value>7</value>
 	  </row>
+	   <row>
+	  	<value>6</value>
+	  	<value>Santo Tomé</value>
+	  	<value>3016</value>
+	  	<value>20</value>
+	  </row>
 	</table>
 	<table name="Direccion">
 		<column>id</column>
@@ -202,6 +208,39 @@
 			<value>3000</value>
 			<value>1</value>
 		</row>
+		<row>
+		    <value>4</value>
+		    <value>Av. 7 de Marzo 1808</value>
+		    <value>3016</value>
+		    <value>6</value>
+		</row>
+	</table>
+	<table name="Empresa">
+	    <column>id</column>
+	    <column>nombre</column>
+	    <column>cuit</column>
+	    <column>nmIngresosBrutos</column>
+	    <column>telefono</column>
+	    <column>email</column>
+<!-- 	    <column>fechaInicioActividad</column> -->
+	    <column>tipoResponsable</column>
+	    <column>prefijoFactura</column>
+	    <column>numeroFacturaActual</column>
+	    <column>direccion_id</column>
+	    
+	    <row>
+	        <value>1</value>
+	        <value>SUSMANN LIVIO VICTOR JUAN</value>
+	        <value>20-10338232-8</value>
+	        <value>12312312312</value>
+	        <value>3424743704</value>
+	        <value>susmannlivio@hotmail.com</value>
+<!-- 	        <value>01-12-1988</value> -->
+			<value>Responsable Inscripto</value>
+			<value>0001</value>
+			<value>00000001</value>
+			<value>4</value>
+	    </row>
 	</table>
 	<table name="Cliente">
 	  <column>id</column>
@@ -297,14 +336,14 @@
 		
 		<row>
 			<value>1</value>
-			<value>1</value>
+			<value>111</value>
 			<value>Proveedor 1</value>
 			<value>342154469075</value>
 			<value>false</value>
 		</row>
 		<row>
 			<value>2</value>
-			<value>2</value>
+			<value>222</value>
 			<value>Proveedor 2</value>
 			<value>342154469075</value>
 			<value>false</value>
@@ -327,15 +366,30 @@
 	  
 	  <row>
 	    <value>1</value>
-	    <value>1</value>
+	    <value>111</value>
 	    <value>Pantalón</value>
 	    <value>1</value>
-	    <value>1</value>
+	    <value>2</value>
 	    <value>10</value>
 	    <value>5</value>
 	    <value>7</value>
 	    <value>210</value>
 	    <value>250</value>
+	    <value>52.5</value>
+	    <value>false</value>
+	    <value>1</value>
+	  </row>
+	  <row>
+	    <value>2</value>
+	    <value>222</value>
+	    <value>Camisa</value>
+	    <value>2</value>
+	    <value>2</value>
+	    <value>10</value>
+	    <value>5</value>
+	    <value>7</value>
+	    <value>212.5</value>
+	    <value>230.5</value>
 	    <value>52.5</value>
 	    <value>false</value>
 	    <value>1</value>

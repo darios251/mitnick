@@ -351,14 +351,14 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		
 		ventaDto.setProductos((List<ProductoVentaDto>) getDtosFromEntities((List<E>) venta.getProductos()));
 		
-		ventaDto.setSubTotal(new BigDecimal(venta.getSubtotal()));
-		ventaDto.setTotal(new BigDecimal(venta.getTotal()));
-		ventaDto.setImpuesto(new BigDecimal(venta.getImpuesto()));
+		ventaDto.setSubTotal(venta.getSubtotal());
+		ventaDto.setTotal(venta.getTotal());
+		ventaDto.setImpuesto(venta.getImpuesto());
 		
 		//el descuento se toma por monto para reportes aun cuando fue por porcentaje
 		DescuentoDto descuento = new DescuentoDto();
 		descuento.setTipo(DescuentoDto.MONTO);
-		descuento.setDescuento(new BigDecimal(venta.getDescuento()));
+		descuento.setDescuento(venta.getDescuento());
 		ventaDto.setDescuento(descuento);
 		
 		ventaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) venta.getPagos()));
@@ -366,7 +366,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		//estos valores se setean por defecto porq representan el total de dinero ingresado, no es real
 		ventaDto.setPagado(true);
-		ventaDto.setTotalPagado(new BigDecimal(venta.getTotal()));
+		ventaDto.setTotalPagado(venta.getTotal());
 		ventaDto.setFaltaPagar(new BigDecimal(0));
 		ventaDto.setVuelto(new BigDecimal(0));
 		
@@ -390,7 +390,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		if (Validator.isNotNull(ventaDto.getCliente()))
 			venta.setCliente(clienteDao.get(ventaDto.getCliente().getId()));
 
-		venta.setDescuento(new Long(VentaHelper.getDescuentoTotal(ventaDto).longValue()));
+		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());
 
 		List<ProductoVenta> productos = new ArrayList<ProductoVenta>();
@@ -408,9 +408,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		// TODO: tipo de cliente
 		venta.setDiscriminacionIVA(null);
 
-		venta.setImpuesto(new Long(ventaDto.getImpuesto().longValue()));
-		venta.setSubtotal(new Long(ventaDto.getSubTotal().longValue()));
-		venta.setTotal(new Long(ventaDto.getTotal().longValue()));
+		venta.setImpuesto(ventaDto.getImpuesto());
+		venta.setSubtotal(ventaDto.getSubTotal());
+		venta.setTotal(ventaDto.getTotal());
 
 		return venta;
 	}
