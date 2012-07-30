@@ -7,7 +7,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Parametro;
 import com.mitnick.utils.Validator;
 
