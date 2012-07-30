@@ -1,6 +1,7 @@
 package com.mitnick.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -419,8 +420,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ProductoVenta productoVenta = new ProductoVenta();
 		productoVenta.setProducto(productoDao.get(productoVentaDto.getProducto().getId()));
 		productoVenta.setCantidad(productoVentaDto.getCantidad());
-		productoVenta.setIva(new Long(productoVentaDto.getIva().longValue()));
-		productoVenta.setPrecio(new Long(productoVentaDto.getPrecioTotal().longValue()));
+		productoVenta.setIva(productoVentaDto.getIva());
+		productoVenta.setPrecio(productoVentaDto.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP));
 		return productoVenta;
 	}
 

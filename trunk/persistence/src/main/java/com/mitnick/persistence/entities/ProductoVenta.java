@@ -1,6 +1,7 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,10 +26,10 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	private Producto producto;
 	
 	@Column(name = "precio", nullable = false)
-	private Long precio;
+	private BigDecimal precio;
 	
 	@Column(name = "iva", nullable = false)
-	private Long iva;
+	private BigDecimal iva;
 	
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
@@ -49,11 +50,11 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		this.producto = producto;
 	}
 
-	public Long getPrecio() {
+	public BigDecimal getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(Long precio) {
+	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}
 
@@ -65,11 +66,11 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		this.cantidad = cantidad;
 	}
 
-	public Long getIva() {
+	public BigDecimal getIva() {
 		return iva;
 	}
 
-	public void setIva(Long iva) {
+	public void setIva(BigDecimal iva) {
 		this.iva = iva;
 	}
 
