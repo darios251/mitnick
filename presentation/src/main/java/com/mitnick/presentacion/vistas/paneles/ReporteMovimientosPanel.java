@@ -90,8 +90,8 @@ public class ReporteMovimientosPanel extends BasePanel {
 			getCmbTipo().setSelectedIndex(0);
 		} catch (Exception e) {
 		}
-		getModel().setProductosMovimientos(
-				new ArrayList<MovimientoProductoDto>());
+//		getModel().setProductosMovimientos(
+//				new ArrayList<MovimientoProductoDto>());
 	}
 
 	@Override
@@ -122,6 +122,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 		add(getBtnExportar());
 
 		setFocusTraversalPolicy();
+		this.actualizarPantalla();
 	}
 
 	public JTextField getTxtProductoCodigo() {
@@ -336,7 +337,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {
-		//consultarProductos();
+		consultarProductos();
 	}
 
 	@Override
