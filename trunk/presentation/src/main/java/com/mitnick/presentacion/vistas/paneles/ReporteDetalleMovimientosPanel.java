@@ -134,7 +134,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		lblProductos.setBounds(25, 90, 70, 20);
 		add(lblProductos);
 	
-		setFocusTraversalPolicy();		
+		setFocusTraversalPolicy();			
 	}
 	
 	
