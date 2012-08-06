@@ -76,7 +76,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			parameters.put("nombreCliente", venta.getCliente().getApellido() + " " + venta.getCliente().getNombre());
 			parameters.put("direccionCliente", venta.getCliente().getDireccion().getDomicilio() + " " + venta.getCliente().getDireccion().getCiudad().getDescripcion());
 			parameters.put("cuitCliente", venta.getCliente().getCuit());
-			parameters.put("ventaId", venta.getId().toString());
+			parameters.put("ventaId", venta.getId());
 			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			
 			super.getHibernateTemplate().flush();

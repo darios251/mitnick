@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="2.1435888100000025"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="1009"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -64,7 +64,9 @@
 		</box>
 	</style>
 	<subDataset name="New Dataset 2" uuid="2c15d1f2-7755-4b80-8b57-ae43c6d913da">
-		<parameter name="ventaId" class="java.lang.String"/>
+		<parameter name="ventaId" class="java.lang.Long">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
 		<parameter name="totalVenta" class="java.lang.String"/>
 		<queryString>
 			<![CDATA[SELECT
@@ -94,7 +96,7 @@ WHERE
 	<parameter name="nombreCliente" class="java.lang.String"/>
 	<parameter name="direccionCliente" class="java.lang.String"/>
 	<parameter name="cuitCliente" class="java.lang.String"/>
-	<parameter name="ventaId" class="java.lang.String"/>
+	<parameter name="ventaId" class="java.lang.Long"/>
 	<parameter name="totalVenta" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
