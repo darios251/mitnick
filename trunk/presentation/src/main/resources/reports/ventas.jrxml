@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35158e7f-d3ad-47fa-861b-1b4675dca881">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="totalEfectivo" class="java.lang.String"/>
+	<parameter name="totalDebito" class="java.lang.String"/>
+	<parameter name="totalCredito" class="java.lang.String"/>
+	<parameter name="totalCC" class="java.lang.String"/>
+	<parameter name="total" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="totalCC" class="java.lang.Long">
+		<fieldDescription><![CDATA[totalCC]]></fieldDescription>
+	</field>
+	<field name="totalCredito" class="java.lang.Long">
+		<fieldDescription><![CDATA[totalCredito]]></fieldDescription>
+	</field>
+	<field name="totalDebito" class="java.lang.Long">
+		<fieldDescription><![CDATA[totalDebito]]></fieldDescription>
+	</field>
+	<field name="totalEfectivo" class="java.lang.Long">
+		<fieldDescription><![CDATA[totalEfectivo]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.Long">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement uuid="c0b1523b-7bad-4891-9092-c5c39d8fe43c" x="140" y="17" width="327" height="47"/>
+				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\report.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="207" y="17" width="118" height="32" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="24" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Ventas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="0" y="0" width="92" height="20"/>
+				<textElement/>
+				<text><![CDATA[fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e8882de-0787-486e-91e1-a5b0ece3ae8f" x="92" y="0" width="92" height="20"/>
+				<textElement/>
+				<text><![CDATA[totalCC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d3e45f97-a216-4a37-a4b3-039ad09f4b3e" x="184" y="0" width="92" height="20"/>
+				<textElement/>
+				<text><![CDATA[totalCredito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bfe50ce0-b833-4594-b8b9-d7d3563e22ec" x="276" y="0" width="92" height="20"/>
+				<textElement/>
+				<text><![CDATA[totalDebito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e9d7c098-b33b-4653-9b56-cb81b8d0c0b3" x="368" y="0" width="92" height="20"/>
+				<textElement/>
+				<text><![CDATA[totalEfectivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c8eaa760-fd74-420c-91b8-9e6cc94f9059" x="460" y="0" width="92" height="20"/>
+				<textElement/>
+				<text><![CDATA[total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement uuid="43dc5d1b-fa5c-4e52-89f4-d8c3263458ea" x="0" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2d4edfe0-1578-46ce-8750-17c7fc52de07" x="92" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{totalCC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="457c2d8f-1c20-4db8-9a57-ed3995723b14" x="184" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{totalCredito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ccafbec7-5d2f-421f-bdff-568bac92920f" x="276" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{totalDebito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9f215d71-87ff-428c-b105-1d2ff3436994" x="368" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{totalEfectivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cf5afd0c-a4b9-4676-a446-d0eb48878f85" x="460" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7bb039d9-4d27-4a76-ada6-8aa67e40ef83" x="92" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{totalCC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b3be2eb8-b2d7-469c-9e46-be61a63b338f" x="184" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{totalCredito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc699639-3629-4907-ac29-1c63b5d7e190" x="276" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{totalDebito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc62ce5c-a935-4aba-9b73-588ed8133abf" x="368" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{totalEfectivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9d1d7572-d56d-4b50-948a-27cbc8fa8290" x="460" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -31,6 +31,7 @@ import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.ProveedorController;
 import com.mitnick.presentacion.controladores.ReporteMovimientosController;
+import com.mitnick.presentacion.controladores.ReportesController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
@@ -53,6 +54,8 @@ public class PrincipalView extends JFrame
 	private ClienteController clienteController;
 	@Autowired
 	private ReporteMovimientosController reporteController;
+	@Autowired
+	private ReportesController reportesController;
 	@Autowired
 	private ProveedorController proveedorController;
 	@Autowired
@@ -241,17 +244,30 @@ public class PrincipalView extends JFrame
 			btnReporte.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnReporte.setMargin(new Insets(-1, -1, -1, -1));
 			
+//			btnReporte.addMouseListener(new MouseAdapter() {
+//				public void mouseClicked(MouseEvent e)	{
+//					if (getJTabbedPane().indexOfComponent(reporteController.getReporteMovimientosPanel()) == -1) {
+//						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
+//						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reporteController.getReporteMovimientosView());
+//					}
+//					logger.info("Mostrando el panel de Movimientos de productos");
+//					getJTabbedPane().setVisible(true);
+//					reporteController.mostrarProductosPanel();
+//					reporteController.getUltimoPanelMostrado().setVisible(true);
+//					getJTabbedPane().setSelectedComponent(reporteController.getReporteMovimientosView());
+//				}
+//			});
 			btnReporte.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e)	{
-					if (getJTabbedPane().indexOfComponent(reporteController.getReporteMovimientosPanel()) == -1) {
+					if (getJTabbedPane().indexOfComponent(reportesController.getReportesPanel()) == -1) {
 						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
 						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reporteController.getReporteMovimientosView());
 					}
 					logger.info("Mostrando el panel de Movimientos de productos");
 					getJTabbedPane().setVisible(true);
-					reporteController.mostrarProductosPanel();
-					reporteController.getUltimoPanelMostrado().setVisible(true);
-					getJTabbedPane().setSelectedComponent(reporteController.getReporteMovimientosView());
+					reportesController.mostrarReportesPanel();
+					reportesController.getUltimoPanelMostrado().setVisible(true);
+					getJTabbedPane().setSelectedComponent(reportesController.getReportesView());
 				}
 			});
 		}

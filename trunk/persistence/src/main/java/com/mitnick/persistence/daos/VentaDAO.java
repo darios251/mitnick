@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
-import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
+import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.Validator;
 
 @Repository("ventaDao")
@@ -35,7 +35,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Venta> findByFiltro(ReporteVentaDto filtro) {
+	public List<Venta> findByFiltro(ReportesDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 
 		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){

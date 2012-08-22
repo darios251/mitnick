@@ -105,6 +105,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		return venta;
 	}
 
+	//TODO: validar medio de pago sin vuelto
+	//restar el vuelto al pago - el pago deberia ser siempre el total 
 	@Override
 	public VentaDto agregarPago(PagoDto pago, VentaDto venta) {
 		PagoDto pagoDto = getPagoDto(pago, venta);

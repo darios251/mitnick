@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="2.1435888100000025"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1009"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -101,15 +101,6 @@ WHERE
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="subtotal" class="java.lang.Long">
-		<fieldDescription><![CDATA[subtotal]]></fieldDescription>
-	</field>
-	<field name="total" class="java.lang.Long">
-		<fieldDescription><![CDATA[total]]></fieldDescription>
-	</field>
-	<field name="productos" class="java.util.List">
-		<fieldDescription><![CDATA[productos]]></fieldDescription>
-	</field>
 	<field name="cliente" class="com.mitnick.persistence.entities.Cliente">
 		<fieldDescription><![CDATA[cliente]]></fieldDescription>
 	</field>
@@ -289,7 +280,7 @@ WHERE
 	<columnHeader>
 		<band height="131" splitType="Stretch">
 			<componentElement>
-				<reportElement uuid="55347fd3-8fde-43ea-ab65-f752ac4d499f" key="table 2" style="table 2" x="0" y="0" width="555" height="131"/>
+				<reportElement uuid="55347fd3-8fde-43ea-ab65-f752ac4d499f" key="table 2" style="table 2" x="0" y="0" width="555" height="51"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="New Dataset 2" uuid="c6801005-bd75-4b28-9953-b021bf294d01">
 						<datasetParameter name="ventaId">
