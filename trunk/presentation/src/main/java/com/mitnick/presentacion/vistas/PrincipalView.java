@@ -261,7 +261,7 @@ public class PrincipalView extends JFrame
 				public void mouseClicked(MouseEvent e)	{
 					if (getJTabbedPane().indexOfComponent(reportesController.getReportesPanel()) == -1) {
 						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
-						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reporteController.getReporteMovimientosView());
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reportesController.getReportesView());
 					}
 					logger.info("Mostrando el panel de Movimientos de productos");
 					getJTabbedPane().setVisible(true);
