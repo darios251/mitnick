@@ -26,5 +26,12 @@ public class MitnickConstants {
 		
 		public static final String USER = "ROLE_USER";
 	}
+	
+	public static class Medio_Pago {
+		public static final String EFECTIVO = PropertiesManager.getProperty("application.medio_pago.efectivo");
+		public static final String CUENTA_CORRIENTE = PropertiesManager.getProperty("application.medio_pago.cuenta_corriente");
+		public static final String DEBITO = PropertiesManager.getProperty("application.medio_pago.debito");
+		public static final String CREDITO = PropertiesManager.getProperty("application.medio_pago.credito");
+	}
 }
 

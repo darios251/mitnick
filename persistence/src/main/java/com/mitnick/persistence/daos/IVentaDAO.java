@@ -5,11 +5,11 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.mitnick.persistence.entities.Venta;
-import com.mitnick.servicio.servicios.dtos.ReporteVentaDto;
+import com.mitnick.servicio.servicios.dtos.ReportesDto;
 
 public interface IVentaDAO extends GenericDao<Venta, Long>{
 
-	List<Venta> findByFiltro(ReporteVentaDto filtro);
+	List<Venta> findByFiltro(ReportesDto filtro);
 	
 	Venta saveOrUpdate(Venta venta);
 	

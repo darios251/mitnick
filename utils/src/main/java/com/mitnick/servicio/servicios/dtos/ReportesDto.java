@@ -2,7 +2,7 @@ package com.mitnick.servicio.servicios.dtos;
 
 import java.util.Date;
 
-public class ReporteVentaDto extends ServicioBaseDto {
+public class ReportesDto extends ServicioBaseDto {
 	
 	private static final long serialVersionUID = 1L;
 	

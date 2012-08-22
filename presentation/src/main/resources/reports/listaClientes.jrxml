@@ -128,7 +128,7 @@
 				<text><![CDATA[Lista de clientes]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="c0b1523b-7bad-4891-9092-c5c39d8fe43c" x="113" y="16" width="374" height="47"/>
+				<reportElement uuid="c0b1523b-7bad-4891-9092-c5c39d8fe43c" x="86" y="34" width="374" height="47"/>
 				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\report.jpg"]]></imageExpression>
 			</image>
 		</band>
