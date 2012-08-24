@@ -7,11 +7,11 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 	private static final long serialVersionUID = 1L;
 	
 	private Date fecha;
-	private Long totalEfectivo;
-	private Long totalCC;
-	private Long totalDebito;
-	private Long totalCredito;
-	private Long total;
+	private Long totalEfectivo= new Long(0);
+	private Long totalCC= new Long(0);
+	private Long totalDebito= new Long(0);
+	private Long totalCredito= new Long(0);
+	private Long total= new Long(0);
 	
 	public Date getFecha() {
 		return fecha;
