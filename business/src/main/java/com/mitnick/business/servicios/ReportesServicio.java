@@ -34,8 +34,8 @@ import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
-import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
+import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
@@ -49,6 +49,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	@Autowired
 	protected IMovimientoDao movimientoDao;
 	
+	@Autowired
 	protected IVentaDAO ventaDao;
 	
 	@Transactional(readOnly=true)
@@ -153,28 +154,29 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
 				dto.setFecha(venta.getFecha());
 				dto.setTotal(venta.getTotal().longValue());
+				
 				for (Pago pago: venta.getPagos()){
-					total.add(venta.getTotal());
+					total = total.add(venta.getTotal());
 					dto.setTotal(venta.getTotal().longValue());
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
 						dto.setTotalEfectivo(pago.getPago());
-						totalEfectivo.add(new BigDecimal(pago.getPago()));
+						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
 					}
 						
 					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
 						dto.setTotalDebito(pago.getPago());
-						totalDebito.add(new BigDecimal(pago.getPago()));
+						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
 					}
 						
 					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
 						dto.setTotalCredito(pago.getPago());
-						totalCredito.add(new BigDecimal(pago.getPago()));
+						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
 					}
 						
 					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
 						dto.setTotalCC(pago.getPago());
-						totalCC.add(new BigDecimal(pago.getPago()));
+						totalCC = totalCC.add(new BigDecimal(pago.getPago()));
 					}
 						
 				}
@@ -182,11 +184,11 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			}
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventas.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("totalEfectivo", totalEfectivo);
-			parameters.put("totalDebito", totalDebito);
-			parameters.put("totalCredito", totalCredito);
-			parameters.put("totalCC", totalCC);
-			parameters.put("total", total);
+			parameters.put("totalEfectivo", totalEfectivo.toString());
+			parameters.put("totalDebito", totalDebito.toString());
+			parameters.put("totalCredito", totalCredito.toString());
+			parameters.put("totalCC", totalCC.toString());
+			parameters.put("total", total.toString());
 			
 			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
 			
