@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -34,10 +33,14 @@ public class ReportesPanel extends BasePanel {
 	private JTextField txtFechaInicio;
 	private JTextField txtFechaFinal;
 
-	private JButton btnBuscar;
+	private JButton btnReporteVentas;
+	private JButton btnReporteVentasAgrupado;;
 	
 	private JLabel lblFechaInicio;
 	private JLabel lblFechaFin;
+	private JButton btnReporteDeEstado;
+	private JButton btnListadoDeControl;
+	private JButton btnReporteDeVentasProducto;
 	
 	
 	@Autowired
@@ -60,8 +63,8 @@ public class ReportesPanel extends BasePanel {
 				((JTextField) component).setText("");
 		}
 		try {
-			getTxtFechaInicio().setText("");
-			getTxtFechaFinal().setText("");
+			txtFechaInicio.setText("01/01/1900");
+			txtFechaFinal.setText(DateHelper.getFecha(new Date()));
 		} catch (Exception e) {
 		}
 	}
@@ -78,35 +81,58 @@ public class ReportesPanel extends BasePanel {
 		add(getTxtFechaInicio());
 		add(getTxtFechaFinal());
 		
-		add(getBtnBuscar());
+		add(getBtnReporteVentas());
+		
+		btnReporteVentasAgrupado = new JButton();
+		btnReporteVentasAgrupado.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnReporteVentasAgrupado.setToolTipText("productoPanel.tooltip.buscarProducto");
+		btnReporteVentasAgrupado.setText("Reporte de Ventas agrupado por fecha");
+		btnReporteVentasAgrupado.setMargin(new Insets(-1, -1, -1, -1));
+		btnReporteVentasAgrupado.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnReporteVentasAgrupado.setBounds(200, 182, 330, 20);
+		add(btnReporteVentasAgrupado);
+		add(getBtnReporteDeEstado());
+		add(getBtnListadoDeControl());
+		add(getBtnReporteDeVentasProducto());
 
+		getBtnReporteVentasAgrupados();
+		
 		setFocusTraversalPolicy();
 		this.actualizarPantalla();
 	}
 
 
 
-	public JButton getBtnBuscar() {
-		if (btnBuscar == null) {
-			btnBuscar = new JButton();
-			btnBuscar.setToolTipText(PropertiesManager
+	public JButton getBtnReporteVentas() {
+		if (btnReporteVentas == null) {
+			btnReporteVentas = new JButton();
+			btnReporteVentas.setText("Reporte de Ventas");
+			btnReporteVentas.setToolTipText(PropertiesManager
 					.getProperty("productoPanel.tooltip.buscarProducto"));
 
-			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/buscar.png")));
-			btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnBuscar.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnBuscar.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteVentas.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVentas.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVentas.setMargin(new Insets(-1, -1, -1, -1));
 
-			btnBuscar.addActionListener(new ActionListener() {
+			btnReporteVentas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
 					consultarIngresos();
 				}
 			});
-			btnBuscar.setBounds(560, 15, 60, 60);
+			btnReporteVentas.setBounds(200, 151, 330, 20);
 		}
-		return btnBuscar;
+		return btnReporteVentas;
 	}
+	
+	public void getBtnReporteVentasAgrupados() {
+
+		btnReporteVentasAgrupado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evento) {
+				consultarIngresosAgrupados();
+			}
+		});
+	}
+
 
 	
 	public JLabel getLblFechaInicio() {
@@ -120,7 +146,7 @@ public class ReportesPanel extends BasePanel {
 	public JLabel getLblFechaFin() {
 		if (lblFechaFin == null) {
 			lblFechaFin = new JLabel("Fin");
-			lblFechaFin.setBounds(330, 95, 60, 20);
+			lblFechaFin.setBounds(350, 95, 60, 20);
 		}
 		return lblFechaFin;
 	}
@@ -142,7 +168,7 @@ public class ReportesPanel extends BasePanel {
 	
 
 
-	public JTextField getTxtFechaInicio() {
+	private JTextField getTxtFechaInicio() {
 		if (txtFechaInicio == null) {
 			txtFechaInicio = new JTextField();
 			txtFechaInicio.setColumns(10);
@@ -152,7 +178,7 @@ public class ReportesPanel extends BasePanel {
 		return txtFechaInicio;
 	}
 
-	public JTextField getTxtFechaFinal() {
+	private JTextField getTxtFechaFinal() {
 		if (txtFechaFinal == null) {
 			txtFechaFinal = new JTextField();
 			txtFechaFinal.setColumns(10);
@@ -176,7 +202,7 @@ public class ReportesPanel extends BasePanel {
 
 	protected void setDefaultButton() {
 		if(Validator.isNotNull(this.getRootPane()))
-			this.getRootPane().setDefaultButton(getBtnBuscar());
+			this.getRootPane().setDefaultButton(getBtnReporteVentas());
 	}
 
 	@Override
@@ -194,5 +220,102 @@ public class ReportesPanel extends BasePanel {
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
+	}
+	
+	protected void consultarIngresosAgrupados() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			reportesController.reporteIngresosAgrupados(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
+	protected void consultarListadoDeControl() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			reportesController.consultarListadoDeControl(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
+	protected void consultarEstadoCuentas() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			reportesController.consultarEstadoCuentas(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
+	protected void consultarVentaPorArticulo() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			reportesController.consultarVentaPorArticulo(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+		
+	
+	private JButton getBtnReporteDeEstado() {
+		if (btnReporteDeEstado == null) {
+			btnReporteDeEstado = new JButton();
+			btnReporteDeEstado.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeEstado.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnReporteDeEstado.setText("Reporte de Estado de Cuentas");
+			btnReporteDeEstado.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeEstado.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeEstado.setBounds(200, 275, 330, 20);
+			btnReporteDeEstado.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarEstadoCuentas();
+				}
+			});
+		}
+		return btnReporteDeEstado;
+	}
+	private JButton getBtnListadoDeControl() {
+		if (btnListadoDeControl == null) {
+			btnListadoDeControl = new JButton();
+			btnListadoDeControl.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnListadoDeControl.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnListadoDeControl.setText("Listado de Control");
+			btnListadoDeControl.setMargin(new Insets(-1, -1, -1, -1));
+			btnListadoDeControl.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnListadoDeControl.setBounds(200, 244, 330, 20);
+			btnListadoDeControl.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarListadoDeControl();
+				}
+			});
+		}
+		return btnListadoDeControl;
+	}
+	private JButton getBtnReporteDeVentasProducto() {
+		if (btnReporteDeVentasProducto == null) {
+			btnReporteDeVentasProducto = new JButton();
+			btnReporteDeVentasProducto.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeVentasProducto.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnReporteDeVentasProducto.setText("Reporte de Ventas por producto");
+			btnReporteDeVentasProducto.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeVentasProducto.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeVentasProducto.setBounds(200, 213, 330, 20);
+			btnReporteDeVentasProducto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarVentaPorArticulo();
+				}
+			});
+		}
+		return btnReporteDeVentasProducto;
 	}
 }

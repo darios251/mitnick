@@ -31,6 +31,52 @@ public class ReportesController extends BaseController {
 		}
 	}
 
+	public void reporteIngresosAgrupados(ReportesDto dto) {
+		try {
+			getReportesServicio().reporteIngresosAgrupados(dto);
+		}
+		catch(BusinessException e) {
+			e.printStackTrace();
+		}
+	} 
+	
+	
+	public void consultarEstadoCuentas(ReportesDto dto) {
+		try {
+			getReportesServicio().consultarEstadoCuentas(dto);
+		}
+		catch(BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void consultarListadoDeControl(ReportesDto dto) {
+		try {
+			getReportesServicio().consultarListadoDeControl(dto);
+		}
+		catch(BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void consultarVentaPorArticulo(ReportesDto dto) {
+		try {
+			getReportesServicio().consultarVentaPorArticulo(dto);
+		}
+		catch(BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void consultarStockArticulo(ReportesDto dto) {
+		try {
+			getReportesServicio().consultarStockArticulo(dto);
+		}
+		catch(BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		reportesPanel.setVisible(true);

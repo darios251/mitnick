@@ -9,6 +9,7 @@ public class ReportesDto extends ServicioBaseDto {
 	private Date fechaInicio;
 	
 	private Date fechaFin;
+	
 
 	public Date getFechaInicio() {
 		return fechaInicio;
