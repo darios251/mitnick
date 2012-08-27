@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -216,5 +217,125 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	@Override
+	public void reporteIngresosAgrupados(ReportesDto filtro) {
+		List<ReporteVentasResultadoDTO> ingresos= new ArrayList<ReporteVentasResultadoDTO>();
+		BigDecimal totalEfectivo = new BigDecimal(0);
+		BigDecimal totalDebito = new BigDecimal(0);
+		BigDecimal totalCredito = new BigDecimal(0);
+		BigDecimal totalCC = new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		try{
+			List<Venta> ventas = ventaDao.findByFiltro(filtro);
+			for (Venta venta: ventas){
+				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, venta.getFecha());
+				Long totalRegistro = dto.getTotal().longValue() + venta.getTotal().longValue();
+				dto.setTotal(totalRegistro);
+				
+				for (Pago pago: venta.getPagos()){
+					total = total.add(venta.getTotal());
+					dto.setTotal(venta.getTotal().longValue());
+					
+					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
+						dto.setTotalEfectivo(pago.getPago());
+						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
+					}
+						
+					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
+						dto.setTotalDebito(pago.getPago());
+						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
+					}
+						
+					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
+						dto.setTotalCredito(pago.getPago());
+						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
+					}
+						
+					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
+						dto.setTotalCC(pago.getPago());
+						totalCC = totalCC.add(new BigDecimal(pago.getPago()));
+					}
+						
+				}
+						
+			}
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventas.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("totalEfectivo", totalEfectivo.toString());
+			parameters.put("totalDebito", totalDebito.toString());
+			parameters.put("totalCredito", totalCredito.toString());
+			parameters.put("totalCC", totalCC.toString());
+			parameters.put("total", total.toString());
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventas.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("ventas.pdf");
+			Desktop.getDesktop().open(file);
+
+			
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	private ReporteVentasResultadoDTO getDTOFecha(List<ReporteVentasResultadoDTO> ingresos, Date fecha){
+		for (ReporteVentasResultadoDTO dto: ingresos){
+			if (dto.getFecha().equals(fecha))
+				return dto;
+		}		
+		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
+		dto.setFecha(fecha);
+		dto.setTotal(new Long(0));
+		ingresos.add(dto);
+		return dto;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	@Override
+	public void consultarListadoDeControl(ReportesDto filtro) {
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	@Override
+	public void consultarEstadoCuentas(ReportesDto filtro) {
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	@Override
+	public void consultarVentaPorArticulo(ReportesDto filtro) {
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	@Override
+	public void consultarStockArticulo(ReportesDto filtro) {
+		
+	}
+	
 	
 }
