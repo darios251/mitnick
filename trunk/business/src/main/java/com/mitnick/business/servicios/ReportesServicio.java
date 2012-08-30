@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.IMovimientoDao;
+import com.mitnick.persistence.daos.IReporteDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
@@ -35,6 +36,7 @@ import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
+import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.MitnickConstants;
@@ -52,6 +54,9 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	@Autowired
 	protected IVentaDAO ventaDao;
+	
+	@Autowired
+	protected IReporteDao reporteDao;
 	
 	@Transactional(readOnly=true)
 	@Override
@@ -323,10 +328,40 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarVentaPorArticulo(ReportesDto filtro) {
+		List<ReporteVentaArticuloDTO> articulos = new ArrayList<ReporteVentaArticuloDTO>();
+		try{
+			reporteDao.consultarVentaPorArticulo(filtro);
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventasProducto.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(articulos);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventasProducto.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("ventasProducto.pdf");
+			Desktop.getDesktop().open(file);
+
+			
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

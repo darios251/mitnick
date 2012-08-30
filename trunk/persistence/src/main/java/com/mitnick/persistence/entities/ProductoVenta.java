@@ -33,6 +33,10 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
+
+	@ManyToOne
+	@PrimaryKeyJoinColumn(name = "venta_id")
+	private Venta venta;
 	
 	public Long getId() {
 		return id;
@@ -74,6 +78,14 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		this.iva = iva;
 	}
 
+	public Venta getVenta() {
+		return venta;
+	}
+
+	public void setVenta(Venta venta) {
+		this.venta = venta;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -84,6 +96,7 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
 		result = prime * result
 				+ ((producto == null) ? 0 : producto.hashCode());
+		result = prime * result + ((venta == null) ? 0 : venta.hashCode());
 		return result;
 	}
 
@@ -130,6 +143,13 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		} else if (!producto.equals(other.producto)) {
 			return false;
 		}
+		if (venta == null) {
+			if (other.venta != null) {
+				return false;
+			}
+		} else if (!venta.equals(other.venta)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -137,9 +157,10 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	public String toString() {
 		return "ProductoVenta [id=" + id + ", producto=" + producto
 				+ ", precio=" + precio + ", iva=" + iva + ", cantidad="
-				+ cantidad + "]";
+				+ cantidad + ", venta=" + venta + "]";
 	}
 
+	
 	
 
 }
