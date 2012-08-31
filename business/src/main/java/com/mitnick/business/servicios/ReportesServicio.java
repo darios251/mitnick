@@ -333,9 +333,9 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarVentaPorArticulo(ReportesDto filtro) {
-		List<ReporteVentaArticuloDTO> articulos = new ArrayList<ReporteVentaArticuloDTO>();
+		
 		try{
-			reporteDao.consultarVentaPorArticulo(filtro);
+			List<ReporteVentaArticuloDTO> articulos = reporteDao.consultarVentaPorArticulo(filtro);
 			
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventasProducto.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
