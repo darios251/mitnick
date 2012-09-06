@@ -2,6 +2,7 @@ package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,39 +63,43 @@ public class Cliente extends BaseObject implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn(name = "direccion_id")
 	private Direccion direccion;
+	
+	@OneToMany (cascade = {CascadeType.ALL})
+	@JoinColumn(name = "cliente_id")
+	private List<Cuota> cuotas;
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setDocumento(String documento) {
-		this.documento = documento;
-	}
-
-	public String getDocumento() {
-		return documento;
+	public Long getId() {
+		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Long getId() {
-		return id;
+	public String getNombre() {
+		return nombre;
 	}
-	
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
 	public String getCuit() {
 		return cuit;
 	}
@@ -117,6 +124,14 @@ public class Cliente extends BaseObject implements Serializable {
 		this.email = email;
 	}
 
+	public boolean isEliminado() {
+		return eliminado;
+	}
+
+	public void setEliminado(boolean eliminado) {
+		this.eliminado = eliminado;
+	}
+
 	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
@@ -133,12 +148,12 @@ public class Cliente extends BaseObject implements Serializable {
 		this.direccion = direccion;
 	}
 
-	public boolean isEliminado() {
-		return eliminado;
+	public List<Cuota> getCuotas() {
+		return cuotas;
 	}
 
-	public void setEliminado(boolean eliminado) {
-		this.eliminado = eliminado;
+	public void setCuotas(List<Cuota> cuotas) {
+		this.cuotas = cuotas;
 	}
 
 	@Override
@@ -148,6 +163,7 @@ public class Cliente extends BaseObject implements Serializable {
 		result = prime * result
 				+ ((apellido == null) ? 0 : apellido.hashCode());
 		result = prime * result + ((cuit == null) ? 0 : cuit.hashCode());
+		result = prime * result + ((cuotas == null) ? 0 : cuotas.hashCode());
 		result = prime * result
 				+ ((direccion == null) ? 0 : direccion.hashCode());
 		result = prime * result
@@ -165,60 +181,89 @@ public class Cliente extends BaseObject implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (!(obj instanceof Cliente)) {
 			return false;
+		}
 		Cliente other = (Cliente) obj;
 		if (apellido == null) {
-			if (other.apellido != null)
+			if (other.apellido != null) {
 				return false;
-		} else if (!apellido.equals(other.apellido))
+			}
+		} else if (!apellido.equals(other.apellido)) {
 			return false;
+		}
 		if (cuit == null) {
-			if (other.cuit != null)
+			if (other.cuit != null) {
 				return false;
-		} else if (!cuit.equals(other.cuit))
+			}
+		} else if (!cuit.equals(other.cuit)) {
 			return false;
+		}
+		if (cuotas == null) {
+			if (other.cuotas != null) {
+				return false;
+			}
+		} else if (!cuotas.equals(other.cuotas)) {
+			return false;
+		}
 		if (direccion == null) {
-			if (other.direccion != null)
+			if (other.direccion != null) {
 				return false;
-		} else if (!direccion.equals(other.direccion))
+			}
+		} else if (!direccion.equals(other.direccion)) {
 			return false;
+		}
 		if (documento == null) {
-			if (other.documento != null)
+			if (other.documento != null) {
 				return false;
-		} else if (!documento.equals(other.documento))
+			}
+		} else if (!documento.equals(other.documento)) {
 			return false;
-		if (eliminado != other.eliminado)
+		}
+		if (eliminado != other.eliminado) {
 			return false;
+		}
 		if (email == null) {
-			if (other.email != null)
+			if (other.email != null) {
 				return false;
-		} else if (!email.equals(other.email))
+			}
+		} else if (!email.equals(other.email)) {
 			return false;
+		}
 		if (fechaNacimiento == null) {
-			if (other.fechaNacimiento != null)
+			if (other.fechaNacimiento != null) {
 				return false;
-		} else if (!fechaNacimiento.equals(other.fechaNacimiento))
+			}
+		} else if (!fechaNacimiento.equals(other.fechaNacimiento)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (nombre == null) {
-			if (other.nombre != null)
+			if (other.nombre != null) {
 				return false;
-		} else if (!nombre.equals(other.nombre))
+			}
+		} else if (!nombre.equals(other.nombre)) {
 			return false;
+		}
 		if (telefono == null) {
-			if (other.telefono != null)
+			if (other.telefono != null) {
 				return false;
-		} else if (!telefono.equals(other.telefono))
+			}
+		} else if (!telefono.equals(other.telefono)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -228,7 +273,11 @@ public class Cliente extends BaseObject implements Serializable {
 				+ apellido + ", documento=" + documento + ", cuit=" + cuit
 				+ ", telefono=" + telefono + ", email=" + email
 				+ ", eliminado=" + eliminado + ", fechaNacimiento="
-				+ fechaNacimiento + ", direccion=" + direccion + "]";
+				+ fechaNacimiento + ", direccion=" + direccion + ", cuotas="
+				+ cuotas + "]";
 	}
+
+	
+	
 	
 }

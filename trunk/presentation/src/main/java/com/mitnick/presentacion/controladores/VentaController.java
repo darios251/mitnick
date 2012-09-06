@@ -26,6 +26,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -63,6 +64,10 @@ public class VentaController extends BaseController {
 	
 	public VentaController() {
 		
+	}
+	
+	public List<CuotaDto> getCuotas(String cuotas, String total){
+		return null;
 	}
 
 	public void mostrarBuscarArticuloPanel() {
@@ -271,7 +276,7 @@ public class VentaController extends BaseController {
 		
 		logger.debug("Saliendo del método agregarPago");
 	}
-	
+		
 	protected void finalizarVenta() {
 		if(checkFinalizarVenta()) {
 			try {
