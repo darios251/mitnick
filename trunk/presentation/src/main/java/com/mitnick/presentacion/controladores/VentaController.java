@@ -67,7 +67,7 @@ public class VentaController extends BaseController {
 	}
 	
 	public List<CuotaDto> getCuotas(String cuotas, String total){
-		return null;
+		return ventaServicio.generarCuotas(Integer.parseInt(cuotas), new BigDecimal(total));
 	}
 
 	public void mostrarBuscarArticuloPanel() {
