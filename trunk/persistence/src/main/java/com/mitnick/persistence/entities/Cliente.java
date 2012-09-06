@@ -2,7 +2,6 @@ package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,9 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -64,10 +61,6 @@ public class Cliente extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "direccion_id")
 	private Direccion direccion;
 	
-	@OneToMany (cascade = {CascadeType.ALL})
-	@JoinColumn(name = "cliente_id")
-	private List<Cuota> cuotas;
-
 	public Long getId() {
 		return id;
 	}
@@ -148,14 +141,6 @@ public class Cliente extends BaseObject implements Serializable {
 		this.direccion = direccion;
 	}
 
-	public List<Cuota> getCuotas() {
-		return cuotas;
-	}
-
-	public void setCuotas(List<Cuota> cuotas) {
-		this.cuotas = cuotas;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -163,7 +148,6 @@ public class Cliente extends BaseObject implements Serializable {
 		result = prime * result
 				+ ((apellido == null) ? 0 : apellido.hashCode());
 		result = prime * result + ((cuit == null) ? 0 : cuit.hashCode());
-		result = prime * result + ((cuotas == null) ? 0 : cuotas.hashCode());
 		result = prime * result
 				+ ((direccion == null) ? 0 : direccion.hashCode());
 		result = prime * result
@@ -203,13 +187,6 @@ public class Cliente extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!cuit.equals(other.cuit)) {
-			return false;
-		}
-		if (cuotas == null) {
-			if (other.cuotas != null) {
-				return false;
-			}
-		} else if (!cuotas.equals(other.cuotas)) {
 			return false;
 		}
 		if (direccion == null) {
@@ -273,9 +250,10 @@ public class Cliente extends BaseObject implements Serializable {
 				+ apellido + ", documento=" + documento + ", cuit=" + cuit
 				+ ", telefono=" + telefono + ", email=" + email
 				+ ", eliminado=" + eliminado + ", fechaNacimiento="
-				+ fechaNacimiento + ", direccion=" + direccion + ", cuotas="
-				+ cuotas + "]";
+				+ fechaNacimiento + ", direccion=" + direccion + "]";
 	}
+
+	
 
 	
 	

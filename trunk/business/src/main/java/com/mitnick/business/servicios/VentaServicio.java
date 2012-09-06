@@ -251,4 +251,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		return cuotas;
 	}
 
+	@Transactional
+	public void guardarCuotas(VentaDto venta, List<CuotaDto> cuotas) {
+		venta.setCuotas(cuotas);
+	}
 }

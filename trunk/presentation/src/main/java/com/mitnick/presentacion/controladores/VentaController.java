@@ -71,7 +71,7 @@ public class VentaController extends BaseController {
 	}
 	
 	public void guardarCuotas(List<CuotaDto> cuotas){
-		
+		ventaServicio.guardarCuotas(VentaManager.getVentaActual(), cuotas);
 	}
 	
 	public void mostrarBuscarArticuloPanel() {

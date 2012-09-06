@@ -32,6 +32,8 @@ public class VentaDto extends BaseDto {
 	
 	private BigDecimal vuelto = new BigDecimal(0);
 	
+	private List<CuotaDto> cuotas;
+	
 	public List<ProductoVentaDto> getProductos() {
 		if(productos == null)
 			productos = new ArrayList<ProductoVentaDto>();
@@ -127,4 +129,14 @@ public class VentaDto extends BaseDto {
 	public void setVuelto(BigDecimal vuelto) {
 		this.vuelto = vuelto;
 	}
+
+	public List<CuotaDto> getCuotas() {
+		return cuotas;
+	}
+
+	public void setCuotas(List<CuotaDto> cuotas) {
+		this.cuotas = cuotas;
+	}
+	
+	
 }
