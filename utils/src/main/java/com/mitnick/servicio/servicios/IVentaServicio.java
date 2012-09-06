@@ -1,9 +1,13 @@
 package com.mitnick.servicio.servicios;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.springframework.security.access.annotation.Secured;
 
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
@@ -40,4 +44,8 @@ public interface IVentaServicio {
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	VentaDto facturar(VentaDto venta);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	List<CuotaDto> generarCuotas(int cuotas, BigDecimal total);
+	
 }

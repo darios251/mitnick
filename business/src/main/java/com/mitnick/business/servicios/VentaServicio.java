@@ -1,8 +1,12 @@
 package com.mitnick.business.servicios;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,7 @@ import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
@@ -222,6 +227,28 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		productoDao.saveOrUpdate(producto);
 		movimientoDao.saveOrUpdate(movimiento);
+	}
+	
+	@Transactional
+	public List<CuotaDto> generarCuotas(int cantidadCuotas, BigDecimal total) {
+		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
+		BigDecimal valorCuota = total.divide(new BigDecimal(cantidadCuotas));
+		Date fecha = new Date();
+		GregorianCalendar calendar = (GregorianCalendar) Calendar.getInstance();
+		
+		for (int i = 0; i < cantidadCuotas; i++) {
+			CuotaDto cuota = new CuotaDto();
+			cuota.setNroCuota(i + 1);
+			cuota.setTotal(valorCuota);
+
+			cuota.setFecha_pagar(fecha);
+			calendar.setTime(fecha);
+			calendar.add(Calendar.MONTH, 1);
+			fecha = calendar.getTime();
+			cuotas.add(cuota);
+		}
+		
+		return cuotas;
 	}
 
 }
