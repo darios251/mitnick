@@ -1,7 +1,6 @@
 package com.mitnick.util;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +20,7 @@ import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Ciudad;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Direccion;
 import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.MedioPago;
@@ -38,6 +38,7 @@ import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.BaseDto;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.DireccionDto;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
@@ -389,8 +390,21 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	private Venta getEntityFromDto(VentaDto ventaDto) {
 
 		Venta venta = new Venta();
-		if (Validator.isNotNull(ventaDto.getCliente()))
-			venta.setCliente(clienteDao.get(ventaDto.getCliente().getId()));
+		if (Validator.isNotNull(ventaDto.getCliente())){
+			Cliente cliente = clienteDao.get(ventaDto.getCliente().getId());
+			venta.setCliente(cliente);
+			if (ventaDto.getCuotas()!=null &&! ventaDto.getCuotas().isEmpty()){
+				List<Cuota> cuotas = new ArrayList<Cuota>();
+				for (CuotaDto cuotaDto : ventaDto.getCuotas()){
+					Cuota cuota = getEntityFromDto(cuotaDto);
+					cuota.setVenta(venta);
+					cuota.setCliente(cliente);
+					cuotas.add(cuota);
+				}
+				venta.setCuotas(cuotas);
+			}
+		}
+			
 
 		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());
@@ -424,6 +438,14 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoVenta.setIva(productoVentaDto.getIva());
 		productoVenta.setPrecio(productoVentaDto.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP));
 		return productoVenta;
+	}
+	
+	private Cuota getEntityFromDto(CuotaDto cuotaDto) {
+		Cuota cuota = new Cuota();
+		cuota.setFecha_pagar(cuotaDto.getFecha_pagar());
+		cuota.setNroCuota(cuotaDto.getNroCuota());
+		cuota.setTotal(cuotaDto.getTotal());
+		return cuota;
 	}
 
 	private Pago getPagoFromPagoDto(PagoDto pagoDto) {

@@ -48,4 +48,7 @@ public interface IVentaServicio {
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	List<CuotaDto> generarCuotas(int cuotas, BigDecimal total);
 	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	void guardarCuotas(VentaDto venta, List<CuotaDto> cuotas);
+	
 }
