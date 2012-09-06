@@ -34,6 +34,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
@@ -309,7 +310,7 @@ public class PagoPanel extends BasePanel {
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						ventaController.mostrarVentasPanel();
+						ventaController.mostrarClienteVenta();
 					}
 					catch(PresentationException ex) {
 						
@@ -395,7 +396,15 @@ public class PagoPanel extends BasePanel {
 	
 	protected void agregarPago() {
 		try {
-			ventaController.agregarPago((MedioPagoDto)cmbMedioPago.getSelectedItem(), txtMonto.getText());
+			MedioPagoDto pago = (MedioPagoDto)cmbMedioPago.getSelectedItem();
+			if (pago.isCuentaCorriente()){
+				 String cuotas = JOptionPane.showInputDialog(PropertiesManager.getProperty( "dialog.error.MensajeReintentar"));
+				 List<CuotaDto> cuotasDto = ventaController.getCuotas(cuotas, txtMonto.getText());
+				 //TODO: Lucas desde aca se muestra la ventanita con cuotas con la lista CuotasDto obtenida arriba
+			}
+				
+			
+			ventaController.agregarPago(pago, txtMonto.getText());
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);

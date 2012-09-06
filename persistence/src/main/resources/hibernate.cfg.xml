@@ -23,5 +23,6 @@
         <mapping class="com.mitnick.persistence.entities.Proveedor"/>
         <mapping class="com.mitnick.persistence.entities.Configuracion"/>
         <mapping class="com.mitnick.persistence.entities.Parametro"/>
+        <mapping class="com.mitnick.persistence.entities.Cuota"/>
     </session-factory>
 </hibernate-configuration>

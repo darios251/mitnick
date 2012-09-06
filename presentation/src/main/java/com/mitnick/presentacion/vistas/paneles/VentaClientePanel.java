@@ -37,6 +37,7 @@ public class VentaClientePanel extends BasePanel {
 	private JTextField txtNumeroDocumento;
 	private JTextField txtApellido;
 	private JButton btnBuscar;
+	private JButton btnVolver;
 	private JButton btnContinuar;
 	private JLabel lblNombre;
 	private JLabel lblNumeroDocumento;
@@ -98,6 +99,7 @@ public class VentaClientePanel extends BasePanel {
 		add(getBtnEstadoCuenta());
 		add(getBtnBuscar());
 		add(getBtnNuevo());
+		add(getBtnVolver());
 		
 		add(getChkConsumidorFinal());
 		
@@ -189,7 +191,7 @@ public class VentaClientePanel extends BasePanel {
 	public JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane(getTable());
-			scrollPane.setBounds(25, 115, 700, 315);
+			scrollPane.setBounds(25, 109, 700, 315);
 		}
 		return scrollPane;
 	}
@@ -264,6 +266,30 @@ public class VentaClientePanel extends BasePanel {
 		return btnEstadoCuenta;
 	}
 
+	public JButton getBtnVolver() {
+		if(btnVolver == null) {
+			btnVolver = new JButton("Volver");
+			btnVolver.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.volver"));
+			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnVolver.setMargin(new Insets(-1, -1, -1, -1));
+			btnVolver.setBounds(735, 333, 60, 60);
+			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
+			btnVolver.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						ventaController.mostrarVentasPanel();
+					}
+					catch(PresentationException ex) {
+						
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnVolver;
+	}
+	
 	public TableRowSorter<ClienteTableModel> getSorter() {
 		if (sorter == null) {
 			sorter = new TableRowSorter<ClienteTableModel>(getModel());

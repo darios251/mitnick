@@ -19,6 +19,7 @@ import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.PagoDto;
@@ -109,7 +110,10 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	//restar el vuelto al pago - el pago deberia ser siempre el total 
 	@Override
 	public VentaDto agregarPago(PagoDto pago, VentaDto venta) {
+		validarPago(pago, venta);
+		
 		PagoDto pagoDto = getPagoDto(pago, venta);
+		
 		if (pagoDto == null)
 			//agrego el nuevo pago
 			venta.getPagos().add(pago);
@@ -124,6 +128,13 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		return venta;
 	}
 
+	private void validarPago(PagoDto pago, VentaDto venta){
+		//si es cuenta se debe tener un cliente asociado
+		if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())
+				&& venta.getCliente()==null)
+			throw new BusinessException("error.ventaServicio.cuentaSinCliente", "Debe asociar un cliente a la venta para pagar con cuenta corriente");
+	}
+	
 	public PagoDto getPagoDto(PagoDto pago, VentaDto venta){
 		Iterator<PagoDto> pagos = venta.getPagos().iterator();
 		PagoDto pagoDto = null;

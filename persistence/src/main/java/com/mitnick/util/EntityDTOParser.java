@@ -189,6 +189,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		MedioPagoDto medioPagoDto = new MedioPagoDto();
 		medioPagoDto.setDescripcion(medioPago.getDescripcion());
 		medioPagoDto.setId(medioPago.getId());
+		medioPagoDto.setCodigo(medioPago.getCodigo());
 		return medioPagoDto;
 	}
 
