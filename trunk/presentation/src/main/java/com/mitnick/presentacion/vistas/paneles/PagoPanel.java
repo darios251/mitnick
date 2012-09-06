@@ -401,6 +401,9 @@ public class PagoPanel extends BasePanel {
 				 String cuotas = JOptionPane.showInputDialog(PropertiesManager.getProperty( "dialog.error.MensajeReintentar"));
 				 List<CuotaDto> cuotasDto = ventaController.getCuotas(cuotas, txtMonto.getText());
 				 //TODO: Lucas desde aca se muestra la ventanita con cuotas con la lista CuotasDto obtenida arriba
+				 //se muestra a tabla, el usuario puede modificar fechas y montos y presiona aceptar, se obtienen las
+				 //cuotas de la tabla y se guardan
+				 ventaController.guardarCuotas(cuotasDto);
 			}
 				
 			
