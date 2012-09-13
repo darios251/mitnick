@@ -100,6 +100,20 @@
                 <filtering>true</filtering>
             </testResource>
         </testResources>
+        
+<!--     <pluginManagement> -->
+<!--       <plugins> -->
+<!--         <plugin> -->
+<!--           <artifactId>maven-assembly-plugin</artifactId> -->
+<!--           <version>2.3</version> -->
+<!--           <configuration> -->
+<!--             <descriptors> -->
+<!--               <descriptor>assemble.xml</descriptor> -->
+<!--             </descriptors> -->
+<!--           </configuration> -->
+<!--         </plugin> -->
+<!--       </plugins> -->
+<!--     </pluginManagement> -->
     </build>
 
     <repositories>
@@ -410,4 +424,5 @@
 			<version>2.2</version>
 	    </dependency>
     </dependencies>
+    
 </project>

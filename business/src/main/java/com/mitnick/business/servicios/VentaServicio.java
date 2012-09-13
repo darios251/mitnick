@@ -24,6 +24,7 @@ import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -42,6 +43,9 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	protected IProductoDAO productoDao;
 	@Autowired
 	protected IMovimientoDao movimientoDao;
+	
+	@Autowired
+	protected PrinterService printerService;
 	
 	@Override
 	public VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
@@ -158,7 +162,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		return venta;
 	}
 
-	//TODO: se guarda la venta, se envia a la impresora fiscal
+	@Transactional
 	@Override
 	public VentaDto facturar(VentaDto ventaDto) {
 		VentaHelper.calcularTotales(ventaDto);
@@ -167,6 +171,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		}
 		Venta venta = guardarVenta(ventaDto);
 		
+		if(printerService.imprimirTicket(ventaDto))
+			throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		ventaDao.generarFactura(venta);
 		return ventaDto;
 
