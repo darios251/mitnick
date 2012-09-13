@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -403,11 +404,11 @@ public class PagoPanel extends BasePanel {
 				 //TODO: Lucas desde aca se muestra la ventanita con cuotas con la lista CuotasDto obtenida arriba
 				 //se muestra a tabla, el usuario puede modificar fechas y montos y presiona aceptar, se obtienen las
 				 //cuotas de la tabla y se guardan
-				 ventaController.guardarCuotas(cuotasDto);
+				 
+				 CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto);
 			}
-				
-			
-			ventaController.agregarPago(pago, txtMonto.getText());
+			else			
+				ventaController.agregarPago(pago, txtMonto.getText());
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
