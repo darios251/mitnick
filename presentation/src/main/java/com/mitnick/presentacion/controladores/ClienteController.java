@@ -1,7 +1,9 @@
 package com.mitnick.presentacion.controladores;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +11,19 @@ import org.springframework.stereotype.Controller;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.presentacion.vistas.ClienteView;
 import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ClientePanel;
+import com.mitnick.presentacion.vistas.paneles.CuentaCorrientePanel;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.DireccionDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
@@ -30,6 +35,8 @@ public class ClienteController extends BaseController {
 	@Autowired protected ClientePanel clientePanel;
 	
 	@Autowired private ClienteNuevoPanel clienteNuevoPanel;
+	
+	@Autowired private CuentaCorrientePanel cuentaCorrientePanel;
 	
 	@Autowired private IClienteServicio clienteServicio;
 	
@@ -114,6 +121,14 @@ public class ClienteController extends BaseController {
 		clienteNuevoPanel.setVisible(true);
 		clienteNuevoPanel.actualizarPantalla();
 	}
+	
+	public void mostrarCuentaCorrientePanel() {
+		ultimoPanelMostrado = cuentaCorrientePanel;
+		clientePanel.setVisible(false);
+		cuentaCorrientePanel.setVisible(true);
+		cuentaCorrientePanel.actualizarPantalla();
+	}
+	
 	
 	public void guardarCliente(ClienteDto cliente, String apellido, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
@@ -200,7 +215,69 @@ public class ClienteController extends BaseController {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el cliente");
 		}
 	}
+	
+	public void eliminarCuota() {
+		CuotaDto cuotaDto = null;
+		int index = -1;
+		try {
+			index = getCuentaCorrientePanel().getTable().getSelectedRow();
+			cuotaDto = getCuentaCorrientePanel().getModel().getCuota(index);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getCuentaCorrientePanel().getModel().getRowCount() == 0) {
+				throw new PresentationException("error.cuentaPanel.cuentas.vacio");
+			}
+			else {
+				throw new PresentationException("error.cuentaPanel.cuota.noSeleccionado");
+			}
+		}
+		
+		try {
+			getClienteServicio().eliminarCuota(cuotaDto);
+			getCuentaCorrientePanel().getModel().remove(index);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar la cuota");
+		}
+	}
 
+
+	public void cuentaCorriente() {
+		ClienteDto clienteDto = null;
+		try {
+			int index = getClientePanel().getTable().getSelectedRow();
+			clienteDto = getClientePanel().getModel().getCliente(index);
+			List<CuotaDto> cuotas = clienteServicio.obtenerCuotasPendientes(clienteDto);
+			cuentaCorrientePanel.setCuotas(cuotas);
+			cuentaCorrientePanel.setCliente(clienteDto);
+			mostrarCuentaCorrientePanel();
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getClientePanel().getModel().getRowCount() == 0) {
+				throw new PresentationException("error.clientePanel.clientes.editar.vacio");
+			}
+			else {
+				throw new PresentationException("error.clientePanel.cliente.editar.noSeleccionado");
+			}
+		} catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el cliente");
+		}
+	}
+	
+	public void nuevaCuota(){
+		CuotaDto cuotaDto = new CuotaDto();
+		cuotaDto.setFecha_pagar(new Date());
+		cuotaDto.setNroCuota(1);
+		cuotaDto.setTotal(new BigDecimal(0));
+		cuotaDto.setClienteDto(cuentaCorrientePanel.getCliente());
+		getCuentaCorrientePanel().getModel().addCuota(cuotaDto);
+	}
+	
+	public void editarCuotas(){
+		List<CuotaDto> cuotas = getCuentaCorrientePanel().getModel().getCuotas();
+		clienteServicio.guardarCuotas(cuotas);
+	}
+	
 	public BasePanel getUltimoPanelMostrado() {
 		return ultimoPanelMostrado;
 	}
@@ -228,4 +305,13 @@ public class ClienteController extends BaseController {
 	public ClienteNuevoPanel getClienteNuevoPanel() {
 		return clienteNuevoPanel;
 	}
+
+	public CuentaCorrientePanel getCuentaCorrientePanel() {
+		return cuentaCorrientePanel;
+	}
+
+	public void setCuentaCorrientePanel(CuentaCorrientePanel cuentaCorrientePanel) {
+		this.cuentaCorrientePanel = cuentaCorrientePanel;
+	}
+	
 }

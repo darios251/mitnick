@@ -12,6 +12,8 @@ public class CuotaDto extends BaseDto {
 	private BigDecimal total;
 	
 	private int nroCuota;
+	
+	private ClienteDto clienteDto;
 
 	public Date getFecha_pagar() {
 		return fecha_pagar;
@@ -35,6 +37,14 @@ public class CuotaDto extends BaseDto {
 
 	public void setNroCuota(int nroCuota) {
 		this.nroCuota = nroCuota;
+	}
+
+	public ClienteDto getClienteDto() {
+		return clienteDto;
+	}
+
+	public void setClienteDto(ClienteDto clienteDto) {
+		this.clienteDto = clienteDto;
 	}
 
 	

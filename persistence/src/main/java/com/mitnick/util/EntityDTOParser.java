@@ -107,6 +107,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (D) getDtoFromEntity((Ciudad) entity);
 		else if(entity instanceof Proveedor)
 			return (D) getDtoFromEntity((Proveedor) entity);
+		else if(entity instanceof Cuota)
+			return (D) getDtoFromEntity((Cuota) entity);
 		else return null;
 	}
 
@@ -133,6 +135,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (E) getEntityFromDto((VentaDto) dto);
 		else if(dto instanceof ProvinciaDto)
 			return (E) getEntityFromDto((ProvinciaDto) dto);
+		else if(dto instanceof CuotaDto)
+			return (E) getEntityFromDto((CuotaDto) dto);
 		else return null;
 	}
 	
@@ -243,6 +247,15 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		return proveedorDto;
 	}
 	
+	private CuotaDto getDtoFromEntity(Cuota cuota) {
+		CuotaDto cuotaDto = new CuotaDto();
+		cuotaDto.setId(cuota.getId());
+		cuotaDto.setFecha_pagar(cuota.getFecha_pagar());
+		cuotaDto.setNroCuota(cuota.getNroCuota());
+		cuotaDto.setTotal(cuota.getTotal());
+		cuotaDto.setClienteDto(getDtoFromEntity(cuota.getCliente()));
+		return cuotaDto;
+	}
 	private TipoDto getDtoFromEntity(Tipo tipo) {
 		TipoDto tipoDto = new TipoDto();
 		tipoDto.setDescripcion(tipo.getDescripcion());
@@ -445,6 +458,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cuota.setFecha_pagar(cuotaDto.getFecha_pagar());
 		cuota.setNroCuota(cuotaDto.getNroCuota());
 		cuota.setTotal(cuotaDto.getTotal());
+		cuota.setCliente(getEntityFromDto(cuotaDto.getClienteDto()));
 		return cuota;
 	}
 
