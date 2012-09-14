@@ -21,8 +21,9 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 	
 	public CuentaCorrienteTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add(PropertiesManager.getProperty("pagoTableModel.medioPago"));
-		columnNames.add(PropertiesManager.getProperty("pagoTableModel.monto"));
+		columnNames.add(PropertiesManager.getProperty("cuentaCorrienteModel.numeroCuota"));
+		columnNames.add(PropertiesManager.getProperty("cuentaCorrienteModel.fecha"));
+		columnNames.add(PropertiesManager.getProperty("cuotaCorrienteModel.monto"));
 		data = new ArrayList<CuotaDto>();
 	}
 	
@@ -93,7 +94,7 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -119,13 +120,16 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 		switch(columnIndex) {
 		case 0: 
 			fila.setNroCuota(Integer.parseInt((String)aValue));
+			break;
 		case 1:
 			try {
 				fila.setFecha_pagar(new SimpleDateFormat(MitnickConstants.DATE_FORMAT).parse((String)aValue));
 			} catch (ParseException e) {
 			}
+			break;
 		case 2: 
-			fila.setTotal((BigDecimal)aValue);
+			fila.setTotal(new BigDecimal((String) aValue));
+			break;
 		}
 		
 		

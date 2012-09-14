@@ -34,6 +34,7 @@ public class PrinterService {
 	private static final String FIN_PAGO = "[FIN-PAGO]";
 	private static final String CLOSE_COLA = "[CLOSE-COLA]";
 	private static final String FIN_COLA = "[FIN-COLA]";
+	private static final String BLANK_LINE = "[BLANK-LINE]";
 	
 	public boolean imprimirTicket(VentaDto venta) {
 		PrintStream output = null;
@@ -47,6 +48,7 @@ public class PrinterService {
 			input = new DataInputStream(socket.getInputStream());
 			
 			output.println(TICKET_TAG);
+			output.println(BLANK_LINE);
 			
 			for(ProductoVentaDto producto : venta.getProductos()) {
 				output.println(ITEM_TAG);
