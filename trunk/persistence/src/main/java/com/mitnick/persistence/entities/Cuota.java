@@ -46,10 +46,13 @@ public class Cuota extends BaseObject implements Serializable {
 	@Column(name = "numero_cuota", nullable = false)
 	private int nroCuota;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
-
+	
+	@Column(name = "pagado", nullable = false)
+	private boolean pagado = false;
+	
 	public Long getId() {
 		return id;
 	}
@@ -106,6 +109,14 @@ public class Cuota extends BaseObject implements Serializable {
 		this.cliente = cliente;
 	}
 
+	public boolean isPagado() {
+		return pagado;
+	}
+
+	public void setPagado(boolean pagado) {
+		this.pagado = pagado;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -115,6 +126,7 @@ public class Cuota extends BaseObject implements Serializable {
 				+ ((fecha_pagar == null) ? 0 : fecha_pagar.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + nroCuota;
+		result = prime * result + (pagado ? 1231 : 1237);
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		result = prime * result + ((venta == null) ? 0 : venta.hashCode());
@@ -157,6 +169,9 @@ public class Cuota extends BaseObject implements Serializable {
 		if (nroCuota != other.nroCuota) {
 			return false;
 		}
+		if (pagado != other.pagado) {
+			return false;
+		}
 		if (pagos == null) {
 			if (other.pagos != null) {
 				return false;
@@ -185,7 +200,8 @@ public class Cuota extends BaseObject implements Serializable {
 	public String toString() {
 		return "Cuota [id=" + id + ", fecha_pagar=" + fecha_pagar + ", total="
 				+ total + ", venta=" + venta + ", pagos=" + pagos
-				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente + "]";
+				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente
+				+ ", pagado=" + pagado + "]";
 	}
 
 	

@@ -50,6 +50,7 @@ public class ClientePanel extends BasePanel {
 	private JTextField txtNumeroCtaCte;
 	private JLabel lblApellido;
 	private JButton btnEstadoCuenta;
+	private JButton btnCuentaCorriente;
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
 
@@ -101,7 +102,8 @@ public class ClientePanel extends BasePanel {
 		add(getBtnModificar());
 		add(getBtnEliminar());
 		add(getBtnEstadoCuenta());
-
+		add(getBtnCuentaCorriente());
+		
 		setFocusTraversalPolicy();
 	}
 
@@ -318,6 +320,25 @@ public class ClientePanel extends BasePanel {
 			});
 		}
 		return btnEstadoCuenta;
+	}
+	
+	public JButton getBtnCuentaCorriente() {
+		if (btnCuentaCorriente == null) {
+
+			btnCuentaCorriente = new JButton(PropertiesManager.getProperty("clientePanel.button.cuentaCorriente"));
+			btnCuentaCorriente.setToolTipText(PropertiesManager.getProperty("clientePanel.button.cuentaCorriente.tooltip"));
+			btnCuentaCorriente.setIcon(new ImageIcon(this.getClass().getResource("/img/estado_cuenta.png")));
+			btnCuentaCorriente.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnCuentaCorriente.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnCuentaCorriente.setMargin(new Insets(-1, -1, -1, -1));
+			btnCuentaCorriente.setBounds(735, 396, 60, 60);
+			btnCuentaCorriente.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					clienteController.cuentaCorriente();
+				}
+			});
+		}
+		return btnCuentaCorriente;
 	}
 
 	public TableRowSorter<ClienteTableModel> getSorter() {

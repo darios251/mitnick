@@ -11,14 +11,17 @@ import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
+import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IDireccionDao;
 import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
 @SuppressWarnings("rawtypes")
@@ -27,29 +30,33 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	@Autowired
 	protected IClienteDao clienteDao;
-	
+
 	@Autowired
 	protected IProvinciaDao provinciaDao;
-	
+
 	@Autowired
 	protected ICiudadDao ciudadDao;
-	
+
 	@Autowired
 	protected IDireccionDao direccionDao;
-	
+
+	@Autowired
+	protected ICuotaDao cuotaDao;
+
 	@Transactional
 	@Override
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
 		@SuppressWarnings("unchecked")
-		Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
+		Cliente cliente = (Cliente) entityDTOParser
+				.getEntityFromDto(clienteDto);
 		validateEntity(cliente);
-		
+
 		try {
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
-		}
-		catch(PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar guardar el cliente");
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar guardar el cliente");
 		}
 		return clienteDto;
 	}
@@ -58,43 +65,49 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Override
 	public void eliminarCliente(ClienteDto clienteDto) {
 		if (clienteDto.getId() == null) {
-			throw new BusinessException("error.clienteServicio.id.nulo", "Se invoca la eliminación de un cliente que no existe en la base de datos ya que no se brinda el ID");
+			throw new BusinessException(
+					"error.clienteServicio.id.nulo",
+					"Se invoca la eliminación de un cliente que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
 			@SuppressWarnings("unchecked")
-			Cliente cliente = (Cliente) entityDTOParser.getEntityFromDto(clienteDto);
+			Cliente cliente = (Cliente) entityDTOParser
+					.getEntityFromDto(clienteDto);
 			cliente.setEliminado(true);
 			clienteDao.saveOrUpdate(cliente);
-		}
-		catch(PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar eliminar el cliente");
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar eliminar el cliente");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	@Override
 	public List<ClienteDto> consultarCliente(ConsultaClienteDto filtro) {
 		List<ClienteDto> resultado = new ArrayList<ClienteDto>();
 		try {
-			resultado = entityDTOParser.getDtosFromEntities(clienteDao.findByFiltro(filtro));
-		}
-		catch(PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar consultar clientes");
+			resultado = entityDTOParser.getDtosFromEntities(clienteDao
+					.findByFiltro(filtro));
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar consultar clientes");
 		}
 		return resultado;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ProvinciaDto> obtenerProvincias() {
 		return entityDTOParser.getDtosFromEntities(provinciaDao.getAll());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CiudadDto> obtenerCiudades(ProvinciaDto provincia) {
-		return entityDTOParser.getDtosFromEntities(ciudadDao.getByProvincia((Provincia) entityDTOParser.getEntityFromDto(provincia)));
+		return entityDTOParser.getDtosFromEntities(ciudadDao
+				.getByProvincia((Provincia) entityDTOParser
+						.getEntityFromDto(provincia)));
 	}
 
 	@Override
@@ -102,4 +115,44 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		clienteDao.cargarReporte();
 	}
 
+	public List<CuotaDto> obtenerCuotasPendientes(ClienteDto cliente) {
+		List<CuotaDto> cuotas = entityDTOParser.getDtosFromEntities(cuotaDao
+				.getCuotaByClienteId(cliente.getId()));
+		return cuotas;
+	}
+
+	@Transactional
+	@Override
+	public void eliminarCuota(CuotaDto cuotaDto) {
+		if (cuotaDto.getId() == null) {
+			throw new BusinessException(
+					"error.clienteServicio.id.nulo",
+					"Se invoca la eliminación de una cuota que no existe en la base de datos ya que no se brinda el ID");
+		}
+		try {
+			cuotaDao.eliminarCuota(cuotaDto);
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar eliminar el cliente");
+		}
+	}
+
+	@Transactional
+	@Override
+	public void guardarCuotas(List<CuotaDto> cuotasDtos) {
+
+		try {
+			for (int i = 0; i < cuotasDtos.size(); i++) {
+				CuotaDto cuotaDto = cuotasDtos.get(i);
+				@SuppressWarnings("unchecked")
+				Cuota cuota = (Cuota) entityDTOParser
+						.getEntityFromDto(cuotaDto);
+				cuota = cuotaDao.saveOrUpdate(cuota);
+				cuotaDto.setId(cuota.getId());
+			}
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar guardar las cuotas");
+		}
+	}
 }

@@ -238,7 +238,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Transactional
 	public List<CuotaDto> generarCuotas(int cantidadCuotas, BigDecimal total) {
 		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
-		BigDecimal valorCuota = total.divide(new BigDecimal(cantidadCuotas));
+		BigDecimal cantidad = new BigDecimal(cantidadCuotas);
+		BigDecimal valorCuota = total.divide(cantidad, BigDecimal.ROUND_UP);
 		Date fecha = new Date();
 		GregorianCalendar calendar = (GregorianCalendar) Calendar.getInstance();
 		
