@@ -1,9 +1,11 @@
 package com.mitnick.utils;
 
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -36,14 +38,17 @@ public class PrinterService {
 	private static final String FIN_COLA = "[FIN-COLA]";
 	private static final String BLANK_LINE = "[BLANK-LINE]";
 	
+	private static final String CIERRE_Z_TAG = "[CIERRE-Z]";
+	private static final String CIERRE_X_TAG = "[CIERRE-X]";
+	private static final String INFORME_JORNADA_TAG = "[INFORME-JORNADA]";
+	
 	public boolean imprimirTicket(VentaDto venta) {
 		PrintStream output = null;
 		DataInputStream input = null;
 		Socket socket = null;
 		
 		try {
-			socket = new Socket("192.168.1.105", 9095);
-			socket.setSoTimeout(15000);
+			socket = connect();
 			output = new PrintStream(socket.getOutputStream());
 			input = new DataInputStream(socket.getInputStream());
 			
@@ -104,7 +109,7 @@ public class PrinterService {
 			
 		    String line = "";
 		    
-		    while((line = input.readLine()).equals("<FIN DE IMPRESION>")) {
+		    while(!(line = input.readLine()).equals("<FIN DE IMPRESION>")) {
 		    	logger.error(line);
 		    	return false;
 		    }
@@ -118,6 +123,105 @@ public class PrinterService {
 		}
 		
 		return true;
+	}
+	
+	public boolean imprimirCierreZ() {
+		PrintStream output = null;
+		DataInputStream input = null;
+		Socket socket = null;
+		
+		try {
+			socket = connect();
+			output = new PrintStream(socket.getOutputStream());
+			input = new DataInputStream(socket.getInputStream());
+			
+			output.println(CIERRE_Z_TAG);
+			
+			output.println(FIN_TICKET_TAG);
+			
+			 String line = "";
+			    
+		    while(!(line = input.readLine()).equals("<FIN DE IMPRESION>")) {
+		    	logger.error(line);
+		    	return false;
+		    }
+			
+			input.close();
+			output.close();
+			socket.close();
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean imprimirCierreX() {
+		PrintStream output = null;
+		DataInputStream input = null;
+		Socket socket = null;
+		
+		try {
+			socket = connect();
+			output = new PrintStream(socket.getOutputStream());
+			input = new DataInputStream(socket.getInputStream());
+			
+			output.println(CIERRE_X_TAG);
+			
+			output.println(FIN_TICKET_TAG);
+			
+			String line = "";
+			    
+		    while(!(line = input.readLine()).equals("<FIN DE IMPRESION>")) {
+		    	logger.error(line);
+		    	return false;
+		    }
+			
+			input.close();
+			output.close();
+			socket.close();
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean imprimirInformeJornada() {
+		PrintStream output = null;
+		DataInputStream input = null;
+		Socket socket = null;
+		
+		try {
+			socket = connect();
+			output = new PrintStream(socket.getOutputStream());
+			input = new DataInputStream(socket.getInputStream());
+			
+			output.println(INFORME_JORNADA_TAG);
+			
+			output.println(FIN_TICKET_TAG);
+			
+			String line = "";
+			    
+		    while(!(line = input.readLine()).equals("<FIN DE IMPRESION>")) {
+		    	logger.error(line);
+		    	return false;
+		    }
+			
+			input.close();
+			output.close();
+			socket.close();
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+		return true;
+	}
+	
+	protected Socket connect() throws UnknownHostException, IOException {
+		Socket socket = new Socket("192.168.1.105", 9095);
+		socket.setSoTimeout(15000);
+		return socket;
 	}
 	
 }
