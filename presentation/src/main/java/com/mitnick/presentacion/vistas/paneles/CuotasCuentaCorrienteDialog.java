@@ -1,5 +1,7 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -8,6 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.CuentaCorrienteTableModel;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -19,6 +24,9 @@ public class CuotasCuentaCorrienteDialog extends JDialog {
 	private CuentaCorrienteTableModel model;
 	private JScrollPane scrollPane;
 	private JButton btnAceptar;
+	
+	@Autowired
+	private VentaController ventaController;
 	
 	public CuotasCuentaCorrienteDialog(JFrame frame, List<CuotaDto> cuotasDto) {
 		super(frame, true);
@@ -38,6 +46,11 @@ public class CuotasCuentaCorrienteDialog extends JDialog {
 		if(btnAceptar == null) {
 			btnAceptar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.aceptar"));
 			btnAceptar.setBounds(400, 300, 100, 25);
+			btnAceptar.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
 		}
 		
 		return btnAceptar;

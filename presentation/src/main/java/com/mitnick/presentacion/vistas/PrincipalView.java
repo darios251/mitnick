@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -27,6 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.mitnick.exceptions.BaseException;
+import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.ProveedorController;
@@ -36,6 +39,7 @@ import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.View;
 
@@ -60,6 +64,8 @@ public class PrincipalView extends JFrame
 	private ProveedorController proveedorController;
 	@Autowired
 	private LoginView loginView;
+	@Autowired
+	private PrinterService printerService;
 	
 	private DetailPanel pnlPrincipal;
 	private DetailPanel pnlToolBar;
@@ -86,6 +92,10 @@ public class PrincipalView extends JFrame
 	public static JLabel lblLogo;
 	
 	private PrincipalView thisView;
+	private JMenu menuImpresora;
+	private JMenuItem menuItemCierreZ;
+	private JMenuItem menuInformeJornada;
+	private JMenuItem menuConfiguracion;
 	
 	public PrincipalView()
 	{
@@ -110,6 +120,7 @@ public class PrincipalView extends JFrame
 			menuBar.add(getMenuArchivo());
 			menuBar.add(getMenuArticulo());
 			menuBar.add(getMenuAyuda());
+			menuBar.add(getMenuImpresora());
 		}
 		return menuBar;
 	}
@@ -532,5 +543,86 @@ public class PrincipalView extends JFrame
 			}
 		}
 		super.setVisible(b);
+	}
+	private JMenu getMenuImpresora() {
+		if (menuImpresora == null) {
+			menuImpresora = new JMenu("Impresora");
+			menuImpresora.add(getMenuItemCierreZ());
+			menuImpresora.add(getMenuInformeJornada());
+			menuImpresora.add(getMenuConfiguracion());
+		}
+		return menuImpresora;
+	}
+	private JMenuItem getMenuItemCierreZ() {
+		if (menuItemCierreZ == null) {
+			menuItemCierreZ = new JMenuItem("Cierre Z");
+			menuItemCierreZ.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(printerService.imprimirCierreZ())
+						throw new PresentationException("error.printer.cierreZ");
+				}
+			});
+		}
+		return menuItemCierreZ;
+	}
+	private JMenuItem getMenuInformeJornada() {
+		if (menuInformeJornada == null) {
+			menuInformeJornada = new JMenuItem("Informe de Jornada");
+			menuInformeJornada.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(!printerService.imprimirInformeJornada())
+						throw new PresentationException("error.printer.informeJornada");
+				}
+			});
+		}
+		return menuInformeJornada;
+	}
+	private JMenuItem getMenuConfiguracion() {
+		if (menuConfiguracion == null) {
+			menuConfiguracion = new JMenuItem("Configuración");
+			menuConfiguracion.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// TODO: IMPLEMENTAR ESTO
+				}
+			});
+		}
+		return menuConfiguracion;
+	}
+	
+	protected int mostrarMensaje(PresentationException ex) {
+		switch(ex.getType()) {
+		case BaseException.WARNING:
+			return mostrarMensajeAdvertencia(ex.getMessage());
+		case BaseException.ERROR:
+		default:
+			return mostrarMensajeError(ex.getMessage());
+		}
+	}
+	
+	protected int mostrarMensajeError ( String message ) {
+		Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
+		
+		return JOptionPane.showOptionDialog( this, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+	}
+	
+	protected int mostrarMensajeAdvertencia ( String message ) {
+		//Primero despliego un mensaje para confirmar la operacion
+	     Object[] options = { PropertiesManager.getProperty( "dialog.warning.okbutton" ) };
+	     
+	     return JOptionPane.showOptionDialog( this, message, PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[ 0 ] );
+	}
+	
+	protected int mostrarMensajeConsulta( String message ) {
+		//Primero despliego un mensaje para confirmar la operaci�n
+	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ), PropertiesManager.getProperty( "dialog.info.cancelbutton" ) };
+	     
+	     return JOptionPane.showOptionDialog(this, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
+	}
+	
+	protected int mostrarMensajeInformativo ( String message ) {
+		//Primero despliego un mensaje para confirmar la operaci�n
+	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ) };
+	     
+	     return JOptionPane.showOptionDialog(this, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
 	}
 }
