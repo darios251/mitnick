@@ -166,14 +166,24 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Override
 	public VentaDto facturar(VentaDto ventaDto) {
 		VentaHelper.calcularTotales(ventaDto);
+		
 		if (!ventaDto.isPagado()){
 			throw new BusinessException("error.ventaServicio.facturar", "No se puede facturar la venta ya que no se pago el total");
 		}
 		Venta venta = guardarVenta(ventaDto);
 		
-		if(printerService.imprimirTicket(ventaDto))
-			throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+		if(!venta.isPrinted()) {
+			
+			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
+				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+			else if(venta.getCliente() == null && !printerService.imprimirTicketFactura(ventaDto))
+				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+		}
+		else
+			venta.setPrinted(true);
+		
 		ventaDao.generarFactura(venta);
+		
 		return ventaDto;
 
 	}
