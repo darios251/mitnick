@@ -62,6 +62,9 @@ public class Venta extends BaseObject implements Serializable {
 	
 	private DiscriminacionIVA discriminacionIVA; 
 	
+	@Column(name = "printed", nullable = false)
+	private boolean printed;
+	
 	public Long getId() {
 		return id;
 	}
@@ -150,6 +153,14 @@ public class Venta extends BaseObject implements Serializable {
 		this.cuotas = cuotas;
 	}
 
+	public boolean isPrinted() {
+		return printed;
+	}
+	
+	public void setPrinted(boolean printed) {
+		this.printed = printed;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -167,6 +178,7 @@ public class Venta extends BaseObject implements Serializable {
 		result = prime * result
 				+ ((impuesto == null) ? 0 : impuesto.hashCode());
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
+		result = prime * result + (printed ? 1231 : 1237);
 		result = prime * result
 				+ ((productos == null) ? 0 : productos.hashCode());
 		result = prime * result
@@ -177,93 +189,70 @@ public class Venta extends BaseObject implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (!(obj instanceof Venta)) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		Venta other = (Venta) obj;
 		if (cliente == null) {
-			if (other.cliente != null) {
+			if (other.cliente != null)
 				return false;
-			}
-		} else if (!cliente.equals(other.cliente)) {
+		} else if (!cliente.equals(other.cliente))
 			return false;
-		}
 		if (cuotas == null) {
-			if (other.cuotas != null) {
+			if (other.cuotas != null)
 				return false;
-			}
-		} else if (!cuotas.equals(other.cuotas)) {
+		} else if (!cuotas.equals(other.cuotas))
 			return false;
-		}
 		if (descuento == null) {
-			if (other.descuento != null) {
+			if (other.descuento != null)
 				return false;
-			}
-		} else if (!descuento.equals(other.descuento)) {
+		} else if (!descuento.equals(other.descuento))
 			return false;
-		}
 		if (discriminacionIVA == null) {
-			if (other.discriminacionIVA != null) {
+			if (other.discriminacionIVA != null)
 				return false;
-			}
-		} else if (!discriminacionIVA.equals(other.discriminacionIVA)) {
+		} else if (!discriminacionIVA.equals(other.discriminacionIVA))
 			return false;
-		}
 		if (fecha == null) {
-			if (other.fecha != null) {
+			if (other.fecha != null)
 				return false;
-			}
-		} else if (!fecha.equals(other.fecha)) {
+		} else if (!fecha.equals(other.fecha))
 			return false;
-		}
 		if (id == null) {
-			if (other.id != null) {
+			if (other.id != null)
 				return false;
-			}
-		} else if (!id.equals(other.id)) {
+		} else if (!id.equals(other.id))
 			return false;
-		}
 		if (impuesto == null) {
-			if (other.impuesto != null) {
+			if (other.impuesto != null)
 				return false;
-			}
-		} else if (!impuesto.equals(other.impuesto)) {
+		} else if (!impuesto.equals(other.impuesto))
 			return false;
-		}
 		if (pagos == null) {
-			if (other.pagos != null) {
+			if (other.pagos != null)
 				return false;
-			}
-		} else if (!pagos.equals(other.pagos)) {
+		} else if (!pagos.equals(other.pagos))
 			return false;
-		}
+		if (printed != other.printed)
+			return false;
 		if (productos == null) {
-			if (other.productos != null) {
+			if (other.productos != null)
 				return false;
-			}
-		} else if (!productos.equals(other.productos)) {
+		} else if (!productos.equals(other.productos))
 			return false;
-		}
 		if (subtotal == null) {
-			if (other.subtotal != null) {
+			if (other.subtotal != null)
 				return false;
-			}
-		} else if (!subtotal.equals(other.subtotal)) {
+		} else if (!subtotal.equals(other.subtotal))
 			return false;
-		}
 		if (total == null) {
-			if (other.total != null) {
+			if (other.total != null)
 				return false;
-			}
-		} else if (!total.equals(other.total)) {
+		} else if (!total.equals(other.total))
 			return false;
-		}
 		return true;
 	}
 
@@ -273,9 +262,8 @@ public class Venta extends BaseObject implements Serializable {
 				+ pagos + ", fecha=" + fecha + ", subtotal=" + subtotal
 				+ ", descuento=" + descuento + ", impuesto=" + impuesto
 				+ ", total=" + total + ", cliente=" + cliente + ", cuotas="
-				+ cuotas + ", discriminacionIVA=" + discriminacionIVA + "]";
+				+ cuotas + ", discriminacionIVA=" + discriminacionIVA
+				+ ", printed=" + printed + "]";
 	}
-
-	
 
 }
