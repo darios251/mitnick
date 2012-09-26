@@ -49,7 +49,7 @@ public class PrinterService {
 	private static final String DIRECCION_COMPRADOR = "[DIRECCION-COMPRADOR]";
 	private static final String TIPO_DOCUMENTO_COMPRADOR = "[TIPO-DOCUMENTO-COMPRADOR]";
 	private static final String NUMERO_DOCUMENTO_COMPRADOR = "[NUMERO-DOCUMENTO-COMPRADOR]";
-	private static final String TIPO_IVA_COMPRADOR = "[TIPO_IVA-DOCUMENTO]";
+	private static final String TIPO_IVA_COMPRADOR = "[TIPO-IVA-COMPRADOR]";
 	private static final String LINEA_REMITOS_ASOCIADOS = "[LINEA-REMITOS-ASOCIADOS]";
 	private static final String FIN_DATOS_COMPRADOR = "[FIN-DATOS-COMPRADOR]";
 	
@@ -107,7 +107,6 @@ public class PrinterService {
 			
 			output.println(FIN_TICKET_TAG);
 			
-			output.println(PAGO_MONTO);
 			output.println(CLOSE_COLA);
 			output.println("Este comprobante es válido para");
 			output.println(CLOSE_COLA);
@@ -147,7 +146,6 @@ public class PrinterService {
 			input = new DataInputStream(socket.getInputStream());
 			
 			output.println(TICKET_FACTURA_TAG);
-			output.println(BLANK_LINE);
 			
 			output.println(DATOS_COMPRADOR);
 			
@@ -159,19 +157,19 @@ public class PrinterService {
 			output.println(DIRECCION_COMPRADOR);
 			output.println(cliente.getDireccion().getDomicilio());
 			output.println(DIRECCION_COMPRADOR);
-			output.println(cliente.getDireccion().getCodigoPostal() + " - " + cliente.getDireccion().getCiudad().getDescripcion() + " - " + cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion());
+			output.println(cliente.getDireccion().getCodigoPostal() + " - " + cliente.getDireccion().getCiudad().getDescripcion());
 			output.println(DIRECCION_COMPRADOR);
-			output.println("");
+			output.println(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion());
 			output.println(TIPO_DOCUMENTO_COMPRADOR);
 			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? "D" : "T");
 			output.println(NUMERO_DOCUMENTO_COMPRADOR);
-			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? cliente.getDocumento() : cliente.getCuit());
+			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? cliente.getDocumento() : cliente.getCuit().replaceAll("-", ""));
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println("I"); //TODO: ARREGLAR ESTO
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println("");
+			output.println("............");
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println("");
+			output.println("............");
 			output.println(FIN_DATOS_COMPRADOR);
 			
 			for(ProductoVentaDto producto : venta.getProductos()) {
@@ -215,7 +213,6 @@ public class PrinterService {
 			
 			output.println(FIN_TICKET_TAG);
 			
-			output.println(PAGO_MONTO);
 			output.println(CLOSE_COLA);
 			output.println("Este comprobante es válido para");
 			output.println(CLOSE_COLA);
