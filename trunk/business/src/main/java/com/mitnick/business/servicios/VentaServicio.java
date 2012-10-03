@@ -172,15 +172,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		}
 		Venta venta = guardarVenta(ventaDto);
 		
-		if(!venta.isPrinted()) {
-			
-			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-		}
-		else
-			venta.setPrinted(true);
+//		if(!venta.isPrinted()) {
+//			
+//			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
+//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+//			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
+//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+//		}
+//		else
+//			venta.setPrinted(true);
 		
 		ventaDao.generarFactura(venta);
 		
@@ -246,7 +246,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 	
 	@Transactional
-	public List<CuotaDto> generarCuotas(int cantidadCuotas, BigDecimal total) {
+	public List<CuotaDto> generarCuotas(int cantidadCuotas, BigDecimal total, ClienteDto cliente) {
 		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
 		BigDecimal cantidad = new BigDecimal(cantidadCuotas);
 		BigDecimal valorCuota = total.divide(cantidad, BigDecimal.ROUND_UP);
@@ -255,6 +255,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		for (int i = 0; i < cantidadCuotas; i++) {
 			CuotaDto cuota = new CuotaDto();
+			cuota.setClienteDto(cliente);
 			cuota.setNroCuota(i + 1);
 			cuota.setTotal(valorCuota);
 

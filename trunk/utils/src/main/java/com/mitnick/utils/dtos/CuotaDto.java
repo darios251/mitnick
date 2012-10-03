@@ -1,7 +1,9 @@
 package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class CuotaDto extends BaseDto {
 
@@ -15,6 +17,12 @@ public class CuotaDto extends BaseDto {
 	
 	private ClienteDto clienteDto;
 
+	private List<PagoDto> pagos = new ArrayList<PagoDto>();
+	
+	private BigDecimal totalPagado;
+	private BigDecimal faltaPagar;
+	private boolean pagado;
+	
 	public Date getFecha_pagar() {
 		return fecha_pagar;
 	}
@@ -45,6 +53,38 @@ public class CuotaDto extends BaseDto {
 
 	public void setClienteDto(ClienteDto clienteDto) {
 		this.clienteDto = clienteDto;
+	}
+
+	public List<PagoDto> getPagos() {
+		return pagos;
+	}
+
+	public void setPagos(List<PagoDto> pagos) {
+		this.pagos = pagos;
+	}
+
+	public BigDecimal getTotalPagado() {
+		return totalPagado;
+	}
+
+	public void setTotalPagado(BigDecimal totalPagado) {
+		this.totalPagado = totalPagado;
+	}
+
+	public BigDecimal getFaltaPagar() {
+		return faltaPagar;
+	}
+
+	public void setFaltaPagar(BigDecimal faltaPagar) {
+		this.faltaPagar = faltaPagar;
+	}
+
+	public boolean isPagado() {
+		return pagado;
+	}
+
+	public void setPagado(boolean pagado) {
+		this.pagado = pagado;
 	}
 
 	

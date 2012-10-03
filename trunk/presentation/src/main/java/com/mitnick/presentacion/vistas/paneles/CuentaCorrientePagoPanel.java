@@ -12,7 +12,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,10 +25,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
-import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.PagoTableModel;
-import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
@@ -39,12 +37,14 @@ import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
-@Panel("pagoPanel")
-public class PagoPanel extends BasePanel {
+@Panel("cuentaCorrientePagoPanel")
+public class CuentaCorrientePagoPanel extends BasePanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private VentaController ventaController;
+	private ClienteController clienteController;
+	private ClienteDto cliente;
+	private CuotaDto cuota;
 	
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -80,17 +80,15 @@ public class PagoPanel extends BasePanel {
 	private JLabel lblConsumidorFinal;
 	private JLabel lblCliente;
 	
-	private boolean cuentaCorriente = false;
-	
 	@Autowired
-	public PagoPanel(@Qualifier("ventaController") VentaController ventaController) {
-		this.ventaController = ventaController;
+	public CuentaCorrientePagoPanel(@Qualifier("clienteController") ClienteController clienteController) {
+		this.clienteController = clienteController;
 	}
 	
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public PagoPanel(boolean modoDisenio) throws Exception {
+	public CuentaCorrientePagoPanel(boolean modoDisenio) throws Exception {
 		// Este contructor solo se utiliza para que funcione el plugin
 		initializeComponents();
 		throw new Exception("Este constructor no debe ser utilizado");
@@ -313,7 +311,7 @@ public class PagoPanel extends BasePanel {
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						ventaController.mostrarClienteVenta();
+						clienteController.mostrarCuentaCorrientePanel();
 					}
 					catch(PresentationException ex) {
 						
@@ -346,7 +344,7 @@ public class PagoPanel extends BasePanel {
 						int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("pagoPanel.dialog.confirm.quitar"));
 						
 						if ( opcion == JOptionPane.YES_OPTION) {
-							ventaController.quitarPago(pagoDto);	
+							clienteController.quitarPago(pagoDto);	
 						}
 					}
 					catch (IndexOutOfBoundsException exception) {
@@ -400,15 +398,8 @@ public class PagoPanel extends BasePanel {
 	protected void agregarPago() {
 		try {
 			MedioPagoDto pago = (MedioPagoDto)cmbMedioPago.getSelectedItem();
-			if (pago.isCuentaCorriente()){
-				 String cuotas = JOptionPane.showInputDialog(PropertiesManager.getProperty( "pagoPanel.cuentaCorriente.cantidadCuotas"));
-				 List<CuotaDto> cuotasDto = ventaController.getCuotas(cuotas, txtMonto.getText());
-				 CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto);
-				 ventaController.guardarCuotas(cuotasDialog.getModel().getCuotas());
-				 
-			}
 			
-			ventaController.agregarPago(pago, txtMonto.getText());
+			clienteController.agregarPago(pago, txtMonto.getText());
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -425,18 +416,18 @@ public class PagoPanel extends BasePanel {
 
 	public void actualizarPantalla() {
 		if(Validator.isNotNull(lblSubtotalValor)) 
-			lblSubtotalValor.setText(VentaManager.getVentaActual().getSubTotal().toString());
+			lblSubtotalValor.setText(cuota.getTotal().toString());
 		if(Validator.isNotNull(lblTotalValor))
-			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toString());
+			lblTotalValor.setText(cuota.getTotal().toString());
 		if(Validator.isNotNull(lblTotalPagadoValor))
-			lblTotalPagadoValor.setText(VentaManager.getVentaActual().getTotalPagado().toString());
+			lblTotalPagadoValor.setText(cuota.getTotalPagado().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		if(Validator.isNotNull(lblAPagarValor))
-			lblAPagarValor.setText(VentaManager.getVentaActual().getFaltaPagar().toString());
+			lblAPagarValor.setText(cuota.getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		if(Validator.isNotNull(cmbMedioPago)) {
 			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
 			
 			try {
-				medioPagoList = ventaController.getAllMedioPago();
+				medioPagoList = clienteController.getMediosPagoCuentaCorriente();
 			}
 			catch(BusinessException e) {
 				;
@@ -446,42 +437,26 @@ public class PagoPanel extends BasePanel {
 			((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).addItems(medioPagoList);
 		}
 		if(Validator.isNotNull(model)) {
-			model.setPagos(VentaManager.getVentaActual().getPagos());
+			model.setPagos(cuota.getPagos());			
 		}
 		if(Validator.isNotNull(txtMonto)) {
-			txtMonto.setText(VentaManager.getVentaActual().getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			txtMonto.setText(cuota.getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			txtMonto.requestFocus();
 			txtMonto.setSelectionStart(0);
 			txtMonto.setSelectionEnd(txtMonto.getText().length());
 		}
 		
 		
-		if(Validator.isNotNull(VentaManager.getVentaActual().getCliente())){
-			ClienteDto cliente = VentaManager.getVentaActual().getCliente();
+		if(Validator.isNotNull(cliente)){
 			
 			getLblApellidoNombre().setText(cliente.getApellido() + ", " + cliente.getNombre());
 			getLblDni().setText(cliente.getDocumento());
 			
 			getPnlCliente().setVisible(true);
 			getLblConsumidorFinal().setVisible(false);
-		}
-		else {
-			getLblConsumidorFinal().setVisible(true);
-			getPnlCliente().setVisible(false);
-		}
+		}		
 	}
 	
-	public void finalizarVenta() {
-		try {
-			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[]{ VentaManager.getVentaActual().getVuelto().toString() }));
-			ventaController.crearNuevaVenta();
-			ventaController.limpiarVenta();
-			ventaController.mostrarVentasPanel();
-		}
-		catch(PresentationException ex) {
-			mostrarMensaje(ex);
-		}
-	}
 	
 	@Override
 	public void setDefaultFocusField() {
@@ -536,11 +511,31 @@ public class PagoPanel extends BasePanel {
 			this.getRootPane().setDefaultButton(getBtnAgregar());
 	}
 
-	public boolean isCuentaCorriente() {
-		return cuentaCorriente;
+	public void finalizarPagos() {
+		try {
+			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarPago.exito", new Object[]{ "0.00" }));
+			clienteController.actualizarCuotas(getCliente());
+			clienteController.mostrarCuentaCorrientePanel();
+		}
+		catch(PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
+	public ClienteDto getCliente() {
+		return cliente;
 	}
 
-	public void setCuentaCorriente(boolean cuentaCorriente) {
-		this.cuentaCorriente = cuentaCorriente;
+	public void setCliente(ClienteDto cliente) {
+		this.cliente = cliente;
 	}
+
+	public CuotaDto getCuota() {
+		return cuota;
+	}
+
+	public void setCuota(CuotaDto cuota) {
+		this.cuota = cuota;
+	}
+	
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -41,8 +42,9 @@ public class CuentaCorrientePanel extends BasePanel {
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JButton btnNuevo;
-	private JButton btnAceptar;
+	private JButton btnEditar;
 	private JButton btnEliminar;
+	private JButton btnPagar;
 	private CuotaTableModel model;
 	private TableRowSorter<CuotaTableModel> sorter;
 	
@@ -81,12 +83,13 @@ public class CuentaCorrientePanel extends BasePanel {
 		add(getBtnNuevo());
 		add(getBtnModificar());
 		add(getBtnEliminar());
+		add(getBtnPagar());
 		
 		setFocusTraversalPolicy();
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { getBtnNuevo() }));
 	}
 
 
@@ -107,41 +110,61 @@ public class CuentaCorrientePanel extends BasePanel {
 			btnNuevo.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnNuevo.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnNuevo.setMargin(new Insets(-1, -1, -1, -1));
-			btnNuevo.setBounds(735, 228, 60, 60);
+			btnNuevo.setBounds(735, 139, 60, 60);
 
 			btnNuevo.addActionListener(new ActionListener() {
-				@Override public void actionPerformed(ActionEvent e) {
-					clienteController.nuevaCuota();
-					actualizarPantalla();
+				@Override public void actionPerformed(ActionEvent e) {		
+					nuevaCuota();					
 				}
 			});
 		}
 		return btnNuevo;
 	}
+	
+	private void nuevaCuota(){
+		CuotaDto cuotaDto = new CuotaDto();
+		cuotaDto.setClienteDto(getCliente());
+		actualizarCuotas(cuotaDto);
+	}
 
+	private void actualizarCuotas(CuotaDto cuotaDto){
+		new NuevaCuotaDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), getCliente(), cuotaDto, this.clienteController);
+		actualizarPantalla();
+	}
+	
+	private void editarCuota(){
+		try {
+			int index = getTable().getSelectedRow();
+			CuotaDto cuotaDto = getModel().getCuota(index);
+			actualizarCuotas(cuotaDto);
+		} catch (IndexOutOfBoundsException exception) {
+				throw new PresentationException("error.cuentaPanel.cuota.noSeleccionado");	
+		}
+			
+	}
+	
 	public JButton getBtnModificar() {
-		if (btnAceptar == null) {
-			btnAceptar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.aceptar.texto"));
-			btnAceptar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.aceptar.tooltip"));
-			btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
+		if (btnEditar == null) {
+			btnEditar = new JButton("Modificar");
+			btnEditar.setToolTipText("Modificar");
+			btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
 
-			btnAceptar.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnAceptar.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
-			btnAceptar.setBounds(735, 370, 60, 60);
+			btnEditar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnEditar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnEditar.setMargin(new Insets(-1, -1, -1, -1));
+			btnEditar.setBounds(735, 281, 60, 60);
 
-			btnAceptar.addActionListener(new ActionListener() {
+			btnEditar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						clienteController.editarCuotas();
-						actualizarPantalla();
+						editarCuota();
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
 				}
 			});
 		}
-		return btnAceptar;
+		return btnEditar;
 	}
 
 	public JButton getBtnEliminar() {
@@ -153,7 +176,7 @@ public class CuentaCorrientePanel extends BasePanel {
 			btnEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
-			btnEliminar.setBounds(735, 299, 60, 60);
+			btnEliminar.setBounds(735, 210, 60, 60);
 
 			btnEliminar.addActionListener(new ActionListener() {
 				@Override
@@ -173,6 +196,33 @@ public class CuentaCorrientePanel extends BasePanel {
 		}
 		return btnEliminar;
 	}
+	
+	public JButton getBtnPagar() {
+		if (btnPagar == null) {
+			btnPagar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.pagar.texto"));
+			btnPagar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.pagar.tooltip"));
+			btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/eliminar_cliente.png")));
+
+			btnPagar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnPagar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnPagar.setMargin(new Insets(-1, -1, -1, -1));
+			btnPagar.setBounds(735, 352, 60, 60);
+
+			btnPagar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						clienteController.mostrarCuentaCorrientePagoPanel();
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+					
+				}
+			});
+		}
+		return btnPagar;
+	}
+	
 
 	
 
@@ -200,7 +250,8 @@ public class CuentaCorrientePanel extends BasePanel {
 	}
 
 	@Override
-	public void actualizarPantalla() {		
+	public void actualizarPantalla() {	
+		clienteController.actualizarCuotas(getCliente());
 		model.setCuotas(getCuotas());
 		
 	}
@@ -212,7 +263,7 @@ public class CuentaCorrientePanel extends BasePanel {
 
 	protected void setDefaultButton() {
 		if(Validator.isNotNull(this.getRootPane()))
-			this.getRootPane().setDefaultButton(this.btnAceptar);
+			this.getRootPane().setDefaultButton(this.btnEditar);
 	}
 
 	public List<CuotaDto> getCuotas() {

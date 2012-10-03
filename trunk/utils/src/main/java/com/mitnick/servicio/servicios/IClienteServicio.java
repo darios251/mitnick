@@ -8,6 +8,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
+import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
 public interface IClienteServicio {
@@ -38,5 +39,17 @@ public interface IClienteServicio {
 	
 	@Secured(value={"ROLE_ADMIN"})
 	void guardarCuotas(List<CuotaDto> cuotasDtos);
+	
+	@Secured(value={"ROLE_ADMIN"})
+	public void guardarCuota(CuotaDto cuotaDto);
+
+	@Secured(value={"ROLE_ADMIN"})
+	public CuotaDto quitarPago(PagoDto pago, CuotaDto cuota);
+	
+	@Secured(value={"ROLE_ADMIN"})
+	public CuotaDto agregarPago(PagoDto pago, CuotaDto cuota);
+	
+	@Secured(value={"ROLE_ADMIN"})
+	public void comprobantePago(CuotaDto cuotaDto);
 	
 }
