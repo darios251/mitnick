@@ -20,8 +20,8 @@ public class CuotaTableModel extends AbstractTableModel implements TableModel{
 	
 	public CuotaTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add(PropertiesManager.getProperty("cuotaTableModel.numero"));
 		columnNames.add(PropertiesManager.getProperty("cuotaTableModel.fecha"));
+		columnNames.add(PropertiesManager.getProperty("cuotaTableModel.numero"));
 		columnNames.add(PropertiesManager.getProperty("cuotaTableModel.monto"));
 		data = new ArrayList<CuotaDto>();
 	}

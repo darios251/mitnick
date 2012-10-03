@@ -254,6 +254,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cuotaDto.setNroCuota(cuota.getNroCuota());
 		cuotaDto.setTotal(cuota.getTotal());
 		cuotaDto.setClienteDto(getDtoFromEntity(cuota.getCliente()));
+		cuotaDto.setPagado(cuota.isPagado());
+		cuotaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) cuota.getPagos()));
+		VentaHelper.calcularTotales(cuotaDto);
 		return cuotaDto;
 	}
 	private TipoDto getDtoFromEntity(Tipo tipo) {
@@ -455,10 +458,17 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	
 	private Cuota getEntityFromDto(CuotaDto cuotaDto) {
 		Cuota cuota = new Cuota();
+		cuota.setId(cuotaDto.getId());
 		cuota.setFecha_pagar(cuotaDto.getFecha_pagar());
 		cuota.setNroCuota(cuotaDto.getNroCuota());
 		cuota.setTotal(cuotaDto.getTotal());
 		cuota.setCliente(getEntityFromDto(cuotaDto.getClienteDto()));
+		List<Pago> pagos = new ArrayList<Pago>();
+		for (PagoDto pagoDto : cuotaDto.getPagos())
+			pagos.add(getPagoFromPagoDto(pagoDto));
+
+		cuota.setPagos(pagos);
+		cuota.setPagado(cuotaDto.isPagado());
 		return cuota;
 	}
 

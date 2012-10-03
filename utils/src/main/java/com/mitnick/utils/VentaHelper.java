@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoNuevoDto;
@@ -107,5 +108,26 @@ public class VentaHelper {
 			impuesto = productoDto.getPrecioTotal().multiply(iva);
 		}
 		return impuesto;
+	}
+	
+	public static void calcularTotales(CuotaDto cuotaDto) {
+		// suma de todos los pagos
+		BigDecimal montoPagado = new BigDecimal(0);
+		Iterator<PagoDto> pagos = cuotaDto.getPagos().iterator();
+		while (pagos.hasNext()) {
+			montoPagado = montoPagado.add(pagos.next().getMonto());
+		}
+
+		BigDecimal total = cuotaDto.getTotal();
+		boolean pagado = montoPagado.compareTo(total) >= 0;
+		cuotaDto.setPagado(pagado);
+
+		cuotaDto.setTotalPagado(montoPagado);
+
+		if (pagado) {
+			cuotaDto.setFaltaPagar(new BigDecimal(0));
+		} else {
+			cuotaDto.setFaltaPagar(total.subtract(montoPagado));
+		}
 	}
 }

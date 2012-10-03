@@ -32,6 +32,7 @@ public class ClienteView extends BaseView {
 				this.add( clienteController.getClientePanel(), BorderLayout.CENTER );
 				this.add( clienteController.getClienteNuevoPanel(), BorderLayout.CENTER );
 				this.add( clienteController.getCuentaCorrientePanel(), BorderLayout.CENTER );
+				this.add( clienteController.getCuentaCorrientePagoPanel(), BorderLayout.CENTER );
 				initialized = true;
 			}
 		}

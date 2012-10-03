@@ -1,6 +1,8 @@
 package com.mitnick.business.servicios;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,17 @@ import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Provincia;
+import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
+import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 @SuppressWarnings("rawtypes")
 @Service("clienteServicio")
@@ -144,15 +151,87 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		try {
 			for (int i = 0; i < cuotasDtos.size(); i++) {
 				CuotaDto cuotaDto = cuotasDtos.get(i);
-				@SuppressWarnings("unchecked")
-				Cuota cuota = (Cuota) entityDTOParser
-						.getEntityFromDto(cuotaDto);
-				cuota = cuotaDao.saveOrUpdate(cuota);
-				cuotaDto.setId(cuota.getId());
+				guardarCuota(cuotaDto);
 			}
 		} catch (PersistenceException e) {
 			throw new BusinessException(e,
 					"Error al intentar guardar las cuotas");
 		}
+	}
+
+	@Transactional
+	@Override
+	public void guardarCuota(CuotaDto cuotaDto) {
+
+		try {
+			Cuota cuota = (Cuota) entityDTOParser.getEntityFromDto(cuotaDto);
+			cuota = cuotaDao.saveOrUpdate(cuota);
+			cuotaDto.setId(cuota.getId());
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar guardar las cuotas");
+		}
+	}
+
+	@Override
+	public CuotaDto quitarPago(PagoDto pago, CuotaDto cuota) {
+		cuota.getPagos().remove(pago);
+		VentaHelper.calcularTotales(cuota);
+		return cuota;
+	}
+
+	@Override
+	public CuotaDto agregarPago(PagoDto pago, CuotaDto cuota) {
+		validarPago(pago, cuota);
+
+		PagoDto pagoDto = getPagoDto(pago, cuota);
+
+		if (pagoDto == null)
+			// agrego el nuevo pago
+			cuota.getPagos().add(pago);
+		else {
+			// actualizo el pago existente en la venta
+			BigDecimal pagado = pagoDto.getMonto();
+			BigDecimal pagando = pago.getMonto();
+			pagoDto.setMonto(pagado.add(pagando));
+		}
+
+		VentaHelper.calcularTotales(cuota);
+		return cuota;
+	}
+
+	private void validarPago(PagoDto pago, CuotaDto cuota) {
+		// si es cuenta se debe tener un cliente asociado
+		if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago
+				.getMedioPago().getCodigo()))
+			throw new BusinessException(
+					"error.clienteServicio.PagoCuentaCorriente.medioPago",
+					"La cuenta corriente no se puede pagar con este medio de pago");
+	}
+
+	public PagoDto getPagoDto(PagoDto pago, CuotaDto cuota) {
+		Iterator<PagoDto> pagos = cuota.getPagos().iterator();
+		PagoDto pagoDto = null;
+		while (pagos.hasNext()) {
+			PagoDto pDto = pagos.next();
+			if (pDto.getMedioPago().getId().equals(pago.getMedioPago().getId()))
+				pagoDto = pDto;
+		}
+		return pagoDto;
+	}
+
+	@Transactional
+	@Override
+	public void comprobantePago(CuotaDto cuotaDto) {
+		VentaHelper.calcularTotales(cuotaDto);
+
+		if (!cuotaDto.isPagado()) {
+			throw new BusinessException("error.ventaServicio.facturar",
+					"No se puede impriir comprobante de pago ya que no se pago el total");
+		}
+		guardarCuota(cuotaDto);
+
+		// ventaDao.generarFactura(venta);
+
 	}
 }

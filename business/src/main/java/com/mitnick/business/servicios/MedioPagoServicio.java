@@ -33,5 +33,19 @@ public class MedioPagoServicio extends ServicioBase implements IMedioPagoServici
 		}
 		return resultado;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	@Override
+	public List<MedioPagoDto> obtenerMediosPagosCuentaCorriente() {
+		List<MedioPagoDto> resultado = new ArrayList<MedioPagoDto>();
+		try {
+			resultado.addAll(entityDTOParser.getDtosFromEntities(medioPagoDao.obtenerMediosPagosCuentaCorriente()));
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener medios de pagos");
+		}
+		return resultado;
+	}
 
 }

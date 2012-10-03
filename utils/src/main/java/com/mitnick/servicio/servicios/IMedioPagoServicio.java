@@ -10,4 +10,7 @@ public interface IMedioPagoServicio {
 
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	List<MedioPagoDto> obtenerMediosPagos();
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	List<MedioPagoDto> obtenerMediosPagosCuentaCorriente();
 }

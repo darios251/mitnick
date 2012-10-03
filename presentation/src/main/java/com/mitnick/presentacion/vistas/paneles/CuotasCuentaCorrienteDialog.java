@@ -48,7 +48,7 @@ public class CuotasCuentaCorrienteDialog extends JDialog {
 			btnAceptar.setBounds(400, 300, 100, 25);
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					
+					setVisible(false);
 				}
 			});
 		}
