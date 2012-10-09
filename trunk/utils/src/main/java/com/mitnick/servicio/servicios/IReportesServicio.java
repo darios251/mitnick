@@ -3,7 +3,6 @@ package com.mitnick.servicio.servicios;
 import java.util.List;
 
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
@@ -85,6 +84,6 @@ public interface IReportesServicio {
 	 */
 	@Secured(value={"ROLE_ADMIN"})
 	public void consultarStockArticulo(ReportesDto filtro);	
-	
+		
 
 }

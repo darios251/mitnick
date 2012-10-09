@@ -13,7 +13,6 @@ import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
-import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 
 @Repository("reporteDao")
@@ -43,7 +42,7 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		}
 		
 		return resultado;
-	}
+	}	
 	
 	private ReporteVentaArticuloDTO getDTOFecha(List<ReporteVentaArticuloDTO> items, Object[] item){
 		for (ReporteVentaArticuloDTO dto: items){

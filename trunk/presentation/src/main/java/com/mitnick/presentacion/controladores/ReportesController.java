@@ -75,7 +75,7 @@ public class ReportesController extends BaseController {
 		catch(BusinessException e) {
 			e.printStackTrace();
 		}
-	}
+	}	
 	
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
