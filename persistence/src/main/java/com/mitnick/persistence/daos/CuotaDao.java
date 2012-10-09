@@ -14,11 +14,13 @@ import org.springframework.stereotype.Repository;
 
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Cuota;
+import com.mitnick.persistence.entities.Venta;
+import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CuotaDto;
 
-@Repository("CuotaDao")
+@Repository("cuotaDao")
 public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuotaDao {
 
 	protected javax.validation.Validator entityValidator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -40,6 +42,22 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
+	public List<Cuota> getCuotaPagas(ReportesDto filtro){
+		DetachedCriteria criteria = DetachedCriteria.forClass(Cuota.class);
+
+		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
+			criteria.add(Restrictions.gt("fechaPago", filtro.getFechaInicio()));
+		}
+		if(Validator.isNotNull(filtro.getFechaFin())){
+			criteria.add(Restrictions.le("fechaPago", filtro.getFechaFin()));
+		}
+		
+		criteria.add(Restrictions.eq("pagado", true));
+		criteria.addOrder(Order.desc("fechaPago"));
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
 	public void eliminarCuota(CuotaDto cuotaDto){
 		Cuota cuota = getHibernateTemplate().get(Cuota.class, cuotaDto.getId());
 		getHibernateTemplate().delete(cuota);
@@ -53,4 +71,22 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		getHibernateTemplate().saveOrUpdate(cuota);
 		return cuota;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Cuota> findByFiltro(ReportesDto filtro) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Cuota.class);
+
+		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
+			criteria.add(Restrictions.gt("fecha_pagar", filtro.getFechaInicio()));
+		}
+		if(Validator.isNotNull(filtro.getFechaFin())){
+			criteria.add(Restrictions.le("fecha_pagar", filtro.getFechaFin()));
+		}
+		
+		criteria.add(Restrictions.eq("pagado", false));
+		criteria.addOrder(Order.asc("fecha_pagar"));
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+
 }

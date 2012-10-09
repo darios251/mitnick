@@ -2,6 +2,7 @@ package com.mitnick.business.servicios;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Provincia;
-import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.MitnickConstants;
@@ -29,7 +29,6 @@ import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
-import com.mitnick.utils.dtos.VentaDto;
 
 @SuppressWarnings("rawtypes")
 @Service("clienteServicio")
@@ -165,6 +164,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 		try {
 			Cuota cuota = (Cuota) entityDTOParser.getEntityFromDto(cuotaDto);
+			cuota.setFechaPago(new Date());
 			cuota = cuotaDao.saveOrUpdate(cuota);
 			cuotaDto.setId(cuota.getId());
 		} catch (PersistenceException e) {
@@ -223,6 +223,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Transactional
 	@Override
 	public void comprobantePago(CuotaDto cuotaDto) {
+		
 		VentaHelper.calcularTotales(cuotaDto);
 
 		if (!cuotaDto.isPagado()) {

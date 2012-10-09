@@ -50,6 +50,9 @@ public class Cuota extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
+	@Column(name = "fechaPago", nullable = true)
+	private Date fechaPago;
+
 	@Column(name = "pagado", nullable = false)
 	private boolean pagado = false;
 	
@@ -118,10 +121,20 @@ public class Cuota extends BaseObject implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Cuota [id=" + id + ", fecha_pagar=" + fecha_pagar + ", total="
+				+ total + ", venta=" + venta + ", pagos=" + pagos
+				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente
+				+ ", fechaPago=" + fechaPago + ", pagado=" + pagado + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result
+				+ ((fechaPago == null) ? 0 : fechaPago.hashCode());
 		result = prime * result
 				+ ((fecha_pagar == null) ? 0 : fecha_pagar.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -150,6 +163,13 @@ public class Cuota extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
+		if (fechaPago == null) {
+			if (other.fechaPago != null) {
+				return false;
+			}
+		} else if (!fechaPago.equals(other.fechaPago)) {
 			return false;
 		}
 		if (fecha_pagar == null) {
@@ -196,14 +216,15 @@ public class Cuota extends BaseObject implements Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Cuota [id=" + id + ", fecha_pagar=" + fecha_pagar + ", total="
-				+ total + ", venta=" + venta + ", pagos=" + pagos
-				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente
-				+ ", pagado=" + pagado + "]";
+	public Date getFechaPago() {
+		return fechaPago;
 	}
 
+	public void setFechaPago(Date fechaPago) {
+		this.fechaPago = fechaPago;
+	}
+
+	
 	
 	
 	

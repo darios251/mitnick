@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,9 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
+import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IReporteDao;
 import com.mitnick.persistence.daos.IVentaDAO;
+import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Venta;
@@ -40,6 +43,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -57,6 +61,9 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	@Autowired
 	protected IReporteDao reporteDao;
+	
+	@Autowired
+	protected ICuotaDao cuotaDao;
 	
 	@Transactional(readOnly=true)
 	@Override
@@ -159,31 +166,36 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			for (Venta venta: ventas){
 				ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
 				dto.setFecha(venta.getFecha());
+				total = total.add(venta.getTotal());
 				dto.setTotal(venta.getTotal().longValue());
 				
 				for (Pago pago: venta.getPagos()){
-					total = total.add(venta.getTotal());
-					dto.setTotal(venta.getTotal().longValue());
+					Long parcialTotal = pago.getPago();
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						dto.setTotalEfectivo(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalEfectivo().longValue();
+						dto.setTotalEfectivo(parcialTotal);
 						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
 					}
 						
 					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						dto.setTotalDebito(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalDebito().longValue();
+						dto.setTotalDebito(parcialTotal);
 						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
 					}
 						
 					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						dto.setTotalCredito(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalCredito().longValue();
+						dto.setTotalCredito(parcialTotal);
 						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
 					}
-						
+					
+					
 					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						dto.setTotalCC(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalCC().longValue();
+						dto.setTotalCC(parcialTotal);
 						totalCC = totalCC.add(new BigDecimal(pago.getPago()));
-					}
+					}				
 						
 				}
 				ingresos.add(dto);				
@@ -239,31 +251,34 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, venta.getFecha());
 				Long totalRegistro = dto.getTotal().longValue() + venta.getTotal().longValue();
 				dto.setTotal(totalRegistro);
-				
+				total = total.add(venta.getTotal());
 				for (Pago pago: venta.getPagos()){
-					total = total.add(venta.getTotal());
-					dto.setTotal(venta.getTotal().longValue());
+					Long parcialTotal = pago.getPago();
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						dto.setTotalEfectivo(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalEfectivo().longValue();
+						dto.setTotalEfectivo(parcialTotal);
 						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
 					}
 						
 					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						dto.setTotalDebito(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalDebito().longValue();
+						dto.setTotalDebito(parcialTotal);
 						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
 					}
 						
 					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						dto.setTotalCredito(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalCredito().longValue();
+						dto.setTotalCredito(parcialTotal);
 						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
 					}
-						
+					
+					
 					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						dto.setTotalCC(pago.getPago());
+						parcialTotal = parcialTotal.longValue() + dto.getTotalCC().longValue();
+						dto.setTotalCC(parcialTotal);
 						totalCC = totalCC.add(new BigDecimal(pago.getPago()));
 					}
-						
 				}
 						
 			}
@@ -304,7 +319,9 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	private ReporteVentasResultadoDTO getDTOFecha(List<ReporteVentasResultadoDTO> ingresos, Date fecha){
 		for (ReporteVentasResultadoDTO dto: ingresos){
-			if (dto.getFecha().equals(fecha))
+			String fechaA = new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(fecha);
+			String fechaB = new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(dto.getFecha());
+			if (fechaA.equals(fechaB))
 				return dto;
 		}		
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
@@ -314,10 +331,78 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		return dto;
 	}
 	
+	
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarListadoDeControl(ReportesDto filtro) {
+		List<Cuota> cuotas = cuotaDao.getCuotaPagas(filtro);
+		List<ReporteVentasResultadoDTO> ingresos= new ArrayList<ReporteVentasResultadoDTO>();
+		BigDecimal totalEfectivo = new BigDecimal(0);
+		BigDecimal totalDebito = new BigDecimal(0);
+		BigDecimal totalCredito = new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		try{
+			for (Cuota cuota: cuotas){
+				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, cuota.getFechaPago());
+				Long totalRegistro = dto.getTotal().longValue() + cuota.getTotal().longValue();
+				dto.setTotal(totalRegistro);
+				total = total.add(cuota.getTotal());
+				for (Pago pago: cuota.getPagos()){
+					Long parcialTotal = pago.getPago();
+					
+					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
+						parcialTotal = parcialTotal.longValue() + dto.getTotalEfectivo().longValue();
+						dto.setTotalEfectivo(parcialTotal);
+						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
+					}
+						
+					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
+						parcialTotal = parcialTotal.longValue() + dto.getTotalDebito().longValue();
+						dto.setTotalDebito(parcialTotal);
+						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
+					}
+						
+					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
+						parcialTotal = parcialTotal.longValue() + dto.getTotalCredito().longValue();
+						dto.setTotalCredito(parcialTotal);
+						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
+					}
+				}
+						
+			}
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/listadoControl.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("totalEfectivo", totalEfectivo.toString());
+			parameters.put("totalDebito", totalDebito.toString());
+			parameters.put("totalCredito", totalCredito.toString());
+			parameters.put("total", total.toString());
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("listadoControl.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("listadoControl.pdf");
+			Desktop.getDesktop().open(file);
+
+			
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 	}
 	
@@ -325,7 +410,34 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarEstadoCuentas(ReportesDto filtro) {
-		
+		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
+		try{
+			cuotas.addAll(entityDTOParser.getDtosFromEntities(cuotaDao.findByFiltro(filtro)));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/estadoCuenta.jasper"));
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(cuotas);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("estadoCuenta.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("estadoCuenta.pdf");
+			Desktop.getDesktop().open(file);
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 	
