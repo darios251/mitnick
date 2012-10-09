@@ -41,6 +41,7 @@ public class ReportesPanel extends BasePanel {
 	private JButton btnReporteDeEstado;
 	private JButton btnListadoDeControl;
 	private JButton btnReporteDeVentasProducto;
+	private JButton btnReporteDeVentasAnual;	
 	
 	
 	@Autowired
@@ -90,12 +91,11 @@ public class ReportesPanel extends BasePanel {
 		btnReporteVentasAgrupado.setMargin(new Insets(-1, -1, -1, -1));
 		btnReporteVentasAgrupado.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnReporteVentasAgrupado.setBounds(200, 182, 330, 20);
-		add(btnReporteVentasAgrupado);
+		add(getBtnReporteVentasAgrupados());
 		add(getBtnReporteDeEstado());
 		add(getBtnListadoDeControl());
 		add(getBtnReporteDeVentasProducto());
-
-		getBtnReporteVentasAgrupados();
+		add(getBtnReporteDeVentasAnual());	
 		
 		setFocusTraversalPolicy();
 		this.actualizarPantalla();
@@ -124,13 +124,14 @@ public class ReportesPanel extends BasePanel {
 		return btnReporteVentas;
 	}
 	
-	public void getBtnReporteVentasAgrupados() {
+	public JButton getBtnReporteVentasAgrupados() {
 
 		btnReporteVentasAgrupado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evento) {
 				consultarIngresosAgrupados();
 			}
 		});
+		return btnReporteVentasAgrupado;
 	}
 
 
@@ -255,6 +256,19 @@ public class ReportesPanel extends BasePanel {
 		}
 	}
 	
+	protected void consultarVentasAnual() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			reportesController.consultarVentasAnual(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
+	
+	
 	protected void consultarVentaPorArticulo() {
 		try {
 			ReportesDto dto = new ReportesDto();
@@ -266,6 +280,23 @@ public class ReportesPanel extends BasePanel {
 		}
 	}
 		
+	private JButton getBtnReporteDeVentasAnual() {
+		if (btnReporteDeVentasAnual == null) {
+			btnReporteDeVentasAnual = new JButton();
+			btnReporteDeVentasAnual.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeVentasAnual.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnReporteDeVentasAnual.setText("Reporte de Ventas Anual");
+			btnReporteDeVentasAnual.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeVentasAnual.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeVentasAnual.setBounds(200, 306, 330, 20);
+			btnReporteDeVentasAnual.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarVentasAnual();
+				}
+			});
+		}
+		return btnReporteDeVentasAnual;
+	}
 	
 	private JButton getBtnReporteDeEstado() {
 		if (btnReporteDeEstado == null) {
@@ -284,6 +315,7 @@ public class ReportesPanel extends BasePanel {
 		}
 		return btnReporteDeEstado;
 	}
+	
 	private JButton getBtnListadoDeControl() {
 		if (btnListadoDeControl == null) {
 			btnListadoDeControl = new JButton();
@@ -318,4 +350,5 @@ public class ReportesPanel extends BasePanel {
 		}
 		return btnReporteDeVentasProducto;
 	}
+
 }

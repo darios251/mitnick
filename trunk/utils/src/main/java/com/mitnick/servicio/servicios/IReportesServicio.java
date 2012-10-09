@@ -85,5 +85,12 @@ public interface IReportesServicio {
 	@Secured(value={"ROLE_ADMIN"})
 	public void consultarStockArticulo(ReportesDto filtro);	
 		
+	/**
+	 * Obtiene el detalle de ventas anuales.
+	 * @param filtro
+	 * @return
+	 */
+	@Secured(value={"ROLE_ADMIN"})
+	public void reporteIngresosAnual(ReportesDto filtro);
 
 }
