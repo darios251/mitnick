@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Cuota;
-import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
