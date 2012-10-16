@@ -79,7 +79,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-<!--             <plugin> -->
+<!-- 			<plugin>  -->
 <!-- 		        <groupId>org.codehaus.mojo</groupId> -->
 <!-- 		        <artifactId>native2ascii-maven-plugin</artifactId> -->
 <!-- 		        <executions> -->
@@ -92,7 +92,7 @@
 <!-- 		            </configuration> -->
 <!-- 		          </execution> -->
 <!-- 		        </executions> -->
-<!-- 		    </plugin> -->
+<!-- 		    </plugin>  -->
         </plugins>
         <testResources>
             <testResource>
@@ -337,8 +337,8 @@
 		<jdbc.version>8.1-407.jdbc3</jdbc.version>
 		<jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
 		<jdbc.url>jdbc:postgresql://localhost/${db.name}</jdbc.url>
-		<jdbc.username>postgres</jdbc.username>
-		<jdbc.password>postgres</jdbc.password>
+		<jdbc.username>postgresM</jdbc.username>
+		<jdbc.password>admin</jdbc.password>
     </properties>
     
     <dependencies>

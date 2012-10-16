@@ -147,7 +147,7 @@ public class CuentaCorrientePanel extends BasePanel {
 		if (btnEditar == null) {
 			btnEditar = new JButton("Modificar");
 			btnEditar.setToolTipText("Modificar");
-			btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
+			btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/modificar_cliente.png")));
 
 			btnEditar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnEditar.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -201,7 +201,7 @@ public class CuentaCorrientePanel extends BasePanel {
 		if (btnPagar == null) {
 			btnPagar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.pagar.texto"));
 			btnPagar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.pagar.tooltip"));
-			btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/eliminar_cliente.png")));
+			btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/icono-pagos.jpg")));
 
 			btnPagar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnPagar.setVerticalTextPosition(SwingConstants.BOTTOM);
