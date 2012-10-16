@@ -325,9 +325,9 @@ public class ClientePanel extends BasePanel {
 	public JButton getBtnCuentaCorriente() {
 		if (btnCuentaCorriente == null) {
 
-			btnCuentaCorriente = new JButton(PropertiesManager.getProperty("clientePanel.button.cuentaCorriente"));
+			btnCuentaCorriente = new JButton();
 			btnCuentaCorriente.setToolTipText(PropertiesManager.getProperty("clientePanel.button.cuentaCorriente.tooltip"));
-			btnCuentaCorriente.setIcon(new ImageIcon(this.getClass().getResource("/img/estado_cuenta.png")));
+			btnCuentaCorriente.setIcon(new ImageIcon(this.getClass().getResource("/img/icono-cuenta-corriente.jpg")));
 			btnCuentaCorriente.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnCuentaCorriente.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCuentaCorriente.setMargin(new Insets(-1, -1, -1, -1));
