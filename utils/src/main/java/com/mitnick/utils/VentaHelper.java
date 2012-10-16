@@ -1,6 +1,7 @@
 package com.mitnick.utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Iterator;
 
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
@@ -77,37 +78,33 @@ public class VentaHelper {
 
 	}
 
-	public static BigDecimal CalcularImpuesto(ProductoNuevoDto productoDto) {
+	public static BigDecimal CalcularImpuesto(BigDecimal precioProducto) {
 		BigDecimal impuesto = new BigDecimal(0);
+		BigDecimal iva = new BigDecimal(0);
 		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
 		if (!Validator.isBlankOrNull(ivaString)) {
-			BigDecimal iva = new BigDecimal(ivaString).divide(new BigDecimal(100));
-			impuesto = new BigDecimal(productoDto.getPrecioVenta()).multiply(iva);
+			impuesto = new BigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100));
+			BigDecimal p1 = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP);
+			BigDecimal p2 = BigDecimal.ONE.add(impuesto);
+			BigDecimal p3 = p1.divide(p2,2, RoundingMode.HALF_UP);
+			BigDecimal precio = p3;
+			iva = precio.multiply(impuesto).setScale(2, BigDecimal.ROUND_HALF_UP);
+			
 		}
-		return impuesto;
+		return iva;
+	}
+
+	
+	public static BigDecimal CalcularImpuesto(ProductoNuevoDto productoDto) {
+		return CalcularImpuesto(new BigDecimal(productoDto.getPrecioVenta()));
 	}
 	
 	public static BigDecimal CalcularImpuesto(ProductoDto productoDto) {
-		BigDecimal impuesto = new BigDecimal(0);
-		String ivaString = PropertiesManager
-				.getProperty("applicationConfiguration.impuesto.porcentaje");
-		if (!Validator.isBlankOrNull(ivaString)) {
-			BigDecimal iva = new BigDecimal(ivaString).divide(new BigDecimal(100));
-			impuesto = productoDto.getPrecioVenta().multiply(iva);
-		}
-		return impuesto;
+		return CalcularImpuesto(productoDto.getPrecioVenta());
 	}
 	
 	public static BigDecimal CalcularImpuesto(ProductoVentaDto productoDto) {
-		BigDecimal impuesto = new BigDecimal(0);
-		String ivaString = PropertiesManager
-				.getProperty("applicationConfiguration.impuesto.porcentaje");
-		if (!Validator.isBlankOrNull(ivaString)) {
-			BigDecimal iva = new BigDecimal(ivaString).divide(new BigDecimal(
-					100));
-			impuesto = productoDto.getPrecioTotal().multiply(iva);
-		}
-		return impuesto;
+		return CalcularImpuesto(productoDto.getPrecioTotal());
 	}
 	
 	public static void calcularTotales(CuotaDto cuotaDto) {

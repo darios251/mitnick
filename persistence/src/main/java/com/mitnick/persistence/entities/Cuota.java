@@ -35,7 +35,7 @@ public class Cuota extends BaseObject implements Serializable {
 	@Column(name = "total", nullable = false)
 	private BigDecimal total;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "venta_id")
 	private Venta venta;
 	
@@ -46,7 +46,7 @@ public class Cuota extends BaseObject implements Serializable {
 	@Column(name = "numero_cuota", nullable = false)
 	private int nroCuota;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
