@@ -50,6 +50,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JButton btnExportar;
+	private JButton btnVolver;
 	private TableRowSorter<DetalleMovimientoTableModel> sorter;
 	private DetalleMovimientoTableModel model;
 	
@@ -123,12 +124,8 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 		scrollPane.setBounds(25, 115, 700, 315);
 		add(scrollPane);
 		
-		
-		
-
-		
 		add(getBtnExportar());
-		
+		add(getBtnVolver());
 		
 		JLabel lblProductos = new JLabel(PropertiesManager.getProperty("productoPanel.label.productos"));
 		lblProductos.setBounds(25, 90, 70, 20);
@@ -172,7 +169,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 			btnExportar = new JButton();
 			btnExportar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.detallesMovimientos"));
 			
-			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
+			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/exportar.jpg")));
 			btnExportar.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnExportar.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnExportar.setMargin(new Insets(-1, -1, -1, -1));
@@ -181,9 +178,29 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 				public void actionPerformed(ActionEvent e) {
 				}
 			});
-			btnExportar.setBounds(735, 325, 60, 60);
+			btnExportar.setBounds(735, 299, 60, 60);
 		}
 		return btnExportar;
+	}
+	
+	public JButton getBtnVolver() {
+		if(btnVolver == null) {
+			btnVolver = new JButton();
+			btnVolver.setToolTipText(PropertiesManager.getProperty("movimientoStock.tooltip.volver"));
+			
+			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
+			btnVolver.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnVolver.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnVolver.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnVolver.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					reporteController.mostrarProductosPanel();
+				}
+			});
+			btnVolver.setBounds(735, 370, 60, 60);
+		}
+		return btnVolver;
 	}
 
 	protected void setFocusTraversalPolicy() {

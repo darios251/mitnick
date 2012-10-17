@@ -255,7 +255,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 					.getProperty("productoPanel.tooltip.exportar"));
 
 			btnExportar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/movimientos.png")));
+					"/img/exportar.jpg")));
 			btnExportar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnExportar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnExportar.setMargin(new Insets(-1, -1, -1, -1));
@@ -278,7 +278,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 					.getProperty("productoPanel.tooltip.detallesMovimientos"));
 
 			btnDetalleMovimientos.setIcon(new ImageIcon(this.getClass()
-					.getResource("/img/movimientos.png")));
+					.getResource("/img/data_find.png")));
 			btnDetalleMovimientos.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnDetalleMovimientos.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnDetalleMovimientos.setMargin(new Insets(-1, -1, -1, -1));
