@@ -48,7 +48,6 @@ public class VentaClientePanel extends BasePanel {
 	private JLabel lblNmeroCtaCte;
 	private JTextField txtNumeroCtaCte;
 	private JLabel lblApellido;
-	private JButton btnEstadoCuenta;
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
 	private JCheckBox chkConsumidorFinal;
@@ -96,7 +95,6 @@ public class VentaClientePanel extends BasePanel {
 		add(getTxtNombre());
 		add(getTxtNumeroCtaCte());
 		add(getBtnContinuar());
-		add(getBtnEstadoCuenta());
 		add(getBtnBuscar());
 		add(getBtnNuevo());
 		add(getBtnVolver());
@@ -167,7 +165,7 @@ public class VentaClientePanel extends BasePanel {
 					}
 				}
 			});
-			btnContinuar.setBounds(735, 186, 60, 60);
+			btnContinuar.setBounds(735, 231, 60, 60);
 		}
 		return btnContinuar;
 	}
@@ -204,7 +202,7 @@ public class VentaClientePanel extends BasePanel {
 			btnNuevo.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnNuevo.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnNuevo.setMargin(new Insets(-1, -1, -1, -1));
-			btnNuevo.setBounds(735, 115, 60, 60);
+			btnNuevo.setBounds(735, 130, 60, 60);
 			btnNuevo.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					ventaController.mostrarClienteNuevoPanel();
@@ -246,24 +244,6 @@ public class VentaClientePanel extends BasePanel {
 			lblApellido.setBounds(174, 55, 85, 20);
 		}
 		return lblApellido;
-	}
-
-	public JButton getBtnEstadoCuenta() {
-		if (btnEstadoCuenta == null) {
-			btnEstadoCuenta = new JButton("");
-			btnEstadoCuenta.setToolTipText(PropertiesManager.getProperty("clientePanel.tooltip.estadoCuenta"));
-			btnEstadoCuenta.setIcon(new ImageIcon(this.getClass().getResource("/img/estado_cuenta.png")));
-			btnEstadoCuenta.setHorizontalTextPosition( SwingConstants.CENTER );
-			btnEstadoCuenta.setVerticalTextPosition( SwingConstants.BOTTOM );
-			btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
-			btnEstadoCuenta.setBounds(735, 257, 60, 60);
-			btnEstadoCuenta.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-				}
-			});
-		}
-		return btnEstadoCuenta;
 	}
 
 	public JButton getBtnVolver() {
@@ -332,7 +312,6 @@ public class VentaClientePanel extends BasePanel {
 		getTable().setVisible(enabled);
 		getBtnBuscar().setEnabled(enabled);
 		getBtnNuevo().setEnabled(enabled);
-		getBtnEstadoCuenta().setEnabled(enabled);
 	}
 
 	protected void consultarClientes() {

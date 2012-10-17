@@ -82,6 +82,7 @@ public class PrincipalView extends JFrame
 	private JButton btnClientes;
 	private JButton btnReporte;
 	private JButton btnProveedores;
+	private JButton btnMovimientos;
 
 	private JMenuBar menuBar;
 	private JMenu menuProductos;
@@ -286,6 +287,40 @@ public class PrincipalView extends JFrame
 		return btnReporte;
 	}
 	
+	private JButton getBtnMovimientos()
+	{
+		if(btnMovimientos == null)
+		{
+			btnMovimientos = new JButton();
+			btnMovimientos.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
+			
+			btnMovimientos.setText(PropertiesManager.getProperty("principalView.button.stock"));
+			
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/data_folder.png"));
+			btnMovimientos.setIcon(iconoOriginal);
+			
+			btnMovimientos.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnMovimientos.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnMovimientos.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnMovimientos.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e)	{
+					if (getJTabbedPane().indexOfComponent(reporteController.getReporteMovimientosPanel()) == -1) {
+						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reporteController.getReporteMovimientosView());
+					}
+					logger.info("Mostrando el panel de Movimientos de productos");
+					getJTabbedPane().setVisible(true);
+					reporteController.mostrarProductosPanel();
+					reporteController.getUltimoPanelMostrado().setVisible(true);
+					getJTabbedPane().setSelectedComponent(reporteController.getReporteMovimientosView());
+				}
+			});
+		}
+
+		return btnMovimientos;
+	}
+	
 	private JButton getBtnProveedores()
 	{
 		if(btnProveedores == null)
@@ -485,6 +520,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());
 			tlbQuickAccess.add(getBtnProveedores());
+			tlbQuickAccess.add(getBtnMovimientos());
 			
 			tlbQuickAccess.setFloatable(false);
 		}
@@ -531,6 +567,7 @@ public class PrincipalView extends JFrame
 		getBtnArticulos().setVisible(show);
 		getBtnProveedores().setVisible(show);
 		getBtnClientes().setVisible(show);
+		getBtnMovimientos().setVisible(show);
 	}
 	
 	@Override
