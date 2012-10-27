@@ -6,6 +6,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import com.mitnick.persistence.daos.IConfiguracionDAO;
 import com.mitnick.persistence.entities.Configuracion;
 import com.mitnick.presentacion.utils.DBInitialization;
+import com.mitnick.presentacion.vistas.InicioView;
 import com.mitnick.utils.DiskUtils;
 import com.mitnick.utils.MacUtils;
 import com.mitnick.utils.PropertiesManager;
@@ -16,6 +17,8 @@ public class Runner {
 	private static Logger logger = Logger.getLogger(Runner.class);
 	
 	public static void main(String[] args) {
+		InicioView inicio = new InicioView();
+		inicio.setVisible(true);
 		logger.info("Iniciando la aplicación: Applicación del proyecto mitnick...");
 		logger.info("Inicializando el propertiesManager...");
 		BeanLocator.getBean("propertiesManager");

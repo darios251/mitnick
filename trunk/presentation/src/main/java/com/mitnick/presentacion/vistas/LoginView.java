@@ -29,9 +29,6 @@ public class LoginView extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
-	private LoginUtils loginUtils;
-	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	private JTextField txtUser;
@@ -39,6 +36,12 @@ public class LoginView extends JDialog {
 	private JButton btnNewButton;
 	
 	private LoginView thisView;
+	
+	@Autowired
+	private PrincipalView principalView;
+	
+	@Autowired
+	private LoginUtils loginUtils;
 	
 	public LoginView() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -74,6 +77,8 @@ public class LoginView extends JDialog {
 			}
 		});
 		
+		setLocationRelativeTo(null);
+		
 		btnNewButton = new JButton(PropertiesManager.getProperty("loginView.button.login"));
 		btnNewButton.setBounds(131, 91, 85, 23);
 		btnNewButton.addActionListener(new ActionListener() {
@@ -82,17 +87,21 @@ public class LoginView extends JDialog {
 			}
 		});
 		getContentPane().add(btnNewButton);
-		
-		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
 	@SuppressWarnings("deprecation")
 	protected void doLogin() {
 		try {
+			// Este while loco hay que dejarlo, porque a veces spring tarda en inyectar la dependencia
+			while(loginUtils == null) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+				}
+			}
 			if(loginUtils.authenticate(txtUser.getText(), txtPassword.getText()) != null) {
 				logger.info("Iniciando la pantalla principal...");
-				PrincipalView principalView = (PrincipalView) BeanLocator.getBean("principalView");
 				thisView.setVisible(false);
 				principalView.setVisible(true);
 				thisView.dispose();
@@ -101,7 +110,7 @@ public class LoginView extends JDialog {
 				JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
 			}
 		}
-		catch(BadCredentialsException e1) {
+		catch(BadCredentialsException e) {
 			JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.loginView.auth"), "Error", JOptionPane.DEFAULT_OPTION);
 		}
 		txtUser.setText("");

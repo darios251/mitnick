@@ -4,7 +4,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
@@ -690,7 +692,9 @@ public class PrinterService {
 	}
 	
 	protected Socket connect() throws UnknownHostException, IOException {
-		currentConnection = new Socket("192.168.1.105", 9095);
+		SocketAddress sockaddr = new InetSocketAddress("192.168.1.105", 9095);
+		currentConnection = new Socket();
+		currentConnection.connect(sockaddr, 3000);
 		currentConnection.setSoTimeout(15000);
 		output = new PrintStream(currentConnection.getOutputStream());
 		input = new DataInputStream(currentConnection.getInputStream());
