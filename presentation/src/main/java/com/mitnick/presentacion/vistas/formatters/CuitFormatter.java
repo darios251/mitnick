@@ -12,6 +12,9 @@ import javax.swing.border.Border;
 import javax.swing.text.DefaultFormatter;
 
 public class CuitFormatter extends DefaultFormatter implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private static final String CUIT_PATTERN = "^[0-9\\-]{12,13}$";
 
 	private static Pattern pattern = Pattern.compile(CUIT_PATTERN,

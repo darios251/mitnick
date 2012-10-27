@@ -247,6 +247,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		return proveedorDto;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private CuotaDto getDtoFromEntity(Cuota cuota) {
 		CuotaDto cuotaDto = new CuotaDto();
 		cuotaDto.setId(cuota.getId());

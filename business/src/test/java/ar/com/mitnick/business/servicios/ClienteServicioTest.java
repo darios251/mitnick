@@ -1,22 +1,9 @@
 package ar.com.mitnick.business.servicios;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.mitnick.persistence.entities.Cliente;
 
 public class ClienteServicioTest {
 
-    private static Validator validator;
+    //private static Validator validator;
 
 //    @BeforeClass
 //    public static void setUp() {

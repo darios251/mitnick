@@ -19,6 +19,8 @@ import javax.swing.text.DefaultFormatter;
  * @author Mark Pendergast Copyright Mark Pendergast
  */
 public class EmailFormatter extends DefaultFormatter implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	/** pattern used for verifying email addresses */
 	private static final String EMAILPATTERN = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
 	/** precompiled version of the pattern */

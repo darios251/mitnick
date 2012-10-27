@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.utils.MitnickConstants;
-import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 

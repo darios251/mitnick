@@ -122,8 +122,8 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	}
 
 	public List<CuotaDto> obtenerCuotasPendientes(ClienteDto cliente) {
-		List<CuotaDto> cuotas = entityDTOParser.getDtosFromEntities(cuotaDao
-				.getCuotaByClienteId(cliente.getId()));
+		@SuppressWarnings("unchecked")
+		List<CuotaDto> cuotas = entityDTOParser.getDtosFromEntities(cuotaDao.getCuotaByClienteId(cliente.getId()));
 		return cuotas;
 	}
 
@@ -131,15 +131,12 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Override
 	public void eliminarCuota(CuotaDto cuotaDto) {
 		if (cuotaDto.getId() == null) {
-			throw new BusinessException(
-					"error.clienteServicio.id.nulo",
-					"Se invoca la eliminación de una cuota que no existe en la base de datos ya que no se brinda el ID");
+			throw new BusinessException("error.clienteServicio.id.nulo", "Se invoca la eliminación de una cuota que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
 			cuotaDao.eliminarCuota(cuotaDto);
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar eliminar el cliente");
+			throw new BusinessException(e, "Error al intentar eliminar el cliente");
 		}
 	}
 
@@ -153,8 +150,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 				guardarCuota(cuotaDto);
 			}
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar guardar las cuotas");
+			throw new BusinessException(e, "Error al intentar guardar las cuotas");
 		}
 	}
 
@@ -163,13 +159,13 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public void guardarCuota(CuotaDto cuotaDto) {
 
 		try {
+			@SuppressWarnings("unchecked")
 			Cuota cuota = (Cuota) entityDTOParser.getEntityFromDto(cuotaDto);
 			cuota.setFechaPago(new Date());
 			cuota = cuotaDao.saveOrUpdate(cuota);
 			cuotaDto.setId(cuota.getId());
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar guardar las cuotas");
+			throw new BusinessException(e, "Error al intentar guardar las cuotas");
 		}
 	}
 

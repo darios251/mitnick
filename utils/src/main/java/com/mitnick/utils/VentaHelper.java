@@ -109,13 +109,13 @@ public class VentaHelper {
 	
 	public static BigDecimal calcularPrecioSinIva(BigDecimal precioProducto) {
 		BigDecimal impuesto = BigDecimal.ZERO;
-		BigDecimal iva = BigDecimal.ZERO;
+//		BigDecimal iva = BigDecimal.ZERO;
 		BigDecimal precio = BigDecimal.ZERO;
 		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
 		if (!Validator.isBlankOrNull(ivaString)) {
 			impuesto = new BigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100));
 			precio = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.ONE.add(impuesto),2, RoundingMode.HALF_UP);
-			iva = precio.multiply(impuesto).setScale(2, BigDecimal.ROUND_HALF_UP);
+//			iva = precio.multiply(impuesto).setScale(2, BigDecimal.ROUND_HALF_UP);
 		}
 		return precio;
 	}

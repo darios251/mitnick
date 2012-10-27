@@ -32,19 +32,16 @@ public class PrinterService {
 	private static final String FIN_ITEM_TAG = "[FIN-ITEM]";
 	private static final String ITEM_CANTIDAD = "[ITEM-CANTIDAD]";
 	private static final String ITEM_DESCRIPCION = "[ITEM-DESCRIPTION]";
-	private static final String FIN_ITEM_DESCRIPCION = "[FIN-ITEM-DESCRIPTION]";
 	private static final String ITEM_PRECIO = "[ITEM-PRECIO]";
 	private static final String ITEM_IVA = "[ITEM-IVA]";
 	private static final String SUBTOTAL = "[SUBTOTAL]";
 	private static final String PAYMENT = "[PAYMENT]";
 	private static final String PAGO_MONTO = "[PAGO-MONTO]";
 	private static final String PAGO_DESCRIPCION = "[PAGO-DESCRIPTION]";
-	private static final String FIN_PAGO_DESCRIPCION = "[FIN-PAGO-DESCRIPTION]";
 	private static final String FIN_PAGO = "[FIN-PAGO]";
 	private static final String DESCUENTO = "[DISCOUNT]";
 	private static final String RECARGO = "[SURCHARGE]";
 	private static final String CLOSE_COLA = "[CLOSE-COLA]";
-	private static final String FIN_COLA = "[FIN-COLA]";
 	private static final String BLANK_LINE = "[BLANK-LINE]";
 	
 	private static final String CIERRE_Z_TAG = "[CIERRE-Z]";
@@ -78,6 +75,7 @@ public class PrinterService {
 	private static final String INFO_TICKET = "[INFO-TICKET]";
 	private static final String CANCELAR_TICKET = "[CANCELAR-TICKET]";
 	
+	@SuppressWarnings("deprecation")
 	public boolean imprimirTicket(VentaDto venta) {
 		try {
 			connect();
@@ -189,6 +187,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean imprimirTicketFactura(VentaDto venta) {
 		try {
 			connect();
@@ -327,6 +326,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean imprimirCierreZ() {
 		try {
 			connect();
@@ -362,6 +362,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean imprimirCierreX() {
 		try {
 			connect();
@@ -395,6 +396,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean imprimirInformeJornada() {
 		try {
 			connect();
@@ -434,6 +436,7 @@ public class PrinterService {
 			throw new Exception();
 	}
 
+	@SuppressWarnings("deprecation")
 	private String readErrorLine() {
 		try {
 			String line = "";
@@ -456,6 +459,7 @@ public class PrinterService {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean configurarImpresora(ConfiguracionImpresoraDto configuracion) {
 		try {
 			connect();
@@ -537,6 +541,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean getInfoTicketFactura(VentaDto venta, boolean useCurrentConnection) {
 		try {
 			connect(useCurrentConnection);
@@ -546,8 +551,6 @@ public class PrinterService {
 			
 			String line = "";
 			
-			String nroTicket;
-		    
 		    line = input.readLine();
 		    
 	    	if(line.startsWith("[ERROR]")) {
@@ -582,6 +585,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean getInfoTicket(VentaDto venta, boolean useCurrentConnection) {
 		try {
 			connect(useCurrentConnection);
@@ -591,8 +595,6 @@ public class PrinterService {
 			
 			String line = "";
 			
-			String nroTicket;
-		    
 		   line = input.readLine();
 		   
 		   if(line.startsWith("[ERROR]")) {
@@ -625,6 +627,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean cancelarTicketFactura(VentaDto venta, boolean useCurrentConnection) {
 		try {
 			connect(useCurrentConnection);
@@ -653,6 +656,7 @@ public class PrinterService {
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean cancelarTicket(VentaDto venta, boolean useCurrentConnection) {
 		try {
 			connect(useCurrentConnection);
