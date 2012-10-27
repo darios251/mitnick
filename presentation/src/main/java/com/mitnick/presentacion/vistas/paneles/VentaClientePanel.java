@@ -127,7 +127,7 @@ public class VentaClientePanel extends BasePanel {
 		if(btnBuscar == null) {
 			btnBuscar = new JButton("");
 			btnBuscar.setToolTipText("Buscar Cliente");
-			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar cliente.png")));
+			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar_cliente.png")));
 			btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnBuscar.setMargin(new Insets(-1, -1, -1, -1));

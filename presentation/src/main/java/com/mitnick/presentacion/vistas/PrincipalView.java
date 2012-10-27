@@ -199,10 +199,11 @@ public class PrincipalView extends JFrame
 						ventaController.crearNuevaVenta();
 					}
 					logger.info("Mostrando el panel de ventas");
-					getJTabbedPane().setVisible(true);
+					
 					ventaController.mostrarUltimoPanelMostrado();
-					ventaController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
+					getJTabbedPane().setVisible(true);
+					ventaController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
 		}
@@ -231,10 +232,11 @@ public class PrincipalView extends JFrame
 						getJTabbedPane().addTab(PropertiesManager.getProperty("producto.titulo"), productoController.getProductoView());
 					}
 					logger.info("Mostrando el panel de articulos");
-					getJTabbedPane().setVisible(true);
+					
 					productoController.mostrarProductosPanel();
-					productoController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(productoController.getProductoView());
+					getJTabbedPane().setVisible(true);
+					productoController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
 		}
@@ -258,19 +260,6 @@ public class PrincipalView extends JFrame
 			btnReporte.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnReporte.setMargin(new Insets(-1, -1, -1, -1));
 			
-//			btnReporte.addMouseListener(new MouseAdapter() {
-//				public void mouseClicked(MouseEvent e)	{
-//					if (getJTabbedPane().indexOfComponent(reporteController.getReporteMovimientosPanel()) == -1) {
-//						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
-//						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reporteController.getReporteMovimientosView());
-//					}
-//					logger.info("Mostrando el panel de Movimientos de productos");
-//					getJTabbedPane().setVisible(true);
-//					reporteController.mostrarProductosPanel();
-//					reporteController.getUltimoPanelMostrado().setVisible(true);
-//					getJTabbedPane().setSelectedComponent(reporteController.getReporteMovimientosView());
-//				}
-//			});
 			btnReporte.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e)	{
 					if (getJTabbedPane().indexOfComponent(reportesController.getReportesPanel()) == -1) {
@@ -278,10 +267,11 @@ public class PrincipalView extends JFrame
 						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reportesController.getReportesView());
 					}
 					logger.info("Mostrando el panel de Movimientos de productos");
-					getJTabbedPane().setVisible(true);
+					
 					reportesController.mostrarReportesPanel();
-					reportesController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(reportesController.getReportesView());
+					getJTabbedPane().setVisible(true);
+					reportesController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
 		}
@@ -312,10 +302,11 @@ public class PrincipalView extends JFrame
 						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reporteController.getReporteMovimientosView());
 					}
 					logger.info("Mostrando el panel de Movimientos de productos");
-					getJTabbedPane().setVisible(true);
+					
 					reporteController.mostrarProductosPanel();
-					reporteController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(reporteController.getReporteMovimientosView());
+					getJTabbedPane().setVisible(true);
+					reporteController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
 		}
@@ -346,10 +337,11 @@ public class PrincipalView extends JFrame
 						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("proveedorPanel.label.proveedores"), proveedorController.getProveedorView());
 					}
 					logger.info("Mostrando el panel de Movimientos de productos");
-					getJTabbedPane().setVisible(true);
+					
 					proveedorController.mostrarProveedorPanel();
-					proveedorController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(proveedorController.getProveedorView());
+					getJTabbedPane().setVisible(true);
+					proveedorController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
 		}
@@ -380,10 +372,11 @@ public class PrincipalView extends JFrame
 						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("cliente.titulo"), clienteController.getClienteView());
 					}
 					logger.info("Mostrando el panel de clientes");
-					getJTabbedPane().setVisible(true);
+					
 					clienteController.mostrarClientePanel();
-					clienteController.getUltimoPanelMostrado().setVisible(true);
 					getJTabbedPane().setSelectedComponent(clienteController.getClienteView());
+					getJTabbedPane().setVisible(true);
+					clienteController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
 		}
