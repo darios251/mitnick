@@ -22,7 +22,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import com.mitnick.utils.LoginUtils;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.View;
-import com.mitnick.utils.locator.BeanLocator;
 
 @View("loginView")
 public class LoginView extends JDialog {
