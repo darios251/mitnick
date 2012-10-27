@@ -388,6 +388,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setTotalPagado(venta.getTotal());
 		ventaDto.setFaltaPagar(new BigDecimal(0));
 		ventaDto.setVuelto(new BigDecimal(0));
+		ventaDto.setImpresa(venta.isPrinted());
+		ventaDto.setCancelada(venta.isCanceled());
+		ventaDto.setAjusteRedondeo(venta.getAjusteRedondeo());
 		
 		return ventaDto;
 	}
@@ -443,6 +446,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		venta.setImpuesto(ventaDto.getImpuesto());
 		venta.setSubtotal(ventaDto.getSubTotal());
 		venta.setTotal(ventaDto.getTotal());
+		venta.setCanceled(ventaDto.isCancelada());
+		venta.setPrinted(ventaDto.isImpresa());
+		venta.setAjusteRedondeo(ventaDto.getAjusteRedondeo());
 
 		return venta;
 	}

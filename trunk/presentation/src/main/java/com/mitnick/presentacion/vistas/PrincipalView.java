@@ -30,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.mitnick.exceptions.BaseException;
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.exceptions.PrinterException;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.ProveedorController;
@@ -38,6 +39,7 @@ import com.mitnick.presentacion.controladores.ReportesController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
+import com.mitnick.presentacion.vistas.paneles.ConfiguracionImpresoraDialog;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
@@ -49,7 +51,7 @@ public class PrincipalView extends JFrame
 	private static final long serialVersionUID = 1L;
 	
 	private static Logger logger = Logger.getLogger(PrincipalView.class);
-
+	
 	@Autowired
 	private VentaController ventaController;
 	@Autowired
@@ -607,8 +609,13 @@ public class PrincipalView extends JFrame
 			menuInformeJornada = new JMenuItem("Informe de Jornada");
 			menuInformeJornada.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(!printerService.imprimirInformeJornada())
-						throw new PresentationException("error.printer.informeJornada");
+					try {
+						if(!printerService.imprimirInformeJornada())
+							throw new PresentationException("error.printer.informeJornada");
+					}
+					catch(PrinterException ex) {
+						mostrarMensaje(ex);
+					}
 				}
 			});
 		}
@@ -619,11 +626,21 @@ public class PrincipalView extends JFrame
 			menuConfiguracion = new JMenuItem("Configuración");
 			menuConfiguracion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					// TODO: IMPLEMENTAR ESTO
+					ConfiguracionImpresoraDialog configuracionImpresora = new ConfiguracionImpresoraDialog(thisView);
 				}
 			});
 		}
 		return menuConfiguracion;
+	}
+	
+	protected int mostrarMensaje(PrinterException ex) {
+		switch(ex.getType()) {
+		case BaseException.WARNING:
+			return mostrarMensajeAdvertencia(ex.getMessage());
+		case BaseException.ERROR:
+		default:
+			return mostrarMensajeError(ex.getMessage());
+		}
 	}
 	
 	protected int mostrarMensaje(PresentationException ex) {

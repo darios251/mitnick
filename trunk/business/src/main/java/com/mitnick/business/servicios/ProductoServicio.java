@@ -77,7 +77,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			//TODO: validar el codigo de producto unico
 			
 			//se calcula el impuesto del producto
-			BigDecimal iva = VentaHelper.CalcularImpuesto(productoDto);
+			BigDecimal iva = VentaHelper.calcularImpuesto(productoDto);
 			productoDto.setIva("0"); // se setea para que no salga un error de conversión luego se sobreescribe
 			
 			int stockOriginal = Integer.parseInt(productoDto.getStock());

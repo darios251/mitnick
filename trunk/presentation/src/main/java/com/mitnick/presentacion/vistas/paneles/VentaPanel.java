@@ -110,6 +110,7 @@ public class VentaPanel extends BasePanel {
 			getTxtCodigo().setText("");
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
+			txtCodigo.selectAll();
 		}
 		logger.debug("saliendo de agregarProducto");
 	}

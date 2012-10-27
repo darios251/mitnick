@@ -46,6 +46,9 @@ public class Venta extends BaseObject implements Serializable {
 	@Column(name = "descuento", nullable = false)
 	private BigDecimal descuento;
 	
+	@Column(name = "ajusteRedondeo", nullable = false)
+	private BigDecimal ajusteRedondeo;
+	
 	@Column(name = "impuesto", nullable = false)
 	private BigDecimal impuesto;
 	
@@ -65,6 +68,15 @@ public class Venta extends BaseObject implements Serializable {
 	@Column(name = "printed", nullable = false)
 	private boolean printed;
 	
+	@Column(name = "numeroTicket")
+	private String numeroTicket;
+	
+	@Column(name = "tipoTicket")
+	private String tipoTicket;
+	
+	@Column(name= "canceled", nullable = false)
+	private boolean canceled;
+
 	public Long getId() {
 		return id;
 	}
@@ -113,6 +125,14 @@ public class Venta extends BaseObject implements Serializable {
 		this.descuento = descuento;
 	}
 
+	public BigDecimal getAjusteRedondeo() {
+		return ajusteRedondeo;
+	}
+
+	public void setAjusteRedondeo(BigDecimal ajusteRedondeo) {
+		this.ajusteRedondeo = ajusteRedondeo;
+	}
+
 	public BigDecimal getImpuesto() {
 		return impuesto;
 	}
@@ -137,14 +157,6 @@ public class Venta extends BaseObject implements Serializable {
 		this.cliente = cliente;
 	}
 
-	public DiscriminacionIVA getDiscriminacionIVA() {
-		return discriminacionIVA;
-	}
-
-	public void setDiscriminacionIVA(DiscriminacionIVA discriminacionIVA) {
-		this.discriminacionIVA = discriminacionIVA;
-	}
-
 	public List<Cuota> getCuotas() {
 		return cuotas;
 	}
@@ -153,18 +165,53 @@ public class Venta extends BaseObject implements Serializable {
 		this.cuotas = cuotas;
 	}
 
+	public DiscriminacionIVA getDiscriminacionIVA() {
+		return discriminacionIVA;
+	}
+
+	public void setDiscriminacionIVA(DiscriminacionIVA discriminacionIVA) {
+		this.discriminacionIVA = discriminacionIVA;
+	}
+
 	public boolean isPrinted() {
 		return printed;
 	}
-	
+
 	public void setPrinted(boolean printed) {
 		this.printed = printed;
+	}
+
+	public String getNumeroTicket() {
+		return numeroTicket;
+	}
+
+	public void setNumeroTicket(String numeroTicket) {
+		this.numeroTicket = numeroTicket;
+	}
+
+	public String getTipoTicket() {
+		return tipoTicket;
+	}
+
+	public void setTipoTicket(String tipoTicket) {
+		this.tipoTicket = tipoTicket;
+	}
+
+	public boolean isCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(boolean canceled) {
+		this.canceled = canceled;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((ajusteRedondeo == null) ? 0 : ajusteRedondeo.hashCode());
+		result = prime * result + (canceled ? 1231 : 1237);
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((cuotas == null) ? 0 : cuotas.hashCode());
 		result = prime * result
@@ -177,12 +224,16 @@ public class Venta extends BaseObject implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((impuesto == null) ? 0 : impuesto.hashCode());
+		result = prime * result
+				+ ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
 		result = prime * result + (printed ? 1231 : 1237);
 		result = prime * result
 				+ ((productos == null) ? 0 : productos.hashCode());
 		result = prime * result
 				+ ((subtotal == null) ? 0 : subtotal.hashCode());
+		result = prime * result
+				+ ((tipoTicket == null) ? 0 : tipoTicket.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
 	}
@@ -196,6 +247,13 @@ public class Venta extends BaseObject implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Venta other = (Venta) obj;
+		if (ajusteRedondeo == null) {
+			if (other.ajusteRedondeo != null)
+				return false;
+		} else if (!ajusteRedondeo.equals(other.ajusteRedondeo))
+			return false;
+		if (canceled != other.canceled)
+			return false;
 		if (cliente == null) {
 			if (other.cliente != null)
 				return false;
@@ -231,6 +289,11 @@ public class Venta extends BaseObject implements Serializable {
 				return false;
 		} else if (!impuesto.equals(other.impuesto))
 			return false;
+		if (numeroTicket == null) {
+			if (other.numeroTicket != null)
+				return false;
+		} else if (!numeroTicket.equals(other.numeroTicket))
+			return false;
 		if (pagos == null) {
 			if (other.pagos != null)
 				return false;
@@ -248,6 +311,11 @@ public class Venta extends BaseObject implements Serializable {
 				return false;
 		} else if (!subtotal.equals(other.subtotal))
 			return false;
+		if (tipoTicket == null) {
+			if (other.tipoTicket != null)
+				return false;
+		} else if (!tipoTicket.equals(other.tipoTicket))
+			return false;
 		if (total == null) {
 			if (other.total != null)
 				return false;
@@ -260,10 +328,12 @@ public class Venta extends BaseObject implements Serializable {
 	public String toString() {
 		return "Venta [id=" + id + ", productos=" + productos + ", pagos="
 				+ pagos + ", fecha=" + fecha + ", subtotal=" + subtotal
-				+ ", descuento=" + descuento + ", impuesto=" + impuesto
-				+ ", total=" + total + ", cliente=" + cliente + ", cuotas="
-				+ cuotas + ", discriminacionIVA=" + discriminacionIVA
-				+ ", printed=" + printed + "]";
+				+ ", descuento=" + descuento + ", ajusteRedondeo="
+				+ ajusteRedondeo + ", impuesto=" + impuesto + ", total="
+				+ total + ", cliente=" + cliente + ", cuotas=" + cuotas
+				+ ", discriminacionIVA=" + discriminacionIVA + ", printed="
+				+ printed + ", numeroTicket=" + numeroTicket + ", tipoTicket="
+				+ tipoTicket + ", canceled=" + canceled + "]";
 	}
-
+	
 }

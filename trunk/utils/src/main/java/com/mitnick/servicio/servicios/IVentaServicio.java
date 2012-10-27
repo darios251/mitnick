@@ -50,5 +50,8 @@ public interface IVentaServicio {
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	void guardarCuotas(VentaDto venta, List<CuotaDto> cuotas);
+
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	void cancelar(VentaDto ventaDto);
 	
 }

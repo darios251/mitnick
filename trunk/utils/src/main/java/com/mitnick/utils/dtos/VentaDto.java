@@ -20,6 +20,8 @@ public class VentaDto extends BaseDto {
 	
 	private DescuentoDto descuento;
 	
+	private BigDecimal ajusteRedondeo;
+	
 	private List<PagoDto> pagos; 
 	
 	private ClienteDto cliente;
@@ -33,6 +35,14 @@ public class VentaDto extends BaseDto {
 	private BigDecimal vuelto = new BigDecimal(0);
 	
 	private List<CuotaDto> cuotas;
+	
+	private String numeroTicket;
+	
+	private String tipoTicket; 
+	
+	private boolean impresa;
+	
+	private boolean cancelada;
 	
 	public List<ProductoVentaDto> getProductos() {
 		if(productos == null)
@@ -138,5 +148,57 @@ public class VentaDto extends BaseDto {
 		this.cuotas = cuotas;
 	}
 	
+	public void setNumeroTicket(String numeroTicket) {
+		this.numeroTicket = numeroTicket;
+	}
 	
+	public String getNumeroTicket() {
+		return numeroTicket;
+	}
+	
+	public void setTipoTicket(String tipoTicket) {
+		this.tipoTicket = tipoTicket;
+	}
+	
+	public String getTipoTicket() {
+		return tipoTicket;
+	}
+	
+	public boolean isCancelada() {
+		return cancelada;
+	}
+	
+	public void setCancelada(boolean cancelada) {
+		this.cancelada = cancelada;
+	}
+
+	public boolean isImpresa() {
+		return impresa;
+	}
+	
+	public void setImpresa(boolean impresa) {
+		this.impresa = impresa;
+	}
+	
+	public BigDecimal getAjusteRedondeo() {
+		return ajusteRedondeo;
+	}
+	
+	public void setAjusteRedondeo(BigDecimal ajusteRedondeo) {
+		this.ajusteRedondeo = ajusteRedondeo;
+	}
+
+	@Override
+	public String toString() {
+		return "VentaDto [productos=" + productos + ", subTotal=" + subTotal
+				+ ", total=" + total + ", impuesto=" + impuesto
+				+ ", descuento=" + descuento + ", ajusteRedondeo="
+				+ ajusteRedondeo + ", pagos=" + pagos + ", cliente=" + cliente
+				+ ", pagado=" + pagado + ", totalPagado=" + totalPagado
+				+ ", faltaPagar=" + faltaPagar + ", vuelto=" + vuelto
+				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket
+				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa
+				+ ", cancelada=" + cancelada + "]";
+	}
+
 }
