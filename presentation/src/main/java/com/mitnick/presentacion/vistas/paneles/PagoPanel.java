@@ -405,7 +405,6 @@ public class PagoPanel extends BasePanel {
 				 List<CuotaDto> cuotasDto = ventaController.getCuotas(cuotas, txtMonto.getText());
 				 CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto);
 				 ventaController.guardarCuotas(cuotasDialog.getModel().getCuotas());
-				 
 			}
 			
 			ventaController.agregarPago(pago, txtMonto.getText());
@@ -492,6 +491,12 @@ public class PagoPanel extends BasePanel {
 	     Object[] options = { PropertiesManager.getProperty( "dialog.error.reintentar" ), PropertiesManager.getProperty( "dialog.error.cancelarVenta" )  };
 	     
 	     return JOptionPane.showOptionDialog( currentView, PropertiesManager.getProperty( "dialog.error.MensajeReintentar" ), PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+	}
+	
+	public int mostrarMensajeReintentar(String errorMessage) {
+	     Object[] options = { PropertiesManager.getProperty( "dialog.error.reintentar" ), PropertiesManager.getProperty( "dialog.error.cancelarVenta" ) };
+	     
+	     return JOptionPane.showOptionDialog( currentView, PropertiesManager.getProperty( "dialog.error.MensajeReintentar" ) + "\n" + errorMessage, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 
 	public JPanel getPnlCliente() {

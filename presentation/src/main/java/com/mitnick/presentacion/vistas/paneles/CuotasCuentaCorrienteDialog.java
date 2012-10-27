@@ -10,9 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.CuentaCorrienteTableModel;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -24,9 +21,6 @@ public class CuotasCuentaCorrienteDialog extends JDialog {
 	private CuentaCorrienteTableModel model;
 	private JScrollPane scrollPane;
 	private JButton btnAceptar;
-	
-	@Autowired
-	private VentaController ventaController;
 	
 	public CuotasCuentaCorrienteDialog(JFrame frame, List<CuotaDto> cuotasDto) {
 		super(frame, true);

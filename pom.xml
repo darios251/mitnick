@@ -337,8 +337,8 @@
 		<jdbc.version>8.1-407.jdbc3</jdbc.version>
 		<jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
 		<jdbc.url>jdbc:postgresql://localhost/${db.name}</jdbc.url>
-		<jdbc.username>postgresM</jdbc.username>
-		<jdbc.password>admin</jdbc.password>
+		<jdbc.username>postgres</jdbc.username>
+		<jdbc.password>postgres</jdbc.password>
     </properties>
     
     <dependencies>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.exceptions.PrinterException;
 
 @Aspect
 @Component
@@ -27,6 +28,9 @@ public class ExceptionAspect {
 	public void businessExceptionAspect(JoinPoint joinPoint, final Exception exception) throws Throwable {
 		if(exception instanceof AccessDeniedException) {
 			throw new BusinessException("error.access.denied", "El usuario no tiene los permisos necesarios para realizar la acción", exception);
+		}
+		else if(exception instanceof PrinterException) {
+			throw new BusinessException("Mensaje detallado: " + exception.getMessage(), exception.getMessage(), exception);
 		}
 		else if(!(exception instanceof BusinessException))
 			throw new BusinessException("error.unknown", exception.getMessage(), exception);

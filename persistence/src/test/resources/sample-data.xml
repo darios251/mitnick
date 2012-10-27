@@ -7,7 +7,7 @@
 		
 		<row>
 			<value>1</value>
-			<value>6b735b179f4b58dfef0d5bfe482ab6eca1465142dcb7cf5731c3eef3c93fa8c0</value>
+			<value>284e99e7a331f0b36666c383512608fcf0109d5bcd19b1e514a7e16f7fa99072</value>
 			<value>newSaltValue</value>
 		</row>
 	</table>
@@ -21,7 +21,7 @@
 		
 		<row>
 			<value>1</value>
-			<value>Maximo de cantidad permitido modificar sin advertencia</value>
+			<value>Máximo de cantidad permitido modificar sin advertencia</value>
 			<value>producto.cantidad.warning</value>
 			<value>-3</value>
 			<value>2</value>

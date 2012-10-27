@@ -287,13 +287,14 @@ public class VentaController extends BaseController {
 				getVentaServicio().facturar(VentaManager.getVentaActual());
 			}
 			catch(BusinessException e) {
-				int opcion = getPagoPanel().mostrarMensajeReintentar();
+				int opcion = getPagoPanel().mostrarMensajeReintentar(e.getMessage());
 				
 				if(opcion == 0) {
 					finalizarVenta();
 					return;
 				}
 				else {
+					getVentaServicio().cancelar(VentaManager.getVentaActual());
 					VentaManager.crearNuevaVenta();
 					mostrarVentasPanel();
 					return;

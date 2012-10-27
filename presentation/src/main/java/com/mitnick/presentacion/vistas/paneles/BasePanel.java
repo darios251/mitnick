@@ -69,12 +69,16 @@ public abstract class BasePanel extends JPanel {
 	     Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 	     
 	     if(Validator.isNotEmptyOrNull(ex.getConstraintViolations())) {
+	    	 String firstError = null;
+	    	 
 	    	 for(ConstraintViolation<Object> constraintViolation : ex.getConstraintViolations()) {
 	    		 String fieldName = constraintViolation.getPropertyPath().toString().substring(0, 1).toUpperCase() + constraintViolation.getPropertyPath().toString().substring(1);
 	    		 try {
 					Field fieldError = this.getClass().getDeclaredField("txt" + fieldName);
 					fieldError.setAccessible(true);
 					JTextField field = (JTextField) fieldError.get(this);
+					if(firstError == null)
+						firstError = "txt" + fieldName;
 //					field.setSize(field.getWidth() + 150, field.getHeight() + 20);
 //					field.setLocation(field.getX(), field.getY() - 12);
 					field.setBorder(BorderFactory.createLineBorder(Color.red));
@@ -106,6 +110,20 @@ public abstract class BasePanel extends JPanel {
 						lblError.setForeground(Color.red);
 					} catch (Exception e1) {
 					}
+				}
+	    		 
+	    	 }
+	    	 
+	    	 if(firstError != null) {
+    			Field fieldError;
+				try {
+					fieldError = this.getClass().getDeclaredField(firstError);
+					fieldError.setAccessible(true);
+					JTextField field = (JTextField) fieldError.get(this);
+					field.requestFocus();
+					field.selectAll();
+				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
 				}
 	    	 }
 	     }

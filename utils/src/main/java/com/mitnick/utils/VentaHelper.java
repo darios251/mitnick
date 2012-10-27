@@ -16,7 +16,7 @@ public class VentaHelper {
 
 	public static BigDecimal getDescuentoTotal(VentaDto ventaDto) {
 		DescuentoDto descuento = ventaDto.getDescuento();
-		BigDecimal monto = new BigDecimal(0);
+		BigDecimal monto = BigDecimal.ZERO;
 		if (Validator.isNotNull(descuento)) {
 			if (descuento.getTipo() == DescuentoDto.MONTO)
 				monto = descuento.getDescuento();
@@ -33,8 +33,8 @@ public class VentaHelper {
 	public static void calcularTotales(VentaDto ventaDto) {
 
 		// suma de todos los productos
-		BigDecimal subTotal = new BigDecimal(0);
-		BigDecimal impuestos = new BigDecimal(0);
+		BigDecimal subTotal = BigDecimal.ZERO;
+		BigDecimal impuestos = BigDecimal.ZERO;
 		Iterator<ProductoVentaDto> productos = ventaDto.getProductos()
 				.iterator();
 		while (productos.hasNext()) {
@@ -42,22 +42,24 @@ public class VentaHelper {
 			BigDecimal precioTotal = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
 			producto.setPrecioTotal(precioTotal);
 			subTotal = subTotal.add(precioTotal);
-			producto.setIva(CalcularImpuesto(producto));
+			producto.setIva(calcularImpuesto(producto));
 			impuestos = impuestos.add(producto.getIva());
 		}
 
 		// incluye los impuestos
 		ventaDto.setSubTotal(subTotal);
-
+		
 		ventaDto.setImpuesto(impuestos);
-
+		
 		BigDecimal descuentos = VentaHelper.getDescuentoTotal(ventaDto);
 		BigDecimal total = subTotal.subtract(descuentos);
+		
+		ventaDto.setAjusteRedondeo(calcularAjusteRedondeo(ventaDto));
 
 		ventaDto.setTotal(total);
 
 		// suma de todos los pagos
-		BigDecimal montoPagado = new BigDecimal(0);
+		BigDecimal montoPagado = BigDecimal.ZERO;
 		Iterator<PagoDto> pagos = ventaDto.getPagos().iterator();
 		while (pagos.hasNext()) {
 			montoPagado = montoPagado.add(pagos.next().getMonto());
@@ -69,7 +71,7 @@ public class VentaHelper {
 		ventaDto.setTotalPagado(montoPagado);
 
 		if (pagado) {
-			ventaDto.setFaltaPagar(new BigDecimal(0));
+			ventaDto.setFaltaPagar(BigDecimal.ZERO);
 			ventaDto.setVuelto(montoPagado.subtract(total));
 		} else {
 			ventaDto.setFaltaPagar(total.subtract(montoPagado));
@@ -78,38 +80,62 @@ public class VentaHelper {
 
 	}
 
-	public static BigDecimal CalcularImpuesto(BigDecimal precioProducto) {
-		BigDecimal impuesto = new BigDecimal(0);
-		BigDecimal iva = new BigDecimal(0);
+	private static BigDecimal calcularAjusteRedondeo(VentaDto ventaDto) {
+		BigDecimal subTotal = new BigDecimal(0); 
+		
+		for(ProductoVentaDto producto : ventaDto.getProductos()) {
+			subTotal = subTotal.add(calcularPrecioSinIva(producto.getPrecioTotal()));
+			subTotal = subTotal.add(calcularImpuesto(producto.getPrecioTotal()));
+		}
+		
+		BigDecimal result = ventaDto.getSubTotal();
+		
+		if(ventaDto.getDescuento() != null) 
+			result = result.subtract(ventaDto.getDescuento().getDescuento());
+		return result.subtract(subTotal);
+	}
+
+	public static BigDecimal calcularImpuesto(BigDecimal precioProducto) {
+		BigDecimal impuesto = BigDecimal.ZERO;
+		BigDecimal iva = BigDecimal.ZERO;
 		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
 		if (!Validator.isBlankOrNull(ivaString)) {
 			impuesto = new BigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100));
-			BigDecimal p1 = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP);
-			BigDecimal p2 = BigDecimal.ONE.add(impuesto);
-			BigDecimal p3 = p1.divide(p2,2, RoundingMode.HALF_UP);
-			BigDecimal precio = p3;
+			BigDecimal precio = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.ONE.add(impuesto),2, RoundingMode.HALF_UP);
 			iva = precio.multiply(impuesto).setScale(2, BigDecimal.ROUND_HALF_UP);
-			
 		}
 		return iva;
 	}
+	
+	public static BigDecimal calcularPrecioSinIva(BigDecimal precioProducto) {
+		BigDecimal impuesto = BigDecimal.ZERO;
+		BigDecimal iva = BigDecimal.ZERO;
+		BigDecimal precio = BigDecimal.ZERO;
+		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
+		if (!Validator.isBlankOrNull(ivaString)) {
+			impuesto = new BigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100));
+			precio = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.ONE.add(impuesto),2, RoundingMode.HALF_UP);
+			iva = precio.multiply(impuesto).setScale(2, BigDecimal.ROUND_HALF_UP);
+		}
+		return precio;
+	}
 
 	
-	public static BigDecimal CalcularImpuesto(ProductoNuevoDto productoDto) {
-		return CalcularImpuesto(new BigDecimal(productoDto.getPrecioVenta()));
+	public static BigDecimal calcularImpuesto(ProductoNuevoDto productoDto) {
+		return calcularImpuesto(new BigDecimal(productoDto.getPrecioVenta()));
 	}
 	
-	public static BigDecimal CalcularImpuesto(ProductoDto productoDto) {
-		return CalcularImpuesto(productoDto.getPrecioVenta());
+	public static BigDecimal calcularImpuesto(ProductoDto productoDto) {
+		return calcularImpuesto(productoDto.getPrecioVenta());
 	}
 	
-	public static BigDecimal CalcularImpuesto(ProductoVentaDto productoDto) {
-		return CalcularImpuesto(productoDto.getPrecioTotal());
+	public static BigDecimal calcularImpuesto(ProductoVentaDto productoDto) {
+		return calcularImpuesto(productoDto.getPrecioTotal());
 	}
 	
 	public static void calcularTotales(CuotaDto cuotaDto) {
 		// suma de todos los pagos
-		BigDecimal montoPagado = new BigDecimal(0);
+		BigDecimal montoPagado = BigDecimal.ZERO;
 		Iterator<PagoDto> pagos = cuotaDto.getPagos().iterator();
 		while (pagos.hasNext()) {
 			montoPagado = montoPagado.add(pagos.next().getMonto());
@@ -122,7 +148,7 @@ public class VentaHelper {
 		cuotaDto.setTotalPagado(montoPagado);
 
 		if (pagado) {
-			cuotaDto.setFaltaPagar(new BigDecimal(0));
+			cuotaDto.setFaltaPagar(BigDecimal.ZERO);
 		} else {
 			cuotaDto.setFaltaPagar(total.subtract(montoPagado));
 		}
