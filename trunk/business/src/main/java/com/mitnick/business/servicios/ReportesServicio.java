@@ -152,7 +152,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void reporteIngresos(ReportesDto filtro) {
@@ -228,7 +227,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -236,7 +235,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void reporteIngresosAgrupados(ReportesDto filtro) {
@@ -310,13 +308,12 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void reporteIngresosAnual(ReportesDto filtro) {
@@ -390,7 +387,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -431,7 +428,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarListadoDeControl(ReportesDto filtro) {
@@ -496,7 +492,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -532,14 +528,13 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarVentaPorArticulo(ReportesDto filtro) {
@@ -569,17 +564,16 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarStockArticulo(ReportesDto filtro) {
-		
+		// TODO Lucas: encontré este método vacío, seguramente está faltando implementar esto
 	}
 	
 	

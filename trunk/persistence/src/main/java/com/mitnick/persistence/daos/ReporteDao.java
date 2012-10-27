@@ -28,6 +28,7 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 				Venta.class.getName() + " as v where pv.producto.id=p.id and pv.venta.id=v.id " +
 				" group by p.codigo, p.descripcion, pv.cantidad, pv.precio, v.fecha ";
 		
+		@SuppressWarnings("unchecked")
 		List<Object[]> items = getHibernateTemplate().find(hql);
 		List<ReporteVentaArticuloDTO> resultado = new ArrayList<ReporteVentaArticuloDTO>();
 		if (items!=null && !items.isEmpty()){

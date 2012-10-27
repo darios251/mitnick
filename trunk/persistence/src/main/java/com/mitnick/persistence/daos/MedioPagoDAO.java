@@ -17,6 +17,7 @@ public class MedioPagoDAO extends GenericDaoHibernate<MedioPago, Long>  implemen
 		super(MedioPago.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<MedioPago> obtenerMediosPagosCuentaCorriente() {
 		DetachedCriteria criteria = DetachedCriteria.forClass(MedioPago.class);
 		criteria.add(Restrictions.not(Restrictions.ilike("codigo", MitnickConstants.Medio_Pago.CUENTA_CORRIENTE)));

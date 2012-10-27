@@ -28,6 +28,7 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		super(Cuota.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Cuota> getCuotaByClienteId(Long cliente){
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cuota.class);
 
@@ -41,6 +42,7 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Cuota> getCuotaPagas(ReportesDto filtro){
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cuota.class);
 

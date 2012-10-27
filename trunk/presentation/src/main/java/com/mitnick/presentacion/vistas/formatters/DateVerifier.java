@@ -2,7 +2,6 @@ package com.mitnick.presentacion.vistas.formatters;
 
 import java.awt.Color;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.InputVerifier;
@@ -24,7 +23,7 @@ public class DateVerifier extends InputVerifier {
 	public boolean verify(javax.swing.JComponent jc) {
 		FormattedDateField fdf = (FormattedDateField) jc;
 		try {
-			Date d = sdf.parse(fdf.getText()); // note this allows months > 12,
+			sdf.parse(fdf.getText()); // note this allows months > 12,
 												// days > 31
 			jc.setBorder(BorderFactory.createLineBorder(VALID_COLOR));
 			return true;

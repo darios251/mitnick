@@ -24,6 +24,7 @@ public class ParametroDAO extends GenericDaoHibernate<Parametro, Long>  implemen
 		if(!Validator.isBlankOrNull(name)){
 			criteria.add(Restrictions.ilike("nombre", name));
 		}
+		@SuppressWarnings("unchecked")
 		List<Parametro> parametros = getHibernateTemplate().findByCriteria(criteria);
 		if (parametros.isEmpty())
 			return null;

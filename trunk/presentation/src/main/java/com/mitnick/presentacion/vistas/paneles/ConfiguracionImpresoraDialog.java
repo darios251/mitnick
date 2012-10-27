@@ -11,7 +11,6 @@ import javax.swing.JTextField;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.CuentaCorrienteTableModel;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.anotaciones.View;
@@ -24,8 +23,6 @@ public class ConfiguracionImpresoraDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private CuentaCorrienteTableModel model;
 	
-	@Autowired
-	private VentaController ventaController;
 	@Autowired
 	private PrinterService printerService = (PrinterService) BeanLocator.getBean("printerService");
 	
@@ -138,9 +135,4 @@ public class ConfiguracionImpresoraDialog extends JDialog {
 		return model;
 	}
 	
-	private static class __Tmp {
-		private static void __tmp() {
-			  javax.swing.JPanel __wbp_panel = new javax.swing.JPanel();
-		}
-	}
 }
