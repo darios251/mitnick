@@ -141,7 +141,7 @@ public class ConfiguracionImpresoraDialog extends JDialog {
 	protected int mostrarMensajeError ( String message ) {
 		Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 		
-		return JOptionPane.showOptionDialog( this, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+		return JOptionPane.showOptionDialog( thisDialog, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	public CuentaCorrienteTableModel getModel() {
