@@ -7,12 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mitnick.exceptions.PrinterException;
 import com.mitnick.presentacion.modelos.CuentaCorrienteTableModel;
 import com.mitnick.utils.PrinterService;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.View;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
 import com.mitnick.utils.locator.BeanLocator;
@@ -35,9 +38,11 @@ public class ConfiguracionImpresoraDialog extends JDialog {
 	private JLabel lblFechaInicioActividades;
 	private JTextField txtFechaInicioActividades;
 	private JButton btnGuardar;
+	private JDialog thisDialog;
 	
 	public ConfiguracionImpresoraDialog(JFrame frame) {
 		super(frame, true);
+		thisDialog = this;
 		getContentPane().setLayout(null);
 		
 		txtDomicilioFiscal1 = new JTextField();
@@ -115,7 +120,12 @@ public class ConfiguracionImpresoraDialog extends JDialog {
 				configuracion.setDomicilioFiscal3(txtDomicilioFiscal3.getText());
 				configuracion.setFechaInicioActividades(txtFechaInicioActividades.getText());
 				
-				printerService.configurarImpresora(configuracion);
+				try {
+					printerService.configurarImpresora(configuracion);
+				}
+				catch (PrinterException ex) {
+					mostrarMensajeError(ex.getMessage());
+				}
 			}
 		});
 		
@@ -126,6 +136,12 @@ public class ConfiguracionImpresoraDialog extends JDialog {
 		setLocationRelativeTo(null);
 		
 		setVisible(true);
+	}
+	
+	protected int mostrarMensajeError ( String message ) {
+		Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
+		
+		return JOptionPane.showOptionDialog( this, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	public CuentaCorrienteTableModel getModel() {

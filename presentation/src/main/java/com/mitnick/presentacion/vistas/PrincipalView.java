@@ -109,7 +109,7 @@ public class PrincipalView extends JFrame
 	private void initialize()
 	{
 		this.setTitle(PropertiesManager.getProperty("principalView.titulo"));
-		this.setMinimumSize(new Dimension(1000,600));
+		this.setMinimumSize(new Dimension(1000, 620));
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setJMenuBar(getMenuBarra());
