@@ -131,6 +131,11 @@ public class ProveedorController extends BaseController {
 		}
 	}
 	
+	public void nuevoProveedor() {
+		proveedorNuevoPanel.setProveedor(null);
+		mostrarProveedorNuevoPanel();
+	}
+	
 	public void editarProveedor() {
 		ProveedorDto proveedorDto = null;
 		try {
@@ -147,7 +152,7 @@ public class ProveedorController extends BaseController {
 		}
 		
 		try {
-			proveedorNuevoPanel.setProducto(proveedorDto);
+			proveedorNuevoPanel.setProveedor(proveedorDto);
 			mostrarProveedorNuevoPanel();
 		}
 		catch(BusinessException e) {

@@ -83,8 +83,7 @@ public class PagoPanel extends BasePanel {
 	private boolean cuentaCorriente = false;
 
 	@Autowired
-	public PagoPanel(
-			@Qualifier("ventaController") VentaController ventaController) {
+	public PagoPanel(@Qualifier("ventaController") VentaController ventaController) {
 		this.ventaController = ventaController;
 	}
 
@@ -164,9 +163,7 @@ public class PagoPanel extends BasePanel {
 
 	public JLabel getLblPagosRealizados() {
 		if (lblPagosRealizados == null) {
-			lblPagosRealizados = new JLabel(
-					PropertiesManager
-							.getProperty("pagoPanel.etiqueta.pagosRealizados"));
+			lblPagosRealizados = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.pagosRealizados"));
 			lblPagosRealizados.setBounds(269, 86, 141, 20);
 		}
 		return lblPagosRealizados;
@@ -174,9 +171,7 @@ public class PagoPanel extends BasePanel {
 
 	public JLabel getLbl_ST() {
 		if (lbl_ST == null) {
-			lbl_ST = new JLabel(
-					PropertiesManager
-							.getProperty("pagoPanel.etiqueta.subtotal"));
+			lbl_ST = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.subtotal"));
 			lbl_ST.setHorizontalAlignment(SwingConstants.RIGHT);
 			lbl_ST.setBounds(269, 300, 88, 20);
 		}
@@ -194,8 +189,7 @@ public class PagoPanel extends BasePanel {
 
 	public JLabel getLbl_T() {
 		if (lbl_T == null) {
-			lbl_T = new JLabel(
-					PropertiesManager.getProperty("pagoPanel.etiqueta.total"));
+			lbl_T = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.total"));
 			lbl_T.setHorizontalAlignment(SwingConstants.RIGHT);
 			lbl_T.setBounds(269, 340, 88, 20);
 		}
@@ -213,9 +207,7 @@ public class PagoPanel extends BasePanel {
 
 	public JLabel getLbl_TP() {
 		if (lbl_TP == null) {
-			lbl_TP = new JLabel(
-					PropertiesManager
-							.getProperty("pagoPanel.etiqueta.totalPagado"));
+			lbl_TP = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalPagado"));
 			lbl_TP.setHorizontalAlignment(SwingConstants.RIGHT);
 			lbl_TP.setBounds(269, 380, 88, 20);
 		}
@@ -260,10 +252,8 @@ public class PagoPanel extends BasePanel {
 
 	public JButton getBtnAgregar() {
 		if (btnAgregar == null) {
-			btnAgregar = new JButton(
-					PropertiesManager.getProperty("pagoPanel.boton.agregar"));
-			btnAgregar.setToolTipText(PropertiesManager
-					.getProperty("pagoPanel.tooltip.agregar"));
+			btnAgregar = new JButton(PropertiesManager.getProperty("pagoPanel.boton.agregar"));
+			btnAgregar.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.agregar"));
 
 			btnAgregar.setIcon(new ImageIcon(this.getClass().getResource(
 					"/img/agregar.png")));
@@ -287,8 +277,7 @@ public class PagoPanel extends BasePanel {
 
 	public JLabel getLblMonto() {
 		if (lblMonto == null) {
-			lblMonto = new JLabel(
-					PropertiesManager.getProperty("pagoPanel.etiqueta.monto"));
+			lblMonto = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.monto"));
 			lblMonto.setHorizontalAlignment(SwingConstants.LEFT);
 			lblMonto.setBounds(44, 148, 110, 20);
 		}
@@ -297,8 +286,7 @@ public class PagoPanel extends BasePanel {
 
 	public JComboBox<MedioPagoDto> getCmbMedioPago() {
 		if (cmbMedioPago == null) {
-			cmbMedioPago = new JComboBox<MedioPagoDto>(
-					new MitnickComboBoxModel<MedioPagoDto>());
+			cmbMedioPago = new JComboBox<MedioPagoDto>(new MitnickComboBoxModel<MedioPagoDto>());
 			cmbMedioPago.setBounds(44, 117, 110, 20);
 		}
 		return cmbMedioPago;
@@ -306,8 +294,7 @@ public class PagoPanel extends BasePanel {
 
 	public JLabel getLblMedioPago() {
 		if (lblMedioPago == null) {
-			lblMedioPago = new JLabel(
-					PropertiesManager
+			lblMedioPago = new JLabel(PropertiesManager
 							.getProperty("pagoPanel.etiqueta.medioPago"));
 			lblMedioPago.setHorizontalAlignment(SwingConstants.LEFT);
 			lblMedioPago.setBounds(44, 86, 115, 20);
@@ -345,11 +332,9 @@ public class PagoPanel extends BasePanel {
 		if (btnQuitar == null) {
 			btnQuitar = new JButton(
 					PropertiesManager.getProperty("pagoPanel.button.quitar"));
-			btnQuitar.setToolTipText(PropertiesManager
-					.getProperty("pagoPanel.tooltip.quitar"));
+			btnQuitar.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.quitar"));
 
-			btnQuitar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/cancelar.png")));
+			btnQuitar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 			btnQuitar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnQuitar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnQuitar.setMargin(new Insets(-1, -1, -1, -1));
@@ -362,19 +347,16 @@ public class PagoPanel extends BasePanel {
 						int index = table.getSelectedRow();
 						PagoDto pagoDto = model.getPago(index);
 
-						int opcion = mostrarMensajeAdvertencia(PropertiesManager
-								.getProperty("pagoPanel.dialog.confirm.quitar"));
+						int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("pagoPanel.dialog.confirm.quitar"));
 
 						if (opcion == JOptionPane.YES_OPTION) {
 							ventaController.quitarPago(pagoDto);
 						}
 					} catch (IndexOutOfBoundsException exception) {
 						if (model.getRowCount() == 0) {
-							mostrarMensajeError(PropertiesManager
-									.getProperty("error.pagoPanel.pagos.vacio"));
+							mostrarMensajeError(PropertiesManager.getProperty("error.pagoPanel.pagos.vacio"));
 						} else {
-							mostrarMensajeError(PropertiesManager
-									.getProperty("error.pagoPanel.pago.noSeleccionado"));
+							mostrarMensajeError(PropertiesManager.getProperty("error.pagoPanel.pago.noSeleccionado"));
 						}
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
@@ -397,9 +379,7 @@ public class PagoPanel extends BasePanel {
 
 	public JLabel getLblTotalAPagar() {
 		if (lblTotalAPagar == null) {
-			lblTotalAPagar = new JLabel(
-					PropertiesManager
-							.getProperty("pagoPanel.etiqueta.totalAPagar"));
+			lblTotalAPagar = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalAPagar"));
 			lblTotalAPagar.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblTotalAPagar.setBounds(269, 420, 88, 20);
 		}
@@ -414,30 +394,25 @@ public class PagoPanel extends BasePanel {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[] { cmbMedioPago, txtMonto }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { cmbMedioPago, txtMonto }));
 	}
 
 	protected void agregarPago() {
 		try {
 			MedioPagoDto pago = (MedioPagoDto) cmbMedioPago.getSelectedItem();
 			if (pago.isCuentaCorriente()) {
-				String cuotas = JOptionPane
-						.showInputDialog(PropertiesManager
-								.getProperty("pagoPanel.cuentaCorriente.cantidadCuotas"));
+				String cuotas = JOptionPane.showInputDialog(PropertiesManager.getProperty("pagoPanel.cuentaCorriente.cantidadCuotas"));
 				if (cuotas!=null && !cuotas.equals("")){
-					List<CuotaDto> cuotasDto = ventaController.getCuotas(cuotas,
-							txtMonto.getText());
-					CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog(
-							(JFrame) this.getParent().getParent().getParent()
-									.getParent().getParent().getParent()
-									.getParent(), cuotasDto, txtMonto.getText());
+					List<CuotaDto> cuotasDto = ventaController.getCuotas(cuotas, txtMonto.getText());
+					CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto, txtMonto.getText());
 					if (cuotasDialog.aceptar) {
 						ventaController.guardarCuotas(cuotasDialog.getModel().getCuotas());
 						ventaController.agregarPago(pago, txtMonto.getText());
 					} 
 				}
 			}
+			else
+				ventaController.agregarPago(pago, txtMonto.getText());
 
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
@@ -454,17 +429,13 @@ public class PagoPanel extends BasePanel {
 
 	public void actualizarPantalla() {
 		if (Validator.isNotNull(lblSubtotalValor))
-			lblSubtotalValor.setText(VentaManager.getVentaActual()
-					.getSubTotal().toString());
+			lblSubtotalValor.setText(VentaManager.getVentaActual().getSubTotal().toString());
 		if (Validator.isNotNull(lblTotalValor))
-			lblTotalValor.setText(VentaManager.getVentaActual().getTotal()
-					.toString());
+			lblTotalValor.setText(VentaManager.getVentaActual().getTotal().toString());
 		if (Validator.isNotNull(lblTotalPagadoValor))
-			lblTotalPagadoValor.setText(VentaManager.getVentaActual()
-					.getTotalPagado().toString());
+			lblTotalPagadoValor.setText(VentaManager.getVentaActual().getTotalPagado().toString());
 		if (Validator.isNotNull(lblAPagarValor))
-			lblAPagarValor.setText(VentaManager.getVentaActual()
-					.getFaltaPagar().toString());
+			lblAPagarValor.setText(VentaManager.getVentaActual().getFaltaPagar().toString());
 		if (Validator.isNotNull(cmbMedioPago)) {
 			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
 
@@ -475,15 +446,13 @@ public class PagoPanel extends BasePanel {
 			}
 
 			cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());
-			((MitnickComboBoxModel<MedioPagoDto>) cmbMedioPago.getModel())
-					.addItems(medioPagoList);
+			((MitnickComboBoxModel<MedioPagoDto>) cmbMedioPago.getModel()).addItems(medioPagoList);
 		}
 		if (Validator.isNotNull(model)) {
 			model.setPagos(VentaManager.getVentaActual().getPagos());
 		}
 		if (Validator.isNotNull(txtMonto)) {
-			txtMonto.setText(VentaManager.getVentaActual().getFaltaPagar()
-					.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			txtMonto.setText(VentaManager.getVentaActual().getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			txtMonto.requestFocus();
 			txtMonto.setSelectionStart(0);
 			txtMonto.setSelectionEnd(txtMonto.getText().length());
@@ -492,8 +461,7 @@ public class PagoPanel extends BasePanel {
 		if (Validator.isNotNull(VentaManager.getVentaActual().getCliente())) {
 			ClienteDto cliente = VentaManager.getVentaActual().getCliente();
 
-			getLblApellidoNombre().setText(
-					cliente.getApellido() + ", " + cliente.getNombre());
+			getLblApellidoNombre().setText(cliente.getApellido() + ", " + cliente.getNombre());
 			getLblDni().setText(cliente.getDocumento());
 
 			getPnlCliente().setVisible(true);
@@ -506,10 +474,7 @@ public class PagoPanel extends BasePanel {
 
 	public void finalizarVenta() {
 		try {
-			mostrarMensajeInformativo(PropertiesManager.getProperty(
-					"pagoPanel.finalizarVenta.exito",
-					new Object[] { VentaManager.getVentaActual().getVuelto()
-							.toString() }));
+			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
 			ventaController.crearNuevaVenta();
 			ventaController.limpiarVenta();
 			ventaController.mostrarVentasPanel();
@@ -528,12 +493,7 @@ public class PagoPanel extends BasePanel {
 				PropertiesManager.getProperty("dialog.error.reintentar"),
 				PropertiesManager.getProperty("dialog.error.cancelarVenta") };
 
-		return JOptionPane
-				.showOptionDialog(currentView, PropertiesManager
-						.getProperty("dialog.error.MensajeReintentar"),
-						PropertiesManager.getProperty("dialog.error.titulo"),
-						JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
-						null, options, options[0]);
+		return JOptionPane.showOptionDialog(currentView, PropertiesManager.getProperty("dialog.error.MensajeReintentar"), PropertiesManager.getProperty("dialog.error.titulo"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 	}
 
 	public int mostrarMensajeReintentar(String errorMessage) {

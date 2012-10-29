@@ -86,6 +86,8 @@ public class LoginView extends JDialog {
 			}
 		});
 		getContentPane().add(btnNewButton);
+		
+		InicioView.getInstance().dispose();
 		setVisible(true);
 	}
 

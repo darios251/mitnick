@@ -323,4 +323,5 @@ public class VentaPanel extends BasePanel {
 		if(Validator.isNotNull(this.getRootPane()))
 			this.getRootPane().setDefaultButton(getBtnAgregar());
 	}
+	
 }
