@@ -108,7 +108,7 @@ public class ClientePanel extends BasePanel {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente }));
 	}
 
 	protected void consultarClientes() {
@@ -373,7 +373,7 @@ public class ClientePanel extends BasePanel {
 
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtApellido;
+		this.defaultFocusField = txtNumeroDocumento;
 	}
 
 	protected void setDefaultButton() {

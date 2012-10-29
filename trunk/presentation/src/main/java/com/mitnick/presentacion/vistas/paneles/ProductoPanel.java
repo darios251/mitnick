@@ -119,7 +119,7 @@ public class ProductoPanel extends BasePanel {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{txtCodigo, txtDescripcion, cmbTipo, cmbMarca}));
+				new Component[]{txtCodigo, txtDescripcion, cmbTipo, cmbMarca, btnBuscar, btnAgregar, btnEditar, btnEliminar}));
 	}
 	
 	protected void consultarProductos() {
