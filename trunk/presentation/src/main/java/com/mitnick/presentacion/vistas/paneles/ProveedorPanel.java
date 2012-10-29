@@ -195,7 +195,7 @@ public class ProveedorPanel extends BasePanel {
 			
 			btnAgregar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					proveedorController.mostrarProveedorNuevoPanel();
+					proveedorController.nuevoProveedor();
 				}
 			});
 		}

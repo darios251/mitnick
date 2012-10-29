@@ -17,7 +17,7 @@ public class Runner {
 	private static Logger logger = Logger.getLogger(Runner.class);
 	
 	public static void main(String[] args) {
-		InicioView inicio = new InicioView();
+		InicioView inicio = InicioView.getInstance();
 		inicio.setVisible(true);
 		logger.info("Iniciando la aplicación: Applicación del proyecto mitnick...");
 		logger.info("Inicializando el propertiesManager...");

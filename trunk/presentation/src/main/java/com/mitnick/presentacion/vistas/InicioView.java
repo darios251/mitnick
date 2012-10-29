@@ -12,6 +12,14 @@ public class InicioView extends JDialog {
 	private JProgressBar progressBar;
 	private JDialog thisDialog;
 	
+	private static InicioView instance = null;
+	
+	public static InicioView getInstance() {
+		if(instance == null)
+			instance = new InicioView();
+		return instance;
+	}
+	
 	public InicioView() {
 		thisDialog = this;
 		setUndecorated(true);
@@ -28,13 +36,14 @@ public class InicioView extends JDialog {
 		getContentPane().add(lblTodosLosDerechos, BorderLayout.SOUTH);
 		progressBar = new JProgressBar();
 		getContentPane().add(progressBar, BorderLayout.SOUTH);
+		
+		setAlwaysOnTop(true);
 		Thread progressBarThread = new ProgressBarThread();
 		progressBarThread.start();
 	}
 	
-	public static void main(String[] args) {
-		InicioView view = new InicioView();
-		view.setVisible(true);
+	public JDialog getDialog() {
+		return thisDialog;
 	}
 	
 	public class ProgressBarThread extends Thread {
@@ -50,7 +59,6 @@ public class InicioView extends JDialog {
 				catch (Exception e) {
 				}
 			}
-			thisDialog.dispose();
 		}
 	}
 }

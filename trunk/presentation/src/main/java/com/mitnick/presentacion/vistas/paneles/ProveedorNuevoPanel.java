@@ -67,7 +67,6 @@ public class ProveedorNuevoPanel extends BasePanel {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
 		}
-		proveedor = null;
 	}
 
 	@Override
@@ -225,7 +224,7 @@ public class ProveedorNuevoPanel extends BasePanel {
 		}
 	}
 
-	public void setProducto(ProveedorDto proveedorDto) {
+	public void setProveedor(ProveedorDto proveedorDto) {
 		this.proveedor = proveedorDto;
 	}
 
