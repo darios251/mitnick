@@ -100,7 +100,7 @@ public class VentaPanel extends BasePanel {
 	}
 	
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodigo}));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodigo, btnAgregar, btnBuscar, btnQuitar, btnContinuar}));
 	}
 
 	public void agregarProducto() {

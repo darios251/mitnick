@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -29,9 +28,7 @@ import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
-import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProveedorDto;
-import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("proveedorPanel")
 public class ProveedorPanel extends BasePanel {
@@ -48,8 +45,6 @@ public class ProveedorPanel extends BasePanel {
 	private JTextField txtCodigo;
 	private JTextField txtNombre;
 	
-	private JComboBox<TipoDto> cmbTipo;
-	private JComboBox<MarcaDto> cmbMarca;
 	private JLabel lblDescripcion;
 	private JLabel lblCdigo;
 	private JLabel lblproveedores;
@@ -105,7 +100,7 @@ public class ProveedorPanel extends BasePanel {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{txtCodigo, txtNombre, cmbTipo, cmbMarca}));
+				new Component[]{txtCodigo, txtNombre, btnBuscar, btnAgregar, btnEditar, btnEliminar, btnVerProductos}));
 	}
 	
 	protected void consultarProveedores() {
