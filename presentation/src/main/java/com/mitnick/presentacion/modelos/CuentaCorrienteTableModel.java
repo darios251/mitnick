@@ -21,8 +21,8 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 	
 	public CuentaCorrienteTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add(PropertiesManager.getProperty("cuentaCorrienteModel.fecha"));
 		columnNames.add(PropertiesManager.getProperty("cuentaCorrienteModel.numeroCuota"));
+		columnNames.add(PropertiesManager.getProperty("cuentaCorrienteModel.fecha"));
 		columnNames.add(PropertiesManager.getProperty("cuotaCorrienteModel.monto"));
 		data = new ArrayList<CuotaDto>();
 	}

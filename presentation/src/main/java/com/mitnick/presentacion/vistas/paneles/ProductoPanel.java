@@ -64,7 +64,6 @@ public class ProductoPanel extends BasePanel {
 	private JButton btnAgregar;
 	private JButton btnEditar;
 	private JButton btnEliminar;
-	private JButton btnMovimientos;
 
 
 	@Autowired
@@ -112,7 +111,6 @@ public class ProductoPanel extends BasePanel {
 		add(getBtnAgregar());
 		add(getBtnEditar());
 		add(getBtnEliminar());
-		add(getBtnMovimientos());
 		add(getLblArtculos());
 		add(getLblProductos());
 		
@@ -350,30 +348,7 @@ public class ProductoPanel extends BasePanel {
 		return lblProductos;
 	}
 
-	public JButton getBtnMovimientos() {
-		if (btnMovimientos == null) {
-			
-			btnMovimientos = new JButton(
-					PropertiesManager.getProperty("productoPanel.button.movimientos.texto"));
-			btnMovimientos.setToolTipText(
-					PropertiesManager.getProperty("productoPanel.button.movimientos.tooltip"));
-			btnMovimientos.setIcon(
-					new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
-			
-			btnMovimientos.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnMovimientos.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnMovimientos.setMargin(new Insets(-1, -1, -1, -1));
-			btnMovimientos.setBounds(735, 325, 60, 60);
-
-			btnMovimientos.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
-			
-		}
-		return btnMovimientos;
-	}
-
+	
 	public JTable getTable() {
 		if(table == null) {
 			table = new JTable(getTableModel());

@@ -2,11 +2,14 @@ package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -21,28 +24,39 @@ public class CuotasCuentaCorrienteDialog extends JDialog {
 	private CuentaCorrienteTableModel model;
 	private JScrollPane scrollPane;
 	private JButton btnAceptar;
+	private JButton btnCancelar;
+	private String montoTotal;
+	public boolean aceptar = true;
 	
-	public CuotasCuentaCorrienteDialog(JFrame frame, List<CuotaDto> cuotasDto) {
+	public CuotasCuentaCorrienteDialog(JFrame frame, List<CuotaDto> cuotasDto, String montoTotal) {
 		super(frame, true);
 		getContentPane().setLayout(null);
-		setSize(600, 400);
-		
+		setSize(576, 271);
+		this.montoTotal = montoTotal;
 		setLocationRelativeTo(null);
 		
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getBtnAceptar());
-		
+		getContentPane().add(getBtnCancelar());
 		getModel().setCuotas(cuotasDto);
+		
+		this.setTitle(PropertiesManager.getProperty("cuentaCorrienteDialog.title"));
+		
 		setVisible(true);
 	}
 	
 	public JButton getBtnAceptar() {
 		if(btnAceptar == null) {
-			btnAceptar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.aceptar"));
-			btnAceptar.setBounds(400, 300, 100, 25);
+			btnAceptar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.aceptar"));;
+			btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
+			btnAceptar.setBounds(314, 174, 100, 52);
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					setVisible(false);
+					int valid = validarCuotas();
+					if (valid==10){
+						aceptar= true;
+						setVisible(false);
+					}
 				}
 			});
 		}
@@ -50,6 +64,35 @@ public class CuotasCuentaCorrienteDialog extends JDialog {
 		return btnAceptar;
 	}
 	
+	private int validarCuotas(){
+		BigDecimal total = new BigDecimal(montoTotal);
+		List<CuotaDto> cuotas = model.getCuotas();
+		for (int i = 0; i < cuotas.size(); i++) {
+			total = total.subtract(cuotas.get(i).getTotal());
+		}
+		int cubre = new BigDecimal("0").compareTo(total); 
+		if (cubre < 0) {
+			Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
+			return JOptionPane.showOptionDialog( this, "Las cuotas no cubren el monto total a pagar: " + montoTotal, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+		}
+		return 10;
+	}
+	
+	public JButton getBtnCancelar() {
+		if(btnCancelar == null) {
+			btnCancelar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.cancelar"));;
+			btnCancelar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+			btnCancelar.setBounds(436, 174, 100, 52);
+			btnCancelar.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					aceptar = false;
+					setVisible(false);
+				}
+			});
+		}
+		
+		return btnCancelar;
+	}
 	public JTable getTable() {
 		if(table == null) {
 			table = new JTable(getModel());
