@@ -205,7 +205,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{}));
+				new Component[]{ table, btnExportar, btnVolver}));
 	}
 	
 	protected void consultarProductos() {
@@ -258,7 +258,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 
 	@Override
 	public void setDefaultFocusField() {
-		
+		btnExportar.setRequestFocusEnabled(true);
 	}
 
 	public void setReporteController(ReporteMovimientosController reporteController) {
