@@ -9,6 +9,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
+import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 public interface IReportesServicio {
@@ -92,5 +93,21 @@ public interface IReportesServicio {
 	 */
 	@Secured(value={"ROLE_ADMIN"})
 	public void reporteIngresosAnual(ReportesDto filtro);
+	
+	/**
+	 * Obtiene el movimiento de stock de los productos.
+	 * @param filtro
+	 * @return
+	 */
+	@Secured(value={"ROLE_ADMIN"})
+	public void exportarMovimientosAgrupadosPorProducto(List<MovimientoProductoDto> movimientos) ;
+	
+	/**
+	 * Obtiene el detalle de movimiento de stock de un producto.
+	 * @param filtro
+	 * @return
+	 */
+	@Secured(value={"ROLE_ADMIN"})
+	public void exportarMovimientosDeProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal);
 
 }

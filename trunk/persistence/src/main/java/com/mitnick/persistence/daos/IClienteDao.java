@@ -6,6 +6,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.utils.dtos.CuotaDto;
 
 public interface IClienteDao extends GenericDao<Cliente, Long>{
 
@@ -16,4 +17,6 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	Cliente saveOrUpdate(Cliente cliente);
 
 	void cargarReporte();
+	
+	void generarComprobante(CuotaDto cuota);
 }

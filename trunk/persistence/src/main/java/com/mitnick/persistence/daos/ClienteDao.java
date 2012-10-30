@@ -2,6 +2,7 @@ package com.mitnick.persistence.daos;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -9,11 +10,13 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
@@ -25,9 +28,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.CuotaDto;
 
 /**
  * Esta clase tiene la responsabilidad de representar el administrador
@@ -111,6 +116,59 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	public void generarComprobante(CuotaDto cuota) {
+		try {
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/comprobante.jasper"));
+			DetachedCriteria criteria = DetachedCriteria.forClass(Empresa.class);
+			criteria.add(Restrictions.idEq(new Long(1)));
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(cuota.getPagos());
+			
+			Empresa empresa = (Empresa) getHibernateTemplate().findByCriteria(criteria).get(0);
+			
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("nombreEmpresa", empresa.getNombre());
+			parameters.put("empresaDireccion", empresa.getDireccion().getDomicilio() + "(" + empresa.getDireccion().getCodigoPostal() + ")" 
+					+ empresa.getDireccion().getCiudad().getDescripcion() + "\n Tel" + empresa.getTelefono());
+			parameters.put("tipoResponsable", empresa.getTipoResponsable());
+//			parameters.put("facturaNumero1", StringUtils.leftPad(empresa.getNumeroPrefijoFacturaActual() + "", 4, "0") );
+//			parameters.put("facturaNumero2", StringUtils.leftPad(empresa.getNumeroFacturaActual() + "", 8, "0"));
+			parameters.put("cuitEmpresa", empresa.getCuit());
+			parameters.put("iibbEmpresa", empresa.getNmIngresosBrutos());
+			parameters.put("fechaInicioActividadEmpresa", "01/12/1988");
+			parameters.put("tipoIva", "Consumidor Final");
+			parameters.put("nombreCliente", cuota.getClienteDto().getApellido() + " " + cuota.getClienteDto().getNombre());
+			parameters.put("direccionCliente", cuota.getClienteDto().getDireccion().getDomicilio() + " " + cuota.getClienteDto().getDireccion().getCiudad().getDescripcion());
+			
+			BigDecimal saldoPendiente = getSaldoDeudor();
+			
+			BigDecimal saldoTotal = saldoPendiente.add(cuota.getTotal());
+			
+			parameters.put("saldoTotal", saldoTotal.toString());
+			parameters.put("total", cuota.getTotal().toString());
+			parameters.put("saldoPendiente", saldoPendiente.toString());
+			
+			super.getHibernateTemplate().flush();
+			
+			@SuppressWarnings("deprecation")
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(cuota.getId() + "-comprobante.pdf"));
+			exporter.exportReport();
+			
+			File file = new File(cuota.getId() + "-comprobante.pdf");
+			Desktop.getDesktop().open(file);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	private BigDecimal getSaldoDeudor(){
+		return new BigDecimal("12314");
 	}
 
 }
