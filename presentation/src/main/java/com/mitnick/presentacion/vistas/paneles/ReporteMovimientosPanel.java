@@ -262,7 +262,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 
 			btnExportar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					reporteController.exportarMovimientos();
+					reporteController.exportarMovimientosProducto(getModel().getMovimientoProducto());
 				}
 			});
 

@@ -77,6 +77,35 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}
 	}
 	
+	@Transactional(readOnly=true)
+	@Override
+	public void exportarMovimientosAgrupadosPorProducto(List<MovimientoProductoDto> movimientos) {
+		try{
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/movimientoProductos.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(movimientos);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("movimientoProductos.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("movimientoProductos.pdf");
+			Desktop.getDesktop().open(file);
+		} 
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de movimientos agrupados por producto");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} catch (IOException e) {
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
@@ -88,6 +117,42 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			throw new BusinessException(e, "Error al intentar obtener el reporte de movimientos de producto");
 		}
 	} 
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	@Override
+	public void exportarMovimientosDeProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal) {
+		try{																										
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/detalleMovimientoProducto.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			
+			parameters.put("codigo", producto.getCodigo());
+			parameters.put("descripcion", producto.getDescripcion());
+			parameters.put("stockOriginal", stockOriginal);
+			parameters.put("stockFinal", stockFinal);
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(movimientos);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("detalleNovimientoProducto.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("detalleNovimientoProducto.pdf");
+			Desktop.getDesktop().open(file);
+		} 
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de movimientos agrupados por producto");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} catch (IOException e) {
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Obtiene la lista de productos con sus movimientos sumarizados.
 	 * @param movimientos
@@ -230,8 +295,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		
 	}
 	

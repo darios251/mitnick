@@ -18,6 +18,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
+import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Controller("reporteMovimientosController")
@@ -48,8 +49,12 @@ public class ReporteMovimientosController extends BaseController {
 		reporteMovimientosPanel.actualizarPantalla();
 	}
 
-	public void exportarMovimientos() {
-		//TODO: exportar a excel o pdf el reporte de movimientos agrupados por productos
+	public void exportarMovimientosProducto(List<MovimientoProductoDto> movimientos) {
+		reporteServicio.exportarMovimientosAgrupadosPorProducto(movimientos);
+	}
+	
+	public void exportarDetalleMovimientoProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal) {
+		reporteServicio.exportarMovimientosDeProducto(movimientos, producto, stockOriginal, stockFinal);
 	}
 	
 	public void mostrarMovimientosPanel() {

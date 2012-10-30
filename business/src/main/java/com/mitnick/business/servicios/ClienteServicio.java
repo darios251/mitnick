@@ -228,7 +228,9 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		}
 		guardarCuota(cuotaDto);
 
-		// ventaDao.generarFactura(venta);
+		clienteDao.generarComprobante(cuotaDto);
 
 	}
+	
+	
 }
