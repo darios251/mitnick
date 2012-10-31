@@ -26,86 +26,106 @@
 	</background>
 	<title>
 		<band height="68" splitType="Stretch">
-			<image>
-				<reportElement uuid="c0b1523b-7bad-4891-9092-c5c39d8fe43c" x="36" y="5" width="431" height="47"/>
-				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\report.jpg"]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="105" y="20" width="362" height="32" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="SansSerif" size="24" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="128" y="18" width="426" height="32" forecolor="#000099" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Baskerville Old Face" size="24" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Movimiento de productos]]></text>
 			</staticText>
+			<image>
+				<reportElement uuid="b576b36d-5dbe-4b11-adf9-ddb92ea82086" x="0" y="0" width="128" height="50"/>
+				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\logoSusmannReportes.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy h:mm a">
+				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="455" y="48" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="00e10c8e-eaa2-4766-ac93-0651d3a72f04" x="5" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[producto]]></text>
+				<reportElement uuid="00e10c8e-eaa2-4766-ac93-0651d3a72f04" x="5" y="2" width="100" height="20" forecolor="#000099"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Artículo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ced20d85-d3ee-43ed-8628-a64e27b1d8c1" x="304" y="2" width="60" height="20"/>
-				<textElement/>
-				<text><![CDATA[stockOriginal]]></text>
+				<reportElement uuid="ced20d85-d3ee-43ed-8628-a64e27b1d8c1" x="278" y="2" width="86" height="20" forecolor="#000099"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Stock Original]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a9d07a18-519a-4628-a8c0-04ee89193c23" x="364" y="2" width="65" height="20"/>
-				<textElement/>
-				<text><![CDATA[ventas]]></text>
+				<reportElement uuid="a9d07a18-519a-4628-a8c0-04ee89193c23" x="364" y="2" width="65" height="20" forecolor="#000099"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ventas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="30377159-2d66-4bc4-8e4a-e5bffaa9fb45" x="429" y="2" width="62" height="20"/>
-				<textElement/>
-				<text><![CDATA[ajustes]]></text>
+				<reportElement uuid="30377159-2d66-4bc4-8e4a-e5bffaa9fb45" x="429" y="2" width="62" height="20" forecolor="#000099"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ajustes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2be0ea65-10a5-4a6b-9c6c-09813c2bc293" x="491" y="2" width="64" height="20"/>
-				<textElement/>
-				<text><![CDATA[stockFinal]]></text>
+				<reportElement uuid="2be0ea65-10a5-4a6b-9c6c-09813c2bc293" x="491" y="2" width="64" height="20" forecolor="#000099"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Stock]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e761eef4-54a0-4575-bace-2554ea8d4071" x="105" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[producto]]></text>
+				<reportElement uuid="e761eef4-54a0-4575-bace-2554ea8d4071" x="105" y="2" width="100" height="20" forecolor="#000099"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
 			</staticText>
+			<line>
+				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="5" y="22" width="552" height="1" forecolor="#000099"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement uuid="37808b69-4c9d-4cc9-9744-74455a136214" x="5" y="42" width="100" height="20"/>
+				<reportElement uuid="37808b69-4c9d-4cc9-9744-74455a136214" x="5" y="0" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[""+$F{producto}.getCodigo()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="b1d6733f-d451-476b-b3c5-f841f8d4bced" x="304" y="42" width="60" height="20"/>
+				<reportElement uuid="b1d6733f-d451-476b-b3c5-f841f8d4bced" x="304" y="0" width="60" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{stockOriginal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e224d0f9-7a20-401e-839e-cb02bb57d5c9" x="364" y="42" width="65" height="20"/>
+				<reportElement uuid="e224d0f9-7a20-401e-839e-cb02bb57d5c9" x="364" y="0" width="65" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{ventas}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="feb740b1-8c88-49fc-b87c-38728b126bbb" x="429" y="42" width="62" height="20"/>
+				<reportElement uuid="feb740b1-8c88-49fc-b87c-38728b126bbb" x="429" y="0" width="62" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{ajustes}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="77deeff2-e597-4394-b39a-41b8c5d5e548" x="491" y="42" width="64" height="20"/>
+				<reportElement uuid="77deeff2-e597-4394-b39a-41b8c5d5e548" x="491" y="0" width="64" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{stockFinal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="7e196c3d-8f25-4796-a313-c22d3ad85a60" x="105" y="42" width="199" height="20"/>
+				<reportElement uuid="7e196c3d-8f25-4796-a313-c22d3ad85a60" x="105" y="0" width="199" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[""+$F{producto}.getDescripcion()]]></textFieldExpression>
 			</textField>
@@ -115,7 +135,26 @@
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e7957658-e574-4c4f-ae0d-a6a45ce8f2f1" x="3" y="14" width="552" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Información Confidencial. Susmann Av. 7 de Marzo 1808, Santo Tomé - Santa Fe. susmannlivio@hotmail.com]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="413" y="34" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="493" y="34" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="33" y="3" width="488" height="1"/>
+			</line>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
