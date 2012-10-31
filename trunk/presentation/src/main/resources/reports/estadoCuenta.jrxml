@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35158e7f-d3ad-47fa-861b-1b4675dca881">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="81"/>
+	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -20,76 +20,82 @@
 	</background>
 	<title>
 		<band height="79" splitType="Stretch">
-			<image>
-				<reportElement uuid="c0b1523b-7bad-4891-9092-c5c39d8fe43c" x="114" y="17" width="327" height="47"/>
-				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\report.jpg"]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="184" y="17" width="253" height="32" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="SansSerif" size="24" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="142" y="18" width="403" height="32" forecolor="#000099" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Baskerville Old Face" size="24" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Estado de Cuentas]]></text>
 			</staticText>
+			<image>
+				<reportElement uuid="fc81937d-438a-4c0e-adff-c998141c956a" x="14" y="0" width="128" height="50"/>
+				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\logoSusmannReportes.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy h:mm a">
+				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="445" y="50" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
+		<band height="45" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="2f6d8eba-bc08-4444-99f1-deba7b0f06ae" x="0" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[fecha_pagar]]></text>
+				<reportElement uuid="2f6d8eba-bc08-4444-99f1-deba7b0f06ae" x="0" y="2" width="118" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Vencimiento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9cb28822-94e3-470e-bbc5-60354dacb7d6" x="106" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[clienteDto]]></text>
+				<reportElement uuid="9cb28822-94e3-470e-bbc5-60354dacb7d6" x="118" y="2" width="100" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4cbf00dd-9132-4e58-b90a-49aa3fd27f9b" x="455" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[total]]></text>
+				<reportElement uuid="4cbf00dd-9132-4e58-b90a-49aa3fd27f9b" x="455" y="2" width="100" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="48d0b219-e565-4c2a-a851-3f2119c5de7c" x="228" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[clienteDto]]></text>
+				<reportElement uuid="08e4e590-7bfa-4613-8043-90f8ef9c2b44" x="355" y="2" width="100" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="08e4e590-7bfa-4613-8043-90f8ef9c2b44" x="328" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[clienteDto]]></text>
-			</staticText>
+			<line>
+				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="3" y="22" width="552" height="1" forecolor="#000099"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<textField>
-				<reportElement uuid="38c96947-e54e-4dfe-a2a7-6843ab83a98a" x="0" y="80" width="87" height="20"/>
+				<reportElement uuid="38c96947-e54e-4dfe-a2a7-6843ab83a98a" x="0" y="16" width="87" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{fecha_pagar}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="af57b1ba-5d09-40c0-a346-932a9e9fc614" x="87" y="80" width="119" height="20"/>
+				<reportElement uuid="af57b1ba-5d09-40c0-a346-932a9e9fc614" x="118" y="16" width="237" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{clienteDto}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2de98668-ebbf-48ed-9e36-b0833b2b128e" x="455" y="80" width="100" height="20"/>
+				<reportElement uuid="2de98668-ebbf-48ed-9e36-b0833b2b128e" x="455" y="16" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="7827bcc0-4cf6-4ad1-b47d-05d3e3162203" x="206" y="80" width="122" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{clienteDto}.getApellido()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="e5d7e3ff-ec31-4098-b2b5-882f985d1ef1" x="328" y="80" width="100" height="20"/>
+				<reportElement uuid="e5d7e3ff-ec31-4098-b2b5-882f985d1ef1" x="355" y="16" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{clienteDto}.getTelefono()]]></textFieldExpression>
 			</textField>
@@ -99,7 +105,26 @@
 		<band height="42" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="413" y="34" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e7957658-e574-4c4f-ae0d-a6a45ce8f2f1" x="3" y="14" width="552" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Información Confidencial. Susmann Av. 7 de Marzo 1808, Santo Tomé - Santa Fe. susmannlivio@hotmail.com]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="493" y="34" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="27" y="10" width="488" height="1"/>
+			</line>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

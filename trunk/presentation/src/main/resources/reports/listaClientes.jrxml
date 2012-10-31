@@ -121,33 +121,30 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="374f0451-3a6e-4012-8114-e2efbc03eb89" x="179" y="16" width="198" height="47"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="24" isBold="true"/>
+				<reportElement uuid="374f0451-3a6e-4012-8114-e2efbc03eb89" x="150" y="16" width="382" height="32" forecolor="#000099"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Baskerville Old Face" size="24" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Lista de clientes]]></text>
+				<text><![CDATA[Listado de clientes]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="c0b1523b-7bad-4891-9092-c5c39d8fe43c" x="86" y="34" width="374" height="47"/>
-				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\report.jpg"]]></imageExpression>
+				<reportElement uuid="22891926-49bc-4597-a942-eb7ba91be302" x="3" y="0" width="128" height="50"/>
+				<imageExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\img\\logoSusmannReportes.jpg"]]></imageExpression>
 			</image>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="36" splitType="Stretch">
-			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="52c41a9d-315f-42bf-b101-8021cb311bff" x="455" y="0" width="100" height="20"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
+			<textField pattern="dd/MM/yyyy h:mm a">
+				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="432" y="48" width="100" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
+	</title>
+	<pageHeader>
+		<band height="34" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="135" splitType="Stretch">
 			<componentElement>
-				<reportElement uuid="8863669b-b977-42d1-8f51-d57c116cbf41" key="table 3" style="table 3" x="53" y="0" width="434" height="135">
+				<reportElement uuid="8863669b-b977-42d1-8f51-d57c116cbf41" key="table 3" style="table 3" x="55" y="0" width="434" height="135">
 					<property name="net.sf.jasperreports.export.pdf.tag.th" value="full"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
@@ -237,7 +234,26 @@
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="431" y="31" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e7957658-e574-4c4f-ae0d-a6a45ce8f2f1" x="3" y="11" width="552" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Información Confidencial. Susmann Av. 7 de Marzo 1808, Santo Tomé - Santa Fe. susmannlivio@hotmail.com]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="511" y="31" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="36" y="5" width="488" height="1"/>
+			</line>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
