@@ -7,7 +7,7 @@ import java.util.List;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 
 public class VentaDto extends BaseDto {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	private List<ProductoVentaDto> productos;
@@ -43,6 +43,8 @@ public class VentaDto extends BaseDto {
 	private boolean impresa;
 	
 	private boolean cancelada;
+	
+	private long tipoResponsabilidad;
 	
 	public List<ProductoVentaDto> getProductos() {
 		if(productos == null)
@@ -188,6 +190,14 @@ public class VentaDto extends BaseDto {
 		this.ajusteRedondeo = ajusteRedondeo;
 	}
 
+	public void setTipoResponsabilidad(long tipoResponsabilidad) {
+		this.tipoResponsabilidad = tipoResponsabilidad;
+	}
+	
+	public long getTipoResponsabilidad() {
+		return tipoResponsabilidad;
+	}
+
 	@Override
 	public String toString() {
 		return "VentaDto [productos=" + productos + ", subTotal=" + subTotal
@@ -198,7 +208,8 @@ public class VentaDto extends BaseDto {
 				+ ", faltaPagar=" + faltaPagar + ", vuelto=" + vuelto
 				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket
 				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa
-				+ ", cancelada=" + cancelada + "]";
+				+ ", cancelada=" + cancelada + ", tipoResponsabilidad="
+				+ tipoResponsabilidad + "]";
 	}
 
 }

@@ -31,7 +31,7 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
 
 @Panel("clientePanel")
-public class ClientePanel extends BasePanel {
+public class ClientePanel extends BasePanel<ClienteController> {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNumeroDocumento;
@@ -54,11 +54,9 @@ public class ClientePanel extends BasePanel {
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
 
-	private ClienteController clienteController;
-
 	@Autowired(required = true)
 	public ClientePanel(@Qualifier("clienteController") ClienteController clienteController) {
-		this.clienteController = clienteController;
+		controller = clienteController;
 	}
 
 	/**
@@ -118,7 +116,7 @@ public class ClientePanel extends BasePanel {
 			filtroDto.setDocumento(txtNumeroDocumento.getText());
 			filtroDto.setNombre(txtNombre.getText());
 
-			model.setClientes(clienteController.obtenerClientesByFilter(filtroDto));
+			model.setClientes(controller.obtenerClientesByFilter(filtroDto));
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 			model.setClientes(new ArrayList<ClienteDto>());
@@ -200,7 +198,7 @@ public class ClientePanel extends BasePanel {
 
 			btnNuevo.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					clienteController.nuevoCliente();
+					controller.nuevoCliente();
 				}
 			});
 		}
@@ -221,7 +219,7 @@ public class ClientePanel extends BasePanel {
 			btnModificar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						clienteController.editarCliente();
+						controller.editarCliente();
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -249,7 +247,7 @@ public class ClientePanel extends BasePanel {
 
 					if (opcion == JOptionPane.YES_OPTION) {
 						try {
-							clienteController.eliminarCliente();
+							controller.eliminarCliente();
 							actualizarPantalla();
 						} catch (PresentationException ex) {
 							mostrarMensaje(ex);
@@ -315,7 +313,7 @@ public class ClientePanel extends BasePanel {
 			btnEstadoCuenta.setBounds(735, 325, 60, 60);
 			btnEstadoCuenta.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					clienteController.cargarReporte();
+					controller.cargarReporte();
 				}
 			});
 		}
@@ -334,7 +332,7 @@ public class ClientePanel extends BasePanel {
 			btnCuentaCorriente.setBounds(735, 396, 60, 60);
 			btnCuentaCorriente.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					clienteController.cuentaCorriente();
+					controller.cuentaCorriente();
 				}
 			});
 		}

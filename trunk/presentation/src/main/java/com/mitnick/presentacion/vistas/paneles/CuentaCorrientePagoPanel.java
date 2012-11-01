@@ -38,11 +38,10 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
 @Panel("cuentaCorrientePagoPanel")
-public class CuentaCorrientePagoPanel extends BasePanel {
+public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private ClienteController clienteController;
 	private ClienteDto cliente;
 	private CuotaDto cuota;
 	
@@ -82,7 +81,7 @@ public class CuentaCorrientePagoPanel extends BasePanel {
 	
 	@Autowired
 	public CuentaCorrientePagoPanel(@Qualifier("clienteController") ClienteController clienteController) {
-		this.clienteController = clienteController;
+		controller = clienteController;
 	}
 	
 	/**
@@ -311,7 +310,7 @@ public class CuentaCorrientePagoPanel extends BasePanel {
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						clienteController.mostrarCuentaCorrientePanel();
+						controller.mostrarCuentaCorrientePanel();
 					}
 					catch(PresentationException ex) {
 						
@@ -344,7 +343,7 @@ public class CuentaCorrientePagoPanel extends BasePanel {
 						int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("pagoPanel.dialog.confirm.quitar"));
 						
 						if ( opcion == JOptionPane.YES_OPTION) {
-							clienteController.quitarPago(pagoDto);	
+							controller.quitarPago(pagoDto);	
 						}
 					}
 					catch (IndexOutOfBoundsException exception) {
@@ -399,7 +398,7 @@ public class CuentaCorrientePagoPanel extends BasePanel {
 		try {
 			MedioPagoDto pago = (MedioPagoDto)cmbMedioPago.getSelectedItem();
 			
-			clienteController.agregarPago(pago, txtMonto.getText());
+			controller.agregarPago(pago, txtMonto.getText());
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -427,10 +426,10 @@ public class CuentaCorrientePagoPanel extends BasePanel {
 			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
 			
 			try {
-				medioPagoList = clienteController.getMediosPagoCuentaCorriente();
+				medioPagoList = controller.getMediosPagoCuentaCorriente();
 			}
 			catch(BusinessException e) {
-				;
+				// TODO: MANEJAR ESTA EXCEPCIÓN;
 			} 
 			
 			cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());
@@ -514,8 +513,8 @@ public class CuentaCorrientePagoPanel extends BasePanel {
 	public void finalizarPagos() {
 		try {
 			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarPago.exito", new Object[]{ "0.00" }));
-			clienteController.actualizarCuotas(getCliente());
-			clienteController.mostrarCuentaCorrientePanel();
+			controller.actualizarCuotas(getCliente());
+			controller.mostrarCuentaCorrientePanel();
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);

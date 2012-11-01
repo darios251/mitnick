@@ -37,12 +37,9 @@ import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("reporteMovimientosPanel")
-public class ReporteMovimientosPanel extends BasePanel {
+public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosController> {
 
 	private static final long serialVersionUID = 1L;
-
-	@Autowired
-	private ReporteMovimientosController reporteController;
 
 	private JTextField txtProductoCodigo;
 	private JTextField txtProductoDescripcion;
@@ -69,7 +66,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 	@Autowired
 	public ReporteMovimientosPanel(
 			@Qualifier("reporteMovimientosController") ReporteMovimientosController reporteController) {
-		this.reporteController = reporteController;
+		controller = reporteController;
 	}
 
 	/**
@@ -147,7 +144,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 		if (cmbTipo == null) {
 			MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
 			modeloTipo.addElement(MitnickConstants.tipoTodos);
-			modeloTipo.addItems(reporteController.obtenerTipos());
+			modeloTipo.addItems(controller.obtenerTipos());
 			cmbTipo = new JComboBox<TipoDto>(modeloTipo);
 			cmbTipo.setBounds(200, 55, 110, 20);
 		}
@@ -158,7 +155,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 		if (cmbMarca == null) {
 			MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
 			modeloMarca.addElement(MitnickConstants.marcaTodos);
-			modeloMarca.addItems(reporteController.obtenerMarcas());
+			modeloMarca.addItems(controller.obtenerMarcas());
 			cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
 			cmbMarca.setBounds(420, 55, 110, 20);
 		}
@@ -262,7 +259,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 
 			btnExportar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					reporteController.exportarMovimientosProducto(getModel().getMovimientoProducto());
+					controller.exportarMovimientosProducto(getModel().getMovimientoProducto());
 				}
 			});
 
@@ -285,7 +282,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 
 			btnDetalleMovimientos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					reporteController.mostrarMovimientosPanel();
+					controller.mostrarMovimientosPanel();
 				}
 			});
 
@@ -310,8 +307,7 @@ public class ReporteMovimientosPanel extends BasePanel {
 			dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
 			dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
 			
-			getModel().setProductosMovimientos(reporteController
-					.reporteMovimientosAgrupadosPorProducto(dto));
+			getModel().setProductosMovimientos(controller.reporteMovimientosAgrupadosPorProducto(dto));
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 			getModel().setProductosMovimientos(new ArrayList<MovimientoProductoDto>());

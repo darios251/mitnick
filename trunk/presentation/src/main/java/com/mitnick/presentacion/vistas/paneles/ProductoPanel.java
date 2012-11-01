@@ -36,11 +36,9 @@ import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("productoPanel")
-public class ProductoPanel extends BasePanel {
+public class ProductoPanel extends BasePanel<ProductoController> {
 
 	private static final long serialVersionUID = 1L;
-
-	private ProductoController productoController;
 
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -67,9 +65,8 @@ public class ProductoPanel extends BasePanel {
 
 
 	@Autowired
-	public ProductoPanel(
-			@Qualifier("productoController") ProductoController productoController) {
-		this.productoController = productoController;
+	public ProductoPanel(@Qualifier("productoController") ProductoController productoController) {
+		controller = productoController;
 	}
 
 	/**
@@ -130,7 +127,7 @@ public class ProductoPanel extends BasePanel {
 			dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
 			dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
 
-			getTableModel().setProductos(productoController.getProductosByFilter(dto));
+			getTableModel().setProductos(controller.getProductosByFilter(dto));
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 			getTableModel().setProductos(new ArrayList<ProductoDto>());
@@ -167,7 +164,7 @@ public class ProductoPanel extends BasePanel {
 		if (cmbTipo == null) {
 			MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
 			modeloTipo.addElement(MitnickConstants.tipoTodos);
-			modeloTipo.addItems(productoController.obtenerTipos());
+			modeloTipo.addItems(controller.obtenerTipos());
 			cmbTipo = new JComboBox<TipoDto>(modeloTipo);
 			cmbTipo.setBounds(200, 55, 110, 20);
 		}
@@ -178,7 +175,7 @@ public class ProductoPanel extends BasePanel {
 		if (cmbMarca == null) {
 			MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
 			modeloMarca.addElement(MitnickConstants.marcaTodos);
-			modeloMarca.addItems(productoController.obtenerMarcas());
+			modeloMarca.addItems(controller.obtenerMarcas());
 			cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
 			cmbMarca.setBounds(420, 55, 110, 20);
 		}
@@ -262,7 +259,7 @@ public class ProductoPanel extends BasePanel {
 			
 			btnAgregar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					productoController.altaProducto();
+					controller.altaProducto();
 				}
 			});
 		}
@@ -287,7 +284,7 @@ public class ProductoPanel extends BasePanel {
 			btnEditar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						productoController.editarProducto();
+						controller.editarProducto();
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -318,7 +315,7 @@ public class ProductoPanel extends BasePanel {
 
 					if (opcion == JOptionPane.YES_OPTION) {
 						try {
-							productoController.eliminarProducto();
+							controller.eliminarProducto();
 							actualizarPantalla();
 						} catch (PresentationException ex) {
 							mostrarMensaje(ex);
@@ -377,16 +374,17 @@ public class ProductoPanel extends BasePanel {
 	public void actualizarPantalla() {
 		consultarProductos();
 	}
+	
+	@Override
+	protected void keyAgregar() {
+		btnAgregar.doClick();
+	}
 
 	@Override
 	public void setDefaultFocusField() {
 		this.defaultFocusField = getTxtCodigo();
 	}
 
-	public void setProductoController(ProductoController productoController) {
-		this.productoController = productoController;
-	}
-	
 	protected void setDefaultButton() {
 		if(Validator.isNotNull(this.getRootPane()))
 			this.getRootPane().setDefaultButton(getBtnBuscar());

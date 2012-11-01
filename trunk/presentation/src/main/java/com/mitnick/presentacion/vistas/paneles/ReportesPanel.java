@@ -24,12 +24,10 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 
 @Panel("reportesPanel")
-public class ReportesPanel extends BasePanel {
+public class ReportesPanel extends BasePanel<ReportesController> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private ReportesController reportesController;
 	private JTextField txtFechaInicio;
 	private JTextField txtFechaFinal;
 
@@ -45,9 +43,8 @@ public class ReportesPanel extends BasePanel {
 	
 	
 	@Autowired
-	public ReportesPanel(
-			@Qualifier("reportesController") ReportesController reportesController) {
-		this.reportesController = reportesController;
+	public ReportesPanel(@Qualifier("reportesController") ReportesController reportesController) {
+		controller = reportesController;
 	}
 
 	/**
@@ -217,7 +214,7 @@ public class ReportesPanel extends BasePanel {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
-			reportesController.reporteIngresos(dto);
+			controller.reporteIngresos(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -228,7 +225,7 @@ public class ReportesPanel extends BasePanel {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
-			reportesController.reporteIngresosAgrupados(dto);
+			controller.reporteIngresosAgrupados(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -239,7 +236,7 @@ public class ReportesPanel extends BasePanel {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
-			reportesController.consultarListadoDeControl(dto);
+			controller.consultarListadoDeControl(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -250,7 +247,7 @@ public class ReportesPanel extends BasePanel {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
-			reportesController.consultarEstadoCuentas(dto);
+			controller.consultarEstadoCuentas(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -261,7 +258,7 @@ public class ReportesPanel extends BasePanel {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
-			reportesController.consultarVentasAnual(dto);
+			controller.consultarVentasAnual(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -274,7 +271,7 @@ public class ReportesPanel extends BasePanel {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
-			reportesController.consultarVentaPorArticulo(dto);
+			controller.consultarVentaPorArticulo(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}

@@ -2,7 +2,12 @@ package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,10 +22,11 @@ import org.apache.log4j.Logger;
 
 import com.mitnick.exceptions.BaseException;
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.presentacion.controladores.BaseController;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 
-public abstract class BasePanel extends JPanel {
+public abstract class BasePanel<T extends BaseController> extends JPanel implements KeyEventDispatcher {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,7 +38,9 @@ public abstract class BasePanel extends JPanel {
 	
 	protected boolean panelInicializado = false;
 	
-	protected JTextField defaultFocusField;
+	protected Component defaultFocusField;
+	
+	protected T controller;
 	
 	public BasePanel () {
 		this.centrarVentana( null );
@@ -46,6 +54,8 @@ public abstract class BasePanel extends JPanel {
 	
 	protected void initializePanel () {
 		setFocusCycleRoot(true);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
+		setVisible(false);
 	}
 	
 	protected int mostrarMensaje(PresentationException ex) {
@@ -176,13 +186,70 @@ public abstract class BasePanel extends JPanel {
 	protected void centrarVentana ( Component parent ) {
 	}
 	
+	private static List<Integer> objectIds = new ArrayList<Integer>();
+	
+	@Override
+	public synchronized boolean dispatchKeyEvent(KeyEvent e) {
+		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED) {
+			int identityHashCode = System.identityHashCode(e);
+			if(!objectIds.contains(identityHashCode)) {
+				objectIds.add(identityHashCode);
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_DELETE: 
+				case KeyEvent.VK_SUBTRACT:
+					//txtCodigo.setText(txtCodigo.getText().replaceAll("\\-", ""));
+					keyQuitar();				
+					break;
+				case KeyEvent.VK_ADD:
+					//txtCodigo.setText(txtCodigo.getText().replaceAll("\\+", ""));
+					keyAgregar();
+					break;
+				case KeyEvent.VK_F3:
+					keyBuscar();
+					break;
+				case KeyEvent.VK_ESCAPE:
+					keyMostrarAnterior();
+					break;
+				case KeyEvent.VK_PAGE_DOWN:
+					keyContinuar();
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		return false;
+	}
+	
+	protected void keyContinuar() {
+		if(defaultButtonAction != null)
+			defaultButtonAction.doClick();
+	}
+	
+	protected void keyMostrarAnterior() {
+		if(controller != null)
+			controller.mostrarUltimoPanelMostrado();
+	}
+	
+	protected void keyAgregar() {
+	
+	}
+	
+	protected void keyQuitar() {
+		
+	}
+	
+	protected void keyBuscar() {
+		
+	}
+	
 	protected abstract void limpiarCamposPantalla();
 	
 	protected abstract void initializeComponents();
 	
 	public abstract void actualizarPantalla();
 
-	protected JTextField getDefaultFocusField() {
+	protected Component getDefaultFocusField() {
 		return defaultFocusField;
 	}
 
@@ -191,6 +258,5 @@ public abstract class BasePanel extends JPanel {
 	protected abstract void setFocusTraversalPolicy();
 	
 	protected abstract void setDefaultButton();
-	
 
 }

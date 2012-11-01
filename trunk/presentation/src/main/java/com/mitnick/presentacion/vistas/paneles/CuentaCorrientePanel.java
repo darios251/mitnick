@@ -34,7 +34,7 @@ import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 
 @Panel("cuentaCorrientePanel")
-public class CuentaCorrientePanel extends BasePanel {
+public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	
 	private JPanel pnlCliente;
 	private JLabel lblApellidoNombre;
@@ -58,11 +58,9 @@ public class CuentaCorrientePanel extends BasePanel {
 	private CuotaTableModel model;
 	private TableRowSorter<CuotaTableModel> sorter;
 	
-	private ClienteController clienteController;
-
 	@Autowired(required = true)
 	public CuentaCorrientePanel(@Qualifier("clienteController") ClienteController clienteController) {
-		this.clienteController = clienteController;
+		controller = clienteController;
 	}
 
 	/**
@@ -155,10 +153,9 @@ public class CuentaCorrientePanel extends BasePanel {
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						clienteController.mostrarClientePanel();
+						controller.mostrarClientePanel();
 					}
 					catch(PresentationException ex) {
-						
 						mostrarMensaje(ex);
 					}
 				}
@@ -174,7 +171,7 @@ public class CuentaCorrientePanel extends BasePanel {
 	}
 
 	private void actualizarCuotas(CuotaDto cuotaDto){
-		new NuevaCuotaDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), getCliente(), cuotaDto, this.clienteController);
+		new NuevaCuotaDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), getCliente(), cuotaDto, this.controller);
 		actualizarPantalla();
 	}
 	
@@ -231,7 +228,7 @@ public class CuentaCorrientePanel extends BasePanel {
 
 					if (opcion == JOptionPane.YES_OPTION) {
 						try {
-							clienteController.eliminarCuota();
+							controller.eliminarCuota();
 							actualizarPantalla();
 						} catch (PresentationException ex) {
 							mostrarMensaje(ex);
@@ -258,7 +255,7 @@ public class CuentaCorrientePanel extends BasePanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						clienteController.mostrarCuentaCorrientePagoPanel();
+						controller.mostrarCuentaCorrientePagoPanel();
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -334,7 +331,7 @@ public class CuentaCorrientePanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {	
-		clienteController.actualizarCuotas(getCliente());
+		controller.actualizarCuotas(getCliente());
 		model.setCuotas(getCuotas());
 		
 	}

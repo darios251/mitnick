@@ -8,6 +8,9 @@ public class MitnickConstants {
 	
 	public static final TipoDto tipoTodos = new TipoDto(-1l);
 	public static final MarcaDto marcaTodos = new MarcaDto(-1l);
+	
+	public static final int IVA_RESPONSABLE_INSCRIPTO = 1;
+	public static final int CONSUMIDOR_FINAL = 2;
 
 	public static final int ACCESS_BAR_BUTTON_WIDTH = Integer.parseInt(PropertiesManager.getProperty("application.accessBar.button.width"));
 	public static final int ACCESS_BAR_BUTTON_HEIGHT = Integer.parseInt(PropertiesManager.getProperty("application.accessBar.button.height"));

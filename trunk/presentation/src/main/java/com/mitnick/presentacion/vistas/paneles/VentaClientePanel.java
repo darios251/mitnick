@@ -31,7 +31,7 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
 
 @Panel("ventaClientePanel")
-public class VentaClientePanel extends BasePanel {
+public class VentaClientePanel extends BasePanel<VentaController> {
 	
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNumeroDocumento;
@@ -52,11 +52,9 @@ public class VentaClientePanel extends BasePanel {
 	private TableRowSorter<ClienteTableModel> sorter;
 	private JCheckBox chkConsumidorFinal;
 	
-	private VentaController ventaController;
-	
 	@Autowired(required = true)
 	public VentaClientePanel(@Qualifier("ventaController") VentaController ventaController) {
-		this.ventaController = ventaController;
+		controller = ventaController;
 	}
 	
 	/**
@@ -153,21 +151,25 @@ public class VentaClientePanel extends BasePanel {
 			
 			btnContinuar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					try {
-						if(!isConsumidorFinal()) {
-							ventaController.agregarCliente();
-							mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
-						}
-						ventaController.mostrarPagosPanel();
-					}
-					catch(PresentationException ex) {
-						mostrarMensaje(ex);
-					}
+					continuar();
 				}
 			});
 			btnContinuar.setBounds(735, 231, 60, 60);
 		}
 		return btnContinuar;
+	}
+
+	protected void continuar() {
+		try {
+			if(!isConsumidorFinal()) {
+				controller.agregarCliente();
+				mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
+			}
+			controller.mostrarPagosPanel();
+		}
+		catch(PresentationException ex) {
+			mostrarMensaje(ex);
+		}
 	}
 
 	public JLabel getLblNombre() {
@@ -205,7 +207,7 @@ public class VentaClientePanel extends BasePanel {
 			btnNuevo.setBounds(735, 130, 60, 60);
 			btnNuevo.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					ventaController.mostrarClienteNuevoPanel();
+					controller.mostrarClienteNuevoPanel();
 				}
 			});
 		}
@@ -258,7 +260,7 @@ public class VentaClientePanel extends BasePanel {
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						ventaController.mostrarVentasPanel();
+						controller.mostrarVentasPanel();
 					}
 					catch(PresentationException ex) {
 						
@@ -284,9 +286,7 @@ public class VentaClientePanel extends BasePanel {
 			chkConsumidorFinal.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
-						if(chkConsumidorFinal.isSelected())
-							ventaController.quitarCliente();
-						deshabilitarComponentes();
+						controller.setTipoResponsable(chkConsumidorFinal.isSelected());
 					}
 					catch(PresentationException ex) {
 						mostrarMensaje(ex);
@@ -299,7 +299,7 @@ public class VentaClientePanel extends BasePanel {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre}));
+				new Component[]{chkConsumidorFinal, txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
 	}
 	
 	protected void deshabilitarComponentes() {
@@ -321,7 +321,8 @@ public class VentaClientePanel extends BasePanel {
 			filtroDto.setDocumento(getTxtNumeroDocumento().getText());
 			filtroDto.setNombre(getTxtNombre().getText());
 			
-			getModel().setClientes(ventaController.obtenerClientesByFilter(filtroDto));
+			getModel().setClientes(controller.obtenerClientesByFilter(filtroDto));
+			table.requestFocus();
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -347,17 +348,32 @@ public class VentaClientePanel extends BasePanel {
 
 	@Override
 	public void actualizarPantalla() {
-		getTxtNumeroDocumento().requestFocus();
 		consultarClientes();
+		getChkConsumidorFinal().requestFocus();
 	}
 	
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = getTxtApellido();
+		this.defaultFocusField = getChkConsumidorFinal();
 	}
 
 	public boolean isConsumidorFinal() {
 		return getChkConsumidorFinal().isSelected();
+	}
+	
+	@Override
+	protected void keyBuscar() {
+		consultarClientes();
+	}
+	
+	@Override
+	protected void keyAgregar() {
+		super.keyAgregar();
+	}
+	
+	@Override
+	protected void keyContinuar() {
+		continuar();
 	}
 	
 	protected void setDefaultButton() {

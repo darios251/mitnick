@@ -12,6 +12,10 @@ import org.appfuse.model.BaseObject;
 
 @Entity(name = "Discriminacion_IVA")
 public class DiscriminacionIVA extends BaseObject implements Serializable {
+	
+	public static final long IVA_RESPONSABLE_INSCRIPTO = 1;
+	
+	public static final long CONSUMIDOR_FINAL = 2;
 
 	private static final long serialVersionUID = 1L;
 

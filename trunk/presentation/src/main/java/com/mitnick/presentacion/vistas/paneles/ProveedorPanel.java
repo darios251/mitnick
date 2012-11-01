@@ -31,11 +31,9 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProveedorDto;
 
 @Panel("proveedorPanel")
-public class ProveedorPanel extends BasePanel {
+public class ProveedorPanel extends BasePanel<ProveedorController> {
 
 	private static final long serialVersionUID = 1L;
-
-	private ProveedorController proveedorController;
 
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -57,7 +55,7 @@ public class ProveedorPanel extends BasePanel {
 
 	@Autowired
 	public ProveedorPanel(@Qualifier("proveedorController") ProveedorController proveedorController) {
-		this.proveedorController = proveedorController;
+		controller = proveedorController;
 	}
 
 	/**
@@ -108,7 +106,7 @@ public class ProveedorPanel extends BasePanel {
 			ConsultaProveedorDto dto = new ConsultaProveedorDto();
 			dto.setCodigo(txtCodigo.getText());
 			dto.setNombre(txtNombre.getText());
-			getTableModel().setProveedores(proveedorController.getProveedorsByFilter(dto));
+			getTableModel().setProveedores(controller.getProveedorsByFilter(dto));
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 			getTableModel().setProveedores(new ArrayList<ProveedorDto>());
@@ -190,7 +188,7 @@ public class ProveedorPanel extends BasePanel {
 			
 			btnAgregar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					proveedorController.nuevoProveedor();
+					controller.nuevoProveedor();
 				}
 			});
 		}
@@ -212,7 +210,7 @@ public class ProveedorPanel extends BasePanel {
 			btnEditar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						proveedorController.editarProveedor();
+						controller.editarProveedor();
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -239,7 +237,7 @@ public class ProveedorPanel extends BasePanel {
 
 					if (opcion == JOptionPane.YES_OPTION) {
 						try {
-							proveedorController.eliminarProveedor();
+							controller.eliminarProveedor();
 							actualizarPantalla();
 						} catch (PresentationException ex) {
 							mostrarMensaje(ex);
@@ -264,7 +262,7 @@ public class ProveedorPanel extends BasePanel {
 			btnVerProductos.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
-						proveedorController.verProductosProveedor();
+						controller.verProductosProveedor();
 					}catch(PresentationException ex) {
 						mostrarMensaje(ex);
 					}

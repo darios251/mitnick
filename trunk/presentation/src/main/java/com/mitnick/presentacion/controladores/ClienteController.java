@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ClienteView;
-import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ClientePanel;
 import com.mitnick.presentacion.vistas.paneles.CuentaCorrientePagoPanel;
@@ -49,7 +48,6 @@ public class ClienteController extends BaseController {
 	public ClienteController() {
 		
 	}
-	
 	
 	public void mostrarCuentaCorrientePagoPanel() {
 		ultimoPanelMostrado = cuentaCorrientePagoPanel;
@@ -376,14 +374,6 @@ public class ClienteController extends BaseController {
 		return pagos;
 	}
 	
-	public BasePanel getUltimoPanelMostrado() {
-		return ultimoPanelMostrado;
-	}
-	
-	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
-		this.ultimoPanelMostrado = ultimoPanelMostrado;
-	}
-	
 	public void cargarReporte() {
 		clienteServicio.cargarReporte();		
 	}
@@ -425,6 +415,12 @@ public class ClienteController extends BaseController {
 		if(Validator.isNull(medioPagoServicio))
 			throw new PresentationException("error.unknown", "El servicio: " + medioPagoServicio.getClass().getSimpleName() + " no ha sido inyectado.");
 		return medioPagoServicio;
+	}
+
+
+	@Override
+	public void mostrarUltimoPanelMostrado() {
+		
 	}
 	
 }

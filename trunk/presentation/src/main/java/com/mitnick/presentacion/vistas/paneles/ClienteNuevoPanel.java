@@ -24,6 +24,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.presentacion.controladores.BaseController;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.vistas.formatters.EmailFormatter;
@@ -39,11 +40,9 @@ import com.mitnick.utils.dtos.ProvinciaDto;
 
 @Panel("clienteNuevoPanel")
 @Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
-public class ClienteNuevoPanel extends BasePanel {
+public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 
 	private static final long serialVersionUID = 1L;
-
-	private ClienteController clienteController;
 
 	private JButton btnAceptar;
 	private JButton btnCancelar;
@@ -82,7 +81,7 @@ public class ClienteNuevoPanel extends BasePanel {
 	private JComboBox<ProvinciaDto> cmbProvincia;
 	private JLabel lblErrorCmbProvincia;
 
-	private BasePanel panelRetorno;
+	private BasePanel<? extends BaseController> panelRetorno;
 
 	private Component lblCiudad;
 
@@ -118,7 +117,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	@Autowired(required = true)
 	public ClienteNuevoPanel(@Qualifier("clienteController") ClienteController clienteController) {
-		this.clienteController = clienteController;
+		controller = clienteController;
 	}
 
 	@Override
@@ -133,7 +132,7 @@ public class ClienteNuevoPanel extends BasePanel {
 		} catch (Exception e) {
 		}
 		
-		clienteController.cleanFields(cliente);
+		controller.cleanFields(cliente);
 	}
 
 	@Override
@@ -501,7 +500,7 @@ public class ClienteNuevoPanel extends BasePanel {
 			cmbProvincia = new JComboBox<ProvinciaDto>();
 			cmbProvincia.setBounds(496, 157, 105, 20);
 			MitnickComboBoxModel<ProvinciaDto> provinciaModel = new MitnickComboBoxModel<ProvinciaDto>();
-			provinciaModel.addItems(clienteController.obtenerProvincias());
+			provinciaModel.addItems(controller.obtenerProvincias());
 			cmbProvincia.setModel(provinciaModel);
 			cmbProvincia.addActionListener(new ActionListener() {
 
@@ -509,7 +508,7 @@ public class ClienteNuevoPanel extends BasePanel {
 				public void actionPerformed(ActionEvent e) {
 					cmbCiudad.removeAllItems();
 					try {
-						((MitnickComboBoxModel<CiudadDto>) cmbCiudad.getModel()).addItems(clienteController.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
+						((MitnickComboBoxModel<CiudadDto>) cmbCiudad.getModel()).addItems(controller.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -535,7 +534,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	protected void agregarCliente() {
 		try {
-			clienteController.guardarCliente(cliente, txtApellido.getText(), txtNombre.getText(), txtDocumento.getText(),
+			controller.guardarCliente(cliente, txtApellido.getText(), txtNombre.getText(), txtDocumento.getText(),
 					txtCuit.getText(), txtTelefono.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
 					txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto) cmbCiudad.getSelectedItem());
 			limpiarCamposPantalla();
@@ -547,7 +546,7 @@ public class ClienteNuevoPanel extends BasePanel {
 
 	private void retornarLLamador() {
 		if (panelRetorno == null)
-			clienteController.mostrarClientePanel();
+			controller.mostrarClientePanel();
 		else {
 			this.setVisible(false);
 			panelRetorno.setVisible(true);
@@ -595,11 +594,11 @@ public class ClienteNuevoPanel extends BasePanel {
 		this.defaultFocusField = txtApellido;
 	}
 
-	public BasePanel getPanelRetorno() {
+	public BasePanel<? extends BaseController> getPanelRetorno() {
 		return panelRetorno;
 	}
 
-	public void setPanelRetorno(BasePanel panelRetorno) {
+	public void setPanelRetorno(BasePanel<? extends BaseController> panelRetorno) {
 		this.panelRetorno = panelRetorno;
 	}
 

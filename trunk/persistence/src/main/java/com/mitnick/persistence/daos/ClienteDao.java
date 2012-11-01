@@ -152,7 +152,6 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			
 			super.getHibernateTemplate().flush();
 			
-			@SuppressWarnings("deprecation")
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
 			JRExporter exporter = new JRPdfExporter();

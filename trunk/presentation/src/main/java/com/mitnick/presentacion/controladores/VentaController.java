@@ -11,7 +11,6 @@ import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.VentaView;
-import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.DetalleProductoPanel;
@@ -24,6 +23,7 @@ import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -406,8 +406,11 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarCliente");
 	}
 	
-	public BasePanel getUltimoPanelMostrado() {
-		return ultimoPanelMostrado;
+	public void setTipoResponsable(boolean consumidorFinal) {
+		if(consumidorFinal)
+			VentaManager.getVentaActual().setTipoResponsabilidad(MitnickConstants.CONSUMIDOR_FINAL);
+		else
+			VentaManager.getVentaActual().setTipoResponsabilidad(MitnickConstants.IVA_RESPONSABLE_INSCRIPTO);
 	}
 	
 	public VentaView getVentaView() {
