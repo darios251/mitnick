@@ -25,10 +25,10 @@ import com.mitnick.utils.dtos.BaseDto;
  * @author Lucas Garc�a
  *
  */
-abstract class BaseController {
+public abstract class BaseController {
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
-	protected BasePanel ultimoPanelMostrado = null;
+	protected BasePanel<? extends BaseController> ultimoPanelMostrado = null;
 	
 	protected static ValidatorFactory entityValidatorFactory; 
 	protected static Validator entityValidator;
@@ -102,4 +102,14 @@ abstract class BaseController {
 			} catch (Exception e) {}
 		}
 	}
+	
+	public BasePanel<? extends BaseController> getUltimoPanelMostrado() {
+		return ultimoPanelMostrado;
+	}
+	
+	public void setUltimoPanelMostrado(BasePanel<? extends BaseController> ultimoPanelMostrado) {
+		this.ultimoPanelMostrado = ultimoPanelMostrado;
+	}
+	
+	public abstract void mostrarUltimoPanelMostrado();
 }

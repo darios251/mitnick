@@ -37,12 +37,10 @@ import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("proveedorProductoPanel")
-public class ProveedorProductoPanel extends BasePanel {
+public class ProveedorProductoPanel extends BasePanel<ProveedorController> {
 
 	private static final long serialVersionUID = 1L;
 
-	private ProveedorController proveedorController;
-	
 	private ProductoController productoController;
 
 	private JScrollPane scrollPane;
@@ -71,7 +69,7 @@ public class ProveedorProductoPanel extends BasePanel {
 	@Autowired
 	public ProveedorProductoPanel(@Qualifier("proveedorController") ProveedorController proveedorController,
 			@Qualifier("productoController") ProductoController productoController) {
-		this.proveedorController = proveedorController;
+		controller = proveedorController;
 		this.productoController = productoController;
 	}
 
@@ -257,7 +255,7 @@ public class ProveedorProductoPanel extends BasePanel {
 			
 			btnAgregar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					proveedorController.mostrarProveedorPanel();
+					controller.mostrarProveedorPanel();
 				}
 			});
 		}

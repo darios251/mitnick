@@ -33,12 +33,9 @@ import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 
 @Panel("reporteDetalleMovimientosPanel")
-public class ReporteDetalleMovimientosPanel extends BasePanel {
+public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientosController> {
 	
 	private static final long serialVersionUID = 1L;
-	
-	@Autowired
-	private ReporteMovimientosController reporteController;
 	
 	private JLabel lblCdigo;
 	private JLabel lblDescripcin;
@@ -62,7 +59,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 	
 	@Autowired
 	public ReporteDetalleMovimientosPanel(@Qualifier ("reporteMovimientosController") ReporteMovimientosController reporteController) {
-		this.reporteController = reporteController;
+		controller = reporteController;
 	}
 	
 	/**
@@ -176,7 +173,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 			
 			btnExportar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					reporteController.exportarDetalleMovimientoProducto(getTableModel().getMovimientoProducto(), producto, Integer.toBinaryString(stockOriginal), Integer.toString(stockFinal));
+					controller.exportarDetalleMovimientoProducto(getTableModel().getMovimientoProducto(), producto, Integer.toBinaryString(stockOriginal), Integer.toString(stockFinal));
 				}
 			});
 			btnExportar.setBounds(735, 299, 60, 60);
@@ -196,7 +193,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 			
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					reporteController.mostrarProductosPanel();
+					controller.mostrarProductosPanel();
 				}
 			});
 			btnVolver.setBounds(735, 370, 60, 60);
@@ -215,7 +212,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 			dto.setProducto(producto);
 			dto.setFechaInicio(fechaInicio);
 			dto.setFechaFin(fechaFin);
-			List<MovimientoDto> movimientos = reporteController.reporteMovimientosDeProducto(dto);
+			List<MovimientoDto> movimientos = controller.reporteMovimientosDeProducto(dto);
 			if (fechaInicio==null)
 				fechaInicio = movimientos.get(0).getFecha();
 			if (fechaFin==null)
@@ -263,7 +260,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 	}
 
 	public void setReporteController(ReporteMovimientosController reporteController) {
-		this.reporteController = reporteController;
+		controller = reporteController;
 	}
 
 	public TableRowSorter<DetalleMovimientoTableModel> getSorter() {
@@ -280,10 +277,6 @@ public class ReporteDetalleMovimientosPanel extends BasePanel {
 
 	public void setModel(DetalleMovimientoTableModel model) {
 		this.model = model;
-	}
-
-	public ReporteMovimientosController getReporteController() {
-		return reporteController;
 	}
 
 	public ProductoDto getProducto() {

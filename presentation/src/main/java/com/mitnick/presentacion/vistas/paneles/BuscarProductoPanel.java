@@ -17,6 +17,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ProductoController;
@@ -30,11 +31,8 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoDto;
 
 @Panel("buscarProductoPanel")
-public class BuscarProductoPanel extends BasePanel {
+public class BuscarProductoPanel extends BasePanel<VentaController> {
 	private static final long serialVersionUID = 1L;
-	
-	@Autowired
-	private VentaController ventasController;
 	
 	@Autowired
 	private ProductoController productoController;
@@ -53,7 +51,9 @@ public class BuscarProductoPanel extends BasePanel {
 
 	private ProductoTableModel model;
 	
-	public BuscarProductoPanel() {
+	@Autowired(required = true)
+	public BuscarProductoPanel(@Qualifier("ventaController") VentaController ventaController) {
+		controller = ventaController;
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
@@ -135,7 +135,7 @@ public class BuscarProductoPanel extends BasePanel {
 			
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ventasController.mostrarVentasPanel();
+					controller.mostrarVentasPanel();
 				}
 			});
 			btnVolver.setBounds(735, 185, 60, 60);
@@ -159,8 +159,8 @@ public class BuscarProductoPanel extends BasePanel {
 						int index = table.getSelectedRow();
 						ProductoDto productoDto = model.getProducto(index);
 						
-						ventasController.agregarProducto(productoDto.getCodigo());
-						ventasController.mostrarVentasPanel();	
+						controller.agregarProducto(productoDto.getCodigo());
+						controller.mostrarVentasPanel();	
 					}
 					catch (IndexOutOfBoundsException exception) {
 						if(model.getRowCount() == 0) {
@@ -242,7 +242,7 @@ public class BuscarProductoPanel extends BasePanel {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{txtCodigo, txtDescripcion}));
+				new Component[]{txtCodigo, txtDescripcion, btnBuscar, table, btnAgregar, btnVolver}));
 	}
 
 	private void buscarProducto() {
@@ -251,6 +251,7 @@ public class BuscarProductoPanel extends BasePanel {
 		dto.setDescripcion(txtDescripcion.getText());
 	
 		model.setProductos(	productoController.getProductosByFilter(dto) );
+		table.requestFocus();
 	}
 
 	@Override
@@ -271,12 +272,17 @@ public class BuscarProductoPanel extends BasePanel {
 	}
 	
 	@Override
+	protected void keyAgregar() {
+		btnAgregar.doClick();
+	}
+	
+	@Override
 	public void setDefaultFocusField() {
 		this.defaultFocusField = txtCodigo;
 	}
 
 	public void setVentasController(VentaController ventasController) {
-		this.ventasController = ventasController;
+		controller = ventasController;
 	}
 
 	public void setProductoController(ProductoController productoController) {

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ProductoView;
-import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
@@ -185,14 +184,6 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
-	public BasePanel getUltimoPanelMostrado() {
-		return ultimoPanelMostrado;
-	}
-	
-	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
-		this.ultimoPanelMostrado = ultimoPanelMostrado;
-	}
-	
 	public ProductoView getProductoView() {
 		return productoView;
 	}
@@ -213,9 +204,14 @@ public class ProductoController extends BaseController {
 
 	public ProductoDto reloadProducto(ProductoDto producto) {
 		
-		//productoServicio.obtenerProductoPorId(producto.get)
+		//TODO Lucas: ver si hay que hacer esto productoServicio.obtenerProductoPorId(producto.get)
 		
 		return null;
+	}
+
+	@Override
+	public void mostrarUltimoPanelMostrado() {
+		
 	}
 
 }

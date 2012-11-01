@@ -439,4 +439,18 @@
 	    <value>4</value>
 	  </row>
 	</table>
+	
+	<table name="Discriminacion_IVA">
+	    <column>id</column>
+	    <column>descripcion</column>
+	    
+	    <row>
+	    	<value>1</value>
+	    	<value>iva responsable inscripto</value>    
+	    </row>
+	    <row>
+	        <value>2</value>
+	        <value>consumidor final</value>
+	    </row>
+	</table>
 </dataset>

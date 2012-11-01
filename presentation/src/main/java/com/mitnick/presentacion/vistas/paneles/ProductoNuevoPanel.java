@@ -31,11 +31,10 @@ import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("productoNuevoPanel")
-public class ProductoNuevoPanel extends BasePanel {
+public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 
 	private static final long serialVersionUID = 1L;
 
-	private ProductoController productoController;
 	private ProveedorController proveedorController;
 
 	private ProductoNuevoDto producto;
@@ -105,7 +104,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	@Autowired(required = true)
 	public ProductoNuevoPanel(@Qualifier("productoController") ProductoController productoController,
 			@Qualifier("proveedorController") ProveedorController proveedorController) {
-		this.productoController = productoController;
+		controller = productoController;
 		this.proveedorController = proveedorController;
 	}
 
@@ -330,7 +329,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public MitnickComboBoxModel<TipoDto> getModelCmbTipo() {
 		if (modelCmbTipo == null) {
 			modelCmbTipo = new MitnickComboBoxModel<TipoDto>();
-			modelCmbTipo.addItems(productoController.obtenerTipos());
+			modelCmbTipo.addItems(controller.obtenerTipos());
 		}
 		return modelCmbTipo;
 	}
@@ -338,7 +337,7 @@ public class ProductoNuevoPanel extends BasePanel {
 	public MitnickComboBoxModel<MarcaDto> getModelCmbMarca() {
 		if (modelCmbMarca == null) {
 			modelCmbMarca = new MitnickComboBoxModel<MarcaDto>();
-			modelCmbMarca.addItems(productoController.obtenerMarcas());
+			modelCmbMarca.addItems(controller.obtenerMarcas());
 		}
 		return modelCmbMarca;
 	}
@@ -385,7 +384,7 @@ public class ProductoNuevoPanel extends BasePanel {
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					limpiarCamposPantalla();
-					productoController.mostrarProductosPanel();
+					controller.mostrarProductosPanel();
 				}
 			});
 			btnCancelar.setBounds(618, 56, 60, 60);
@@ -487,12 +486,12 @@ public class ProductoNuevoPanel extends BasePanel {
 
 	protected void agregarProducto() {
 		try {
-			productoController.guardarProducto(producto, getTxtCodigo().getText(), getTxtDescripcion().getText(),
+			controller.guardarProducto(producto, getTxtCodigo().getText(), getTxtDescripcion().getText(),
 					(TipoDto) getCmbTipo().getSelectedItem(), (MarcaDto) getCmbMarca().getSelectedItem(), getTxtStock().getText(),
 					getTxtStockMinimo().getText(), getTxtStockCompra().getText(), getTxtPrecioVenta().getText(),
 					getTxtPrecioCompra().getText(), (ProveedorDto)getCmbProveedores().getSelectedItem(), isConfirmado());
 			limpiarCamposPantalla();
-			productoController.mostrarProductosPanel();
+			controller.mostrarProductosPanel();
 		} catch (PresentationException ex) {
 			if (ex.getMessage().equals("producto.edit.max.cantidad")){
 				int opcion = mostrarMensajeConsulta(

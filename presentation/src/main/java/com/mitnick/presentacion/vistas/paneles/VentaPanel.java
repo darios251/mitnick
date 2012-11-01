@@ -34,11 +34,9 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
 @Panel("ventaPanel")
-public class VentaPanel extends BasePanel {
+public class VentaPanel extends BasePanel<VentaController> {
 
 	private static final long serialVersionUID = 1L;
-
-	private VentaController ventaController;
 
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -69,7 +67,7 @@ public class VentaPanel extends BasePanel {
 
 	@Autowired
 	public VentaPanel(@Qualifier("ventaController") VentaController ventaController) {
-		this.ventaController = ventaController;
+		controller = ventaController;
 	}
 
 	@Override
@@ -97,16 +95,22 @@ public class VentaPanel extends BasePanel {
 		add(getBtnAgregar());
 		
 		setFocusTraversalPolicy();
+		setFocusable(true);
 	}
 	
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodigo, btnAgregar, btnBuscar, btnQuitar, btnContinuar}));
 	}
+	
+	@Override
+	protected void keyAgregar() {
+		agregarProducto();
+	}
 
 	public void agregarProducto() {
 		logger.debug("entrado a agregarProducto");
 		try {
-			ventaController.agregarProducto(getTxtCodigo().getText());
+			controller.agregarProducto(getTxtCodigo().getText().trim());
 			getTxtCodigo().setText("");
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
@@ -130,7 +134,7 @@ public class VentaPanel extends BasePanel {
 				public void mouseClicked(MouseEvent evento) {
 					if (evento.getClickCount() == 2) {
 						try {
-							ventaController.mostrarDetalleProductoPanel();
+							controller.mostrarDetalleProductoPanel();
 						} catch (PresentationException ex) {
 							mostrarMensaje(ex);
 						}
@@ -223,15 +227,19 @@ public class VentaPanel extends BasePanel {
 
 			btnContinuar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					try {
-						ventaController.mostrarClienteVenta();
-					} catch (PresentationException ex) {
-						mostrarMensaje(ex);
-					}
+					keyContinuar();
 				}
 			});
 		}
 		return btnContinuar;
+	}
+
+	protected void keyContinuar() {
+		try {
+			controller.mostrarClienteVenta();
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
 	}
 
 	public JButton getBtnQuitar() {
@@ -247,19 +255,28 @@ public class VentaPanel extends BasePanel {
 
 			btnQuitar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
-					try {
-						int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"));
-
-						if (opcion == JOptionPane.YES_OPTION) {
-							ventaController.quitarProductoVentaDto();
-						}
-					} catch (PresentationException ex) {
-						mostrarMensaje(ex);
-					}
+					quitarProducto();
 				}
 			});
 		}
 		return btnQuitar;
+	}
+	
+	@Override
+	protected void keyQuitar() {
+		quitarProducto();
+	}
+
+	protected void quitarProducto() {
+		try {
+			int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"));
+
+			if (opcion == JOptionPane.YES_OPTION) {
+				controller.quitarProductoVentaDto();
+			}
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
 	}
 
 	public JButton getBtnBuscar() {
@@ -275,11 +292,20 @@ public class VentaPanel extends BasePanel {
 
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ventaController.mostrarBuscarArticuloPanel();
+					buscarProducto();
 				}
 			});
 		}
 		return btnBuscar;
+	}
+	
+	@Override
+	protected void keyBuscar() {
+		buscarProducto();
+	}
+
+	protected void buscarProducto() {
+		controller.mostrarBuscarArticuloPanel();
 	}
 
 	public JButton getBtnAgregar() {
@@ -320,8 +346,10 @@ public class VentaPanel extends BasePanel {
 	}
 	
 	protected void setDefaultButton() {
-		if(Validator.isNotNull(this.getRootPane()))
-			this.getRootPane().setDefaultButton(getBtnAgregar());
+		if(Validator.isNotNull(this.getRootPane())) {
+			defaultButtonAction = getBtnAgregar();
+			this.getRootPane().setDefaultButton(defaultButtonAction);
+		}
 	}
 	
 }

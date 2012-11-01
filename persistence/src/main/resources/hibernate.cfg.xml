@@ -25,5 +25,6 @@
         <mapping class="com.mitnick.persistence.entities.Configuracion"/>
         <mapping class="com.mitnick.persistence.entities.Parametro"/>
         <mapping class="com.mitnick.persistence.entities.Cuota"/>
+        <mapping class="com.mitnick.persistence.entities.DiscriminacionIVA"/>
     </session-factory>
 </hibernate-configuration>

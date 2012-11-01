@@ -118,7 +118,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}
 	} 
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public void exportarMovimientosDeProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal) {

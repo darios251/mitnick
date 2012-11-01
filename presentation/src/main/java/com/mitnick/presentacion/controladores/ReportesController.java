@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.presentacion.vistas.ReportesView;
-import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ReportesPanel;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
@@ -101,15 +100,6 @@ public class ReportesController extends BaseController {
 		this.reportesServicio = reportesServicio;
 	}
 	
-	public BasePanel getUltimoPanelMostrado() {
-		return ultimoPanelMostrado;
-	}
-	
-	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
-		this.ultimoPanelMostrado = ultimoPanelMostrado;
-	}
-
-
 	public ReportesView getReportesView() {
 		return reportesView;
 	}
@@ -129,6 +119,9 @@ public class ReportesController extends BaseController {
 		this.reportesPanel = reportesPanel;
 	}
 	
-	
+	@Override
+	public void mostrarUltimoPanelMostrado() {
+		// TODO Auto-generated method stub
+	}
 
 }

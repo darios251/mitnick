@@ -24,11 +24,9 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProveedorDto;
 
 @Panel("proveedorNuevoPanel")
-public class ProveedorNuevoPanel extends BasePanel {
+public class ProveedorNuevoPanel extends BasePanel<ProveedorController> {
 
 	private static final long serialVersionUID = 1L;
-
-	private ProveedorController proveedorController;
 
 	private ProveedorDto proveedor;
 
@@ -58,7 +56,7 @@ public class ProveedorNuevoPanel extends BasePanel {
 
 	@Autowired(required = true)
 	public ProveedorNuevoPanel(@Qualifier("proveedorController") ProveedorController proveedorController) {
-		this.proveedorController = proveedorController;
+		controller = proveedorController;
 	}
 
 	@Override
@@ -159,7 +157,7 @@ public class ProveedorNuevoPanel extends BasePanel {
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					limpiarCamposPantalla();
-					proveedorController.mostrarProveedorPanel();
+					controller.mostrarProveedorPanel();
 				}
 			});
 			btnCancelar.setBounds(618, 56, 60, 60);
@@ -216,9 +214,9 @@ public class ProveedorNuevoPanel extends BasePanel {
 
 	protected void agregarProveedor() {
 		try {
-			proveedorController.guardarProveedor(proveedor, getTxtCodigo().getText(), getTxtNombre().getText(), getTxtTelefono().getText());
+			controller.guardarProveedor(proveedor, getTxtCodigo().getText(), getTxtNombre().getText(), getTxtTelefono().getText());
 			limpiarCamposPantalla();
-			proveedorController.mostrarProveedorPanel();
+			controller.mostrarProveedorPanel();
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}

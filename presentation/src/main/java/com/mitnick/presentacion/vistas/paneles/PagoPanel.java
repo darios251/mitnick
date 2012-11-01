@@ -40,11 +40,9 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
 @Panel("pagoPanel")
-public class PagoPanel extends BasePanel {
+public class PagoPanel extends BasePanel<VentaController> {
 
 	private static final long serialVersionUID = 1L;
-
-	private VentaController ventaController;
 
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -84,7 +82,7 @@ public class PagoPanel extends BasePanel {
 
 	@Autowired
 	public PagoPanel(@Qualifier("ventaController") VentaController ventaController) {
-		this.ventaController = ventaController;
+		controller = ventaController;
 	}
 
 	/**
@@ -317,7 +315,7 @@ public class PagoPanel extends BasePanel {
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						ventaController.mostrarClienteVenta();
+						((VentaController) controller).mostrarClienteVenta();
 					} catch (PresentationException ex) {
 
 						mostrarMensaje(ex);
@@ -350,7 +348,7 @@ public class PagoPanel extends BasePanel {
 						int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("pagoPanel.dialog.confirm.quitar"));
 
 						if (opcion == JOptionPane.YES_OPTION) {
-							ventaController.quitarPago(pagoDto);
+							((VentaController) controller).quitarPago(pagoDto);
 						}
 					} catch (IndexOutOfBoundsException exception) {
 						if (model.getRowCount() == 0) {
@@ -403,16 +401,16 @@ public class PagoPanel extends BasePanel {
 			if (pago.isCuentaCorriente()) {
 				String cuotas = JOptionPane.showInputDialog(PropertiesManager.getProperty("pagoPanel.cuentaCorriente.cantidadCuotas"));
 				if (cuotas!=null && !cuotas.equals("")){
-					List<CuotaDto> cuotasDto = ventaController.getCuotas(cuotas, txtMonto.getText());
+					List<CuotaDto> cuotasDto = ((VentaController) controller).getCuotas(cuotas, txtMonto.getText());
 					CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto, txtMonto.getText());
 					if (cuotasDialog.aceptar) {
-						ventaController.guardarCuotas(cuotasDialog.getModel().getCuotas());
-						ventaController.agregarPago(pago, txtMonto.getText());
+						((VentaController) controller).guardarCuotas(cuotasDialog.getModel().getCuotas());
+						((VentaController) controller).agregarPago(pago, txtMonto.getText());
 					} 
 				}
 			}
 			else
-				ventaController.agregarPago(pago, txtMonto.getText());
+				((VentaController) controller).agregarPago(pago, txtMonto.getText());
 
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
@@ -440,7 +438,7 @@ public class PagoPanel extends BasePanel {
 			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
 
 			try {
-				medioPagoList = ventaController.getAllMedioPago();
+				medioPagoList = ((VentaController) controller).getAllMedioPago();
 			} catch (BusinessException e) {
 				;
 			}
@@ -475,9 +473,9 @@ public class PagoPanel extends BasePanel {
 	public void finalizarVenta() {
 		try {
 			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
-			ventaController.crearNuevaVenta();
-			ventaController.limpiarVenta();
-			ventaController.mostrarVentasPanel();
+			((VentaController) controller).crearNuevaVenta();
+			((VentaController) controller).limpiarVenta();
+			((VentaController) controller).mostrarVentasPanel();
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -549,6 +547,11 @@ public class PagoPanel extends BasePanel {
 	protected void setDefaultButton() {
 		if (Validator.isNotNull(this.getRootPane()))
 			this.getRootPane().setDefaultButton(getBtnAgregar());
+	}
+	
+	@Override
+	protected void keyMostrarAnterior() {
+		btnVolver.doClick();
 	}
 
 	public boolean isCuentaCorriente() {

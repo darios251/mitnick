@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ProveedorView;
-import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ProveedorNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProveedorPanel;
 import com.mitnick.presentacion.vistas.paneles.ProveedorProductoPanel;
@@ -188,14 +187,6 @@ public class ProveedorController extends BaseController {
 		}
 	}
 	
-	public BasePanel getUltimoPanelMostrado() {
-		return ultimoPanelMostrado;
-	}
-	
-	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
-		this.ultimoPanelMostrado = ultimoPanelMostrado;
-	}
-	
 	public ProveedorView getProveedorView() {
 		return proveedorView;
 	}
@@ -210,6 +201,11 @@ public class ProveedorController extends BaseController {
 	
 	public ProveedorProductoPanel getProveedorProductoPanel() {
 		return proveedorProductoPanel;
+	}
+
+	@Override
+	public void mostrarUltimoPanelMostrado() {
+		// TODO Auto-generated method stub
 	}
 
 }

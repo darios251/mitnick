@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
+import com.mitnick.persistence.daos.IDiscriminacionIVADao;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IMedioPagoDAO;
 import com.mitnick.persistence.daos.IProductoDAO;
@@ -71,6 +72,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	protected IMedioPagoDAO medioPagoDao;
 	@Autowired
 	protected IProvinciaDao provinciaDao;
+	@Autowired
+	protected IDiscriminacionIVADao discriminacionIVADao;
 
 	private String AJUSTE = "Ajuste Manual";
 
@@ -392,6 +395,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setImpresa(venta.isPrinted());
 		ventaDto.setCancelada(venta.isCanceled());
 		ventaDto.setAjusteRedondeo(venta.getAjusteRedondeo());
+		ventaDto.setTipoResponsabilidad(venta.getDiscriminacionIVA().getId());
 		
 		return ventaDto;
 	}
@@ -441,8 +445,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		venta.setPagos(pagos);
 
-		// TODO: tipo de cliente
-		venta.setDiscriminacionIVA(null);
+		venta.setDiscriminacionIVA(discriminacionIVADao.get(ventaDto.getTipoResponsabilidad()));
 
 		venta.setImpuesto(ventaDto.getImpuesto());
 		venta.setSubtotal(ventaDto.getSubTotal());

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ReporteMovimientosView;
-import com.mitnick.presentacion.vistas.paneles.BasePanel;
 import com.mitnick.presentacion.vistas.paneles.ReporteDetalleMovimientosPanel;
 import com.mitnick.presentacion.vistas.paneles.ReporteMovimientosPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
@@ -48,7 +47,7 @@ public class ReporteMovimientosController extends BaseController {
 		reporteMovimientosPanel.setVisible(true);
 		reporteMovimientosPanel.actualizarPantalla();
 	}
-
+	
 	public void exportarMovimientosProducto(List<MovimientoProductoDto> movimientos) {
 		reporteServicio.exportarMovimientosAgrupadosPorProducto(movimientos);
 	}
@@ -56,7 +55,7 @@ public class ReporteMovimientosController extends BaseController {
 	public void exportarDetalleMovimientoProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal) {
 		reporteServicio.exportarMovimientosDeProducto(movimientos, producto, stockOriginal, stockFinal);
 	}
-	
+
 	public void mostrarMovimientosPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		int index = getReporteMovimientosPanel().getTable().getSelectedRow();
@@ -124,14 +123,6 @@ public class ReporteMovimientosController extends BaseController {
 		}
 	}
 	
-	public BasePanel getUltimoPanelMostrado() {
-		return ultimoPanelMostrado;
-	}
-	
-	public void setUltimoPanelMostrado(BasePanel ultimoPanelMostrado) {
-		this.ultimoPanelMostrado = ultimoPanelMostrado;
-	}
-
 	public IReportesServicio getReporteServicio() {
 		return reporteServicio;
 	}
@@ -150,6 +141,11 @@ public class ReporteMovimientosController extends BaseController {
 
 	public ReporteDetalleMovimientosPanel getReporteDetalleMovimientosPanel() {
 		return reporteDetalleMovimientosPanel;
+	}
+
+	@Override
+	public void mostrarUltimoPanelMostrado() {
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -24,11 +24,9 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
 @Panel("detalleProductoPanel")
-public class DetalleProductoPanel extends BasePanel {
+public class DetalleProductoPanel extends BasePanel<VentaController> {
 
 	private static final long serialVersionUID = 1L;
-
-	private VentaController ventaController;
 	
 	private JLabel lblCantidad;
 	private JLabel lblCodigo;
@@ -43,7 +41,7 @@ public class DetalleProductoPanel extends BasePanel {
 
 	@Autowired
 	public DetalleProductoPanel(@Qualifier("ventaController") VentaController ventaController) {
-		this.ventaController = ventaController;
+		controller = ventaController;
 	}
 
 	/**
@@ -126,7 +124,7 @@ public class DetalleProductoPanel extends BasePanel {
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						ventaController.mostrarVentasPanel();
+						controller.mostrarVentasPanel();
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -160,8 +158,8 @@ public class DetalleProductoPanel extends BasePanel {
 
 	protected void modificarCantidad() {
 		try {
-			ventaController.modificarCantidad(getProducto(), txtCantidad.getText());
-			ventaController.mostrarVentasPanel();
+			controller.modificarCantidad(getProducto(), txtCantidad.getText());
+			controller.mostrarVentasPanel();
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}

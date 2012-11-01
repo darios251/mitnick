@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -245,7 +246,7 @@ public class PrinterService {
 				output.println(producto.getCantidad());
 				
 				output.println(ITEM_PRECIO);
-				output.println(VentaHelper.calcularPrecioSinIva(producto.getPrecioTotal()));
+				output.println(producto.getProducto().getPrecioVenta().setScale(2, RoundingMode.HALF_UP));
 				
 				output.println(ITEM_IVA);
 				output.println("21");
@@ -547,9 +548,10 @@ public class PrinterService {
 	public boolean getInfoTicketFactura(VentaDto venta, boolean useCurrentConnection) {
 		try {
 			connect(useCurrentConnection);
+			Thread.sleep(1000);
 			
 			output.println(INFO_TICKET_FACTURA);
-			checkErrors();
+			//checkErrors();
 			
 			String line = "";
 			
@@ -576,6 +578,7 @@ public class PrinterService {
 		    		}
 	    		}
 	    	}
+	    	Thread.sleep(1000);
 		}
 		catch (PrinterException ex) {
 			throw ex;
@@ -593,7 +596,7 @@ public class PrinterService {
 			connect(useCurrentConnection);
 			
 			output.println(INFO_TICKET);
-			checkErrors();
+			//checkErrors();
 			
 			String line = "";
 			
@@ -692,7 +695,7 @@ public class PrinterService {
 	}
 	
 	protected Socket connect() throws UnknownHostException, IOException {
-		SocketAddress sockaddr = new InetSocketAddress("192.168.1.105", 9095);
+		SocketAddress sockaddr = new InetSocketAddress("192.168.0.104", 9095);
 		currentConnection = new Socket();
 		currentConnection.connect(sockaddr, 3000);
 		currentConnection.setSoTimeout(15000);
