@@ -155,6 +155,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnBuscar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					consultarClientes();
+					table.requestFocus();
 				}
 			});
 		}
@@ -332,7 +333,12 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnCuentaCorriente.setBounds(735, 396, 60, 60);
 			btnCuentaCorriente.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					controller.cuentaCorriente();
+					try {
+						controller.cuentaCorriente();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
 				}
 			});
 		}
@@ -364,9 +370,28 @@ public class ClientePanel extends BasePanel<ClienteController> {
 
 	@Override
 	public void actualizarPantalla() {
-		if (Validator.isNotNull(txtNumeroDocumento))
-			txtNumeroDocumento.requestFocus();
 		consultarClientes();
+	}
+	
+	@Override
+	protected void keyAdd() {
+		btnNuevo.doClick();
+	}
+	
+	@Override
+	protected void keyMultiply() {
+		btnModificar.doClick();
+		limpiarCamposPantalla();
+	}
+	
+	@Override
+	protected void keySubstract() {
+		btnEliminar.doClick();
+	}
+	
+	@Override
+	protected void keyF1() {
+		btnCuentaCorriente.doClick();
 	}
 
 	@Override

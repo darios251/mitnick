@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.ClienteTableModel;
+import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
@@ -161,10 +162,11 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	protected void continuar() {
 		try {
-			if(!isConsumidorFinal()) {
+			if(VentaManager.getVentaActual().getCliente() == null || table.getSelectedRow() != -1) {
 				controller.agregarCliente();
 				mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
 			}
+			
 			controller.mostrarPagosPanel();
 		}
 		catch(PresentationException ex) {
@@ -362,18 +364,18 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	}
 	
 	@Override
-	protected void keyBuscar() {
+	protected void keyF3() {
 		consultarClientes();
 	}
 	
 	@Override
-	protected void keyAgregar() {
-		super.keyAgregar();
+	protected void keyAdd() {
+		btnNuevo.doClick();
 	}
 	
 	@Override
-	protected void keyContinuar() {
-		continuar();
+	protected void keyPageDown() {
+		btnContinuar.doClick();
 	}
 	
 	protected void setDefaultButton() {

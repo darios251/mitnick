@@ -272,7 +272,7 @@ public class BuscarProductoPanel extends BasePanel<VentaController> {
 	}
 	
 	@Override
-	protected void keyAgregar() {
+	protected void keyAdd() {
 		btnAgregar.doClick();
 	}
 	

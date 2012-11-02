@@ -103,7 +103,7 @@ public class VentaController extends BaseController {
 	}
 	
 	public void mostrarPagosPanel() {
-		if(!ventaClientePanel.isConsumidorFinal() && Validator.isNull(VentaManager.getVentaActual().getCliente()))
+		if(Validator.isNull(VentaManager.getVentaActual().getCliente()))
 			throw new PresentationException("error.venta.cliente.null");
 		ultimoPanelMostrado = pagoPanel;
 		buscarProductoPanel.setVisible(false);

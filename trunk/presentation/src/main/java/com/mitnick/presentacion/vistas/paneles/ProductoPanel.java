@@ -116,7 +116,7 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{txtCodigo, txtDescripcion, cmbTipo, cmbMarca, btnBuscar, btnAgregar, btnEditar, btnEliminar}));
+				new Component[]{txtCodigo, txtDescripcion, cmbTipo, cmbMarca, btnBuscar, table , btnAgregar, btnEditar, btnEliminar}));
 	}
 	
 	protected void consultarProductos() {
@@ -193,13 +193,9 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 
 	public JButton getBtnBuscar() {
 		if (btnBuscar == null) {
-			btnBuscar = new JButton(
-					PropertiesManager.getProperty("productoPanel.button.buscar.texto"));
-			btnBuscar.setToolTipText(
-					PropertiesManager.getProperty("productoPanel.button.buscar.tooltip"));
-			btnBuscar.setIcon(
-					new ImageIcon(this.getClass().getResource(
-							PropertiesManager.getProperty("/img/buscar.png"))));
+			btnBuscar = new JButton(PropertiesManager.getProperty("productoPanel.button.buscar.texto"));
+			btnBuscar.setToolTipText(PropertiesManager.getProperty("productoPanel.button.buscar.tooltip"));
+			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource(PropertiesManager.getProperty("/img/buscar.png"))));
 
 			btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnBuscar.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -209,6 +205,7 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
 					consultarProductos();
+					table.requestFocus();
 				}
 			});
 		}
@@ -376,8 +373,18 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 	}
 	
 	@Override
-	protected void keyAgregar() {
+	protected void keyAdd() {
 		btnAgregar.doClick();
+	}
+	
+	@Override
+	protected void keySubstract() {
+		btnEliminar.doClick();
+	}
+	
+	@Override
+	protected void keyMultiply() {
+		btnEditar.doClick();
 	}
 
 	@Override

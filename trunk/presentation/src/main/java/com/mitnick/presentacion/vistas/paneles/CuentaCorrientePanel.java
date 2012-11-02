@@ -345,6 +345,31 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		if(Validator.isNotNull(this.getRootPane()))
 			this.getRootPane().setDefaultButton(this.btnEditar);
 	}
+	
+	@Override
+	protected void keyEscape() {
+		btnVolver.doClick();
+	}
+	
+	@Override
+	protected void keyAdd() {
+		btnNuevo.doClick();
+	}
+	
+	@Override
+	protected void keySubstract() {
+		btnEliminar.doClick();
+	}
+	
+	@Override
+	protected void keyMultiply() {
+		btnEditar.doClick();
+	}
+	
+	@Override
+	protected void keyF1() {
+		btnPagar.doClick();
+	}
 
 	public List<CuotaDto> getCuotas() {
 		return cuotas;

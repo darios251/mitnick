@@ -550,7 +550,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 	}
 	
 	@Override
-	protected void keyMostrarAnterior() {
+	protected void keyEscape() {
 		btnVolver.doClick();
 	}
 
