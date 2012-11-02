@@ -593,6 +593,21 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	public void setDefaultFocusField() {
 		this.defaultFocusField = txtApellido;
 	}
+	
+	@Override
+	protected void keyAdd() {
+		btnAceptar.doClick();
+	}
+	
+	@Override
+	protected void keyPageDown() {
+		btnAceptar.doClick();
+	}
+	
+	@Override
+	protected void keyEscape() {
+		btnCancelar.doClick();
+	}
 
 	public BasePanel<? extends BaseController> getPanelRetorno() {
 		return panelRetorno;

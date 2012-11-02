@@ -103,7 +103,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 	}
 	
 	@Override
-	protected void keyAgregar() {
+	protected void keyAdd() {
 		agregarProducto();
 	}
 
@@ -227,14 +227,14 @@ public class VentaPanel extends BasePanel<VentaController> {
 
 			btnContinuar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					keyContinuar();
+					keyPageDown();
 				}
 			});
 		}
 		return btnContinuar;
 	}
 
-	protected void keyContinuar() {
+	protected void keyPageDown() {
 		try {
 			controller.mostrarClienteVenta();
 		} catch (PresentationException ex) {
@@ -263,7 +263,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 	}
 	
 	@Override
-	protected void keyQuitar() {
+	protected void keySubstract() {
 		quitarProducto();
 	}
 
@@ -300,7 +300,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 	}
 	
 	@Override
-	protected void keyBuscar() {
+	protected void keyF3() {
 		buscarProducto();
 	}
 

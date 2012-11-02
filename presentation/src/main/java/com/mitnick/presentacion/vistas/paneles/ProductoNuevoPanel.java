@@ -383,13 +383,22 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					limpiarCamposPantalla();
-					controller.mostrarProductosPanel();
+					volverPanelAnterior();
 				}
 			});
 			btnCancelar.setBounds(618, 56, 60, 60);
 		}
 		return btnCancelar;
+	}
+
+	protected void volverPanelAnterior() {
+		limpiarCamposPantalla();
+		controller.mostrarProductosPanel();
+	}
+	
+	@Override
+	protected void keyEscape() {
+		volverPanelAnterior();
 	}
 
 	public JTextField getTxtCodigo() {

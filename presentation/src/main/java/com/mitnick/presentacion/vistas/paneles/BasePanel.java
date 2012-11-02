@@ -195,53 +195,68 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 			if(!objectIds.contains(identityHashCode)) {
 				objectIds.add(identityHashCode);
 				switch (e.getKeyCode()) {
-				case KeyEvent.VK_DELETE: 
-				case KeyEvent.VK_SUBTRACT:
-					//txtCodigo.setText(txtCodigo.getText().replaceAll("\\-", ""));
-					keyQuitar();				
-					break;
-				case KeyEvent.VK_ADD:
-					//txtCodigo.setText(txtCodigo.getText().replaceAll("\\+", ""));
-					keyAgregar();
-					break;
-				case KeyEvent.VK_F3:
-					keyBuscar();
-					break;
-				case KeyEvent.VK_ESCAPE:
-					keyMostrarAnterior();
-					break;
-				case KeyEvent.VK_PAGE_DOWN:
-					keyContinuar();
-					break;
-				default:
-					break;
+					case KeyEvent.VK_SUBTRACT: keySubstract(); break;
+					case KeyEvent.VK_MULTIPLY: keyMultiply(); break;
+					case KeyEvent.VK_ADD: keyAdd();	break;
+					case KeyEvent.VK_F1: keyF1(); break;
+					case KeyEvent.VK_F2: keyF2(); break;
+					case KeyEvent.VK_F3: keyF3(); break;
+					case KeyEvent.VK_F4: keyF4(); break;
+					case KeyEvent.VK_F5: keyF5(); break;
+					case KeyEvent.VK_F6: keyF6(); break;
+					case KeyEvent.VK_F7: keyF7(); break;
+					case KeyEvent.VK_F8: keyF8(); break;
+					case KeyEvent.VK_F9: keyF9(); break;
+					case KeyEvent.VK_F10: keyF10();	break;
+					case KeyEvent.VK_F11: keyF11(); break;
+					case KeyEvent.VK_F12: keyF12();	break;
+					case KeyEvent.VK_ESCAPE: keyEscape(); break;
+					case KeyEvent.VK_PAGE_DOWN:	keyPageDown(); break;
+					case KeyEvent.VK_PAGE_UP: keyPageUp(); break;
+					case KeyEvent.VK_HOME: keyHome(); break;
+					case KeyEvent.VK_END: keyEnd();	break;
+					case KeyEvent.VK_INSERT: keyInsert(); break;
+					case KeyEvent.VK_DELETE: keySupr(); break;
+					default: break;
 				}
 			}
 		}
 		return false;
 	}
 	
-	protected void keyContinuar() {
+	protected void keyPageDown() {
 		if(defaultButtonAction != null)
 			defaultButtonAction.doClick();
 	}
 	
-	protected void keyMostrarAnterior() {
+	protected void keyPageUp() {}
+	protected void keyHome() {}
+	protected void keyEnd() {}	
+	protected void keyInsert() {}	
+	protected void keySupr() {
+		keySubstract();
+	}
+	
+	protected void keyEscape() {
 		if(controller != null)
 			controller.mostrarUltimoPanelMostrado();
 	}
 	
-	protected void keyAgregar() {
-	
-	}
-	
-	protected void keyQuitar() {
-		
-	}
-	
-	protected void keyBuscar() {
-		
-	}
+	protected void keyAdd() {}	
+	protected void keyMultiply() {}	
+	protected void keySubstract() {}	
+	protected void keyF1() {}	
+	protected void keyF2() {}	
+	protected void keyF3() {}	
+	protected void keyF4() {}	
+	protected void keyF5() {}	
+	protected void keyF6() {}	
+	protected void keyF7() {}	
+	protected void keyF8() {}	
+	protected void keyF9() {}	
+	protected void keyF10() {}	
+	protected void keyF11() {}	
+	protected void keyF12() {}
 	
 	protected abstract void limpiarCamposPantalla();
 	
