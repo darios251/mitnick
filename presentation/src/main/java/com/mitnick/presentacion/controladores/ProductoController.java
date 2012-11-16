@@ -12,7 +12,9 @@ import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.anotaciones.AuthorizationRequired;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoNuevoDto;
@@ -96,6 +98,7 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void guardarProducto(ProductoNuevoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
 			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor, boolean confirmado) {
 		if(Validator.isNull(producto))

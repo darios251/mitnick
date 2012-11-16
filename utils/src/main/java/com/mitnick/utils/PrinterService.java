@@ -84,7 +84,7 @@ public class PrinterService {
 			connect();
 			
 			output.println(TICKET_TAG);
-			checkErrors();
+			checkStatus();
 			output.println(BLANK_LINE);
 			
 			getInfoTicket(venta, true);
@@ -115,11 +115,11 @@ public class PrinterService {
 				output.println(FIN_ITEM_TAG);
 			}
 			
-			checkErrors();
+			checkStatus();
 			
 			output.println(SUBTOTAL);
 			
-			checkErrors();
+			checkStatus();
 			
 			if(venta.getAjusteRedondeo().compareTo(BigDecimal.ZERO) < 0) {
 				output.println(DESCUENTO);
@@ -132,7 +132,7 @@ public class PrinterService {
 				output.println(venta.getAjusteRedondeo().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
 			}
 			
-			checkErrors();
+			checkStatus();
 			
 			for(PagoDto pago : venta.getPagos()) {
 				output.println(PAYMENT);
@@ -145,7 +145,7 @@ public class PrinterService {
 				output.println(FIN_PAGO);
 			}
 			
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
 			
@@ -157,11 +157,11 @@ public class PrinterService {
 			output.println("que se presente");
 			output.println("[FIN-COLA-TICKET]");
 			
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
 			
-			checkErrors();
+			checkStatus();
 			
 		    String line = "";
 		    
@@ -195,7 +195,7 @@ public class PrinterService {
 		try {
 			connect();
 			output.println(TICKET_FACTURA_TAG);
-			checkErrors();
+			checkStatus();
 			
 			output.println(DATOS_COMPRADOR);
 			
@@ -222,11 +222,11 @@ public class PrinterService {
 			output.println("............");
 			output.println(FIN_DATOS_COMPRADOR);
 			
-			checkErrors();
+			checkStatus();
 			
 			getInfoTicketFactura(venta, true);
 			
-			checkErrors();
+			checkStatus();
 			
 			for(ProductoVentaDto producto : venta.getProductos()) {
 				output.println(ITEM_TAG);
@@ -254,11 +254,11 @@ public class PrinterService {
 				output.println(FIN_ITEM_TAG);
 			}
 			
-			checkErrors();
+			checkStatus();
 			
 			output.println(SUBTOTAL);
 			
-			checkErrors();
+			checkStatus();
 			
 			if(venta.getAjusteRedondeo().compareTo(BigDecimal.ZERO) < 0) {
 				output.println(DESCUENTO);
@@ -271,7 +271,7 @@ public class PrinterService {
 				output.println(venta.getAjusteRedondeo().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
 			}
 			
-			checkErrors();
+			checkStatus();
 			
 			for(PagoDto pago : venta.getPagos()) {
 				output.println(PAYMENT);
@@ -284,7 +284,7 @@ public class PrinterService {
 				output.println(FIN_PAGO);
 			}
 			
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
 			
@@ -296,11 +296,11 @@ public class PrinterService {
 			output.println("que se presente");
 			output.println("[FIN-COLA-TICKET]");
 			
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
 			
-			checkErrors();
+			checkStatus();
 			
 		    String line = "";
 		    
@@ -336,11 +336,11 @@ public class PrinterService {
 			
 			output.println(CIERRE_Z_TAG);
 			
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
 			
-			checkErrors();
+			checkStatus();
 			
 			String line = "";
 			    
@@ -370,10 +370,10 @@ public class PrinterService {
 		try {
 			connect();
 			output.println(CIERRE_X_TAG);
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
-			checkErrors();
+			checkStatus();
 			
 			String line = "";
 			    
@@ -404,7 +404,7 @@ public class PrinterService {
 		try {
 			connect();
 			output.println(INFORME_JORNADA_TAG);
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
 			
@@ -434,9 +434,16 @@ public class PrinterService {
 		return true;
 	}
 	
-	private void checkErrors() throws Exception {
-		if(input.available() > 0)
-			throw new Exception();
+	private void checkStatus() throws Exception {
+		if(input.available() > 0) {
+			@SuppressWarnings("deprecation")
+			String line = input.readLine();
+			
+			if("[OK]".equals(line))
+				return;
+			else if("[ERROR]".equals(line))
+				throw new Exception();
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -469,55 +476,55 @@ public class PrinterService {
 			output.println(CONFIGURAR);
 			output.println(DOMICILIO_COMERCIAL_1);
 			output.println(configuracion.getDomicilioComercial1());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(DOMICILIO_COMERCIAL_2);
 			output.println(configuracion.getDomicilioComercial2());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(DOMICILIO_COMERCIAL_3);
 			output.println(configuracion.getDomicilioComercial3());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(DOMICILIO_FISCAL_1);
 			output.println(configuracion.getDomicilioFiscal1());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(DOMICILIO_FISCAL_2);
 			output.println(configuracion.getDomicilioFiscal2());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(DOMICILIO_FISCAL_3);
 			output.println(configuracion.getDomicilioFiscal3());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(INGRESOS_BRUTOS_1);
 			output.println(configuracion.getIngresosBrutos1());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(INGRESOS_BRUTOS_2);
 			output.println(configuracion.getIngresosBrutos2());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(INGRESOS_BRUTOS_3);
 			output.println(configuracion.getIngresosBrutos3());
-			checkErrors();
+			checkStatus();
 			
 			output.println(CONFIGURAR);
 			output.println(INGRESO_ACTIVIDADES);
 			output.println(configuracion.getFechaInicioActividades());
-			checkErrors();
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
-			checkErrors();
+			checkStatus();
 			
 			String line = "";
 			    
@@ -667,7 +674,7 @@ public class PrinterService {
 			connect(useCurrentConnection);
 			
 			output.println(CANCELAR_TICKET);
-			checkErrors();
+			checkStatus();
 			
 			String line = input.readLine();
 			
