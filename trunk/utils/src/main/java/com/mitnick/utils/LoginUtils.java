@@ -28,7 +28,7 @@ public class LoginUtils {
 		Authentication auth = authenticationProvider.authenticate(token);
 		if (null != auth) {
 			SecurityContextHolder.getContext().setAuthentication(auth);
-
+			
 			defaultAuthenticationEventPublisher.publishAuthenticationSuccess(auth);
 			return auth;
 		}

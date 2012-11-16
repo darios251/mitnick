@@ -3,6 +3,7 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -375,6 +376,12 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	
 	@Override
 	protected void keyAdd() {
+		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		
+		if(focusOwner instanceof JTextField) {
+			JTextField textField = (JTextField) focusOwner;
+			textField.setText(textField.getText().replaceAll("\\+", ""));
+		}
 		btnNuevo.doClick();
 	}
 	
@@ -386,6 +393,13 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	
 	@Override
 	protected void keySubstract() {
+		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		
+		if(focusOwner instanceof JTextField) {
+			JTextField textField = (JTextField) focusOwner;
+			textField.setText(textField.getText().replaceAll("\\-", ""));
+		}
+		
 		btnEliminar.doClick();
 	}
 	
