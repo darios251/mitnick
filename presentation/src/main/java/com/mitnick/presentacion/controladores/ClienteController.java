@@ -20,6 +20,7 @@ import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.anotaciones.AuthorizationRequired;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -148,8 +149,7 @@ public class ClienteController extends BaseController {
 		cuentaCorrientePanel.actualizarPantalla();
 	}
 	
-	
-	
+	@AuthorizationRequired
 	public void guardarCliente(ClienteDto cliente, String apellido, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
 		if(Validator.isNull(cliente))
@@ -189,6 +189,7 @@ public class ClienteController extends BaseController {
 		mostrarClienteNuevoPanel();
 	}
 
+	@AuthorizationRequired
 	public void editarCliente() {
 		ClienteDto clienteDto = null;
 		try {
@@ -213,6 +214,7 @@ public class ClienteController extends BaseController {
 		}
 	}
 
+	@AuthorizationRequired
 	public void eliminarCliente() {
 		ClienteDto clienteDto = null;
 		try {
