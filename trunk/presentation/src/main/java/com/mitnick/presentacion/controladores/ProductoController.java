@@ -126,6 +126,7 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired
 	public void eliminarProducto() {
 		ProductoDto productoDto = null;
 		try {
@@ -154,6 +155,7 @@ public class ProductoController extends BaseController {
 		mostrarProductoNuevoPanel();
 	}
 	
+	@AuthorizationRequired
 	public void editarProducto() {
 		ProductoDto productoDto = null;
 		try {
