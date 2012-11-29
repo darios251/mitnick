@@ -406,11 +406,11 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarCliente");
 	}
 	
-	public void setTipoResponsable(boolean consumidorFinal) {
-		if(consumidorFinal)
-			VentaManager.getVentaActual().setTipoResponsabilidad(MitnickConstants.CONSUMIDOR_FINAL);
-		else
+	public void setTipoResponsable(boolean responsableInscripto) {
+		if(responsableInscripto)
 			VentaManager.getVentaActual().setTipoResponsabilidad(MitnickConstants.IVA_RESPONSABLE_INSCRIPTO);
+		else
+			VentaManager.getVentaActual().setTipoResponsabilidad(MitnickConstants.CONSUMIDOR_FINAL);
 	}
 	
 	public VentaView getVentaView() {
