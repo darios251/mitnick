@@ -215,7 +215,7 @@ public class PrinterService {
 			output.println(NUMERO_DOCUMENTO_COMPRADOR);
 			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? cliente.getDocumento() : cliente.getCuit().replaceAll("-", ""));
 			output.println(TIPO_IVA_COMPRADOR);
-			output.println("I"); //TODO: ARREGLAR ESTO
+			output.println(venta.getTipoResponsabilidad() == MitnickConstants.IVA_RESPONSABLE_INSCRIPTO ? "I" : "F"); // es o responsable inscripto o consumidor final
 			output.println(LINEA_REMITOS_ASOCIADOS);
 			output.println("............");
 			output.println(LINEA_REMITOS_ASOCIADOS);

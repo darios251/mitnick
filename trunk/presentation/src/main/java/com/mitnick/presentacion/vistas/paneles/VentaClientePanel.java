@@ -51,7 +51,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	private JLabel lblApellido;
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
-	private JCheckBox chkConsumidorFinal;
+	private JCheckBox chkResponsableInscripto;
 	
 	@Autowired(required = true)
 	public VentaClientePanel(@Qualifier("ventaController") VentaController ventaController) {
@@ -282,13 +282,13 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	}
 
 	public JCheckBox getChkConsumidorFinal() {
-		if (chkConsumidorFinal == null) {
-			chkConsumidorFinal = new JCheckBox(PropertiesManager.getProperty("ventaClientePanel.etiqueta.consumidorFinal"));
-			chkConsumidorFinal.setBounds(25, 28, 135, 23);
-			chkConsumidorFinal.addActionListener(new ActionListener() {
+		if (chkResponsableInscripto == null) {
+			chkResponsableInscripto = new JCheckBox(PropertiesManager.getProperty("ventaClientePanel.etiqueta.responsableInscripto"));
+			chkResponsableInscripto.setBounds(25, 28, 135, 23);
+			chkResponsableInscripto.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
-						controller.setTipoResponsable(chkConsumidorFinal.isSelected());
+						controller.setTipoResponsable(chkResponsableInscripto.isSelected());
 					}
 					catch(PresentationException ex) {
 						mostrarMensaje(ex);
@@ -296,12 +296,12 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 				}
 			});
 		}
-		return chkConsumidorFinal;
+		return chkResponsableInscripto;
 	}
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{chkConsumidorFinal, txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
+				new Component[]{chkResponsableInscripto, txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
 	}
 	
 	protected void deshabilitarComponentes() {
