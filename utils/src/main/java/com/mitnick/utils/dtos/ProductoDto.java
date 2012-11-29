@@ -1,6 +1,7 @@
 package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class ProductoDto extends BaseDto {
 
@@ -134,6 +135,10 @@ public class ProductoDto extends BaseDto {
 	
 	public ProveedorDto getProveedor() {
 		return proveedor;
+	}
+	
+	public BigDecimal getPrecioVentaConIva() {
+		return precioVenta.add(iva);
 	}
 
 	@Override

@@ -107,7 +107,7 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		case 1:
 			return fila.getProducto().getDescripcion();
 		case 2:
-			return fila.getProducto().getPrecioVenta().setScale (2, BigDecimal.ROUND_HALF_UP);
+			return fila.getProducto().getPrecioVentaConIva().setScale (2, BigDecimal.ROUND_HALF_UP);
 		case 3:
 			return fila.getCantidad();
 		case 4:

@@ -108,7 +108,7 @@ public class ProductoTableModel extends AbstractTableModel implements TableModel
 			case 3: 
 				return fila.getMarca();
 			case 4:
-				return fila.getPrecioVenta(); 
+				return fila.getPrecioVentaConIva().setScale (2, BigDecimal.ROUND_HALF_UP); 
 			case 5: 
 				return fila.getStock();			
 		}

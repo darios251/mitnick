@@ -132,7 +132,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		} catch (Exception e) {
 		}
 		
-		controller.cleanFields(cliente);
+		controller.cleanFields();
 	}
 
 	@Override

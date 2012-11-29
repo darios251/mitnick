@@ -139,6 +139,7 @@ public class ClienteController extends BaseController {
 		clientePanel.setVisible(false);
 		clienteNuevoPanel.setVisible(true);
 		clienteNuevoPanel.actualizarPantalla();
+		cleanFields();
 	}
 	
 	public void mostrarCuentaCorrientePanel() {
