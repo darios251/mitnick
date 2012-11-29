@@ -50,14 +50,14 @@ public abstract class BaseController {
 	}
 	
 	protected void validateDto(Object dto) throws PresentationException {
-		cleanFields(dto);
+		cleanFields();
 		Set<ConstraintViolation<Object>> constraintViolations = validateDto(dto, null);
 		if(com.mitnick.utils.Validator.isNotEmptyOrNull(constraintViolations))
 			throw new PresentationException(constraintViolations);
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void cleanFields(Object dto) {
+	public void cleanFields() {
 		if(ultimoPanelMostrado != null) {
 			Field[] fields = ultimoPanelMostrado.getClass().getDeclaredFields();
 			

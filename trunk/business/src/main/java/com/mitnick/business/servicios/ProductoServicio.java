@@ -99,6 +99,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 					throw new BusinessException("producto.edit.max.cantidad");
 			}
 			
+			// se calcula el precio del producto sumandole el iva
+			BigDecimal ivaProducto = VentaHelper.calcularImpuesto(producto.getPrecioVenta());
+			
+			producto.setPrecioVenta(producto.getPrecioVenta().subtract(ivaProducto));
+			
 			if (stockOriginal != producto.getStock()){
 				Movimiento movimiento = new Movimiento();
 				movimiento.setStockAlaFecha(stockOriginal);
