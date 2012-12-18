@@ -95,7 +95,6 @@
 			<![CDATA[Select * From cliente]]>
 		</queryString>
 		<field name="nombre" class="java.lang.String"/>
-		<field name="apellido" class="java.lang.String"/>
 		<field name="documento" class="java.lang.String"/>
 		<field name="email" class="java.lang.String"/>
 		<group name="documento">
@@ -106,7 +105,6 @@
 		<![CDATA[Select * from cliente]]>
 	</queryString>
 	<field name="id" class="java.lang.Long"/>
-	<field name="apellido" class="java.lang.String"/>
 	<field name="cuit" class="java.lang.String"/>
 	<field name="documento" class="java.lang.String"/>
 	<field name="eliminado" class="java.lang.Boolean"/>
@@ -166,24 +164,6 @@
 								<reportElement uuid="89e09a44-6caa-4b84-a8b3-d8c6dbe5b317" x="10" y="0" width="88" height="20"/>
 								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column uuid="1b55870a-558f-44ae-aafe-9b578ffe9d69" width="126">
-						<jr:columnHeader style="table 3_CH" height="32" rowSpan="1">
-							<staticText>
-								<reportElement uuid="103e311d-c464-433c-83cb-836ceb6ac903" x="0" y="0" width="126" height="32"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="12" isBold="true"/>
-								</textElement>
-								<text><![CDATA[Apellido]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="3a4981af-583e-4abb-aecc-f2431658421d" x="10" y="0" width="116" height="20"/>
-								<textElement verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

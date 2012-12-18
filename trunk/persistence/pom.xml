@@ -203,5 +203,10 @@
 			<artifactId>utils</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+            <groupId>javadbf</groupId>
+            <artifactId>javadbf</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

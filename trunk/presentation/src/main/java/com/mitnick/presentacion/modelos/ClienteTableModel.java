@@ -18,9 +18,8 @@ public class ClienteTableModel extends AbstractTableModel implements TableModel{
 	
 	public ClienteTableModel() {
 		columnNames = new ArrayList<String>();
-		columnNames.add(PropertiesManager.getProperty("clienteTableModel.apellido"));
 		columnNames.add(PropertiesManager.getProperty("clienteTableModel.nombre"));
-		columnNames.add(PropertiesManager.getProperty("clienteTableModel.documento"));
+		columnNames.add(PropertiesManager.getProperty("clienteTableModel.telefono"));
 		data = new ArrayList<ClienteDto>();
 	}
 	
@@ -93,11 +92,9 @@ public class ClienteTableModel extends AbstractTableModel implements TableModel{
 
 		switch(columnIndex) {
 			case 0:
-				return fila.getApellido(); 
+				return fila.getNombre(); 
 			case 1: 
-				return fila.getNombre();
-			case 2: 
-				return fila.getDocumento();			
+				return fila.getTelefono();			
 		}
 		return data.get(-1);
 	}
@@ -108,11 +105,9 @@ public class ClienteTableModel extends AbstractTableModel implements TableModel{
 		
 		switch(columnIndex) {
 			case 0:
-				fila.setApellido((String)aValue); break; 
+				fila.setNombre((String)aValue); break; 
 			case 1: 
-				fila.setNombre((String)aValue); break;
-			case 2: 
-				fila.setDocumento((String)aValue); break;			
+				fila.setTelefono((String)aValue); break;
 						
 		}
 		data.set(rowIndex, fila);

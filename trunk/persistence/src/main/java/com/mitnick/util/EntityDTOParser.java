@@ -150,7 +150,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		else
 			cliente = new Cliente();
 
-		cliente.setApellido(clienteDto.getApellido());
+		cliente.setActividad(clienteDto.getActividad());
 		cliente.setNombre(clienteDto.getNombre());
 		cliente.setCuit(clienteDto.getCuit());
 		cliente.setDocumento(clienteDto.getDocumento());
@@ -179,7 +179,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	private ClienteDto getDtoFromEntity(Cliente cliente) {
 		ClienteDto clienteDto = new ClienteDto();
 		clienteDto.setId(cliente.getId());
-		clienteDto.setApellido(cliente.getApellido());
+		clienteDto.setActividad(cliente.getActividad());
 		clienteDto.setNombre(cliente.getNombre());
 		clienteDto.setCuit(cliente.getCuit().toString());
 		clienteDto.setDocumento(cliente.getDocumento().toString());

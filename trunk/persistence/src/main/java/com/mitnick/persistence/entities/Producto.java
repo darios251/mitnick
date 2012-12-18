@@ -22,10 +22,10 @@ public class Producto extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name = "descripcion", length = 255, nullable = false)
+	@Column(name = "descripcion", length = 255)
 	private String descripcion;
 	
-	@Column(name = "codigo", length = 255, nullable = false)
+	@Column(name = "codigo", length = 255)
 	private String codigo;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -36,22 +36,22 @@ public class Producto extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "tipo_id")
 	private Tipo tipo;
 	
-	@Column(name = "stock", nullable = false)
+	@Column(name = "stock")
 	private int stock;
 	
-	@Column(name = "stockMinimo", nullable = false)
+	@Column(name = "stockMinimo")
 	private int stockMinimo = -1;
 	
-	@Column(name = "stockCompra", nullable = false)
+	@Column(name = "stockCompra")
 	private int stockCompra = -1;
 	
-	@Column(name = "precioVenta", nullable = false)
+	@Column(name = "precioVenta")
 	private BigDecimal precioVenta;
 	
-	@Column(name = "precioCompra", nullable = false)
+	@Column(name = "precioCompra")
 	private BigDecimal precioCompra;
 
-	@Column(name = "iva", nullable = false)
+	@Column(name = "iva")
 	private BigDecimal iva;
 	
 	@Column(name = "eliminado", nullable = false)

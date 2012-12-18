@@ -201,7 +201,7 @@ public class PrinterService {
 			
 			ClienteDto cliente = venta.getCliente();
 			output.println(NOMBRE_COMPRADOR);
-			output.println(cliente.getApellido() + " " + cliente.getNombre());
+			output.println(cliente.getNombre());
 			output.println(NOMBRE_COMPRADOR);
 			output.println("");
 			output.println(DIRECCION_COMPRADOR);

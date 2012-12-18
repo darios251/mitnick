@@ -58,7 +58,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			criteria.add(Restrictions.ilike("documento", documento));
 		}
 		criteria.add(Restrictions.eq("eliminado", false));
-		criteria.addOrder(Order.desc("apellido"));
+		criteria.addOrder(Order.desc("nombre"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
@@ -75,13 +75,9 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		if(!Validator.isBlankOrNull(filtro.getNombre())){
 			criteria.add(Restrictions.ilike("nombre", "%" + filtro.getNombre().trim() + "%"));
 		}
-		
-		if(!Validator.isBlankOrNull(filtro.getApellido())){
-			criteria.add(Restrictions.ilike("apellido", "%" + filtro.getApellido().trim() + "%"));
-		}
 
 		criteria.add(Restrictions.eq("eliminado", false));
-		criteria.addOrder(Order.desc("apellido"));
+		criteria.addOrder(Order.desc("nombre"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
@@ -139,7 +135,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			parameters.put("iibbEmpresa", empresa.getNmIngresosBrutos());
 			parameters.put("fechaInicioActividadEmpresa", "01/12/1988");
 			parameters.put("tipoIva", "Consumidor Final");
-			parameters.put("nombreCliente", cuota.getClienteDto().getApellido() + " " + cuota.getClienteDto().getNombre());
+			parameters.put("nombreCliente",cuota.getClienteDto().getNombre());
 			parameters.put("direccionCliente", cuota.getClienteDto().getDireccion().getDomicilio() + " " + cuota.getClienteDto().getDireccion().getCiudad().getDescripcion());
 			
 			BigDecimal saldoPendiente = getSaldoDeudor();
