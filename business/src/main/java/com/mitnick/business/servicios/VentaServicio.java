@@ -252,12 +252,16 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	public List<CuotaDto> generarCuotas(int cantidadCuotas, BigDecimal total, ClienteDto cliente) {
 		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
 		BigDecimal cantidad = new BigDecimal(cantidadCuotas);
-		BigDecimal valorCuota = total.divide(cantidad, BigDecimal.ROUND_UP);
+		BigDecimal valorCuota = total.divide(cantidad, 0, BigDecimal.ROUND_DOWN);
+
+		BigDecimal paga = valorCuota.multiply(cantidad);
+		
 		Date fecha = new Date();
 		GregorianCalendar calendar = (GregorianCalendar) Calendar.getInstance();
 		
+		CuotaDto cuota = null; 
 		for (int i = 0; i < cantidadCuotas; i++) {
-			CuotaDto cuota = new CuotaDto();
+			cuota = new CuotaDto();
 			cuota.setClienteDto(cliente);
 			cuota.setNroCuota(i + 1);
 			cuota.setTotal(valorCuota);
@@ -269,8 +273,13 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			cuotas.add(cuota);
 		}
 		
+		if (cuota!=null){
+			BigDecimal restante = total.subtract(paga);
+			cuota.setTotal(cuota.getTotal().add(restante));
+		}
+		
 		return cuotas;
-	}
+	}	
 
 	@Transactional
 	public void guardarCuotas(VentaDto venta, List<CuotaDto> cuotas) {
