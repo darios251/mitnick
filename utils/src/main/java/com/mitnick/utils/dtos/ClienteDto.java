@@ -14,7 +14,7 @@ public class ClienteDto extends BaseDto {
 	private String nombre;
 	
 	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
-	private String apellido;
+	private String actividad;
 	
 	@MitnickField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
 	private String documento;
@@ -39,14 +39,6 @@ public class ClienteDto extends BaseDto {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
 	}
 
 	public String getDocumento() {
@@ -95,5 +87,13 @@ public class ClienteDto extends BaseDto {
 
 	public void setDireccion(DireccionDto direccion) {
 		this.direccion = direccion;
+	}
+
+	public String getActividad() {
+		return actividad;
+	}
+
+	public void setActividad(String actividad) {
+		this.actividad = actividad;
 	}
 }

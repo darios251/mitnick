@@ -36,7 +36,6 @@ public class ClientePanel extends BasePanel<ClienteController> {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNumeroDocumento;
-	private JTextField txtApellido;
 	private JButton btnBuscar;
 	private JLabel lblNombre;
 	private JLabel lblNumeroDocumento;
@@ -49,7 +48,6 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	private JTextField txtNombre;
 	private JLabel lblNmeroCtaCte;
 	private JTextField txtNumeroCtaCte;
-	private JLabel lblApellido;
 	private JButton btnEstadoCuenta;
 	private JButton btnCuentaCorriente;
 	private ClienteTableModel model;
@@ -86,13 +84,11 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		add(getScrollPane());
 		
 		add(getLblNumeroDocumento());
-		add(getLblApellido());
 		add(getLblClientes());
 		add(getLblNombre());
 		add(getLblNmeroCtaCte());
 		
 		add(getTxtNumeroDocumento());
-		add(getTxtApellido());
 		add(getTxtNombre());
 		add(getTxtNumeroCtaCte());
 		
@@ -107,13 +103,12 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNumeroCtaCte, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente }));
 	}
 
 	protected void consultarClientes() {
 		try {
 			ConsultaClienteDto filtroDto = new ConsultaClienteDto();
-			filtroDto.setApellido(txtApellido.getText());
 			filtroDto.setDocumento(txtNumeroDocumento.getText());
 			filtroDto.setNombre(txtNombre.getText());
 
@@ -133,15 +128,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		return txtNumeroDocumento;
 	}
 
-	public JTextField getTxtApellido() {
-		if (txtApellido == null) {
-			txtApellido = new JTextField();
-			txtApellido.setColumns(10);
-			txtApellido.setBounds(200, 55, 110, 20);
-		}
-		return txtApellido;
-	}
-
+	
 	public JButton getBtnBuscar() {
 		if (btnBuscar == null) {
 			btnBuscar = new JButton(PropertiesManager.getProperty("clientePanel.button.buscar.texto"));
@@ -165,7 +152,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 
 	public JLabel getLblNombre() {
 		if (lblNombre == null) {
-			lblNombre = new JLabel("Nombre");
+			lblNombre = new JLabel("Razón Social");
 			lblNombre.setBounds(330, 55, 60, 20);
 		}
 		return lblNombre;
@@ -293,14 +280,6 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			txtNumeroCtaCte.setBounds(420, 15, 110, 20);
 		}
 		return txtNumeroCtaCte;
-	}
-
-	public JLabel getLblApellido() {
-		if (lblApellido == null) {
-			lblApellido = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.apellido"));
-			lblApellido.setBounds(125, 55, 70, 20);
-		}
-		return lblApellido;
 	}
 
 	public JButton getBtnEstadoCuenta() {

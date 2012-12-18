@@ -47,8 +47,8 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 
-	private JTextField txtApellido;
-	private JLabel lblErrorTxtApellido;
+	private JTextField txtActividad;
+	private JLabel lblErrorTxtActividad;
 	
 	private JTextField txtNombre;
 	private JLabel lblErrorTxtNombre;
@@ -103,7 +103,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 
 	private JLabel lblNombre;
 
-	private JLabel lblApellido;
+	private JLabel lblActividad;
 
 	/**
 	 * @throws Exception
@@ -140,7 +140,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		setSize(new Dimension(815, 470));
 		setLayout(null);
 
-		add(getLblApellido());
+		add(getLblActividad());
 		add(getLblNombre());
 		add(getLblDocumento());
 		add(getLblCuit());
@@ -152,7 +152,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		add(getLblProvincia());
 		add(getLblCiudad());
 		
-		add(getTxtApellido());
+		add(getTxtActividad());
 		add(getTxtNombre());
 		add(getTxtDocumento());
 		add(getTxtCuit());
@@ -168,7 +168,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		add(getBtnAceptar());
 		add(getBtnCancelar());
 		
-		add(getLblErrorTxtApellido());
+		add(getLblErrorTxtActividad());
 		add(getLblErrorTxtNombre());
 		add(getLblErrorTxtDocumento());
 		add(getLblErrorTxtCuit());
@@ -262,13 +262,13 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		return lblNombre;
 	}
 
-	public JLabel getLblApellido() {
-		if(lblApellido == null) {
-			lblApellido = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.apellido"));
-			lblApellido.setBounds(57, 75, 94, 20);
+	public JLabel getLblActividad() {
+		if(lblActividad == null) {
+			lblActividad = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.actividad"));
+			lblActividad.setBounds(57, 75, 94, 20);
 			
 		}
-		return lblApellido;
+		return lblActividad;
 	}
 
 	public JButton getBtnAceptar() {
@@ -316,21 +316,21 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		return btnCancelar;
 	}
 
-	public JTextField getTxtApellido() {
-		if (txtApellido == null) {
-			txtApellido = new JTextField();
-			txtApellido.setBounds(161, 75, 105, 20);
-			txtApellido.setColumns(10);
+	public JTextField getTxtActividad() {
+		if (txtActividad == null) {
+			txtActividad = new JTextField();
+			txtActividad.setBounds(161, 75, 105, 20);
+			txtActividad.setColumns(10);
 		}
-		return txtApellido;
+		return txtActividad;
 	}
 	
-	public JLabel getLblErrorTxtApellido() {
-		if (lblErrorTxtApellido == null) {
-			lblErrorTxtApellido = new JLabel("");
-			lblErrorTxtApellido.setBounds(57, 97, 300, 14);
+	public JLabel getLblErrorTxtActividad() {
+		if (lblErrorTxtActividad == null) {
+			lblErrorTxtActividad = new JLabel("");
+			lblErrorTxtActividad.setBounds(57, 97, 300, 14);
 		}
-		return lblErrorTxtApellido;
+		return lblErrorTxtActividad;
 	}
 	
 	public JTextField getTxtNombre() {
@@ -527,14 +527,14 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtApellido, txtNombre, txtDocumento,
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtActividad, txtNombre, txtDocumento,
 						txtCuit, txtTelefono, txtEmail, txtFechaNacimiento,	txtDomicilio, txtCodigoPostal, cmbProvincia, cmbCiudad,
 						btnAceptar, btnCancelar}));
 	}
 
 	protected void agregarCliente() {
 		try {
-			controller.guardarCliente(cliente, txtApellido.getText(), txtNombre.getText(), txtDocumento.getText(),
+			controller.guardarCliente(cliente, txtActividad.getText(), txtNombre.getText(), txtDocumento.getText(),
 					txtCuit.getText(), txtTelefono.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
 					txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto) cmbCiudad.getSelectedItem());
 			limpiarCamposPantalla();
@@ -559,13 +559,13 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 
 	@Override
 	public void actualizarPantalla() {
-		if (Validator.isNotNull(txtApellido)) {
-			txtApellido.requestFocus();
+		if (Validator.isNotNull(txtActividad)) {
+			txtActividad.requestFocus();
 		}
 
 		if (Validator.isNotNull(cliente)) {
-			if (Validator.isNotNull(txtApellido) && Validator.isNotBlankOrNull(cliente.getApellido()))
-				txtApellido.setText(cliente.getApellido());
+			if (Validator.isNotNull(txtActividad) && Validator.isNotBlankOrNull(cliente.getActividad()))
+				txtActividad.setText(cliente.getActividad());
 			if (Validator.isNotNull(txtNombre) && Validator.isNotBlankOrNull(cliente.getNombre()))
 				txtNombre.setText(cliente.getNombre());
 			if (Validator.isNotNull(txtDocumento) && Validator.isNotBlankOrNull(cliente.getDocumento()))
@@ -591,7 +591,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtApellido;
+		this.defaultFocusField = txtActividad;
 	}
 	
 	@Override

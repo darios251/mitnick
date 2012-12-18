@@ -28,5 +28,25 @@ public class CiudadDao extends GenericDaoHibernate<Ciudad, Long>  implements ICi
 		criteria.addOrder(Order.desc("descripcion"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Ciudad> getByDescripcion(String descripcion) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Ciudad.class);
+
+		criteria.add(Restrictions.eq("descripcion", descripcion));
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Ciudad> getByPostal(String postal) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Ciudad.class);
+
+		criteria.add(Restrictions.eq("codigoPostal", postal));
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
 
 }

@@ -36,7 +36,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNumeroDocumento;
-	private JTextField txtApellido;
 	private JButton btnBuscar;
 	private JButton btnVolver;
 	private JButton btnContinuar;
@@ -48,7 +47,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	private JTextField txtNombre;
 	private JLabel lblNmeroCtaCte;
 	private JTextField txtNumeroCtaCte;
-	private JLabel lblApellido;
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
 	private JCheckBox chkResponsableInscripto;
@@ -85,11 +83,9 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		add(getScrollPane());
 		
 		add(getLblNumeroDocumento());
-		add(getLblApellido());
 		add(getLblNombre());
 		add(getLblNmeroCtaCte());
 		
-		add(getTxtApellido());
 		add(getTxtNumeroDocumento());
 		add(getTxtNombre());
 		add(getTxtNumeroCtaCte());
@@ -111,15 +107,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			txtNumeroDocumento.setBounds(269, 15, 110, 20);
 		}
 		return txtNumeroDocumento;
-	}
-
-	public JTextField getTxtApellido() {
-		if (txtApellido == null) {
-			txtApellido = new JTextField();
-			txtApellido.setColumns(10);
-			txtApellido.setBounds(269, 55, 110, 20);
-		}
-		return txtApellido;
 	}
 
 	public JButton getBtnBuscar() {
@@ -242,14 +229,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		return txtNumeroCtaCte;
 	}
 
-	public JLabel getLblApellido() {
-		if (lblApellido == null) {
-			lblApellido = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.apellido"));
-			lblApellido.setBounds(174, 55, 85, 20);
-		}
-		return lblApellido;
-	}
-
 	public JButton getBtnVolver() {
 		if(btnVolver == null) {
 			btnVolver = new JButton("Volver");
@@ -301,13 +280,12 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{chkResponsableInscripto, txtNumeroDocumento, txtNumeroCtaCte, txtApellido, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
+				new Component[]{chkResponsableInscripto, txtNumeroDocumento, txtNumeroCtaCte, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
 	}
 	
 	protected void deshabilitarComponentes() {
 		boolean enabled = !getChkConsumidorFinal().isSelected();
 				
-		getTxtApellido().setEnabled(enabled);
 		getTxtNombre().setEnabled(enabled);
 		getTxtNumeroCtaCte().setEnabled(enabled);
 		getTxtNumeroDocumento().setEnabled(enabled);
@@ -319,7 +297,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	protected void consultarClientes() {
 		try {
 			ConsultaClienteDto filtroDto = new ConsultaClienteDto();
-			filtroDto.setApellido(getTxtApellido().getText());
 			filtroDto.setDocumento(getTxtNumeroDocumento().getText());
 			filtroDto.setNombre(getTxtNombre().getText());
 			

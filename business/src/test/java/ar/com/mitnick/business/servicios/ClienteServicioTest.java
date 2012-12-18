@@ -15,7 +15,7 @@ public class ClienteServicioTest {
 //    public void nombreIsNull() {
 //        Cliente cliente = new Cliente();
 //        //cliente.setNombre("Lucas");
-//        cliente.setApellido("García");
+//        cliente.setActividad("Ingeniero");
 //        cliente.setDocumento("31115019");
 //        cliente.setCuit("20-31115019-8");
 //        cliente.setTelefono("12321321321");

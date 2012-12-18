@@ -72,7 +72,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 	private JButton btnQuitar;
 
 	private JPanel pnlCliente;
-	private JLabel lblApellidoNombre;
+	private JLabel lblNombre;
 	private JLabel lblDni;
 
 	private JLabel lblConsumidorFinal;
@@ -459,7 +459,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 		if (Validator.isNotNull(VentaManager.getVentaActual().getCliente())) {
 			ClienteDto cliente = VentaManager.getVentaActual().getCliente();
 
-			getLblApellidoNombre().setText(cliente.getApellido() + ", " + cliente.getNombre());
+			getLblNombre().setText(cliente.getNombre());
 			getLblDni().setText(cliente.getDocumento());
 
 			getPnlCliente().setVisible(true);
@@ -512,19 +512,19 @@ public class PagoPanel extends BasePanel<VentaController> {
 			pnlCliente = new JPanel();
 			pnlCliente.setLayout(null);
 			pnlCliente.setBounds(188, 23, 335, 37);
-			pnlCliente.add(getLblApellidoNombre());
+			pnlCliente.add(getLblNombre());
 			pnlCliente.add(getLblDni());
 		}
 		return pnlCliente;
 	}
 
-	public JLabel getLblApellidoNombre() {
-		if (lblApellidoNombre == null) {
-			lblApellidoNombre = new JLabel("<<Apellido, Nombre>>");
-			lblApellidoNombre.setBounds(10, 11, 182, 14);
-			getPnlCliente().add(lblApellidoNombre);
+	public JLabel getLblNombre() {
+		if (lblNombre == null) {
+			lblNombre = new JLabel("<<Nombre>>");
+			lblNombre.setBounds(10, 11, 182, 14);
+			getPnlCliente().add(lblNombre);
 		}
-		return lblApellidoNombre;
+		return lblNombre;
 	}
 
 	public JLabel getLblDni() {

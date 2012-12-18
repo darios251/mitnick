@@ -73,7 +73,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			parameters.put("iibbEmpresa", empresa.getNmIngresosBrutos());
 			parameters.put("fechaInicioActividadEmpresa", "01/12/1988");
 			parameters.put("tipoIva", "Consumidor Final");
-			parameters.put("nombreCliente", venta.getCliente().getApellido() + " " + venta.getCliente().getNombre());
+			parameters.put("nombreCliente", venta.getCliente().getNombre());
 			parameters.put("direccionCliente", venta.getCliente().getDireccion().getDomicilio() + " " + venta.getCliente().getDireccion().getCiudad().getDescripcion());
 			parameters.put("cuitCliente", venta.getCliente().getCuit());
 			parameters.put("ventaId", venta.getId());

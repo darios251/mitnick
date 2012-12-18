@@ -7,7 +7,7 @@
 		
 		<row>
 			<value>1</value>
-			<value>284e99e7a331f0b36666c383512608fcf0109d5bcd19b1e514a7e16f7fa99072</value>
+			<value>6b735b179f4b58dfef0d5bfe482ab6eca1465142dcb7cf5731c3eef3c93fa8c0</value>
 			<value>newSaltValue</value>
 		</row>
 	</table>
@@ -49,111 +49,116 @@
 	  </row>
 	  <row>
 	  	<value>2</value>
-	  	<value>Catamarca</value>
+	  	<value>Capital Federal</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>3</value>
-	  	<value>Chaco</value>
+	  	<value>Catamarca</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>4</value>
-	  	<value>Chubut</value>
+	  	<value>Chaco</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>5</value>
-	  	<value>Corrientes</value>
+	  	<value>Chubut</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>6</value>
-	  	<value>Córdoba</value>
+	  	<value>Corrientes</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>7</value>
-	  	<value>Entre Ríos</value>
+	  	<value>Córdoba</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>8</value>
-	  	<value>Formosa</value>
+	  	<value>Entre Ríos</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>9</value>
-	  	<value>Jujuy</value>
+	  	<value>Formosa</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>10</value>
-	  	<value>La Pampa</value>
+	  	<value>Jujuy</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>11</value>
-	  	<value>La Rioja</value>
+	  	<value>La Pampa</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>12</value>
-	  	<value>Mendoza</value>
+	  	<value>La Rioja</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>13</value>
-	  	<value>Misiones</value>
+	  	<value>Mendoza</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>14</value>
-	  	<value>Neuquén</value>
+	  	<value>Misiones</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>15</value>
-	  	<value>Río Negro</value>
+	  	<value>Neuquén</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>16</value>
-	  	<value>Salta</value>
+	  	<value>Río Negro</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>17</value>
-	  	<value>San Juan</value>
+	  	<value>Salta</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>18</value>
-	  	<value>San Luis</value>
+	  	<value>San Juan</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>19</value>
-	  	<value>Santa Cruz</value>
+	  	<value>San Luis</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>20</value>
-	  	<value>Santa Fe</value>
+	  	<value>Santa Cruz</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>21</value>
-	  	<value>Santiago del Estero</value>
+	  	<value>Santa Fe</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>22</value>
-	  	<value>Tierra del Fuego</value>
+	  	<value>Santiago del Estero</value>
 	  	<value>1</value>
 	  </row>
 	  <row>
 	  	<value>23</value>
+	  	<value>Tierra del Fuego</value>
+	  	<value>1</value>
+	  </row>
+	  <row>
+	  	<value>24</value>
 	  	<value>Tucumán</value>
 	  	<value>1</value>
 	  </row>
@@ -168,25 +173,25 @@
 	  	<value>1</value>
 	  	<value>Santa Fe</value>
 	  	<value>3000</value>
-	  	<value>20</value>
+	  	<value>21</value>
 	  </row>
 	  <row>
 	  	<value>2</value>
 	  	<value>Rafaela</value>
 	  	<value>2300</value>
-	  	<value>20</value>
+	  	<value>21</value>
 	  </row>
 	  <row>
 	  	<value>3</value>
 	  	<value>Rosario</value>
 	  	<value>2000</value>
-	  	<value>20</value>
+	  	<value>21</value>
 	  </row>
 	  <row>
 	  	<value>4</value>
 	  	<value>San Justo</value>
 	  	<value>3040</value>
-	  	<value>20</value>
+	  	<value>21</value>
 	  </row>
 	  <row>
 	  	<value>5</value>
@@ -198,7 +203,7 @@
 	  	<value>6</value>
 	  	<value>Santo Tomé</value>
 	  	<value>3016</value>
-	  	<value>20</value>
+	  	<value>21</value>
 	  </row>
 	</table>
 	<table name="Direccion">
@@ -206,27 +211,8 @@
 		<column>domicilio</column>
 		<column>codigopostal</column>
 		<column>ciudad_id</column>
-		
 		<row>
-			<value>1</value>
-			<value>1° de Mayo 2163 - 6to C</value>
-			<value>3000</value>
-			<value>1</value>
-		</row>
-		<row>
-			<value>2</value>
-			<value>General López 2546 - 2do D</value>
-			<value>3000</value>
-			<value>1</value>
-		</row>
-		<row>
-			<value>3</value>
-			<value>25° de Mayo 2737 - 6to B</value>
-			<value>3000</value>
-			<value>1</value>
-		</row>
-		<row>
-		    <value>4</value>
+		    <value>1</value>
 		    <value>Av. 7 de Marzo 1808</value>
 		    <value>3016</value>
 		    <value>6</value>
@@ -256,54 +242,10 @@
 			<value>Responsable Inscripto</value>
 			<value>0001</value>
 			<value>00000001</value>
-			<value>4</value>
+			<value>1</value>
 	    </row>
 	</table>
-	<table name="Cliente">
-	  <column>id</column>
-	  <column>nombre</column>
-	  <column>apellido</column>
-	  <column>documento</column>
-	  <column>cuit</column>
-	  <column>telefono</column>
-	  <column>email</column>
-	  <column>eliminado</column>
-	  <column>direccion_id</column>
-	  
-	  <row>
-	    <value>1</value>
-	    <value>Agustina</value>
-	    <value>Berraz</value>
-	    <value>28764155</value>
-	    <value>27-28764155-4</value>
-	    <value>154071797</value>
-	    <value>agustinabm@gmail.com</value>
-	    <value>false</value>	
-	    <value>1</value>    
-	  </row>
-	  <row>
-	    <value>2</value>
-	    <value>Lucas</value>
-	    <value>García</value>
-	    <value>31115019</value>
-	    <value>20-31115019-8</value>
-	    <value>154469075</value>
-	    <value>lukasg04@gmail.com</value>
-	    <value>false</value>	
-	    <value>2</value>    
-	  </row>
-	  <row>
-	    <value>3</value>
-	    <value>Manuel</value>
-	    <value>Pretto</value>
-	    <value>314332799</value>
-	    <value>20-31432799-4</value>
-	    <value>154444556</value>
-	    <value>manuelpretto@gmail.com</value>
-	    <value>false</value>	    
-	    <value>3</value>
-	  </row>
-	</table>
+	
 	<table name="Tipo">
 	  <column>id</column>
 	  <column>descripcion</column>

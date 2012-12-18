@@ -151,12 +151,12 @@ public class ClienteController extends BaseController {
 	}
 	
 	@AuthorizationRequired
-	public void guardarCliente(ClienteDto cliente, String apellido, String nombre, String documento,
+	public void guardarCliente(ClienteDto cliente, String actividad, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
 		if(Validator.isNull(cliente))
 			cliente = new ClienteDto();
 		
-		cliente.setApellido(apellido);
+		cliente.setActividad(actividad);
 		cliente.setNombre(nombre);
 		cliente.setDocumento(documento);
 		cliente.setCuit(cuit);

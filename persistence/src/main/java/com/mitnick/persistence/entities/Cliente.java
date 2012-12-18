@@ -26,27 +26,21 @@ public class Cliente extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	@Column(name = "nombre", length = 30, nullable = false)
 	private String nombre;
 	
-	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
-	@Column(name = "apellido", length = 30, nullable = false)
-	private String apellido;
-
-	@MitnickField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
-	@Column(name = "documento", length = 10, nullable = false, unique = true)
+	@Column(name = "actividad", length = 30, nullable = false)
+	private String actividad;
+	
+	@Column(name = "documento", length = 10, nullable = true, unique = true)
 	private String documento;
 	
-	@MitnickField(required=true, min=12, max=13, fieldType=FieldType.CUIT)
-	@Column(name = "cuit", length = 13, nullable = false, unique = true)
+	@Column(name = "cuit", length = 13, nullable = true, unique = true)
 	private String cuit;
 
-	@MitnickField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
 	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono;
 	
-	@MitnickField(min=3, max=40, fieldType=FieldType.EMAIL)
 	@Column(name = "email", length = 40, nullable = true)
 	private String email;
 	
@@ -75,14 +69,6 @@ public class Cliente extends BaseObject implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
 	}
 
 	public String getDocumento() {
@@ -141,12 +127,20 @@ public class Cliente extends BaseObject implements Serializable {
 		this.direccion = direccion;
 	}
 
+	public String getActividad() {
+		return actividad;
+	}
+
+	public void setActividad(String actividad) {
+		this.actividad = actividad;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((apellido == null) ? 0 : apellido.hashCode());
+				+ ((actividad == null) ? 0 : actividad.hashCode());
 		result = prime * result + ((cuit == null) ? 0 : cuit.hashCode());
 		result = prime * result
 				+ ((direccion == null) ? 0 : direccion.hashCode());
@@ -175,11 +169,11 @@ public class Cliente extends BaseObject implements Serializable {
 			return false;
 		}
 		Cliente other = (Cliente) obj;
-		if (apellido == null) {
-			if (other.apellido != null) {
+		if (actividad == null) {
+			if (other.actividad != null) {
 				return false;
 			}
-		} else if (!apellido.equals(other.apellido)) {
+		} else if (!actividad.equals(other.actividad)) {
 			return false;
 		}
 		if (cuit == null) {
@@ -246,16 +240,12 @@ public class Cliente extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido="
-				+ apellido + ", documento=" + documento + ", cuit=" + cuit
+		return "Cliente [id=" + id + ", nombre=" + nombre + ", actividad="
+				+ actividad + ", documento=" + documento + ", cuit=" + cuit
 				+ ", telefono=" + telefono + ", email=" + email
 				+ ", eliminado=" + eliminado + ", fechaNacimiento="
 				+ fechaNacimiento + ", direccion=" + direccion + "]";
 	}
 
-	
-
-	
-	
 	
 }
