@@ -19,6 +19,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
+import org.hibernate.validator.constraints.MitnickField;
+import org.hibernate.validator.constraints.MitnickField.FieldType;
 
 @Entity(name = "Cuota")
 public class Cuota extends BaseObject implements Serializable {
@@ -27,7 +29,7 @@ public class Cuota extends BaseObject implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
-
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha")
 	private Date fecha_pagar;

@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.validator.constraints.MitnickField;
+import org.hibernate.validator.constraints.MitnickField.FieldType;
+
 public class CuotaDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Date fecha_pagar;
+	@MitnickField(fieldType=FieldType.DATE)
+	private String fecha_pagar;
 	
 	private BigDecimal total;
 	
@@ -23,11 +27,11 @@ public class CuotaDto extends BaseDto {
 	private BigDecimal faltaPagar;
 	private boolean pagado;
 	
-	public Date getFecha_pagar() {
+	public String getFecha_pagar() {
 		return fecha_pagar;
 	}
 
-	public void setFecha_pagar(Date fecha_pagar) {
+	public void setFecha_pagar(String fecha_pagar) {
 		this.fecha_pagar = fecha_pagar;
 	}
 

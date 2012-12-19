@@ -34,6 +34,8 @@ import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.DateHelper;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.BaseDto;
@@ -155,7 +157,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cliente.setCuit(clienteDto.getCuit());
 		cliente.setDocumento(clienteDto.getDocumento());
 		cliente.setEmail(clienteDto.getEmail());
-		cliente.setFechaNacimiento(clienteDto.getFechaNacimiento());
+		if (Validator.isDate(clienteDto.getFechaNacimiento(), MitnickConstants.DATE_FORMAT, true))
+			cliente.setFechaNacimiento(DateHelper.getFecha(clienteDto.getFechaNacimiento()));
 		cliente.setTelefono(clienteDto.getTelefono());
 		Ciudad ciudad = null;
 		ciudad = (Ciudad) ciudadDao.get(new Long(clienteDto.getDireccion().getCiudad().getId()));
@@ -184,7 +187,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		clienteDto.setCuit(cliente.getCuit().toString());
 		clienteDto.setDocumento(cliente.getDocumento().toString());
 		clienteDto.setEmail(cliente.getEmail());
-		clienteDto.setFechaNacimiento(cliente.getFechaNacimiento());
+		clienteDto.setFechaNacimiento(DateHelper.getFecha(cliente.getFechaNacimiento()));
 		clienteDto.setTelefono(cliente.getTelefono());
 
 		if(Validator.isNotNull(cliente.getDireccion()))
@@ -254,7 +257,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	private CuotaDto getDtoFromEntity(Cuota cuota) {
 		CuotaDto cuotaDto = new CuotaDto();
 		cuotaDto.setId(cuota.getId());
-		cuotaDto.setFecha_pagar(cuota.getFecha_pagar());
+		cuotaDto.setFecha_pagar(DateHelper.getFecha(cuota.getFecha_pagar()));
 		cuotaDto.setNroCuota(cuota.getNroCuota());
 		cuotaDto.setTotal(cuota.getTotal());
 		cuotaDto.setClienteDto(getDtoFromEntity(cuota.getCliente()));
@@ -469,7 +472,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	private Cuota getEntityFromDto(CuotaDto cuotaDto) {
 		Cuota cuota = new Cuota();
 		cuota.setId(cuotaDto.getId());
-		cuota.setFecha_pagar(cuotaDto.getFecha_pagar());
+		if (Validator.isDate(cuotaDto.getFecha_pagar(), MitnickConstants.DATE_FORMAT, true))
+			cuota.setFecha_pagar(DateHelper.getFecha(cuotaDto.getFecha_pagar()));
 		cuota.setNroCuota(cuotaDto.getNroCuota());
 		cuota.setTotal(cuotaDto.getTotal());
 		cuota.setCliente(getEntityFromDto(cuotaDto.getClienteDto()));

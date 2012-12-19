@@ -9,12 +9,14 @@ import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
+import com.mitnick.presentacion.vistas.formatters.FormattedDateField;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -32,7 +34,7 @@ public class NuevaCuotaDialog extends JDialog {
 	private JButton btnCancelar;
 	
 	private JTextField txtMontoCuota;
-	private JTextField txtFecha;
+	private JFormattedTextField txtFecha;
 	private JLabel lblMontoCuota;
 	private JLabel lblFecha;
 	
@@ -93,11 +95,7 @@ public class NuevaCuotaDialog extends JDialog {
 				@Override public void actionPerformed(ActionEvent e) {
 					String monto = getTxtMontoCuota().getText();
 					String fecha = getTxtFecha().getText();
-					try {
-						cuotaDto.setFecha_pagar(new SimpleDateFormat(MitnickConstants.DATE_FORMAT).parse(fecha));
-					} catch (ParseException ex) {
-						throw new PresentationException("Ingrese una fecha correcta: dd/MM/yyyy", "Ingrese una fecha correcta: dd/MM/yyyy");
-					}
+					cuotaDto.setFecha_pagar(fecha);
 					try {
 						cuotaDto.setTotal(new BigDecimal(monto));
 					} catch (Exception ex) {
@@ -158,12 +156,16 @@ public class NuevaCuotaDialog extends JDialog {
 	}
 	public JTextField getTxtFecha() {
 		if (txtFecha == null) {
-			txtFecha = new JTextField();
-			txtFecha.setColumns(10);
-			txtFecha.setBounds(190, 55, 110, 20);
+			try{
+				txtFecha = new FormattedDateField();
+				txtFecha.setColumns(10);
+				txtFecha.setBounds(190, 55, 110, 20);
+			} catch (ParseException e) {}
 		}
 		return txtFecha;
 	}
+	
+	
 	public void setBtnCancelar(JButton btnCancelar) {
 		this.btnCancelar = btnCancelar;
 	}
