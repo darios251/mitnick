@@ -6,7 +6,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +28,7 @@ import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.vistas.formatters.EmailFormatter;
 import com.mitnick.presentacion.vistas.formatters.FormattedDateField;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
@@ -577,7 +577,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			if (Validator.isNotNull(txtEmail) && Validator.isNotBlankOrNull(cliente.getEmail()))
 				txtEmail.setText(cliente.getEmail());
 			if (Validator.isNotNull(txtFechaNacimiento)	&& Validator.isNotNull(cliente.getFechaNacimiento()))
-				txtFechaNacimiento.setText(new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(cliente.getFechaNacimiento()));
+				txtFechaNacimiento.setText(cliente.getFechaNacimiento());
 			if (Validator.isNotNull(txtDomicilio) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotBlankOrNull(cliente.getDireccion().getDomicilio()))
 				txtDomicilio.setText(cliente.getDireccion().getDomicilio());
 			if (Validator.isNotNull(txtCodigoPostal) && Validator.isNotNull(cliente.getDireccion())	&& Validator.isNotBlankOrNull(cliente.getDireccion().getCodigoPostal()))

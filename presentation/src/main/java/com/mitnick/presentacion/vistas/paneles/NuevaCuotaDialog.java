@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -58,7 +57,7 @@ public class NuevaCuotaDialog extends JDialog {
 		
 		String fecha = "";
 		if (cuotaDto.getFaltaPagar()!=null)
-			fecha = new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(cuotaDto.getFecha_pagar());
+			fecha = cuotaDto.getFecha_pagar();
 		
 		String monto = "";
 		if (cuotaDto.getTotal()!=null)
