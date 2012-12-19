@@ -10,6 +10,9 @@ import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
+import com.mitnick.utils.DateHelper;
+import com.mitnick.utils.MitnickConstants;
+
 /**
  *  Provides a class that allows the formatted entry of dates.
  * 
@@ -23,9 +26,7 @@ public class FormattedDateField  extends JFormattedTextField implements ActionLi
     public static final String PROP_TICKING_PROPERTY = "clock is active";
 
     public static final String MASKFORMAT = "##/##/####";
-    public static final String SIMPLEDATEFORMATMASK = "dd/MM/yyyy";
-    private SimpleDateFormat sdf = new SimpleDateFormat(SIMPLEDATEFORMATMASK);
-
+    
     private static final int TIMERINTERVAL = 1000;
     private Timer timer = new Timer(TIMERINTERVAL,this);
     
@@ -83,9 +84,9 @@ public class FormattedDateField  extends JFormattedTextField implements ActionLi
     public FormattedDateField(Date date) throws ParseException
     {
       
-      setValue(sdf.format(date)); 
+      setValue(DateHelper.getFecha(date)); 
       propertySupport = new PropertyChangeSupport(this);
-      setInputVerifier(new DateVerifier(SIMPLEDATEFORMATMASK));
+      setInputVerifier(new DateVerifier(MitnickConstants.DATE_FORMAT));
   
       MaskFormatter mf = new MaskFormatter(MASKFORMAT);
       mf.setValidCharacters("0123456789AP");
@@ -103,7 +104,7 @@ public class FormattedDateField  extends JFormattedTextField implements ActionLi
      */
     public Date getDate() throws ParseException
     {
-      return sdf.parse((String)getValue());
+      return DateHelper.getFecha((String)getValue());
     }
     /**
      * Set the current value
@@ -111,7 +112,7 @@ public class FormattedDateField  extends JFormattedTextField implements ActionLi
      */
     public void setDate(Date date)
     {
-      setValue(sdf.format(date));
+      setValue(DateHelper.getFecha(date));
     }
     /**
      * get the current value as a GregorianCalendar object

@@ -1,8 +1,6 @@
 package com.mitnick.presentacion.modelos;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +107,7 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 		case 0: 
 			return fila.getNroCuota() + "";
 		case 1:
-			return new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(fila.getFecha_pagar());
+			return fila.getFecha_pagar();
 		case 2:
 			return fila.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP);
 		}

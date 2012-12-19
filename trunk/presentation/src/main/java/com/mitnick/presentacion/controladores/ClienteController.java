@@ -1,8 +1,6 @@
 package com.mitnick.presentacion.controladores;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,6 @@ import com.mitnick.presentacion.vistas.paneles.CuentaCorrientePanel;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
-import com.mitnick.utils.DateHelper;
-import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.AuthorizationRequired;
 import com.mitnick.utils.dtos.CiudadDto;

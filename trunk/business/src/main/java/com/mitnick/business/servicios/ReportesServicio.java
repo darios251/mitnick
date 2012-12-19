@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +42,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
@@ -456,8 +456,8 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 	private ReporteVentasResultadoDTO getDTOFecha(List<ReporteVentasResultadoDTO> ingresos, Date fecha){
 		for (ReporteVentasResultadoDTO dto: ingresos){
-			String fechaA = new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(fecha);
-			String fechaB = new SimpleDateFormat(MitnickConstants.DATE_FORMAT).format(dto.getFecha());
+			String fechaA = DateHelper.getFecha(fecha);
+			String fechaB = DateHelper.getFecha(dto.getFecha());
 			if (fechaA.equals(fechaB))
 				return dto;
 		}		
