@@ -28,7 +28,8 @@ public class ClienteDto extends BaseDto {
 	@MitnickField(min=3, max=40, fieldType=FieldType.EMAIL)
 	private String email;
 	
-	private Date fechaNacimiento;
+	@MitnickField(fieldType=FieldType.DATE)
+	private String fechaNacimiento;
 	
 	@Required
 	private DireccionDto direccion;
@@ -73,11 +74,11 @@ public class ClienteDto extends BaseDto {
 		this.email = email;
 	}
 
-	public Date getFechaNacimiento() {
+	public String getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 

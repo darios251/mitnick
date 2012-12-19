@@ -10,9 +10,7 @@ public class DateHelper {
 	
 	protected static Logger logger = Logger.getLogger(DateHelper.class);
 	
-	private static String dateFormat = "dd/MM/yyyy";
-	
-	private static SimpleDateFormat sdf= new SimpleDateFormat(dateFormat);
+	private static SimpleDateFormat sdf= new SimpleDateFormat(MitnickConstants.DATE_FORMAT);
 	
 	public static Date getFecha(String fecha){
 		try {

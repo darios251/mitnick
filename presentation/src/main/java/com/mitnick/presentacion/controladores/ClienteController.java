@@ -18,6 +18,7 @@ import com.mitnick.presentacion.vistas.paneles.CuentaCorrientePanel;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.AuthorizationRequired;
@@ -161,12 +162,7 @@ public class ClienteController extends BaseController {
 		cliente.setDocumento(documento);
 		cliente.setCuit(cuit);
 		cliente.setEmail(email);
-		try {
-			if(Validator.isNotBlankOrNull(fechaNacimiento))
-				cliente.setFechaNacimiento(new SimpleDateFormat(MitnickConstants.DATE_FORMAT).parse(fechaNacimiento));
-		} catch (ParseException e) {
-			throw new PresentationException("error.cliente.nuevo.fechaNacimiento.format");
-		}
+		cliente.setFechaNacimiento(fechaNacimiento);
 		cliente.setTelefono(telefono);
 		if(cliente.getDireccion() == null)
 			cliente.setDireccion(new DireccionDto());

@@ -2,7 +2,6 @@ package com.mitnick.presentacion.modelos;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -110,7 +109,7 @@ public class CuotaTableModel extends AbstractTableModel implements TableModel{
 		
 		switch(columnIndex) {
 			case 0:
-				fila.setFecha_pagar((Date)aValue); break; 
+				fila.setFecha_pagar((String)aValue); break; 
 			case 1: 
 				fila.setNroCuota((int) aValue); break;
 			case 2: 

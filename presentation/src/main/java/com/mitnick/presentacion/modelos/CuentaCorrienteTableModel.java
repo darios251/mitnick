@@ -126,10 +126,7 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 			fila.setNroCuota(Integer.parseInt((String)aValue));
 			break;
 		case 1:
-			try {
-				fila.setFecha_pagar(new SimpleDateFormat(MitnickConstants.DATE_FORMAT).parse((String)aValue));
-			} catch (ParseException e) {
-			}
+			fila.setFecha_pagar((String)aValue);
 			break;
 		case 2: 
 			fila.setTotal(new BigDecimal((String) aValue));

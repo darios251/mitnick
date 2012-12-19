@@ -23,6 +23,7 @@ import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.VentaHelper;
@@ -266,7 +267,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			cuota.setNroCuota(i + 1);
 			cuota.setTotal(valorCuota);
 
-			cuota.setFecha_pagar(fecha);
+			cuota.setFecha_pagar(DateHelper.getFecha(fecha));
 			calendar.setTime(fecha);
 			calendar.add(Calendar.MONTH, 1);
 			fecha = calendar.getTime();
