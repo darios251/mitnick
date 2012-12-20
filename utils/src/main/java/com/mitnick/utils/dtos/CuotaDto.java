@@ -14,7 +14,7 @@ public class CuotaDto extends BaseDto {
 	
 	@MitnickField(fieldType=FieldType.DATE)
 	private String fecha_pagar;
-	
+		
 	private BigDecimal total;
 	
 	private int nroCuota;

@@ -31,7 +31,8 @@ public class FormattedDateField  extends JFormattedTextField implements ActionLi
     private Timer timer = new Timer(TIMERINTERVAL,this);
     
     private boolean ticking = true;
-   /**
+   
+    /**
     * Default constructor, uses current date as value
     * @throws java.text.ParseException
     */ 

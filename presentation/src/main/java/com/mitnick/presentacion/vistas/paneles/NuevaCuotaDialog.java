@@ -12,10 +12,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
-import com.mitnick.presentacion.vistas.formatters.FormattedDateField;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -33,7 +33,11 @@ public class NuevaCuotaDialog extends JDialog {
 	private JButton btnCancelar;
 	
 	private JTextField txtMontoCuota;
+	private JLabel lblErrorTxtMontoCuota;
+
 	private JFormattedTextField txtFecha;
+	private JLabel lblErrorTxtFecha;
+
 	private JLabel lblMontoCuota;
 	private JLabel lblFecha;
 	
@@ -54,6 +58,9 @@ public class NuevaCuotaDialog extends JDialog {
 		getContentPane().add(getLblMontoCuota());
 		getContentPane().add(getBtnAceptar());
 		getContentPane().add(getBtnCancelar());
+		
+		getContentPane().add(getLblErrorTxtFecha());
+		getContentPane().add(getLblErrorTxtMontoCuota());
 		
 		String fecha = "";
 		if (cuotaDto.getFaltaPagar()!=null)
@@ -156,7 +163,7 @@ public class NuevaCuotaDialog extends JDialog {
 	public JTextField getTxtFecha() {
 		if (txtFecha == null) {
 			try{
-				txtFecha = new FormattedDateField();
+				txtFecha =  new JFormattedTextField(new MaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 	
 				txtFecha.setColumns(10);
 				txtFecha.setBounds(190, 55, 110, 20);
 			} catch (ParseException e) {}
@@ -176,6 +183,23 @@ public class NuevaCuotaDialog extends JDialog {
 	public void setCuotaDto(CuotaDto cuotaDto) {
 		this.cuotaDto = cuotaDto;
 	}
+	
+	public JLabel getLblErrorTxtMontoCuota() {
+		if (lblErrorTxtMontoCuota == null) {
+			lblErrorTxtMontoCuota = new JLabel("gfkhgfhg");
+			lblErrorTxtMontoCuota.setBounds(310, 86, 110, 20);
+		}
+		return lblErrorTxtMontoCuota;
+	}
 
+	public JLabel getLblErrorTxtFecha() {
+		if (lblErrorTxtFecha == null) {
+			lblErrorTxtFecha = new JLabel("adasd");
+			lblErrorTxtFecha.setBounds(310, 55, 110, 20);
+		}
+		return lblErrorTxtFecha;
+	}
+
+	
 	
 }
