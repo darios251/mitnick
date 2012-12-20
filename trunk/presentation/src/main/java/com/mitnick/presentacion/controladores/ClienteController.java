@@ -284,6 +284,7 @@ public class ClienteController extends BaseController {
 	}
 	
 	public void guardarCuota(CuotaDto cuotaDto){		
+		validateDto(cuotaDto);
 		clienteServicio.guardarCuota(cuotaDto);
 	}
 		

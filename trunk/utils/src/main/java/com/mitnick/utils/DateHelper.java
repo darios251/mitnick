@@ -10,19 +10,27 @@ public class DateHelper {
 	
 	protected static Logger logger = Logger.getLogger(DateHelper.class);
 	
-	public static SimpleDateFormat sdf= new SimpleDateFormat(MitnickConstants.DATE_FORMAT);
+	private static SimpleDateFormat sdf;
 	
 	public static Date getFecha(String fecha){
-		try {
-			return sdf.parse(fecha);
+		try {			
+			return getParser().parse(fecha);
 		} catch (ParseException e) {
 			logger.error(e);
 		}
 		return null;
 	}
 	
-	public static String getFecha(Date fecha){
-		return sdf.format(fecha);		
+	public static String getFecha(Date fecha){	
+		return getParser().format(fecha);		
+	}
+	
+	public static SimpleDateFormat getParser(){
+		if (sdf==null){
+			sdf= new SimpleDateFormat(MitnickConstants.DATE_FORMAT);
+			sdf.setLenient(false);
+		}
+		return sdf;
 	}
 	
 }
