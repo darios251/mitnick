@@ -147,9 +147,19 @@ public class ClienteController extends BaseController {
 		cuentaCorrientePanel.actualizarPantalla();
 	}
 	
+	private void guardarClienteAut(ClienteDto cliente) {
+		try {
+			clienteServicio.guardarCliente(cliente);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+	}
+
 	@AuthorizationRequired
 	public void guardarCliente(ClienteDto cliente, String actividad, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
+		
 		if(Validator.isNull(cliente))
 			cliente = new ClienteDto();
 		
@@ -169,12 +179,8 @@ public class ClienteController extends BaseController {
 		//valido el dto
 		validateDto(cliente);
 		
-		try {
-			clienteServicio.guardarCliente(cliente);
-		}
-		catch(BusinessException e) {
-			throw new PresentationException(e);
-		}
+		guardarClienteAut(cliente);
+		
 	}
 	
 	public void nuevoCliente() {
