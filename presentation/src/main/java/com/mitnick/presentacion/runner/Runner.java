@@ -37,7 +37,7 @@ public class Runner {
 		
 		Thread.currentThread().setName(PropertiesManager.getProperty("application.name"));
 		
-		checkForRun();
+//		checkForRun();
 		
 		BeanLocator.getBean("loginView");
 	}

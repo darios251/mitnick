@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.MitnickConstants;
 
 public class VentaDto extends BaseDto {
 	
@@ -44,7 +45,7 @@ public class VentaDto extends BaseDto {
 	
 	private boolean cancelada;
 	
-	private long tipoResponsabilidad;
+	private long tipoResponsabilidad = MitnickConstants.CONSUMIDOR_FINAL;
 	
 	public List<ProductoVentaDto> getProductos() {
 		if(productos == null)

@@ -1,10 +1,13 @@
 package com.mitnick.utils;
 
+import java.text.SimpleDateFormat;
+
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 public class MitnickConstants {
 	public static final String DATE_FORMAT = PropertiesManager.getProperty("application.date.pattern");
+	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat(MitnickConstants.DATE_FORMAT);
 	
 	public static final TipoDto tipoTodos = new TipoDto(-1l);
 	public static final MarcaDto marcaTodos = new MarcaDto(-1l);

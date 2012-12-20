@@ -227,14 +227,14 @@ public class VentaPanel extends BasePanel<VentaController> {
 
 			btnContinuar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					keyPageDown();
+					keyF5();
 				}
 			});
 		}
 		return btnContinuar;
 	}
 
-	protected void keyPageDown() {
+	protected void keyF5() {
 		try {
 			controller.mostrarClienteVenta();
 		} catch (PresentationException ex) {

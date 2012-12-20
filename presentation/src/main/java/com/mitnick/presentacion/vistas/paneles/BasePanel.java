@@ -71,7 +71,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 	protected int mostrarMensajeError ( String message ) {
 		Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 		
-		return JOptionPane.showOptionDialog( currentView, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+		return JOptionPane.showOptionDialog( currentView, PropertiesManager.getProperty(message), PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected int mostrarMensajeError ( PresentationException ex ) {
@@ -224,11 +224,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 		return false;
 	}
 	
-	protected void keyPageDown() {
-		if(defaultButtonAction != null)
-			defaultButtonAction.doClick();
-	}
-	
+	protected void keyPageDown() {}	
 	protected void keyPageUp() {}
 	protected void keyHome() {}
 	protected void keyEnd() {}	
@@ -249,7 +245,10 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 	protected void keyF2() {}	
 	protected void keyF3() {}	
 	protected void keyF4() {}	
-	protected void keyF5() {}	
+	protected void keyF5() {
+		if(defaultButtonAction != null)
+			defaultButtonAction.doClick();
+	}	
 	protected void keyF6() {}	
 	protected void keyF7() {}	
 	protected void keyF8() {}	

@@ -172,15 +172,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		}
 		Venta venta = guardarVenta(ventaDto);
 		
-		if(!venta.isPrinted()) {
-			
-			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-		}
-		else
-			venta.setPrinted(true);
+//		if(!venta.isPrinted()) {
+//			
+//			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
+//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+//			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
+//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+//		}
+//		else
+//			venta.setPrinted(true);
 		
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());
 		venta.setTipoTicket(ventaDto.getTipoTicket());
