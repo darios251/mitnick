@@ -77,10 +77,11 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 	protected int mostrarMensajeError ( PresentationException ex ) {
 		//Primero despliego un mensaje para confirmar la operacion
 	     Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
-	     
+	     boolean popup = true;
+    	 
 	     if(Validator.isNotEmptyOrNull(ex.getConstraintViolations())) {
+	    	 popup = false;
 	    	 String firstError = null;
-	    	 
 	    	 for(ConstraintViolation<Object> constraintViolation : ex.getConstraintViolations()) {
 	    		 String fieldName = constraintViolation.getPropertyPath().toString().substring(0, 1).toUpperCase() + constraintViolation.getPropertyPath().toString().substring(1);
 	    		 try {
@@ -137,8 +138,10 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 				}
 	    	 }
 	     }
+	     if (popup)	     
+	    	 return JOptionPane.showOptionDialog( currentView, ex.getMessage(), PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 	     
-	     return JOptionPane.showOptionDialog( currentView, ex.getMessage(), PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
+	     return 1;
 	}
 	
 	protected int mostrarMensajeAdvertencia ( String message ) {
