@@ -8,7 +8,7 @@ public class DireccionDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 	
-	@MitnickField(required=true, fieldType=FieldType.APHANUMERIC, min=3, max=30)
+	@MitnickField(required=true, fieldType=FieldType.APHANUMERIC, min=3, max=255)
 	private String domicilio;
 	
 	@Required

@@ -351,7 +351,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	}
 	
 	@Override
-	protected void keyPageDown() {
+	protected void keyF5() {
 		btnContinuar.doClick();
 	}
 	

@@ -7,7 +7,7 @@
 		
 		<row>
 			<value>1</value>
-			<value>6b735b179f4b58dfef0d5bfe482ab6eca1465142dcb7cf5731c3eef3c93fa8c0</value>
+			<value>284e99e7a331f0b36666c383512608fcf0109d5bcd19b1e514a7e16f7fa99072</value>
 			<value>newSaltValue</value>
 		</row>
 	</table>
@@ -217,6 +217,12 @@
 		    <value>3016</value>
 		    <value>6</value>
 		</row>
+		<row>
+		    <value>2</value>
+		    <value>Av. General López 2546 piso 2 Departamento D</value>
+		    <value>2546</value>
+		    <value>6</value>
+		</row>
 	</table>
 	<table name="Empresa">
 	    <column>id</column>
@@ -244,6 +250,44 @@
 			<value>00000001</value>
 			<value>1</value>
 	    </row>
+	</table>
+	
+	<table name="Cliente">
+	  <column>id</column>
+	  <column>actividad</column>
+	  <column>nombre</column>
+	  <column>documento</column>
+	  <column>cuit</column>
+	  <column>telefono</column>
+	  <column>email</column>
+	  <column>fecha_nacimiento</column>
+	  <column>eliminado</column>
+	  <column>direccion_id</column>
+	  
+	  <row>
+	    <value>1</value>
+	    <value>Ingeniera en Sistemas</value>
+	    <value>Agustina Berraz</value>
+	    <value>28764155</value>
+	    <value>27-28764155-4</value>
+	    <value>154071797</value>
+	    <value>agustinabm@gmail.com</value>
+	    <value>1981-05-07</value>
+	    <value>false</value>	
+	    <value>1</value>    
+	  </row>
+	  <row>
+	    <value>2</value>
+	    <value>Ingeniero en Sistemas</value>
+	    <value>Lucas GarcÃ­a</value>
+	    <value>31115019</value>
+	    <value>20-31115019-8</value>
+	    <value>154469075</value>
+	    <value>lukasg04@gmail.com</value>
+	    <value>1984-09-15</value>
+	    <value>false</value>	
+	    <value>2</value>    
+	  </row>
 	</table>
 	
 	<table name="Tipo">
