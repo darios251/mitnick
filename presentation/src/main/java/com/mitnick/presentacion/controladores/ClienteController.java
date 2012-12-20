@@ -352,7 +352,8 @@ public class ClienteController extends BaseController {
 				return;
 			}
 		}
-		getCuentaCorrientePagoPanel().finalizarPagos();
+		actualizarCuotas(getCuentaCorrientePagoPanel().getCliente());
+		mostrarCuentaCorrientePanel();
 	}
 	
 	private void finalizarPagoCuota() {

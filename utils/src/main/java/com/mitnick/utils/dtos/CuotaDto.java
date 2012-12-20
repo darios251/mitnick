@@ -76,6 +76,19 @@ public class CuotaDto extends BaseDto {
 		return pagosComprobante;
 	}
 	
+	public BigDecimal getPagoComprobante() {
+		BigDecimal monto = new BigDecimal(0);
+		if (getPagos()!=null) {
+			Iterator<PagoDto> pagosIt = getPagos().iterator();
+			while (pagosIt.hasNext()){
+				PagoDto pago = pagosIt.next();
+				if (!pago.isComprobante())
+					monto = monto.add(pago.getMonto());
+			}
+		}
+		return monto;
+	}
+	
 	public void setPagos(List<PagoDto> pagos) {
 		this.pagos = pagos;
 	}

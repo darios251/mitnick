@@ -448,7 +448,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		List<Pago> pagos = new ArrayList<Pago>();
 		for (PagoDto pagoDto : ventaDto.getPagos())
-			pagos.add(getPagoFromPagoDto(pagoDto));
+			pagos.add(getEntityFromDto(pagoDto));
 
 		venta.setPagos(pagos);
 
@@ -483,20 +483,13 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cuota.setCliente(getEntityFromDto(cuotaDto.getClienteDto()));
 		List<Pago> pagos = new ArrayList<Pago>();
 		for (PagoDto pagoDto : cuotaDto.getPagos())
-			pagos.add(getPagoFromPagoDto(pagoDto));
+			pagos.add(getEntityFromDto(pagoDto));
 
 		cuota.setPagos(pagos);
 		cuota.setPagado(cuotaDto.isPagado());
 		return cuota;
 	}
 
-	private Pago getPagoFromPagoDto(PagoDto pagoDto) {
-		Pago pago = new Pago();
-		pago.setMedioPago(medioPagoDao.get(pagoDto.getMedioPago().getId()));
-		pago.setPago(new Long(pagoDto.getMonto().longValue()));
-		return pago;
-	}
-	
 	private ProvinciaDto getDtoFromEntity(Provincia provincia) {
 		ProvinciaDto provinciaDto = new ProvinciaDto();
 		provinciaDto.setId(provincia.getId());

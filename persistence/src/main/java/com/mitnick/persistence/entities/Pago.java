@@ -21,7 +21,7 @@ public class Pago extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "medio_pago_id")
 	private MedioPago medioPago;
 	
