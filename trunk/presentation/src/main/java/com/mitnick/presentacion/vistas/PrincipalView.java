@@ -104,6 +104,12 @@ public class PrincipalView extends JFrame
 	{
 		thisView = this;
 		initialize();
+		
+		boolean loginRequired = PropertiesManager.getPropertyAsBoolean("application.login.requiredAtStart");
+		if(!loginRequired) {
+			InicioView.getInstance().dispose();
+			setVisible(true);
+		}
 	}
 
 	private void initialize()
@@ -568,10 +574,12 @@ public class PrincipalView extends JFrame
 	@Override
 	public void setVisible(boolean b) {
 		if(b) {
-			showAdminButtons(false);
-			for(GrantedAuthority grantedAuthority : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
-				if(MitnickConstants.Role.ADMIN.equals(grantedAuthority.getAuthority()))
-					showAdminButtons(true);
+			if(SecurityContextHolder.getContext().getAuthentication() != null) {
+				showAdminButtons(false);
+				for(GrantedAuthority grantedAuthority : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+					if(MitnickConstants.Role.ADMIN.equals(grantedAuthority.getAuthority()))
+						showAdminButtons(true);
+				}
 			}
 		}
 		super.setVisible(b);

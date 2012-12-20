@@ -1,5 +1,8 @@
 package com.mitnick.presentacion.runner;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import org.apache.log4j.Logger;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
@@ -37,9 +40,18 @@ public class Runner {
 		
 		Thread.currentThread().setName(PropertiesManager.getProperty("application.name"));
 		
-//		checkForRun();
+		checkForRun();
+
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+		}
 		
-		BeanLocator.getBean("loginView");
+		boolean loginRequired = PropertiesManager.getPropertyAsBoolean("application.login.requiredAtStart");
+		if(loginRequired)
+			BeanLocator.getBean("loginView");
+		else
+			BeanLocator.getBean("principalView");
 	}
 
 	private static void checkForRun() {
