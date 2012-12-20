@@ -120,7 +120,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			DetachedCriteria criteria = DetachedCriteria.forClass(Empresa.class);
 			criteria.add(Restrictions.idEq(new Long(1)));
 			
-			JRDataSource dr = new JRBeanCollectionDataSource(cuota.getPagos());
+			JRDataSource dr = new JRBeanCollectionDataSource(cuota.getPagosComprobante());
 			
 			Empresa empresa = (Empresa) getHibernateTemplate().findByCriteria(criteria).get(0);
 			

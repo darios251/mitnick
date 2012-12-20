@@ -222,14 +222,17 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		
 		VentaHelper.calcularTotales(cuotaDto);
 
-		if (!cuotaDto.isPagado()) {
-			throw new BusinessException("error.ventaServicio.facturar",
-					"No se puede impriir comprobante de pago ya que no se pago el total");
-		}
-		guardarCuota(cuotaDto);
-
 		clienteDao.generarComprobante(cuotaDto);
 
+		if (cuotaDto.getPagos()!=null) {
+			Iterator<PagoDto> pagosIt = cuotaDto.getPagos().iterator();
+			while (pagosIt.hasNext()){
+				PagoDto pago = pagosIt.next();
+				pago.setComprobante(true);
+			}
+		}
+		
+		guardarCuota(cuotaDto);
 	}
 	
 	

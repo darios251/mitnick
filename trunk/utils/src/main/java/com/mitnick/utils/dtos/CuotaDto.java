@@ -2,7 +2,7 @@ package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.validator.constraints.MitnickField;
@@ -63,6 +63,19 @@ public class CuotaDto extends BaseDto {
 		return pagos;
 	}
 
+	public List<PagoDto> getPagosComprobante() {
+		List<PagoDto> pagosComprobante = new ArrayList<PagoDto>();
+		if (getPagos()!=null) {
+			Iterator<PagoDto> pagosIt = getPagos().iterator();
+			while (pagosIt.hasNext()){
+				PagoDto pago = pagosIt.next();
+				if (!pago.isComprobante())
+					pagosComprobante.add(pago);
+			}
+		}
+		return pagosComprobante;
+	}
+	
 	public void setPagos(List<PagoDto> pagos) {
 		this.pagos = pagos;
 	}

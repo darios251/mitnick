@@ -114,6 +114,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (D) getDtoFromEntity((Proveedor) entity);
 		else if(entity instanceof Cuota)
 			return (D) getDtoFromEntity((Cuota) entity);
+		else if(entity instanceof Pago)
+			return (D) getDtoFromEntity((Pago) entity);
 		else return null;
 	}
 
@@ -142,6 +144,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (E) getEntityFromDto((ProvinciaDto) dto);
 		else if(dto instanceof CuotaDto)
 			return (E) getEntityFromDto((CuotaDto) dto);
+		else if(dto instanceof PagoDto)
+			return (E) getEntityFromDto((PagoDto) dto);
 		else return null;
 	}
 	
@@ -515,6 +519,32 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		direccionDto.setId(direccion.getId());
 		direccionDto.setCiudad(getDtoFromEntity(direccion.getCiudad()));
 		return direccionDto;
+	}
+	
+	private PagoDto getDtoFromEntity(Pago pago) {
+		PagoDto pagoDto = new PagoDto();
+		pagoDto.setId(pago.getId());
+		pagoDto.setComprobante(pago.isComprobante());
+		pagoDto.setMedioPago(getDtoFromEntity(pago.getMedioPago()));
+		pagoDto.setMonto(new BigDecimal(pago.getPago()));
+		return pagoDto;
+	}
+	
+	private Pago getEntityFromDto(PagoDto pagoDto) {
+		Pago pago = new Pago();
+		pago.setId(pagoDto.getId());
+		pago.setComprobante(pagoDto.isComprobante());
+		pago.setMedioPago(getEntityFromDto(pagoDto.getMedioPago()));
+		pago.setPago(new Long(pagoDto.getMonto().longValue()));
+		return pago;
+	}
+	
+	private MedioPago getEntityFromDto(MedioPagoDto medioPagoDto) {
+		MedioPago medioPago = new MedioPago();
+		medioPago.setDescripcion(medioPagoDto.getDescripcion());
+		medioPago.setId(medioPagoDto.getId());
+		medioPago.setCodigo(medioPagoDto.getCodigo());
+		return medioPago;
 	}
 
 }
