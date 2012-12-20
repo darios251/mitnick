@@ -129,8 +129,6 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			parameters.put("empresaDireccion", empresa.getDireccion().getDomicilio() + "(" + empresa.getDireccion().getCodigoPostal() + ")" 
 					+ empresa.getDireccion().getCiudad().getDescripcion() + "\n Tel" + empresa.getTelefono());
 			parameters.put("tipoResponsable", empresa.getTipoResponsable());
-//			parameters.put("facturaNumero1", StringUtils.leftPad(empresa.getNumeroPrefijoFacturaActual() + "", 4, "0") );
-//			parameters.put("facturaNumero2", StringUtils.leftPad(empresa.getNumeroFacturaActual() + "", 8, "0"));
 			parameters.put("cuitEmpresa", empresa.getCuit());
 			parameters.put("iibbEmpresa", empresa.getNmIngresosBrutos());
 			parameters.put("fechaInicioActividadEmpresa", "01/12/1988");
@@ -138,12 +136,12 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			parameters.put("nombreCliente",cuota.getClienteDto().getNombre());
 			parameters.put("direccionCliente", cuota.getClienteDto().getDireccion().getDomicilio() + " " + cuota.getClienteDto().getDireccion().getCiudad().getDescripcion());
 			
-			BigDecimal saldoPendiente = getSaldoDeudor();
+			BigDecimal saldoTotal = getSaldoDeudor();
 			
-			BigDecimal saldoTotal = saldoPendiente.add(cuota.getTotal());
+			BigDecimal saldoPendiente = saldoTotal.subtract(cuota.getPagoComprobante());
 			
 			parameters.put("saldoTotal", saldoTotal.toString());
-			parameters.put("total", cuota.getTotal().toString());
+			parameters.put("total", cuota.getPagoComprobante().toString());
 			parameters.put("saldoPendiente", saldoPendiente.toString());
 			
 			super.getHibernateTemplate().flush();
@@ -163,7 +161,8 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 	}
 	
 	private BigDecimal getSaldoDeudor(){
-		return new BigDecimal("12314");
+		
+		return new BigDecimal("2000");
 	}
 
 }

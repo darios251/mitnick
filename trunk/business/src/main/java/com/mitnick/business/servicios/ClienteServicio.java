@@ -210,7 +210,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		PagoDto pagoDto = null;
 		while (pagos.hasNext()) {
 			PagoDto pDto = pagos.next();
-			if (pDto.getMedioPago().getId().equals(pago.getMedioPago().getId()))
+			if (!pDto.isComprobante() && pDto.getMedioPago().getId().equals(pago.getMedioPago().getId()))
 				pagoDto = pDto;
 		}
 		return pagoDto;
