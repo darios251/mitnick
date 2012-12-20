@@ -336,7 +336,26 @@ public class ClienteController extends BaseController {
 		logger.debug("Saliendo del método agregarPago");
 	}
 	
-	protected void finalizarPagoCuota() {
+	public void finalizarPagoCuotaParcial() {
+		try {
+			getClienteServicio().comprobantePago(getCuentaCorrientePagoPanel().getCuota());
+		}
+		catch(BusinessException e) {
+			int opcion = getCuentaCorrientePagoPanel().mostrarMensajeReintentar();
+			
+			if(opcion == 0) {
+				finalizarPagoCuota();
+				return;
+			}
+			else {
+				mostrarCuentaCorrientePanel();
+				return;
+			}
+		}
+		getCuentaCorrientePagoPanel().finalizarPagos();
+	}
+	
+	private void finalizarPagoCuota() {
 		if(checkFinalizarPagoCuota()) {
 			try {
 				getClienteServicio().comprobantePago(getCuentaCorrientePagoPanel().getCuota());
@@ -355,9 +374,9 @@ public class ClienteController extends BaseController {
 			}
 			getCuentaCorrientePagoPanel().finalizarPagos();
 		}
-	}
+	}	
 	
-	public boolean checkFinalizarPagoCuota() {
+	private boolean checkFinalizarPagoCuota() {
 		if(getCuentaCorrientePagoPanel().getCuota() != null && (getCuentaCorrientePagoPanel().getCuota().getPagos() == null || getCuentaCorrientePagoPanel().getCuota().getPagos().isEmpty()))
 			return false;
 		if(!getCuentaCorrientePagoPanel().getCuota().isPagado())

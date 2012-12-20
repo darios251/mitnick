@@ -9,6 +9,8 @@ public class PagoDto extends BaseDto {
 	private MedioPagoDto medioPago;
 	
 	private BigDecimal monto;
+	
+	private boolean comprobante = false;
 
 	public MedioPagoDto getMedioPago() {
 		return medioPago;
@@ -25,4 +27,14 @@ public class PagoDto extends BaseDto {
 	public void setMonto(BigDecimal monto) {
 		this.monto = monto;
 	}
+
+	public boolean isComprobante() {
+		return comprobante;
+	}
+
+	public void setComprobante(boolean comprobante) {
+		this.comprobante = comprobante;
+	}
+	
+	
 }

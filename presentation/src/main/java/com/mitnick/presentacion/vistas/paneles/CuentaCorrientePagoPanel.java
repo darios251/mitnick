@@ -72,6 +72,8 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 	private JButton btnVolver;
 	private JButton btnQuitar;
 	
+	private JButton btnFinalizar;
+	
 	private JPanel pnlCliente;
 	private JLabel lblNombre;
 	private JLabel lblDni;
@@ -121,6 +123,7 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 		add(getLblConsumidorFinal());
 		add(getPnlCliente());
 		add(getLblCliente());
+		add(getBtnFinalizar());
 		
 		setFocusTraversalPolicy();
 	}
@@ -305,7 +308,7 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnVolver.setMargin(new Insets(-1, -1, -1, -1));
-			btnVolver.setBounds(680, 364, 60, 60);
+			btnVolver.setBounds(680, 290, 60, 60);
 			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -321,7 +324,31 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 		}
 		return btnVolver;
 	}
-
+	
+	public JButton getBtnFinalizar() {
+		if(btnFinalizar == null) {
+			btnFinalizar = new JButton(PropertiesManager.getProperty("pagoPanel.boton.finalizar"));
+			btnFinalizar.setToolTipText(PropertiesManager.getProperty("pagoPanel.boton.finalizar"));
+			btnFinalizar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnFinalizar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnFinalizar.setMargin(new Insets(-1, -1, -1, -1));
+			btnFinalizar.setBounds(680, 364, 60, 60);
+			btnFinalizar.setIcon(new ImageIcon(this.getClass().getResource("/img/printer.jpg")));
+			btnFinalizar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						controller.finalizarPagoCuotaParcial();
+					}
+					catch(PresentationException ex) {
+						
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnFinalizar;
+	}
+	
 	public JButton getBtnQuitar() {
 		if(btnQuitar == null) {
 			btnQuitar = new JButton(PropertiesManager.getProperty("pagoPanel.button.quitar"));
