@@ -1,5 +1,6 @@
 package com.mitnick.utils;
 
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
@@ -24,6 +25,26 @@ public class PropertiesManager {
 	public static String getProperty(String propertyKey)
 	{
 		return getProperty(propertyKey, null);
+	}
+	
+	public static Boolean getPropertyAsBoolean(String propertyKey)
+	{
+		return new Boolean(getProperty(propertyKey, null));
+	}
+	
+	public static Integer getPropertyAsInteger(String propertyKey)
+	{
+		return new Integer(getProperty(propertyKey, null));
+	}
+	
+	public static Double getPropertyAsDouble(String propertyKey)
+	{
+		return new Double(getProperty(propertyKey, null));
+	}
+	
+	public static BigDecimal getPropertyAsBigDecimal(String propertyKey)
+	{
+		return new BigDecimal(getProperty(propertyKey, null));
 	}
 
 	public void setMessageSource(ResourceBundleMessageSource messageSource) {

@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
@@ -43,7 +42,6 @@ public class LoginView extends JDialog {
 	private LoginUtils loginUtils;
 	
 	public LoginView() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		thisView = this;
 		
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -87,8 +85,11 @@ public class LoginView extends JDialog {
 		});
 		getContentPane().add(btnNewButton);
 		
-		InicioView.getInstance().dispose();
-		setVisible(true);
+		boolean loginRequired = PropertiesManager.getPropertyAsBoolean("application.login.requiredAtStart");
+		if(loginRequired) {
+			InicioView.getInstance().dispose();
+			setVisible(true);
+		}
 	}
 
 	@SuppressWarnings("deprecation")
