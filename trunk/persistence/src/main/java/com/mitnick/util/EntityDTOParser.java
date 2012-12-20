@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
+import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IDiscriminacionIVADao;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IMedioPagoDAO;
@@ -76,6 +77,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	protected IProvinciaDao provinciaDao;
 	@Autowired
 	protected IDiscriminacionIVADao discriminacionIVADao;
+	@Autowired
+	protected ICuotaDao cuotaDao;
 
 	private String AJUSTE = "Ajuste Manual";
 
@@ -264,6 +267,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cuotaDto.setFecha_pagar(DateHelper.getFecha(cuota.getFecha_pagar()));
 		cuotaDto.setNroCuota(cuota.getNroCuota());
 		cuotaDto.setTotal(cuota.getTotal());
+		cuotaDto.setFaltaPagar(cuota.getFaltaPagar());
 		cuotaDto.setClienteDto(getDtoFromEntity(cuota.getCliente()));
 		cuotaDto.setPagado(cuota.isPagado());
 		cuotaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) cuota.getPagos()));
@@ -475,15 +479,22 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	
 	private Cuota getEntityFromDto(CuotaDto cuotaDto) {
 		Cuota cuota = new Cuota();
-		cuota.setId(cuotaDto.getId());
+		if (cuotaDto.getId()!=null)
+			cuota = cuotaDao.get(cuotaDto.getId());
 		if (Validator.isDate(cuotaDto.getFecha_pagar(), MitnickConstants.DATE_FORMAT, true))
 			cuota.setFecha_pagar(DateHelper.getFecha(cuotaDto.getFecha_pagar()));
 		cuota.setNroCuota(cuotaDto.getNroCuota());
 		cuota.setTotal(cuotaDto.getTotal());
+		cuota.setFaltaPagar(cuotaDto.getFaltaPagar());
 		cuota.setCliente(getEntityFromDto(cuotaDto.getClienteDto()));
 		List<Pago> pagos = new ArrayList<Pago>();
-		for (PagoDto pagoDto : cuotaDto.getPagos())
-			pagos.add(getEntityFromDto(pagoDto));
+		if (cuota.getPagos()!=null)
+			pagos = cuota.getPagos();
+		
+		for (PagoDto pagoDto : cuotaDto.getPagos()){
+			if (pagoDto.getId()==null)
+				pagos.add(getEntityFromDto(pagoDto));
+		}
 
 		cuota.setPagos(pagos);
 		cuota.setPagado(cuotaDto.isPagado());

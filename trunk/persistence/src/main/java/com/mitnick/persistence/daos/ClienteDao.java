@@ -24,6 +24,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mitnick.exceptions.PersistenceException;
@@ -32,6 +33,7 @@ import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 
 /**
@@ -45,6 +47,9 @@ import com.mitnick.utils.dtos.CuotaDto;
 public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IClienteDao {
 	
 	protected javax.validation.Validator entityValidator = Validation.buildDefaultValidatorFactory().getValidator();
+
+	@Autowired
+	protected ICuotaDao cuotaDao;
 
 	public ClienteDao() {
 		super(Cliente.class);
@@ -136,7 +141,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			parameters.put("nombreCliente",cuota.getClienteDto().getNombre());
 			parameters.put("direccionCliente", cuota.getClienteDto().getDireccion().getDomicilio() + " " + cuota.getClienteDto().getDireccion().getCiudad().getDescripcion());
 			
-			BigDecimal saldoTotal = getSaldoDeudor();
+			BigDecimal saldoTotal = getSaldoDeudor(cuota.getClienteDto());
 			
 			BigDecimal saldoPendiente = saldoTotal.subtract(cuota.getPagoComprobante());
 			
@@ -160,9 +165,9 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		}
 	}
 	
-	private BigDecimal getSaldoDeudor(){
+	private BigDecimal getSaldoDeudor(ClienteDto cliente){
 		
-		return new BigDecimal("2000");
+		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
 
 }

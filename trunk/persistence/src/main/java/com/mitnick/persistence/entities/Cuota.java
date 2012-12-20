@@ -19,8 +19,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
-import org.hibernate.validator.constraints.MitnickField;
-import org.hibernate.validator.constraints.MitnickField.FieldType;
 
 @Entity(name = "Cuota")
 public class Cuota extends BaseObject implements Serializable {
@@ -54,6 +52,9 @@ public class Cuota extends BaseObject implements Serializable {
 	
 	@Column(name = "fechaPago", nullable = true)
 	private Date fechaPago;
+	
+	@Column(name = "faltaPagar", nullable = false)
+	private BigDecimal faltaPagar;
 
 	@Column(name = "pagado", nullable = false)
 	private boolean pagado = false;
@@ -122,12 +123,29 @@ public class Cuota extends BaseObject implements Serializable {
 		this.pagado = pagado;
 	}
 
+	public Date getFechaPago() {
+		return fechaPago;
+	}
+
+	public void setFechaPago(Date fechaPago) {
+		this.fechaPago = fechaPago;
+	}
+
+	public BigDecimal getFaltaPagar() {
+		return faltaPagar;
+	}
+
+	public void setFaltaPagar(BigDecimal faltaPagar) {
+		this.faltaPagar = faltaPagar;
+	}
+
 	@Override
 	public String toString() {
 		return "Cuota [id=" + id + ", fecha_pagar=" + fecha_pagar + ", total="
 				+ total + ", venta=" + venta + ", pagos=" + pagos
 				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente
-				+ ", fechaPago=" + fechaPago + ", pagado=" + pagado + "]";
+				+ ", fechaPago=" + fechaPago + ", faltaPagar=" + faltaPagar
+				+ ", pagado=" + pagado + "]";
 	}
 
 	@Override
@@ -135,6 +153,8 @@ public class Cuota extends BaseObject implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result
+				+ ((faltaPagar == null) ? 0 : faltaPagar.hashCode());
 		result = prime * result
 				+ ((fechaPago == null) ? 0 : fechaPago.hashCode());
 		result = prime * result
@@ -165,6 +185,13 @@ public class Cuota extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
+		if (faltaPagar == null) {
+			if (other.faltaPagar != null) {
+				return false;
+			}
+		} else if (!faltaPagar.equals(other.faltaPagar)) {
 			return false;
 		}
 		if (fechaPago == null) {
@@ -216,14 +243,6 @@ public class Cuota extends BaseObject implements Serializable {
 			return false;
 		}
 		return true;
-	}
-
-	public Date getFechaPago() {
-		return fechaPago;
-	}
-
-	public void setFechaPago(Date fechaPago) {
-		this.fechaPago = fechaPago;
 	}
 
 	
