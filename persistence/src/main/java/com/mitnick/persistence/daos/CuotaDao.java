@@ -1,5 +1,7 @@
 package com.mitnick.persistence.daos;
 
+import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +28,19 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 	
 	public CuotaDao() {
 		super(Cuota.class);
+	}
+	
+	public BigDecimal getSaldoPendiente(Long cliente){
+		BigDecimal pendiente = new BigDecimal(0);
+		List<Cuota> cuotas = getCuotaByClienteId(cliente);
+		if (cuotas!=null){
+			Iterator<Cuota> cuotasIt = cuotas.iterator();
+			while (cuotasIt.hasNext()){
+				Cuota cuota = cuotasIt.next();
+				pendiente = pendiente.add(cuota.getFaltaPagar());
+			}
+		}
+		return pendiente;
 	}
 	
 	@SuppressWarnings("unchecked")

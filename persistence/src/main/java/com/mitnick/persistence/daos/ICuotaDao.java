@@ -1,5 +1,6 @@
 package com.mitnick.persistence.daos;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -19,5 +20,7 @@ public interface ICuotaDao extends GenericDao<Cuota, Long>{
 	public List<Cuota> getCuotaPagas(ReportesDto filtro);
 	
 	public List<Cuota> findByFiltro(ReportesDto filtro);
+	
+	public BigDecimal getSaldoPendiente(Long cliente);
 
 }

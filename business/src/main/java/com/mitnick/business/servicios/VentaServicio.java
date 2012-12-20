@@ -266,7 +266,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			cuota.setClienteDto(cliente);
 			cuota.setNroCuota(i + 1);
 			cuota.setTotal(valorCuota);
-
+			cuota.setFaltaPagar(valorCuota);
 			cuota.setFecha_pagar(DateHelper.getFecha(fecha));
 			calendar.setTime(fecha);
 			calendar.add(Calendar.MONTH, 1);

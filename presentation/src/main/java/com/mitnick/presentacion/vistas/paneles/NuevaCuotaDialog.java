@@ -104,6 +104,7 @@ public class NuevaCuotaDialog extends JDialog {
 					cuotaDto.setFecha_pagar(fecha);
 					try {
 						cuotaDto.setTotal(new BigDecimal(monto));
+						cuotaDto.setFaltaPagar(new BigDecimal(monto));
 					} catch (Exception ex) {
 						throw new PresentationException("Ingrese una fecha correcta: dd/MM/yyyy", "Ingrese un monto correcto");
 					}
