@@ -21,7 +21,7 @@ import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
 import com.mitnick.utils.locator.BeanLocator;
 
 @View("configuracionImpresoraDialog")
-public class ConfiguracionImpresoraDialog extends JDialog {
+public class ConfiguracionImpresoraDialog extends BaseDialog {
 
 	private static final long serialVersionUID = 1L;
 	private CuentaCorrienteTableModel model;
