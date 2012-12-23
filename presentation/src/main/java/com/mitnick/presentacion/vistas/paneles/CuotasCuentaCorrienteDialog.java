@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -17,7 +16,7 @@ import com.mitnick.presentacion.modelos.CuentaCorrienteTableModel;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.CuotaDto;
 
-public class CuotasCuentaCorrienteDialog extends JDialog {
+public class CuotasCuentaCorrienteDialog extends BaseDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
