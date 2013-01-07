@@ -27,6 +27,10 @@ public class Runner {
 		dbimport.ejecutar();
 	}
 	
+	public static void main2(String[] args) {
+		migracionDatos(args);
+	}
+	
 	public static void main(String[] args) {
 		InicioView inicio = InicioView.getInstance();
 		inicio.setVisible(true);

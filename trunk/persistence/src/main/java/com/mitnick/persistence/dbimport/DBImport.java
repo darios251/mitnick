@@ -69,7 +69,7 @@ public class DBImport {
 		try {
 			String path = "C:/project/mitnick/archivosSusmann/Copia (2) de comersis/";
 			migrarProductos(path);
-//			migrarClientes(path);
+			migrarClientes(path);
 			// migrarClientes(args[0].toString());
 
 		} catch (Exception e) {
