@@ -44,12 +44,12 @@ public interface IClienteServicio {
 	public void guardarCuota(CuotaDto cuotaDto);
 
 	@Secured(value={"ROLE_ADMIN"})
-	public CuotaDto quitarPago(PagoDto pago, CuotaDto cuota);
+	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas);
 	
 	@Secured(value={"ROLE_ADMIN"})
-	public CuotaDto agregarPago(PagoDto pago, CuotaDto cuota);
+	public List<CuotaDto> agregarPago(PagoDto pago, List<CuotaDto> cuotas);
 	
 	@Secured(value={"ROLE_ADMIN"})
-	public void comprobantePago(CuotaDto cuotaDto);
+	public void comprobantePago(List<CuotaDto> cuotaDto);
 	
 }

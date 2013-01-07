@@ -27,6 +27,7 @@ import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
+import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 
@@ -170,18 +171,54 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	}
 
 	@Override
-	public CuotaDto quitarPago(PagoDto pago, CuotaDto cuota) {
-		cuota.getPagos().remove(pago);
-		VentaHelper.calcularTotales(cuota);
-		return cuota;
+	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas) {
+		if (pago.isComprobante())
+			throw new BusinessException("El pago ya generó comprobante de pago");
+		for (int i = 0; i < cuotas.size(); i++) {
+			CuotaDto cuota = cuotas.get(i);
+			cuota.getPagos().remove(pago);
+			VentaHelper.calcularTotales(cuota);
+		}
+		return cuotas;
 	}
 
 	@Override
-	public CuotaDto agregarPago(PagoDto pago, CuotaDto cuota) {
-		validarPago(pago, cuota);
-
+	public List<CuotaDto> agregarPago(PagoDto pago, List<CuotaDto> cuotas) {
+		boolean continuar = true;
+		Iterator<CuotaDto> cuotasIt = cuotas.iterator();
+		while (continuar && cuotasIt.hasNext()){
+			BigDecimal total = pago.getMonto();
+			CuotaDto cuota = cuotasIt.next();
+			if (!cuota.isPagado()) {
+				total = agregarPago(pago, cuota);
+			}
+			if (total.compareTo(new BigDecimal(0))>0){
+				MedioPagoDto mp = pago.getMedioPago();
+				pago = new PagoDto();
+				pago.setMonto(total);
+				pago.setComprobante(false);
+				pago.setMedioPago(mp);				
+			} else
+				continuar = false;
+		}
+		return cuotas;
+	}
+	
+	/**
+	 * Agrega el pago ala cuota y retorna el monto sobrante para generar un nuevo pago si corresponde.
+	 * @param pago
+	 * @param cuota
+	 * @return
+	 */
+	private BigDecimal agregarPago(PagoDto pago, CuotaDto cuota) {
+		BigDecimal resto = new BigDecimal(0);
+		if (cuota.getFaltaPagar().compareTo(pago.getMonto())<0) {
+			resto = pago.getMonto().subtract(cuota.getFaltaPagar());
+			pago.setMonto(cuota.getFaltaPagar());			
+		}
+		
 		PagoDto pagoDto = getPagoDto(pago, cuota);
-
+		validarPago(pago, cuota);
 		if (pagoDto == null)
 			// agrego el nuevo pago
 			cuota.getPagos().add(pago);
@@ -191,12 +228,11 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			BigDecimal pagando = pago.getMonto();
 			pagoDto.setMonto(pagado.add(pagando));
 		}
-
 		VentaHelper.calcularTotales(cuota);
-		return cuota;
+		return resto;
 	}
 
-	private void validarPago(PagoDto pago, CuotaDto cuota) {
+	private void validarPago(PagoDto pago, CuotaDto cuotaDto) {
 		// si es cuenta se debe tener un cliente asociado
 		if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago
 				.getMedioPago().getCodigo()))
@@ -213,26 +249,37 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			if (!pDto.isComprobante() && pDto.getMedioPago().getId().equals(pago.getMedioPago().getId()))
 				pagoDto = pDto;
 		}
+		if (pagoDto==null) {
+			pagoDto = new PagoDto();
+			pagoDto.setComprobante(false);
+			pagoDto.setMedioPago(pago.getMedioPago());
+			pagoDto.setMonto(pago.getMonto());
+			cuota.getPagos().add(pago);
+		}
 		return pagoDto;
 	}
 
 	@Transactional
 	@Override
-	public void comprobantePago(CuotaDto cuotaDto) {
+	public void comprobantePago(List<CuotaDto> cuotas) {
 		
-		VentaHelper.calcularTotales(cuotaDto);
+		for (int i = 0; i < cuotas.size(); i++) {
+			VentaHelper.calcularTotales(cuotas.get(i));
+		}
 
-		clienteDao.generarComprobante(cuotaDto);
+		clienteDao.generarComprobante(cuotas);
 
-		if (cuotaDto.getPagos()!=null) {
-			Iterator<PagoDto> pagosIt = cuotaDto.getPagos().iterator();
-			while (pagosIt.hasNext()){
-				PagoDto pago = pagosIt.next();
-				pago.setComprobante(true);
+		for (int i = 0; i < cuotas.size(); i++) {
+			if (cuotas.get(i).getPagos()!=null) {
+				Iterator<PagoDto> pagosIt = cuotas.get(i).getPagos().iterator();
+				while (pagosIt.hasNext()){
+					PagoDto pago = pagosIt.next();
+					pago.setComprobante(true);
+				}
 			}
+			guardarCuota(cuotas.get(i));
 		}
 		
-		guardarCuota(cuotaDto);
 	}
 	
 	

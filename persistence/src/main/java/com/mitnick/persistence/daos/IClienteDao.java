@@ -18,5 +18,5 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 
 	void cargarReporte();
 	
-	void generarComprobante(CuotaDto cuota);
+	public void generarComprobante(List<CuotaDto> cuotas);
 }

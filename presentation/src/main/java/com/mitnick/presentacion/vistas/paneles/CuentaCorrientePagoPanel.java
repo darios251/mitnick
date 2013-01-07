@@ -43,7 +43,7 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 	private static final long serialVersionUID = 1L;
 	
 	private ClienteDto cliente;
-	private CuotaDto cuota;
+	private List<CuotaDto> cuotas;
 	
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -441,36 +441,53 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 	}
 
 	public void actualizarPantalla() {
-		if(Validator.isNotNull(lblSubtotalValor)) 
-			lblSubtotalValor.setText(cuota.getTotal().toString());
-		if(Validator.isNotNull(lblTotalValor))
-			lblTotalValor.setText(cuota.getTotal().toString());
-		if(Validator.isNotNull(lblTotalPagadoValor))
-			lblTotalPagadoValor.setText(cuota.getTotalPagado().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		if(Validator.isNotNull(lblAPagarValor))
-			lblAPagarValor.setText(cuota.getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		if(Validator.isNotNull(cmbMedioPago)) {
-			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
-			
-			try {
-				medioPagoList = controller.getMediosPagoCuentaCorriente();
+		if (cuotas!=null){
+			BigDecimal total = new BigDecimal(0);
+			BigDecimal subtotal = new BigDecimal(0);
+			BigDecimal pagado = new BigDecimal(0);
+			BigDecimal aPagar = new BigDecimal(0);
+			List<PagoDto> pagos = new ArrayList<PagoDto>();
+			for (int i = 0; i < cuotas.size(); i++) {
+				CuotaDto cuota = cuotas.get(i);
+				total = total.add(cuota.getTotal());
+				subtotal = subtotal.add(cuota.getTotal());
+				pagado = pagado.add(cuota.getTotalPagado());
+				aPagar = aPagar.add(cuota.getFaltaPagar());
+				pagos.addAll(cuota.getPagos());
 			}
-			catch(BusinessException e) {
-				// TODO: MANEJAR ESTA EXCEPCIÓN;
-			} 
 			
-			cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());
-			((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).addItems(medioPagoList);
+			if(Validator.isNotNull(lblSubtotalValor)) 
+				lblSubtotalValor.setText(subtotal.toString());
+			if(Validator.isNotNull(lblTotalValor))
+				lblTotalValor.setText(total.toString());
+			if(Validator.isNotNull(lblTotalPagadoValor))
+				lblTotalPagadoValor.setText(pagado.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			if(Validator.isNotNull(lblAPagarValor))
+				lblAPagarValor.setText(aPagar.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			if(Validator.isNotNull(cmbMedioPago)) {
+				List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
+				
+				try {
+					medioPagoList = controller.getMediosPagoCuentaCorriente();
+				}
+				catch(BusinessException e) {
+					// TODO: MANEJAR ESTA EXCEPCIÓN;
+				} 
+				
+				cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());
+				((MitnickComboBoxModel<MedioPagoDto>)cmbMedioPago.getModel()).addItems(medioPagoList);
+			}
+			if(Validator.isNotNull(model)) {
+				model.setPagos(pagos);			
+			}
+			if(Validator.isNotNull(txtMonto)) {
+				txtMonto.setText(aPagar.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				txtMonto.requestFocus();
+				txtMonto.setSelectionStart(0);
+				txtMonto.setSelectionEnd(txtMonto.getText().length());
+			}
 		}
-		if(Validator.isNotNull(model)) {
-			model.setPagos(cuota.getPagos());			
-		}
-		if(Validator.isNotNull(txtMonto)) {
-			txtMonto.setText(cuota.getFaltaPagar().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			txtMonto.requestFocus();
-			txtMonto.setSelectionStart(0);
-			txtMonto.setSelectionEnd(txtMonto.getText().length());
-		}
+
 		
 		
 		if(Validator.isNotNull(cliente)){
@@ -556,12 +573,12 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 		this.cliente = cliente;
 	}
 
-	public CuotaDto getCuota() {
-		return cuota;
+	public List<CuotaDto> getCuotas() {
+		return cuotas;
 	}
 
-	public void setCuota(CuotaDto cuota) {
-		this.cuota = cuota;
+	public void setCuotas(List<CuotaDto> cuotas) {
+		this.cuotas = cuotas;
 	}
-	
+
 }
