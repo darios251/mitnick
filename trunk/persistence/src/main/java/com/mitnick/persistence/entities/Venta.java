@@ -3,6 +3,7 @@ package com.mitnick.persistence.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,6 +20,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
+
+import com.mitnick.utils.MitnickConstants;
 
 @Entity(name = "Venta")
 public class Venta extends BaseObject implements Serializable {
@@ -334,6 +337,28 @@ public class Venta extends BaseObject implements Serializable {
 				+ ", discriminacionIVA=" + discriminacionIVA + ", printed="
 				+ printed + ", numeroTicket=" + numeroTicket + ", tipoTicket="
 				+ tipoTicket + ", canceled=" + canceled + "]";
+	}
+	
+	public BigDecimal getPagoContado(){
+		BigDecimal total = new BigDecimal(0);
+		Iterator<Pago> pagos = getPagos().iterator();
+		while (pagos.hasNext()){
+			Pago pago = pagos.next();
+			if (!MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()))
+				total = total.add(new BigDecimal(pago.getPago()));
+		}
+		return total;
+	}
+	
+	public BigDecimal getPagoCuenta(){
+		BigDecimal total = new BigDecimal(0);
+		Iterator<Pago> pagos = getPagos().iterator();
+		while (pagos.hasNext()){
+			Pago pago = pagos.next();
+			if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()))
+				total = total.add(new BigDecimal(pago.getPago()));
+		}
+		return total;
 	}
 	
 }

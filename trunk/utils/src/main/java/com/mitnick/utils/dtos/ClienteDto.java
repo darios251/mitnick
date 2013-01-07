@@ -1,7 +1,5 @@
 package com.mitnick.utils.dtos;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.MitnickField;
 import org.hibernate.validator.constraints.MitnickField.FieldType;
 import org.hibernate.validator.constraints.Required;
@@ -97,4 +95,6 @@ public class ClienteDto extends BaseDto {
 	public void setActividad(String actividad) {
 		this.actividad = actividad;
 	}
+	
+	
 }

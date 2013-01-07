@@ -140,15 +140,6 @@ public class Cuota extends BaseObject implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "Cuota [id=" + id + ", fecha_pagar=" + fecha_pagar + ", total="
-				+ total + ", venta=" + venta + ", pagos=" + pagos
-				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente
-				+ ", fechaPago=" + fechaPago + ", faltaPagar=" + faltaPagar
-				+ ", pagado=" + pagado + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -245,8 +236,15 @@ public class Cuota extends BaseObject implements Serializable {
 		return true;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+		return "Cuota [id=" + id + ", fecha_pagar=" + fecha_pagar + ", total="
+				+ total + ", venta=" + venta + ", pagos=" + pagos
+				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente
+				+ ", fechaPago=" + fechaPago + ", faltaPagar=" + faltaPagar
+				+ ", pagado=" + pagado + "]";
+	}
+
 	
 	
 }

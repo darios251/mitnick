@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,8 +32,11 @@ import org.springframework.stereotype.Repository;
 
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Empresa;
+import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.servicio.servicios.dtos.ReporteMovimientoClienteDto;
 import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -53,6 +57,9 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 
 	@Autowired
 	protected ICuotaDao cuotaDao;
+	
+	@Autowired
+	protected IVentaDAO ventaDao;
 
 	public ClienteDao() {
 		super(Cliente.class);
@@ -70,7 +77,20 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public Cliente findById(Long id) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
+		
+		if(Validator.isNotNull(id)){
+			criteria.add(Restrictions.eq("id", id));
+		}
+		criteria.add(Restrictions.eq("eliminado", false));	
+		List<Cliente> clientes = getHibernateTemplate().findByCriteria(criteria);
+		if (clientes!=null && !clientes.isEmpty())
+			return clientes.get(0);
+		return null;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cliente> findByFiltro(ConsultaClienteDto filtro) {
@@ -161,7 +181,16 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			parameters.put("total", pagoComprobante.toString());
 			parameters.put("saldoPendiente", saldoPendiente.toString());
 			
+			Comprobante comprobante = new Comprobante();
+			comprobante.setFecha(new Date());
+			comprobante.setTotal(pagoComprobante);
+			Cliente clienteObject = findById(cliente.getId());
+			clienteObject.addComprobante(comprobante);
+			clienteObject = saveOrUpdate(clienteObject);
 			super.getHibernateTemplate().flush();
+			Long idComprobante = clienteObject.getComprobantes().get(clienteObject.getComprobantes().size()-1).getId();
+			parameters.put("nroComprobante", idComprobante.toString());
+			
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
@@ -171,7 +200,9 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 			exporter.exportReport();
 			
 			File file = new File(cuotas.get(0).getId() + "-comprobante.pdf");
+			
 			Desktop.getDesktop().open(file);
+			
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -204,4 +235,34 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
 
+	public void reporteMovimientosCliente(Cliente cliente){
+		List<Venta> ventas = ventaDao.findByClient(cliente.getId());
+		List<ReporteMovimientoClienteDto> movimientos = new ArrayList<ReporteMovimientoClienteDto>();
+		for (int i = 0; i < ventas.size(); i++) {
+			Venta venta = ventas.get(i);
+			ReporteMovimientoClienteDto movimiento = new ReporteMovimientoClienteDto();
+			movimiento.setMonto(venta.getTotal());
+			String nro = venta.getNumeroTicket();
+			movimiento.setNroComprobante("Fact-" + nro);
+			movimiento.setFecha(venta.getFecha());
+			movimiento.setDebe(venta.getPagoContado());
+			movimiento.setHaber(venta.getPagoCuenta());
+		}
+		List<Comprobante> comprobantes = cliente.getComprobantes();
+		for (int j = 0; j < comprobantes.size(); j++) {
+			Comprobante comprobante = comprobantes.get(j);
+			ReporteMovimientoClienteDto movimiento = new ReporteMovimientoClienteDto();
+			movimiento.setMonto(comprobante.getTotal());
+			String nro = comprobante.getId().toString();
+			movimiento.setNroComprobante("Comp-" + nro);
+			movimiento.setFecha(comprobante.getFecha());
+			movimiento.setHaber(comprobante.getTotal());
+		}		
+		movimientos = orderByDate(movimientos);
+	}
+	
+	private List<ReporteMovimientoClienteDto> orderByDate(List<ReporteMovimientoClienteDto> movimientos){
+		return movimientos;
+	}
+	
 }

@@ -22,5 +22,7 @@ public interface ICuotaDao extends GenericDao<Cuota, Long>{
 	public List<Cuota> findByFiltro(ReportesDto filtro);
 	
 	public BigDecimal getSaldoPendiente(Long cliente);
+	
+	public List<Cuota> getCuotaByClient(Long cliente);
 
 }

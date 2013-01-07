@@ -530,7 +530,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		pagoDto.setId(pago.getId());
 		pagoDto.setComprobante(pago.isComprobante());
 		pagoDto.setMedioPago(getDtoFromEntity(pago.getMedioPago()));
-		pagoDto.setMonto(new BigDecimal(pago.getPago()));
+		pagoDto.setMonto(new BigDecimal(pago.getPago()));		
 		return pagoDto;
 	}
 	

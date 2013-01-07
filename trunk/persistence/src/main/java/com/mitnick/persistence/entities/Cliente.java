@@ -1,7 +1,9 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,14 +11,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
-import org.hibernate.validator.constraints.MitnickField;
-import org.hibernate.validator.constraints.MitnickField.FieldType;
 
 @Entity(name = "Cliente")
 public class Cliente extends BaseObject implements Serializable {
@@ -55,6 +57,20 @@ public class Cliente extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "direccion_id")
 	private Direccion direccion;
 	
+	@OneToMany (cascade = {CascadeType.ALL})
+	@JoinColumn(name = "comprobante_id")
+	private List<Comprobante> comprobantes;
+	
+	public List<Comprobante> getComprobantes() {
+		if (comprobantes==null)
+			comprobantes = new ArrayList<Comprobante>();
+		return comprobantes;
+	}
+
+	public void setComprobantes(List<Comprobante> comprobantes) {
+		this.comprobantes = comprobantes;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -141,6 +157,8 @@ public class Cliente extends BaseObject implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((actividad == null) ? 0 : actividad.hashCode());
+		result = prime * result
+				+ ((comprobantes == null) ? 0 : comprobantes.hashCode());
 		result = prime * result + ((cuit == null) ? 0 : cuit.hashCode());
 		result = prime * result
 				+ ((direccion == null) ? 0 : direccion.hashCode());
@@ -174,6 +192,13 @@ public class Cliente extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!actividad.equals(other.actividad)) {
+			return false;
+		}
+		if (comprobantes == null) {
+			if (other.comprobantes != null) {
+				return false;
+			}
+		} else if (!comprobantes.equals(other.comprobantes)) {
 			return false;
 		}
 		if (cuit == null) {
@@ -244,8 +269,13 @@ public class Cliente extends BaseObject implements Serializable {
 				+ actividad + ", documento=" + documento + ", cuit=" + cuit
 				+ ", telefono=" + telefono + ", email=" + email
 				+ ", eliminado=" + eliminado + ", fechaNacimiento="
-				+ fechaNacimiento + ", direccion=" + direccion + "]";
+				+ fechaNacimiento + ", direccion=" + direccion
+				+ ", comprobantes=" + comprobantes + "]";
 	}
 
+	public void addComprobante(Comprobante comprobante){
+		getComprobantes().add(comprobante);
+		
+	}
 	
 }
