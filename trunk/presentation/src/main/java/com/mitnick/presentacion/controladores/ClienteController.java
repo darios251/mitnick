@@ -1,6 +1,7 @@
 package com.mitnick.presentacion.controladores;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,12 @@ public class ClienteController extends BaseController {
 	
 	public void mostrarCuentaCorrientePagoPanel() {
 		ultimoPanelMostrado = cuentaCorrientePagoPanel;
-		int index = getCuentaCorrientePanel().getTable().getSelectedRow();
-		CuotaDto cuotaDto = getCuentaCorrientePanel().getModel().getCuota(index);
-		cuentaCorrientePagoPanel.setCuota(cuotaDto);
+		int[] indexs = getCuentaCorrientePanel().getTable().getSelectedRows();
+		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
+		for (int i = 0; i < indexs.length; i++) {
+			cuotas.add(getCuentaCorrientePanel().getModel().getCuota(indexs[i]));
+		}
+		cuentaCorrientePagoPanel.setCuotas(cuotas);
 		cuentaCorrientePagoPanel.setCliente(cuentaCorrientePanel.getCliente());
 		cuentaCorrientePanel.setVisible(false);
 		cuentaCorrientePagoPanel.setVisible(true);
@@ -299,8 +303,8 @@ public class ClienteController extends BaseController {
 		logger.debug("Entrado al método quitarPago, con pago: " + pagoDto);
 		
 		try {
-			CuotaDto cuota = getClienteServicio().quitarPago(pagoDto, cuentaCorrientePagoPanel.getCuota());
-			cuentaCorrientePagoPanel.setCuota(cuota);
+			List<CuotaDto> cuotas = getClienteServicio().quitarPago(pagoDto, cuentaCorrientePagoPanel.getCuotas());
+			cuentaCorrientePagoPanel.setCuotas(cuotas);
 			cuentaCorrientePagoPanel.actualizarPantalla();
 		}
 		catch(BusinessException e) {
@@ -323,8 +327,8 @@ public class ClienteController extends BaseController {
 		pago.setMonto(new BigDecimal(monto));
 		
 		try {
-			CuotaDto cuota = getClienteServicio().agregarPago(pago, cuentaCorrientePagoPanel.getCuota());
-			cuentaCorrientePagoPanel.setCuota(cuota);
+			List<CuotaDto> cuotas = getClienteServicio().agregarPago(pago, cuentaCorrientePagoPanel.getCuotas());
+			cuentaCorrientePagoPanel.setCuotas(cuotas);
 			cuentaCorrientePagoPanel.actualizarPantalla();
 		}
 		catch(BusinessException e) {
@@ -338,7 +342,7 @@ public class ClienteController extends BaseController {
 	
 	public void finalizarPagoCuotaParcial() {
 		try {
-			getClienteServicio().comprobantePago(getCuentaCorrientePagoPanel().getCuota());
+			getClienteServicio().comprobantePago(getCuentaCorrientePagoPanel().getCuotas());
 		}
 		catch(BusinessException e) {
 			int opcion = getCuentaCorrientePagoPanel().mostrarMensajeReintentar();
@@ -359,7 +363,7 @@ public class ClienteController extends BaseController {
 	private void finalizarPagoCuota() {
 		if(checkFinalizarPagoCuota()) {
 			try {
-				getClienteServicio().comprobantePago(getCuentaCorrientePagoPanel().getCuota());
+				getClienteServicio().comprobantePago(getCuentaCorrientePagoPanel().getCuotas());
 			}
 			catch(BusinessException e) {
 				int opcion = getCuentaCorrientePagoPanel().mostrarMensajeReintentar();
@@ -378,11 +382,12 @@ public class ClienteController extends BaseController {
 	}	
 	
 	private boolean checkFinalizarPagoCuota() {
-		if(getCuentaCorrientePagoPanel().getCuota() != null && (getCuentaCorrientePagoPanel().getCuota().getPagos() == null || getCuentaCorrientePagoPanel().getCuota().getPagos().isEmpty()))
-			return false;
-		if(!getCuentaCorrientePagoPanel().getCuota().isPagado())
-			return false;
-		
+		List<CuotaDto> cuotas = getCuentaCorrientePagoPanel().getCuotas(); 
+		for (int i = 0; i < cuotas.size(); i++) {
+			CuotaDto cuota = cuotas.get(i);
+			if(!cuota.isPagado())
+				return false;
+		}		
 		return true;
 	}
 	
