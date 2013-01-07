@@ -1,8 +1,8 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +30,9 @@ public class Pago extends BaseObject implements Serializable {
 	
 	@Column(name = "comprobante", nullable = false)
 	private boolean comprobante = false;
+	
+	@Column(name = "fecha", nullable = true)
+	private Date fecha;
 	
 	public Long getId() {
 		return id;
@@ -63,10 +66,12 @@ public class Pago extends BaseObject implements Serializable {
 		this.comprobante = comprobante;
 	}
 
-	@Override
-	public String toString() {
-		return "Pago [id=" + id + ", medioPago=" + medioPago + ", pago=" + pago
-				+ ", comprobante=" + comprobante + "]";
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 
 	@Override
@@ -74,6 +79,7 @@ public class Pago extends BaseObject implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (comprobante ? 1231 : 1237);
+		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((medioPago == null) ? 0 : medioPago.hashCode());
@@ -94,6 +100,13 @@ public class Pago extends BaseObject implements Serializable {
 		}
 		Pago other = (Pago) obj;
 		if (comprobante != other.comprobante) {
+			return false;
+		}
+		if (fecha == null) {
+			if (other.fecha != null) {
+				return false;
+			}
+		} else if (!fecha.equals(other.fecha)) {
 			return false;
 		}
 		if (id == null) {
@@ -120,6 +133,10 @@ public class Pago extends BaseObject implements Serializable {
 		return true;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Pago [id=" + id + ", medioPago=" + medioPago + ", pago=" + pago
+				+ ", comprobante=" + comprobante + ", fecha=" + fecha + "]";
+	}
 
 }

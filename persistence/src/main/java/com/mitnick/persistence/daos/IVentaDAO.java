@@ -15,4 +15,6 @@ public interface IVentaDAO extends GenericDao<Venta, Long>{
 	
 	void generarFactura(Venta venta);
 	
+	List<Venta> findByClient(Long cliente);
+	
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="2.1435888100000025"/>
-	<property name="ireport.x" value="565"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="336"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -97,6 +97,7 @@ WHERE
 	<parameter name="total" class="java.lang.String"/>
 	<parameter name="saldoPendiente" class="java.lang.String"/>
 	<parameter name="saldoTotal" class="java.lang.String"/>
+	<parameter name="nroComprobante" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -248,10 +249,22 @@ WHERE
 				<text><![CDATA[Detalle de Valores Recibidos...]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="385d8ad9-784e-439e-ad54-df3aff123db4" x="2" y="20" width="156" height="20"/>
+				<reportElement uuid="385d8ad9-784e-439e-ad54-df3aff123db4" x="2" y="1" width="156" height="20"/>
 				<textElement/>
 				<text><![CDATA[Detalle de Comprobantes...]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="3" y="21" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nro Comprobante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="30e7dcab-c21d-4abb-9e3f-dca864bb7345" x="102" y="21" width="145" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nroComprobante}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>

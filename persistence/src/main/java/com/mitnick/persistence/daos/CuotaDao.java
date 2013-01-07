@@ -55,7 +55,7 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		
 		criteria.addOrder(Order.asc("fecha_pagar"));
 		return getHibernateTemplate().findByCriteria(criteria);
-	}
+	}	
 
 	@SuppressWarnings("unchecked")
 	public List<Cuota> getCuotaPagas(ReportesDto filtro){
@@ -71,6 +71,19 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		criteria.add(Restrictions.eq("pagado", true));
 		criteria.addOrder(Order.desc("fechaPago"));
 		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cuota> getCuotaByClient(Long cliente){
+		DetachedCriteria criteria = DetachedCriteria.forClass(Cuota.class);
+
+		criteria.createAlias("cliente", "c");
+		if(Validator.isNotNull(cliente)){
+			criteria.add(Restrictions.eq("c.id", cliente));
+		}
+		
+		criteria.addOrder(Order.asc("fecha_pagar"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
