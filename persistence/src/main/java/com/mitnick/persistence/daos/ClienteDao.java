@@ -193,7 +193,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements IC
 	
 	private PagoDto getPagoMedioPago(List<PagoDto> pagos, PagoDto pago){
 		for (int i = 0; i < pagos.size(); i++) {
-			if (pagos.get(i).getMedioPago().equals(pago.getMedioPago()))
+			if (pagos.get(i).getMedioPago().getCodigo().equals(pago.getMedioPago().getCodigo()))
 				return pagos.get(i);
 		}
 		return null;
