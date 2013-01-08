@@ -396,6 +396,24 @@ public class ClienteController extends BaseController {
 		return pagos;
 	}
 	
+	public void reporteMovimientosCliente(){
+		ClienteDto clienteDto = null;
+		try {
+			int index = getClientePanel().getTable().getSelectedRow();
+			clienteDto = getClientePanel().getModel().getCliente(index);
+			getClienteServicio().reporteMovimientosCliente(clienteDto);
+		} catch (IndexOutOfBoundsException exception) {
+				if(getClientePanel().getModel().getRowCount() == 0) {
+					throw new PresentationException("error.clientePanel.clientes.movimientos.vacio");
+				}
+				else {
+					throw new PresentationException("error.clientePanel.cliente.movimientos.noSeleccionado");
+				}
+			} catch(BusinessException e) {
+				throw new PresentationException(e.getMessage(), "Hubo un error al intentar mostrar los movimientos el cliente");
+			}
+	}
+	
 	public List<MedioPagoDto> getMediosPagoCuentaCorriente() {
 		List<MedioPagoDto> pagos = getMedioPagoServicio().obtenerMediosPagosCuentaCorriente();		
 		return pagos;
