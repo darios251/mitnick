@@ -52,4 +52,7 @@ public interface IClienteServicio {
 	@Secured(value={"ROLE_ADMIN"})
 	public void comprobantePago(List<CuotaDto> cuotaDto);
 	
+	@Secured(value={"ROLE_ADMIN"})
+	public void reporteMovimientosCliente(ClienteDto cliente);
+	
 }

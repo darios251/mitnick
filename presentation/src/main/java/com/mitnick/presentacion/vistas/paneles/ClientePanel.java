@@ -50,6 +50,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	private JTextField txtNumeroCtaCte;
 	private JButton btnEstadoCuenta;
 	private JButton btnCuentaCorriente;
+	private JButton btnMovimientos;
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
 
@@ -97,13 +98,14 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		add(getBtnModificar());
 		add(getBtnEliminar());
 		add(getBtnEstadoCuenta());
+		add(getBtnMovimientos());
 		add(getBtnCuentaCorriente());
 		
 		setFocusTraversalPolicy();
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNumeroCtaCte, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNumeroCtaCte, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente, btnMovimientos }));
 	}
 
 	protected void consultarClientes() {
@@ -183,7 +185,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnNuevo.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnNuevo.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnNuevo.setMargin(new Insets(-1, -1, -1, -1));
-			btnNuevo.setBounds(735, 115, 60, 60);
+			btnNuevo.setBounds(735, 55, 60, 60);
 
 			btnNuevo.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
@@ -203,7 +205,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnModificar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnModificar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnModificar.setMargin(new Insets(-1, -1, -1, -1));
-			btnModificar.setBounds(735, 185, 60, 60);
+			btnModificar.setBounds(735, 125, 60, 60);
 
 			btnModificar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -227,7 +229,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
-			btnEliminar.setBounds(735, 255, 60, 60);
+			btnEliminar.setBounds(735, 195, 60, 60);
 
 			btnEliminar.addActionListener(new ActionListener() {
 				@Override
@@ -291,7 +293,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnEstadoCuenta.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnEstadoCuenta.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
-			btnEstadoCuenta.setBounds(735, 325, 60, 60);
+			btnEstadoCuenta.setBounds(735, 265, 60, 60);
 			btnEstadoCuenta.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					controller.cargarReporte();
@@ -310,7 +312,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnCuentaCorriente.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnCuentaCorriente.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCuentaCorriente.setMargin(new Insets(-1, -1, -1, -1));
-			btnCuentaCorriente.setBounds(735, 396, 60, 60);
+			btnCuentaCorriente.setBounds(735, 336, 60, 60);
 			btnCuentaCorriente.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
@@ -325,6 +327,29 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		return btnCuentaCorriente;
 	}
 
+	public JButton getBtnMovimientos() {
+		if(btnMovimientos == null) {
+			btnMovimientos = new JButton(PropertiesManager.getProperty("pagoPanel.boton.movimientos"));
+			btnMovimientos.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.movimientos"));
+			btnMovimientos.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnMovimientos.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnMovimientos.setMargin(new Insets(-1, -1, -1, -1));
+			btnMovimientos.setBounds(735, 407, 60, 60);
+			btnMovimientos.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
+			btnMovimientos.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						controller.reporteMovimientosCliente();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnMovimientos;
+	}
+	
 	public TableRowSorter<ClienteTableModel> getSorter() {
 		if (sorter == null) {
 			sorter = new TableRowSorter<ClienteTableModel>(getModel());

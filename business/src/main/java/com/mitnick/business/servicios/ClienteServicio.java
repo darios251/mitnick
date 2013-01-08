@@ -282,5 +282,9 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		
 	}
 	
+	public void reporteMovimientosCliente(ClienteDto cliente){
+		clienteDao.reporteMovimientosCliente(cliente);
+	}
+	
 	
 }
