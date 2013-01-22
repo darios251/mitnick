@@ -301,4 +301,12 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		ventaDao.saveOrUpdate(venta);
 	}
+	
+	public VentaDto getVentaByNroFactura(String nroTicket){
+		Venta venta = ventaDao.findByNumeroFactura(nroTicket);
+		if (venta!=null)
+			return (VentaDto) entityDTOParser.getDtoFromEntity(venta);
+		return null;
+	}
 }
+

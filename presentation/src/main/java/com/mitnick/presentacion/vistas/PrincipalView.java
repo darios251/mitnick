@@ -37,6 +37,7 @@ import com.mitnick.presentacion.controladores.ProveedorController;
 import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.controladores.ReportesController;
 import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
 import com.mitnick.presentacion.vistas.paneles.ConfiguracionImpresoraDialog;
@@ -44,6 +45,8 @@ import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.View;
+import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 @View("principalView")
 public class PrincipalView extends JFrame
@@ -72,7 +75,7 @@ public class PrincipalView extends JFrame
 	private DetailPanel pnlPrincipal;
 	private DetailPanel pnlToolBar;
 	
-	private JTabbedPaneConBoton jTabbedPaneConBoton;
+	public JTabbedPaneConBoton jTabbedPaneConBoton;
 	
 	private JPanel jContentPane;
 	private JPanel pnlToolBarArrow;
@@ -234,10 +237,21 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
+					String nroTicket = JOptionPane.showInputDialog(PropertiesManager.getProperty("ventaPanel.devolucion.nroTicket"));
+					VentaDto venta = ventaController.getVentaByNroFactura(nroTicket);
+					ClienteDto cliente = null;
+					if (venta==null){
+						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.noTicketOriginal"), "Error", JOptionPane.DEFAULT_OPTION);
+						if (option == JOptionPane.CANCEL_OPTION)
+							return;						
+					} else {
+						cliente = venta.getCliente();
+					}
 					if (getJTabbedPane().indexOfComponent(ventaController.getVentaView()) == -1) {
 						logger.info("Agregando el panel de ventas al tabbedPane");
-						getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
+						getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
 						ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
+						VentaManager.getVentaActual().setCliente(cliente);
 					}
 					logger.info("Mostrando el panel de ventas");
 					

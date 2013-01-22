@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.utils.VentaManager;
+import com.mitnick.presentacion.vistas.PrincipalView;
 import com.mitnick.presentacion.vistas.VentaView;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
@@ -31,10 +32,14 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 @Controller("ventaController")
 public class VentaController extends BaseController {
 
+	@Autowired
+	private PrincipalView principalView;
+	
 	@Autowired
 	private VentaView ventaView;
 	@Autowired
@@ -419,6 +424,10 @@ public class VentaController extends BaseController {
 		return ventaView;
 	}
 
+	public PrincipalView getPrincipalView() {
+		return principalView;
+	}
+
 	public VentaPanel getVentaPanel() {
 		return ventaPanel;
 	}
@@ -461,6 +470,10 @@ public class VentaController extends BaseController {
 
 	public ClienteNuevoPanel getClienteNuevoPanel() {
 		return clienteNuevoPanel;
+	}
+	
+	public VentaDto getVentaByNroFactura(String nroTicket){
+		return ventaServicio.getVentaByNroFactura(nroTicket);
 	}
 	
 }

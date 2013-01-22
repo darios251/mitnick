@@ -17,4 +17,6 @@ public interface IVentaDAO extends GenericDao<Venta, Long>{
 	
 	List<Venta> findByClient(Long cliente);
 	
+	public Venta findByNumeroFactura(String numeroTicket);
+	
 }

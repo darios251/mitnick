@@ -30,6 +30,7 @@ import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.PagoTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
+import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
@@ -473,10 +474,17 @@ public class PagoPanel extends BasePanel<VentaController> {
 
 	public void finalizarVenta() {
 		try {
-			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
-			((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
-			((VentaController) controller).limpiarVenta();
-			((VentaController) controller).mostrarVentasPanel();
+			int tipo = VentaManager.getVentaActual().getTipo();
+			if (tipo == MitnickConstants.VENTA){
+				mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
+				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
+				((VentaController) controller).limpiarVenta();
+				((VentaController) controller).mostrarVentasPanel();
+			} else {
+				((VentaController) controller).limpiarVenta();
+				JTabbedPaneConBoton jTabbedPaneConBoton = ((VentaController) controller).getPrincipalView().jTabbedPaneConBoton;
+				jTabbedPaneConBoton.remove(jTabbedPaneConBoton.getSelectedIndex());				
+			}
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
