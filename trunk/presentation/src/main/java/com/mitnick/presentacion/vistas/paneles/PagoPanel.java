@@ -31,6 +31,7 @@ import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.PagoTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.FocusTraversalOnArray;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -473,7 +474,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 	public void finalizarVenta() {
 		try {
 			mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
-			((VentaController) controller).crearNuevaVenta();
+			((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
 			((VentaController) controller).limpiarVenta();
 			((VentaController) controller).mostrarVentasPanel();
 		} catch (PresentationException ex) {

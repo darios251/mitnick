@@ -27,7 +27,7 @@ import com.mitnick.utils.MitnickConstants;
 public class Venta extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
@@ -79,6 +79,17 @@ public class Venta extends BaseObject implements Serializable {
 	
 	@Column(name= "canceled", nullable = false)
 	private boolean canceled;
+	
+	@Column(name= "tipo", nullable = false)
+	private int tipo;
+
+	public int getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
 
 	public Long getId() {
 		return id;
@@ -235,6 +246,7 @@ public class Venta extends BaseObject implements Serializable {
 				+ ((productos == null) ? 0 : productos.hashCode());
 		result = prime * result
 				+ ((subtotal == null) ? 0 : subtotal.hashCode());
+		result = prime * result + tipo;
 		result = prime * result
 				+ ((tipoTicket == null) ? 0 : tipoTicket.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
@@ -243,87 +255,123 @@ public class Venta extends BaseObject implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (!(obj instanceof Venta)) {
 			return false;
+		}
 		Venta other = (Venta) obj;
 		if (ajusteRedondeo == null) {
-			if (other.ajusteRedondeo != null)
+			if (other.ajusteRedondeo != null) {
 				return false;
-		} else if (!ajusteRedondeo.equals(other.ajusteRedondeo))
+			}
+		} else if (!ajusteRedondeo.equals(other.ajusteRedondeo)) {
 			return false;
-		if (canceled != other.canceled)
+		}
+		if (canceled != other.canceled) {
 			return false;
+		}
 		if (cliente == null) {
-			if (other.cliente != null)
+			if (other.cliente != null) {
 				return false;
-		} else if (!cliente.equals(other.cliente))
+			}
+		} else if (!cliente.equals(other.cliente)) {
 			return false;
+		}
 		if (cuotas == null) {
-			if (other.cuotas != null)
+			if (other.cuotas != null) {
 				return false;
-		} else if (!cuotas.equals(other.cuotas))
+			}
+		} else if (!cuotas.equals(other.cuotas)) {
 			return false;
+		}
 		if (descuento == null) {
-			if (other.descuento != null)
+			if (other.descuento != null) {
 				return false;
-		} else if (!descuento.equals(other.descuento))
+			}
+		} else if (!descuento.equals(other.descuento)) {
 			return false;
+		}
 		if (discriminacionIVA == null) {
-			if (other.discriminacionIVA != null)
+			if (other.discriminacionIVA != null) {
 				return false;
-		} else if (!discriminacionIVA.equals(other.discriminacionIVA))
+			}
+		} else if (!discriminacionIVA.equals(other.discriminacionIVA)) {
 			return false;
+		}
 		if (fecha == null) {
-			if (other.fecha != null)
+			if (other.fecha != null) {
 				return false;
-		} else if (!fecha.equals(other.fecha))
+			}
+		} else if (!fecha.equals(other.fecha)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (impuesto == null) {
-			if (other.impuesto != null)
+			if (other.impuesto != null) {
 				return false;
-		} else if (!impuesto.equals(other.impuesto))
+			}
+		} else if (!impuesto.equals(other.impuesto)) {
 			return false;
+		}
 		if (numeroTicket == null) {
-			if (other.numeroTicket != null)
+			if (other.numeroTicket != null) {
 				return false;
-		} else if (!numeroTicket.equals(other.numeroTicket))
+			}
+		} else if (!numeroTicket.equals(other.numeroTicket)) {
 			return false;
+		}
 		if (pagos == null) {
-			if (other.pagos != null)
+			if (other.pagos != null) {
 				return false;
-		} else if (!pagos.equals(other.pagos))
+			}
+		} else if (!pagos.equals(other.pagos)) {
 			return false;
-		if (printed != other.printed)
+		}
+		if (printed != other.printed) {
 			return false;
+		}
 		if (productos == null) {
-			if (other.productos != null)
+			if (other.productos != null) {
 				return false;
-		} else if (!productos.equals(other.productos))
+			}
+		} else if (!productos.equals(other.productos)) {
 			return false;
+		}
 		if (subtotal == null) {
-			if (other.subtotal != null)
+			if (other.subtotal != null) {
 				return false;
-		} else if (!subtotal.equals(other.subtotal))
+			}
+		} else if (!subtotal.equals(other.subtotal)) {
 			return false;
+		}
+		if (tipo != other.tipo) {
+			return false;
+		}
 		if (tipoTicket == null) {
-			if (other.tipoTicket != null)
+			if (other.tipoTicket != null) {
 				return false;
-		} else if (!tipoTicket.equals(other.tipoTicket))
+			}
+		} else if (!tipoTicket.equals(other.tipoTicket)) {
 			return false;
+		}
 		if (total == null) {
-			if (other.total != null)
+			if (other.total != null) {
 				return false;
-		} else if (!total.equals(other.total))
+			}
+		} else if (!total.equals(other.total)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -336,7 +384,8 @@ public class Venta extends BaseObject implements Serializable {
 				+ total + ", cliente=" + cliente + ", cuotas=" + cuotas
 				+ ", discriminacionIVA=" + discriminacionIVA + ", printed="
 				+ printed + ", numeroTicket=" + numeroTicket + ", tipoTicket="
-				+ tipoTicket + ", canceled=" + canceled + "]";
+				+ tipoTicket + ", canceled=" + canceled + ", tipo=" + tipo
+				+ "]";
 	}
 	
 	public BigDecimal getPagoContado(){

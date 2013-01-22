@@ -28,6 +28,9 @@ public class MitnickConstants {
 	public static final int PANEL_ICON_WIDTH = Integer.parseInt(PropertiesManager.getProperty("application.panel.icon.width"));
 	public static final int PANEL_ICON_HEIGHT = Integer.parseInt(PropertiesManager.getProperty("application.panel.icon.height"));
 	
+	public static int VENTA = 1;
+	public static int DEVOLUCION = 2;
+
 	public class Role {
 		public static final String ADMIN = "ROLE_ADMIN";
 		

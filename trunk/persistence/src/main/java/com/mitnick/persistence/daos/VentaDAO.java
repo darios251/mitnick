@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 
 @Repository("ventaDao")
@@ -44,6 +45,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
+		criteria.add(Restrictions.eq("tipo", MitnickConstants.VENTA));
 		
 		criteria.addOrder(Order.desc("fecha"));
 		return getHibernateTemplate().findByCriteria(criteria);
@@ -60,7 +62,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		criteria.createAlias("cliente", "c");
 		if(Validator.isNotNull(cliente)){
 			criteria.add(Restrictions.eq("c.id", cliente));
-		}
+		}		
 
 		return getHibernateTemplate().findByCriteria(criteria);
 	}

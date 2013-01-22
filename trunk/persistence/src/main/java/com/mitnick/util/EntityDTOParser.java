@@ -81,7 +81,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	protected ICuotaDao cuotaDao;
 
 	private String AJUSTE = "Ajuste Manual";
-
+	private String DEVOLUCION = "Devolución";
 	private String VENTA = "Venta";
 	
 	public List<D> getDtosFromEntities(List<E> entities) {
@@ -370,9 +370,11 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		movimientoDto.setStock(movimiento.getStockAlaFecha());
 		if (movimiento.getTipo() == Movimiento.AJUSTE)
 			movimientoDto.setTipo(AJUSTE);
-		else {
+		else if (movimiento.getTipo() == Movimiento.VENTA){
 			movimientoDto.setTipo(VENTA);
 			movimientoDto.setCantidad(movimiento.getCantidad()*-1);
+		} else if (movimiento.getTipo() == Movimiento.DEVOLUCION) {
+			movimientoDto.setTipo(DEVOLUCION);
 		}
 			
 		return movimientoDto;
@@ -385,6 +387,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		
 		ventaDto.setProductos((List<ProductoVentaDto>) getDtosFromEntities((List<E>) venta.getProductos()));
 		
+		ventaDto.setTipo(venta.getTipo());
 		ventaDto.setSubTotal(venta.getSubtotal());
 		ventaDto.setTotal(venta.getTotal());
 		ventaDto.setImpuesto(venta.getImpuesto());
@@ -443,7 +446,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());
-
+		venta.setTipo(ventaDto.getTipo());
 		List<ProductoVenta> productos = new ArrayList<ProductoVenta>();
 		for (ProductoVentaDto productoDto : ventaDto.getProductos())
 			productos.add(getEntityFromDto(productoDto));

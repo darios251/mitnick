@@ -45,6 +45,16 @@ public class VentaDto extends BaseDto {
 	
 	private boolean cancelada;
 	
+	private int tipo;
+	
+	public int getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
+
 	private long tipoResponsabilidad = MitnickConstants.CONSUMIDOR_FINAL;
 	
 	public List<ProductoVentaDto> getProductos() {
@@ -209,8 +219,8 @@ public class VentaDto extends BaseDto {
 				+ ", faltaPagar=" + faltaPagar + ", vuelto=" + vuelto
 				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket
 				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa
-				+ ", cancelada=" + cancelada + ", tipoResponsabilidad="
-				+ tipoResponsabilidad + "]";
+				+ ", cancelada=" + cancelada + ", tipo=" + tipo
+				+ ", tipoResponsabilidad=" + tipoResponsabilidad + "]";
 	}
 
 }

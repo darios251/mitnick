@@ -23,6 +23,7 @@ public class Movimiento extends BaseObject implements Serializable {
 	
 	public static int AJUSTE = 1;
 	public static int VENTA = 2;
+	public static int DEVOLUCION = 3;
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
