@@ -6,4 +6,6 @@ import com.mitnick.persistence.entities.DiscriminacionIVA;
 
 
 public interface IDiscriminacionIVADao extends GenericDao<DiscriminacionIVA, Long>{
+	
+	DiscriminacionIVA findDiscriminacionIVAporCodigo(String codigo);
 }

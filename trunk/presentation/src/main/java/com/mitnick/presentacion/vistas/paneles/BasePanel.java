@@ -193,7 +193,8 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 	
 	@Override
 	public synchronized boolean dispatchKeyEvent(KeyEvent e) {
-		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED) {
+		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED
+			&& (BaseDialog.getCurrentDialog() == null || (BaseDialog.getCurrentDialog() != null && !BaseDialog.getCurrentDialog().isVisible()))) {
 			int identityHashCode = System.identityHashCode(e);
 			if(!objectIds.contains(identityHashCode)) {
 				objectIds.add(identityHashCode);

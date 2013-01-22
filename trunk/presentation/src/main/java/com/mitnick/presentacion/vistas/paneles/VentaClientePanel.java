@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,6 +31,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.TipoCompradorDto;
 
 @Panel("ventaClientePanel")
 public class VentaClientePanel extends BasePanel<VentaController> {
@@ -50,7 +51,8 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	private JTextField txtNumeroCtaCte;
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
-	private JCheckBox chkResponsableInscripto;
+	private JLabel lblTipoComprador;
+	private JComboBox<TipoCompradorDto> cmbTipoComprador;
 	
 	@Autowired(required = true)
 	public VentaClientePanel(@Qualifier("ventaController") VentaController ventaController) {
@@ -72,7 +74,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
 		}
-		getChkConsumidorFinal().setSelected(false);
+		getCmbTipoComprador().setSelectedIndex(0);
 		deshabilitarComponentes();
 	}
 
@@ -95,7 +97,8 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		add(getBtnNuevo());
 		add(getBtnVolver());
 		
-		add(getChkConsumidorFinal());
+		add(getLblTipoComprador());
+		add(getCmbTipoComprador());
 		
 		setFocusTraversalPolicy();
 	}
@@ -105,7 +108,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		if (txtNumeroDocumento == null) {
 			txtNumeroDocumento = new JTextField();
 			txtNumeroDocumento.setColumns(10);
-			txtNumeroDocumento.setBounds(269, 15, 110, 20);
+			txtNumeroDocumento.setBounds(170, 55, 110, 20);
 		}
 		return txtNumeroDocumento;
 	}
@@ -175,7 +178,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	public JLabel getLblNumeroDocumento() {
 		if (lblNumeroDocumento == null) {
 			lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
-			lblNumeroDocumento.setBounds(174, 15, 85, 20);
+			lblNumeroDocumento.setBounds(25, 55, 85, 20);
 		}
 		return lblNumeroDocumento;
 	}
@@ -262,15 +265,34 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		}
 		return sorter;
 	}
+	
+	public JLabel getLblTipoComprador() {
+		if (lblTipoComprador == null) {
+			lblTipoComprador = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.tipoComprador"));
+			lblTipoComprador.setBounds(25, 15, 85, 23);
+		}
+		return lblTipoComprador;
+	}
 
-	public JCheckBox getChkConsumidorFinal() {
-		if (chkResponsableInscripto == null) {
-			chkResponsableInscripto = new JCheckBox(PropertiesManager.getProperty("ventaClientePanel.etiqueta.responsableInscripto"));
-			chkResponsableInscripto.setBounds(25, 28, 135, 23);
-			chkResponsableInscripto.addActionListener(new ActionListener() {
+	public JComboBox<TipoCompradorDto> getCmbTipoComprador() {
+		if (cmbTipoComprador == null) {
+			cmbTipoComprador = new JComboBox<TipoCompradorDto>();// PropertiesManager.getProperty("ventaClientePanel.etiqueta.responsableInscripto")
+			cmbTipoComprador.setBounds(170, 15, 200, 23);
+			
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.EXENTO, MitnickConstants.TipoComprador.EXENTO_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.MONOTRIBUTISTA, MitnickConstants.TipoComprador.MONOTRIBUTISTA_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.MONOTRIBUTISTA_SOCIAL, MitnickConstants.TipoComprador.MONOTRIBUTISTA_SOCIAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.NO_CATEGORIZADO, MitnickConstants.TipoComprador.NO_CATEGORIZADO_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.NO_RESPONSABLE, MitnickConstants.TipoComprador.NO_RESPONSABLE_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO, MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO_DESC));
+			
+			cmbTipoComprador.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
-						controller.setTipoResponsable(chkResponsableInscripto.isSelected());
+						controller.setTipoResponsable((TipoCompradorDto) cmbTipoComprador.getSelectedItem());
 					}
 					catch(PresentationException ex) {
 						mostrarMensaje(ex);
@@ -278,16 +300,16 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 				}
 			});
 		}
-		return chkResponsableInscripto;
+		return cmbTipoComprador;
 	}
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{chkResponsableInscripto, txtNumeroDocumento, txtNumeroCtaCte, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
+				new Component[]{cmbTipoComprador, txtNumeroDocumento, txtNumeroCtaCte, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
 	}
 	
 	protected void deshabilitarComponentes() {
-		boolean enabled = !getChkConsumidorFinal().isSelected();
+		boolean enabled = true;//!getCmbTipoComprador().isSelected();
 				
 		getTxtNombre().setEnabled(enabled);
 		getTxtNumeroCtaCte().setEnabled(enabled);
@@ -331,16 +353,16 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	@Override
 	public void actualizarPantalla() {
 		consultarClientes();
-		getChkConsumidorFinal().requestFocus();
+		getCmbTipoComprador().requestFocus();
 	}
 	
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = getChkConsumidorFinal();
+		this.defaultFocusField = getCmbTipoComprador();
 	}
 
 	public boolean isConsumidorFinal() {
-		return getChkConsumidorFinal().isSelected();
+		return MitnickConstants.TipoComprador.CONSUMIDOR_FINAL.equals(((TipoCompradorDto)getCmbTipoComprador().getSelectedItem()).getTipoComprador());
 	}
 	
 	@Override

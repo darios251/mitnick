@@ -53,6 +53,7 @@ import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
+import com.mitnick.utils.dtos.TipoCompradorDto;
 import com.mitnick.utils.dtos.TipoDto;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -409,7 +410,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setImpresa(venta.isPrinted());
 		ventaDto.setCancelada(venta.isCanceled());
 		ventaDto.setAjusteRedondeo(venta.getAjusteRedondeo());
-		ventaDto.setTipoResponsabilidad(venta.getDiscriminacionIVA().getId());
+		ventaDto.setTipoResponsabilidad(new TipoCompradorDto(venta.getDiscriminacionIVA().getCodigo(), venta.getDiscriminacionIVA().getDescripcion()));
 		
 		return ventaDto;
 	}
@@ -459,7 +460,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		venta.setPagos(pagos);
 
-		venta.setDiscriminacionIVA(discriminacionIVADao.get(ventaDto.getTipoResponsabilidad()));
+		venta.setDiscriminacionIVA(discriminacionIVADao.findDiscriminacionIVAporCodigo((ventaDto.getTipoResponsabilidad().getTipoComprador())));
 
 		venta.setImpuesto(ventaDto.getImpuesto());
 		venta.setSubtotal(ventaDto.getSubTotal());

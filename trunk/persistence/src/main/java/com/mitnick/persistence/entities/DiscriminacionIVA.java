@@ -13,10 +13,6 @@ import org.appfuse.model.BaseObject;
 @Entity(name = "Discriminacion_IVA")
 public class DiscriminacionIVA extends BaseObject implements Serializable {
 	
-	public static final long IVA_RESPONSABLE_INSCRIPTO = 1;
-	
-	public static final long CONSUMIDOR_FINAL = 2;
-
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +21,9 @@ public class DiscriminacionIVA extends BaseObject implements Serializable {
 	@Column(name = "descripcion", length = 255, nullable = false)
 	private String descripcion;
 
+	@Column(name = "codigo", nullable = false)
+	private String codigo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -41,10 +40,19 @@ public class DiscriminacionIVA extends BaseObject implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		result = prime * result
 				+ ((descripcion == null) ? 0 : descripcion.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -60,6 +68,11 @@ public class DiscriminacionIVA extends BaseObject implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		DiscriminacionIVA other = (DiscriminacionIVA) obj;
+		if (codigo == null) {
+			if (other.codigo != null)
+				return false;
+		} else if (!codigo.equals(other.codigo))
+			return false;
 		if (descripcion == null) {
 			if (other.descripcion != null)
 				return false;
@@ -76,7 +89,7 @@ public class DiscriminacionIVA extends BaseObject implements Serializable {
 	@Override
 	public String toString() {
 		return "DiscriminacionIVA [id=" + id + ", descripcion=" + descripcion
-				+ "]";
+				+ ", codigo=" + codigo + "]";
 	}
-	
+
 }

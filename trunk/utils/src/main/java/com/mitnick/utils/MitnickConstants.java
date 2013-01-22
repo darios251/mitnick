@@ -43,5 +43,29 @@ public class MitnickConstants {
 		public static final String DEBITO = PropertiesManager.getProperty("application.medio_pago.debito");
 		public static final String CREDITO = PropertiesManager.getProperty("application.medio_pago.credito");
 	}
+	
+	public static class TipoComprador {
+		public static final String RESPONSABLE_INSCRIPTO = PropertiesManager.getProperty("application.tipoComprador.responsableInscripto");
+		public static final String NO_RESPONSABLE = PropertiesManager.getProperty("application.tipoComprador.noResponsable");
+		public static final String MONOTRIBUTISTA = PropertiesManager.getProperty("application.tipoComprador.monotributista");
+		public static final String EXENTO = PropertiesManager.getProperty("application.tipoComprador.exento");
+		public static final String NO_CATEGORIZADO = PropertiesManager.getProperty("application.tipoComprador.noCategorizado");
+		public static final String CONSUMIDOR_FINAL = PropertiesManager.getProperty("application.tipoComprador.consumidorFinal");
+		public static final String MONOTRIBUTISTA_SOCIAL = PropertiesManager.getProperty("application.tipoComprador.monotributistaSocial");
+		public static final String CONTRIBUYENTE_EVENTUAL = PropertiesManager.getProperty("application.tipoComprador.contribuyenteEventual");
+		public static final String CONTRIBUYENTE_EVENTUAL_SOCIAL = PropertiesManager.getProperty("application.tipoComprador.contribuyenteEventualSocial");
+		
+		public static final String RESPONSABLE_INSCRIPTO_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.responsableInscripto");
+		public static final String NO_RESPONSABLE_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.noResponsable");
+		public static final String MONOTRIBUTISTA_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.monotributista");
+		public static final String EXENTO_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.exento");
+		public static final String NO_CATEGORIZADO_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.noCategorizado");
+		public static final String CONSUMIDOR_FINAL_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.consumidorFinal");
+		public static final String MONOTRIBUTISTA_SOCIAL_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.monotributistaSocial");
+		public static final String CONTRIBUYENTE_EVENTUAL_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.contribuyenteEventual");
+		public static final String CONTRIBUYENTE_EVENTUAL_SOCIAL_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.contribuyenteEventualSocial");
+	}
 }
 
+
+;

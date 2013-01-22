@@ -56,6 +56,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		return venta;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Venta> findByClient(Long cliente){
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 		
