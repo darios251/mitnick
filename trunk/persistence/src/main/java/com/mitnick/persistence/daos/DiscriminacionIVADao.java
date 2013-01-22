@@ -17,8 +17,8 @@ public class DiscriminacionIVADao extends GenericDaoHibernate<DiscriminacionIVA,
 	@Override
 	public DiscriminacionIVA findDiscriminacionIVAporCodigo(String codigo) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(DiscriminacionIVA.class);
-		criteria.add(Restrictions.not(Restrictions.ilike("codigo", codigo)));
-		return (DiscriminacionIVA) getHibernateTemplate().findByCriteria(criteria);
+		criteria.add(Restrictions.ilike("codigo", codigo));
+		return (DiscriminacionIVA) getHibernateTemplate().findByCriteria(criteria).get(0);
 	}
 
 }

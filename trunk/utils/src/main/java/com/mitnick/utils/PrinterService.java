@@ -215,7 +215,7 @@ public class PrinterService {
 			output.println(NUMERO_DOCUMENTO_COMPRADOR);
 			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? cliente.getDocumento() : cliente.getCuit().replaceAll("-", ""));
 			output.println(TIPO_IVA_COMPRADOR);
-			output.println(venta.getTipoResponsabilidad());
+			output.println(venta.getTipoResponsabilidad().getTipoComprador());
 			output.println(LINEA_REMITOS_ASOCIADOS);
 			output.println("............");
 			output.println(LINEA_REMITOS_ASOCIADOS);
@@ -702,7 +702,7 @@ public class PrinterService {
 	}
 	
 	protected Socket connect() throws UnknownHostException, IOException {
-		SocketAddress sockaddr = new InetSocketAddress("192.168.0.104", 9095);
+		SocketAddress sockaddr = new InetSocketAddress("192.168.56.101",9095); //new InetSocketAddress("192.168.0.104", 9095);
 		currentConnection = new Socket();
 		currentConnection.connect(sockaddr, 3000);
 		currentConnection.setSoTimeout(15000);
