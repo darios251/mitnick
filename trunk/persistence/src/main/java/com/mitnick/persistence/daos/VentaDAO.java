@@ -67,6 +67,16 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
+	public Venta findByNumeroFactura(String numeroTicket) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
+		
+		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
+		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
+		if (ventas==null || ventas.isEmpty())
+				return null;
+		return ventas.get(0);
+	}
+	
 	public void generarFactura(Venta venta) {
 		try {
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/factura.jasper"));

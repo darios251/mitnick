@@ -54,4 +54,7 @@ public interface IVentaServicio {
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	void cancelar(VentaDto ventaDto);
 	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public VentaDto getVentaByNroFactura(String nroTicket);
+	
 }
