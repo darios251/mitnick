@@ -24,7 +24,6 @@ import com.mitnick.persistence.entities.Direccion;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Provincia;
 
-@SuppressWarnings("rawtypes")
 @Service("dbImport")
 public class DBImport {
 
@@ -54,7 +53,7 @@ public class DBImport {
 
 	//migracion de producto
 	private static String ARTICULO = "ARTICULO";
-	private static String MARCA ="MARCA";    
+	//private static String MARCA ="MARCA";    
 	private static String DESCRIPCIO ="DESCRIPCIO";
 	private static String STOCK ="STOCK";
 	private static String STOCKMIN ="STOCKMIN";

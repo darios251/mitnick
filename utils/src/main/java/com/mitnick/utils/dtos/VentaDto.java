@@ -45,6 +45,8 @@ public class VentaDto extends BaseDto {
 	
 	private boolean cancelada;
 	
+	private TipoCompradorDto tipoResponsabilidad = new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC);
+
 	private int tipo;
 	
 	public int getTipo() {
@@ -55,8 +57,6 @@ public class VentaDto extends BaseDto {
 		this.tipo = tipo;
 	}
 
-	private long tipoResponsabilidad = MitnickConstants.CONSUMIDOR_FINAL;
-	
 	public List<ProductoVentaDto> getProductos() {
 		if(productos == null)
 			productos = new ArrayList<ProductoVentaDto>();
@@ -201,11 +201,11 @@ public class VentaDto extends BaseDto {
 		this.ajusteRedondeo = ajusteRedondeo;
 	}
 
-	public void setTipoResponsabilidad(long tipoResponsabilidad) {
+	public void setTipoResponsabilidad(TipoCompradorDto tipoResponsabilidad) {
 		this.tipoResponsabilidad = tipoResponsabilidad;
 	}
 	
-	public long getTipoResponsabilidad() {
+	public TipoCompradorDto getTipoResponsabilidad() {
 		return tipoResponsabilidad;
 	}
 

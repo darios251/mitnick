@@ -114,4 +114,14 @@ public class CuotasCuentaCorrienteDialog extends BaseDialog {
 		}
 		return scrollPane;
 	}
+	
+	@Override
+	protected void keyF5() {
+		getBtnAceptar().doClick();
+	}
+	
+	@Override
+	protected void keyEscape() {
+		getBtnCancelar().doClick();
+	}
 }

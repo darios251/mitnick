@@ -2,6 +2,7 @@ package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.Color;
 import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,8 +26,19 @@ public class BaseDialog extends JDialog  implements KeyEventDispatcher {
 
 	private static final long serialVersionUID = 1L;
 	
+	private static BaseDialog currentDialog = null;
+	
+	public static void setCurrentDialog(BaseDialog currentDial) {
+		currentDialog = currentDial;
+	}
+	
+	public static BaseDialog getCurrentDialog() {
+		return currentDialog;
+	}
+	
 	public BaseDialog(JFrame frame, boolean b) {
 		super(frame, b);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 	}
 
 	protected int mostrarMensaje(PresentationException ex) {
@@ -136,11 +148,18 @@ public class BaseDialog extends JDialog  implements KeyEventDispatcher {
 	     return JOptionPane.showOptionDialog(this, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
 	}
 	
+	@Override
+	public void setVisible(boolean b) {
+		if(b)
+			currentDialog = this;
+		super.setVisible(b);
+	}
+	
 	private static List<Integer> objectIds = new ArrayList<Integer>();
 	
 	@Override
 	public synchronized boolean dispatchKeyEvent(KeyEvent e) {
-		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED) {
+		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED && currentDialog != null && currentDialog.isVisible()) {
 			int identityHashCode = System.identityHashCode(e);
 			if(!objectIds.contains(identityHashCode)) {
 				objectIds.add(identityHashCode);

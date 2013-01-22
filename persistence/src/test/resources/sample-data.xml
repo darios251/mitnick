@@ -429,14 +429,48 @@
 	<table name="Discriminacion_IVA">
 	    <column>id</column>
 	    <column>descripcion</column>
+	    <column>codigo</column>
 	    
 	    <row>
 	    	<value>1</value>
-	    	<value>iva responsable inscripto</value>    
+	    	<value>RESPONSABLE INSCRIPTO</value>
+	    	<value>I</value>    
 	    </row>
 	    <row>
-	        <value>2</value>
-	        <value>consumidor final</value>
+	    	<value>2</value>
+	    	<value>NO RESPONSABLE</value>
+	    	<value>N</value>    
 	    </row>
+	    <row>
+	    	<value>3</value>
+	    	<value>MONOTRIBUTISTA</value>
+	    	<value>M</value>    
+	    </row>
+	    <row>
+	    	<value>4</value>
+	    	<value>EXENTO</value>
+	    	<value>E</value>    
+	    </row>
+	    <row>
+	        <value>5</value>
+	        <value>CONSUMIDOR FINAL</value>
+	        <value>F</value>
+	    </row>
+	    <row>
+	        <value>6</value>
+	        <value>MONOTRIBUTISTA SOCIAL</value>
+	        <value>T</value>
+	    </row>
+	    <row>
+	        <value>7</value>
+	        <value>CONTRIBUYENTE EVENTUAL</value>
+	        <value>C</value>
+	    </row>
+	    <row>
+	        <value>8</value>
+	        <value>CONTRIBUYENTE EVENTUAL SOCIAL</value>
+	        <value>V</value>
+	    </row>
+	    
 	</table>
 </dataset>

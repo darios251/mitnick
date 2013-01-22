@@ -32,6 +32,7 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
+import com.mitnick.utils.dtos.TipoCompradorDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Controller("ventaController")
@@ -413,11 +414,8 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarCliente");
 	}
 	
-	public void setTipoResponsable(boolean responsableInscripto) {
-		if(responsableInscripto)
-			VentaManager.getVentaActual().setTipoResponsabilidad(MitnickConstants.IVA_RESPONSABLE_INSCRIPTO);
-		else
-			VentaManager.getVentaActual().setTipoResponsabilidad(MitnickConstants.CONSUMIDOR_FINAL);
+	public void setTipoResponsable(TipoCompradorDto tipoComprador) {
+		VentaManager.getVentaActual().setTipoResponsabilidad(tipoComprador);
 	}
 	
 	public VentaView getVentaView() {
