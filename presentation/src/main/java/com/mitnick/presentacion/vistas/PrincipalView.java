@@ -203,11 +203,9 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
-					if (getJTabbedPane().indexOfComponent(ventaController.getVentaView()) == -1) {
-						logger.info("Agregando el panel de ventas al tabbedPane");
-						getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
-						ventaController.crearNuevaVenta(MitnickConstants.VENTA);
-					}
+					logger.info("Agregando el panel de ventas al tabbedPane");
+					getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
+					ventaController.crearNuevaVenta(MitnickConstants.VENTA);
 					logger.info("Mostrando el panel de ventas");
 					
 					ventaController.mostrarUltimoPanelMostrado();
@@ -227,7 +225,7 @@ public class PrincipalView extends JFrame
 		{
 			btnDevolucion = new JButton();
 			btnDevolucion.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
-			btnDevolucion.setText(PropertiesManager.getProperty("principalView.button.ventas"));
+			btnDevolucion.setText(PropertiesManager.getProperty("principalView.button.devolucion"));
 			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/devolucion.png"));
 			btnDevolucion.setIcon(iconoOriginal);
 			btnDevolucion.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -238,21 +236,20 @@ public class PrincipalView extends JFrame
 				public void mouseClicked(MouseEvent e)
 				{
 					String nroTicket = JOptionPane.showInputDialog(PropertiesManager.getProperty("ventaPanel.devolucion.nroTicket"));
+					if (nroTicket == null)
+						return;
 					VentaDto venta = ventaController.getVentaByNroFactura(nroTicket);
 					ClienteDto cliente = null;
 					if (venta==null){
-						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.noTicketOriginal"), "Error", JOptionPane.DEFAULT_OPTION);
+						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.noTicketOriginal"), "Error", JOptionPane.OK_CANCEL_OPTION);
 						if (option == JOptionPane.CANCEL_OPTION)
 							return;						
 					} else {
 						cliente = venta.getCliente();
 					}
-					if (getJTabbedPane().indexOfComponent(ventaController.getVentaView()) == -1) {
-						logger.info("Agregando el panel de ventas al tabbedPane");
-						getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
-						ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
-						VentaManager.getVentaActual().setCliente(cliente);
-					}
+					getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
+					ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
+					VentaManager.getVentaActual().setCliente(cliente);
 					logger.info("Mostrando el panel de ventas");
 					
 					ventaController.mostrarUltimoPanelMostrado();
