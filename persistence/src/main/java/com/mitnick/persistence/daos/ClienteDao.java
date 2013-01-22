@@ -38,6 +38,7 @@ import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientoClienteDto;
 import com.mitnick.utils.ConstraintValidationHelper;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -290,10 +291,16 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				ReporteMovimientoClienteDto movimiento = new ReporteMovimientoClienteDto();
 				movimiento.setMonto(venta.getTotal());
 				String nro = venta.getNumeroTicket();
-				movimiento.setNroComprobante("Fact-" + nro);
 				movimiento.setFecha(venta.getFecha());
-				movimiento.setDebe(venta.getPagoCuenta());
-				movimiento.setHaber(venta.getPagoContado());
+				if (venta.getTipo()== MitnickConstants.VENTA){
+					movimiento.setNroComprobante("Fact-" + nro);
+					movimiento.setDebe(venta.getPagoCuenta());
+					movimiento.setHaber(venta.getPagoContado());
+				} else {
+					movimiento.setNroComprobante("NC-" + nro);
+					movimiento.setDebe(new BigDecimal(0));
+					movimiento.setHaber(venta.getTotal());
+				}
 				movimientos.add(movimiento);
 			}
 			List<Comprobante> comprobantes = findComprobantesByClienteId(cliente.getId());

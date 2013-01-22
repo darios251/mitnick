@@ -167,11 +167,12 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	public VentaDto facturar(VentaDto ventaDto) {
 		VentaHelper.calcularTotales(ventaDto);
 		
-		if (!ventaDto.isPagado()){
+		if (ventaDto.getTipo()==MitnickConstants.VENTA && !ventaDto.isPagado()){
 			throw new BusinessException("error.ventaServicio.facturar", "No se puede facturar la venta ya que no se pago el total");
 		}
 		Venta venta = guardarVenta(ventaDto);
 		
+		//TODO NOTA DE CREDITO SI VENTA.TIPO = MitnickConstants.DEVOLUCION
 //		if(!venta.isPrinted()) {
 //			
 //			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
@@ -212,7 +213,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			//Actualizacion de stock
 			Iterator<ProductoVenta> productos = venta.getProductos().iterator();
 			while (productos.hasNext()) {
-				actualizarStock(productos.next());
+				actualizarStock(productos.next(), venta.getTipo());
 			}
 			ventaDao.saveOrUpdate(venta);
 			
@@ -227,7 +228,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 	
 	@Transactional
-	private void actualizarStock(ProductoVenta productoVenta){
+	private void actualizarStock(ProductoVenta productoVenta, int tipo){
 		Producto producto = productoVenta.getProducto(); 
 		int stock = producto.getStock();
 		
@@ -242,7 +243,12 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		movimiento.setCantidad(productoVenta.getCantidad());
 		movimiento.setFecha(new Date());
-		movimiento.setTipo(Movimiento.VENTA);
+		
+		if (tipo == MitnickConstants.VENTA)
+			movimiento.setTipo(Movimiento.VENTA);
+		if (tipo == MitnickConstants.DEVOLUCION)
+			movimiento.setTipo(Movimiento.DEVOLUCION);
+		
 		movimiento.setProducto(producto);
 		
 		productoDao.saveOrUpdate(producto);

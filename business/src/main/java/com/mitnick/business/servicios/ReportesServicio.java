@@ -164,9 +164,12 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			if (movimiento.getTipo() == Movimiento.AJUSTE) {
 				movimientoDto.setAjustes(movimientoDto.getAjustes() + movimiento.getCantidad());
 				movimientoDto.setStockFinal(movimientoDto.getStockFinal() + movimiento.getCantidad());
-			} else {
+			} else  if (movimiento.getTipo() == Movimiento.VENTA){
 				movimientoDto.setVentas(movimientoDto.getVentas() - movimiento.getCantidad());	
 				movimientoDto.setStockFinal(movimientoDto.getStockFinal() - movimiento.getCantidad());
+			}  else  if (movimiento.getTipo() == Movimiento.DEVOLUCION){
+				movimientoDto.setVentas(movimientoDto.getVentas() + movimiento.getCantidad());	
+				movimientoDto.setStockFinal(movimientoDto.getStockFinal() + movimiento.getCantidad());
 			}
 		}
 		return productos;		
@@ -617,9 +620,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			exporter.exportReport();
 			
 			File file = new File("ventasProducto.pdf");
-			Desktop.getDesktop().open(file);
-
-			
+			Desktop.getDesktop().open(file);			
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");

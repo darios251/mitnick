@@ -80,6 +80,7 @@ public class PrincipalView extends JFrame
 	private JPanel pnlArrow;
 	
 	private JButton btnVentas;
+	private JButton btnDevolucion;
 	private JButton btnProductos;
 	private JButton btnClientes;
 	private JButton btnReporte;
@@ -115,7 +116,7 @@ public class PrincipalView extends JFrame
 	private void initialize()
 	{
 		this.setTitle(PropertiesManager.getProperty("principalView.titulo"));
-		this.setMinimumSize(new Dimension(1000, 620));
+		this.setMinimumSize(new Dimension(1000, 700));
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setJMenuBar(getMenuBarra());
@@ -202,7 +203,7 @@ public class PrincipalView extends JFrame
 					if (getJTabbedPane().indexOfComponent(ventaController.getVentaView()) == -1) {
 						logger.info("Agregando el panel de ventas al tabbedPane");
 						getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
-						ventaController.crearNuevaVenta();
+						ventaController.crearNuevaVenta(MitnickConstants.VENTA);
 					}
 					logger.info("Mostrando el panel de ventas");
 					
@@ -215,6 +216,40 @@ public class PrincipalView extends JFrame
 		}
 
 		return btnVentas;
+	}
+	
+	private JButton getBtnDevolucion()
+	{
+		if(btnDevolucion == null)
+		{
+			btnDevolucion = new JButton();
+			btnDevolucion.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
+			btnDevolucion.setText(PropertiesManager.getProperty("principalView.button.ventas"));
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/devolucion.png"));
+			btnDevolucion.setIcon(iconoOriginal);
+			btnDevolucion.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnDevolucion.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnDevolucion.setMargin(new Insets(-1, -1, -1, -1));
+			btnDevolucion.addMouseListener(new MouseAdapter()
+			{
+				public void mouseClicked(MouseEvent e)
+				{
+					if (getJTabbedPane().indexOfComponent(ventaController.getVentaView()) == -1) {
+						logger.info("Agregando el panel de ventas al tabbedPane");
+						getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
+						ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
+					}
+					logger.info("Mostrando el panel de ventas");
+					
+					ventaController.mostrarUltimoPanelMostrado();
+					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
+					getJTabbedPane().setVisible(true);
+					ventaController.getUltimoPanelMostrado().setVisible(true);
+				}
+			});
+		}
+
+		return btnDevolucion;
 	}
 	
 	private JButton getBtnArticulos()
@@ -517,6 +552,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess = new JToolBar(null, JToolBar.VERTICAL);
 			tlbQuickAccess.setLayout(new BoxLayout(getQuickAccessBar(), BoxLayout.Y_AXIS));
 			tlbQuickAccess.add(getBtnVentas());
+			tlbQuickAccess.add(getBtnDevolucion());
 			tlbQuickAccess.add(getBtnArticulos());
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());

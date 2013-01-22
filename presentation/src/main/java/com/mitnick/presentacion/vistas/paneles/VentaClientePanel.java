@@ -26,6 +26,7 @@ import com.mitnick.presentacion.modelos.ClienteTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.FocusTraversalOnArray;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -153,8 +154,10 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 				controller.agregarCliente();
 				mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
 			}
-			
-			controller.mostrarPagosPanel();
+			if (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA)
+				controller.mostrarPagosPanel();
+			else
+				controller.finalizarVenta();
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);

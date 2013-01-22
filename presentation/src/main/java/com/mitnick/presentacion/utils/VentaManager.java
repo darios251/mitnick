@@ -6,8 +6,9 @@ public class VentaManager {
 
 	private static VentaDto ventaActual;
 	
-	public static VentaDto crearNuevaVenta() {
+	public static VentaDto crearNuevaVenta(int tipo) {
 		ventaActual = new VentaDto();
+		ventaActual.setTipo(tipo);
 		return ventaActual;
 	}
 	

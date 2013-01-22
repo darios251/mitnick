@@ -58,24 +58,26 @@ public class VentaHelper {
 
 		ventaDto.setTotal(total);
 
-		// suma de todos los pagos
-		BigDecimal montoPagado = BigDecimal.ZERO;
-		Iterator<PagoDto> pagos = ventaDto.getPagos().iterator();
-		while (pagos.hasNext()) {
-			montoPagado = montoPagado.add(pagos.next().getMonto());
-		}
+		if (ventaDto.getTipo() == MitnickConstants.VENTA){
+			// suma de todos los pagos
+			BigDecimal montoPagado = BigDecimal.ZERO;
+			Iterator<PagoDto> pagos = ventaDto.getPagos().iterator();
+			while (pagos.hasNext()) {
+				montoPagado = montoPagado.add(pagos.next().getMonto());
+			}
 
-		boolean pagado = montoPagado.compareTo(total) >= 0;
-		ventaDto.setPagado(pagado);
+			boolean pagado = montoPagado.compareTo(total) >= 0;
+			ventaDto.setPagado(pagado);
 
-		ventaDto.setTotalPagado(montoPagado);
+			ventaDto.setTotalPagado(montoPagado);
 
-		if (pagado) {
-			ventaDto.setFaltaPagar(BigDecimal.ZERO);
-			ventaDto.setVuelto(montoPagado.subtract(total));
-		} else {
-			ventaDto.setFaltaPagar(total.subtract(montoPagado));
-			ventaDto.setVuelto(null);
+			if (pagado) {
+				ventaDto.setFaltaPagar(BigDecimal.ZERO);
+				ventaDto.setVuelto(montoPagado.subtract(total));
+			} else {
+				ventaDto.setFaltaPagar(total.subtract(montoPagado));
+				ventaDto.setVuelto(null);
+			}			
 		}
 
 	}

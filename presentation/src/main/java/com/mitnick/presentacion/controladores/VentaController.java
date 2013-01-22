@@ -238,15 +238,15 @@ public class VentaController extends BaseController {
 		logger.info("Recalculando totales");
 	}
 	
-	public void crearNuevaVenta() {
-		VentaManager.crearNuevaVenta();
+	public void crearNuevaVenta(int tipo) {
+		VentaManager.crearNuevaVenta(tipo);
 		limpiarVenta();
 	}
 
 	public boolean checkFinalizarVenta() {
-		if(VentaManager.getVentaActual() != null && (VentaManager.getVentaActual().getPagos() == null || VentaManager.getVentaActual().getPagos().isEmpty()))
+		if(VentaManager.getVentaActual() != null && (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA && (VentaManager.getVentaActual().getPagos() == null || VentaManager.getVentaActual().getPagos().isEmpty())))
 			return false;
-		if(!VentaManager.getVentaActual().isPagado())
+		if(VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA && !VentaManager.getVentaActual().isPagado())
 			return false;
 		
 		return true;
@@ -281,7 +281,8 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarPago");
 	}
 		
-	protected void finalizarVenta() {
+	//TODO DEVOLUCION!!!!
+	public void finalizarVenta() {
 		if(checkFinalizarVenta()) {
 			try {
 				getVentaServicio().facturar(VentaManager.getVentaActual());
@@ -294,8 +295,9 @@ public class VentaController extends BaseController {
 					return;
 				}
 				else {
+					int tipo = VentaManager.getVentaActual().getTipo();
 					getVentaServicio().cancelar(VentaManager.getVentaActual());
-					VentaManager.crearNuevaVenta();
+					VentaManager.crearNuevaVenta(tipo);
 					mostrarVentasPanel();
 					return;
 				}
