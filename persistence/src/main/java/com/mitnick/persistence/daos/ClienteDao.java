@@ -305,6 +305,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				movimiento.setNroComprobante("Comp-" + nro);
 				movimiento.setFecha(comprobante.getFecha());
 				movimiento.setHaber(comprobante.getTotal());
+				movimiento.setDebe(new BigDecimal(0));
 				movimientos.add(movimiento);
 			}
 
