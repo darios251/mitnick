@@ -424,6 +424,11 @@
 	    <value>Cuenta Corriente</value>
 	    <value>4</value>
 	  </row>
+	  <row>
+	    <value>5</value>
+	    <value>Nota de Crédito</value>
+	    <value>5</value>
+	  </row>
 	</table>
 	
 	<table name="Discriminacion_IVA">
