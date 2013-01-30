@@ -10,6 +10,7 @@ import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 public interface IClienteServicio {
 
@@ -54,5 +55,8 @@ public interface IClienteServicio {
 	
 	@Secured(value={"ROLE_ADMIN"})
 	public void reporteMovimientosCliente(ClienteDto cliente);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public void pagarCuotasNC(VentaDto venta);
 	
 }

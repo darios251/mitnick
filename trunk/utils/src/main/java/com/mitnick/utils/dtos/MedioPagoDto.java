@@ -30,6 +30,10 @@ public class MedioPagoDto extends BaseDto {
 		return MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(codigo);	
 	}
 	
+	public boolean isNotaCredito(){
+		return MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(codigo);	
+	}
+	
 	@Override // es para que se muestre bien en el combo
 	public String toString() {
 		return descripcion;

@@ -83,6 +83,9 @@ public class Venta extends BaseObject implements Serializable {
 	@Column(name= "tipo", nullable = false)
 	private int tipo;
 
+	@Column(name = "numeroTicketOriginal")
+	private String numeroTicketOriginal;
+	
 	public int getTipo() {
 		return tipo;
 	}
@@ -219,6 +222,14 @@ public class Venta extends BaseObject implements Serializable {
 		this.canceled = canceled;
 	}
 
+	public String getNumeroTicketOriginal() {
+		return numeroTicketOriginal;
+	}
+
+	public void setNumeroTicketOriginal(String numeroTicketOriginal) {
+		this.numeroTicketOriginal = numeroTicketOriginal;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -240,6 +251,10 @@ public class Venta extends BaseObject implements Serializable {
 				+ ((impuesto == null) ? 0 : impuesto.hashCode());
 		result = prime * result
 				+ ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
+		result = prime
+				* result
+				+ ((numeroTicketOriginal == null) ? 0 : numeroTicketOriginal
+						.hashCode());
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
 		result = prime * result + (printed ? 1231 : 1237);
 		result = prime * result
@@ -331,6 +346,13 @@ public class Venta extends BaseObject implements Serializable {
 		} else if (!numeroTicket.equals(other.numeroTicket)) {
 			return false;
 		}
+		if (numeroTicketOriginal == null) {
+			if (other.numeroTicketOriginal != null) {
+				return false;
+			}
+		} else if (!numeroTicketOriginal.equals(other.numeroTicketOriginal)) {
+			return false;
+		}
 		if (pagos == null) {
 			if (other.pagos != null) {
 				return false;
@@ -385,7 +407,7 @@ public class Venta extends BaseObject implements Serializable {
 				+ ", discriminacionIVA=" + discriminacionIVA + ", printed="
 				+ printed + ", numeroTicket=" + numeroTicket + ", tipoTicket="
 				+ tipoTicket + ", canceled=" + canceled + ", tipo=" + tipo
-				+ "]";
+				+ ", numeroTicketOriginal=" + numeroTicketOriginal + "]";
 	}
 	
 	public BigDecimal getPagoContado(){

@@ -250,6 +250,7 @@ public class PrincipalView extends JFrame
 					getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
 					ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
 					VentaManager.getVentaActual().setCliente(cliente);
+					VentaManager.getVentaActual().setNumeroTicketOriginal(nroTicket);
 					logger.info("Mostrando el panel de ventas");
 					
 					ventaController.mostrarUltimoPanelMostrado();

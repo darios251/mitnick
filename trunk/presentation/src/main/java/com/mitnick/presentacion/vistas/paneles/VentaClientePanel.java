@@ -5,12 +5,15 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -159,8 +162,20 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			}
 			if (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA)
 				controller.mostrarPagosPanel();
-			else
-				controller.finalizarVenta();
+			else {
+				BigDecimal deuda = controller.obtenerSaldoDeudorCliente();
+				BigDecimal devolucion = VentaManager.getVentaActual().getTotal();
+				
+				int option = JOptionPane.CANCEL_OPTION;
+				if (deuda.compareTo(new BigDecimal(0))>0) 
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.deuda", new Object[] {devolucion, deuda}), "Información", JOptionPane.OK_CANCEL_OPTION);	
+				else
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito", new Object[] {devolucion, devolucion}), "Información", JOptionPane.OK_CANCEL_OPTION);
+				
+				if (option != JOptionPane.CANCEL_OPTION)					
+					controller.finalizarVenta();
+			}
+				
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -354,6 +369,20 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	public void actualizarPantalla() {
 		consultarClientes();
 		getCmbTipoComprador().requestFocus();
+	}
+		
+	public void actualizarPantallaDevolucion() {
+		try {
+			List<ClienteDto> clientes = new ArrayList<ClienteDto>();
+			clientes.add(VentaManager.getVentaActual().getCliente());
+			getModel().setClientes(clientes);
+			table.requestFocus();
+		}
+		catch(PresentationException ex) {
+			mostrarMensaje(ex);
+			getModel().setClientes(new ArrayList<ClienteDto>());
+		}
+		getBtnContinuar().requestFocus();
 	}
 	
 	@Override

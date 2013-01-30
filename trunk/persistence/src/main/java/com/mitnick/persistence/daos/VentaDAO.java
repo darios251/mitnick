@@ -3,7 +3,9 @@ package com.mitnick.persistence.daos;
 import java.awt.Desktop;
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JRExporter;
@@ -21,11 +23,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.PagoDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 @Repository("ventaDao")
 public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVentaDAO {
@@ -52,8 +57,53 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 	}
 
 	public Venta saveOrUpdate(Venta venta){
+		if (!venta.isCanceled() && venta.getTipo()==MitnickConstants.DEVOLUCION){
+			//SE CREA LA NOTA DE CREDITO
+			Credito credito = new Credito();
+			credito.setFecha(new Date());
+			credito.setCliente(venta.getCliente());
+			credito.setMonto(venta.getTotal());
+			credito.setMontoUsado(new BigDecimal(0));
+			credito.setNumeroTicket(venta.getNumeroTicketOriginal());
+			credito.setNumeroNC(venta.getNumeroTicket());
+			getHibernateTemplate().saveOrUpdate(credito);
+		}
+		
 		getHibernateTemplate().saveOrUpdate(venta);
 		return venta;
+	}
+	
+	public void actualizarCreditos(VentaDto venta) {
+		if (!venta.getPagoNotaCredito().isEmpty()){
+			Iterator<PagoDto> creditosUsados = venta.getPagoNotaCredito().iterator();
+			while (creditosUsados.hasNext()){
+				PagoDto pago = creditosUsados.next();
+				usarCredito(pago.getNroNC(), pago.getMonto());
+			}
+		}
+	}
+	
+	public void usarCredito(String nroCredito, BigDecimal montoUsado) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
+		
+		criteria.add(Restrictions.ilike("numeroNC", nroCredito));	
+		List<Credito> creditos = getHibernateTemplate().findByCriteria(criteria);
+		if (creditos!=null && !creditos.isEmpty()) {
+			Credito credito = creditos.get(0);
+			credito.setMontoUsado(montoUsado);
+			getHibernateTemplate().saveOrUpdate(credito);	
+		}
+		
+	}
+	
+	public Credito getCredito(String nroCredito) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
+		
+		criteria.add(Restrictions.ilike("numeroNC", nroCredito));	
+		List<Credito> creditos = getHibernateTemplate().findByCriteria(criteria);
+		if (creditos!=null && !creditos.isEmpty())
+			return creditos.get(0);
+		return null;
 	}
 	
 	@SuppressWarnings("unchecked")

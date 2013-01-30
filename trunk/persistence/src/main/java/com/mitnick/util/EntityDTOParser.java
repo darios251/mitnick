@@ -22,6 +22,7 @@ import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Ciudad;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Direccion;
 import com.mitnick.persistence.entities.Marca;
@@ -42,6 +43,7 @@ import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.BaseDto;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.DireccionDto;
 import com.mitnick.utils.dtos.MarcaDto;
@@ -120,6 +122,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (D) getDtoFromEntity((Cuota) entity);
 		else if(entity instanceof Pago)
 			return (D) getDtoFromEntity((Pago) entity);
+		else if(entity instanceof Credito)
+			return (D) getDtoFromEntity((Credito) entity);
 		else return null;
 	}
 
@@ -151,6 +155,15 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		else if(dto instanceof PagoDto)
 			return (E) getEntityFromDto((PagoDto) dto);
 		else return null;
+	}
+	
+	private CreditoDto getDtoFromEntity(Credito credito) {
+		CreditoDto creditoDto = new CreditoDto();
+		creditoDto.setId(credito.getId());
+		creditoDto.setMontoTotal(credito.getMonto());
+		creditoDto.setMontoUsado(credito.getMontoUsado());
+		creditoDto.setNroNC(credito.getNumeroNC());
+		return creditoDto;
 	}
 	
 	private Cliente getEntityFromDto(ClienteDto clienteDto) {
@@ -389,6 +402,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setProductos((List<ProductoVentaDto>) getDtosFromEntities((List<E>) venta.getProductos()));
 		
 		ventaDto.setTipo(venta.getTipo());
+		ventaDto.setNumeroTicketOriginal(venta.getNumeroTicketOriginal());
 		ventaDto.setSubTotal(venta.getSubtotal());
 		ventaDto.setTotal(venta.getTotal());
 		ventaDto.setImpuesto(venta.getImpuesto());
@@ -448,6 +462,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());
 		venta.setTipo(ventaDto.getTipo());
+		venta.setNumeroTicketOriginal(ventaDto.getNumeroTicketOriginal());
 		List<ProductoVenta> productos = new ArrayList<ProductoVenta>();
 		for (ProductoVentaDto productoDto : ventaDto.getProductos())
 			productos.add(getEntityFromDto(productoDto));

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
+import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IVentaDAO;
@@ -28,6 +29,7 @@ import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -44,6 +46,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	protected IProductoDAO productoDao;
 	@Autowired
 	protected IMovimientoDao movimientoDao;
+	@Autowired
+	protected ICuotaDao cuotaDao;
 	
 	@Autowired
 	protected PrinterService printerService;
@@ -170,9 +174,9 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		if (ventaDto.getTipo()==MitnickConstants.VENTA && !ventaDto.isPagado()){
 			throw new BusinessException("error.ventaServicio.facturar", "No se puede facturar la venta ya que no se pago el total");
 		}
-		Venta venta = guardarVenta(ventaDto);
+		Venta venta = actualizarStock(ventaDto);
 		
-		//TODO NOTA DE CREDITO SI VENTA.TIPO = MitnickConstants.DEVOLUCION
+		//TODO IMPRIMIR NOTA DE CREDITO SI VENTA.TIPO = MitnickConstants.DEVOLUCION
 		if(!venta.isPrinted()) {
 			
 			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
@@ -186,8 +190,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());
 		venta.setTipoTicket(ventaDto.getTipoTicket());
 		
+		ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
-		//ventaDao.generarFactura(venta);
 		
 		return ventaDto;
 
@@ -205,7 +209,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 	
 	@Transactional
-	private Venta guardarVenta(VentaDto ventaDto){
+	private Venta actualizarStock(VentaDto ventaDto){
 		VentaHelper.calcularTotales(ventaDto);
 		try {
 			@SuppressWarnings("unchecked")
@@ -215,7 +219,6 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			while (productos.hasNext()) {
 				actualizarStock(productos.next(), venta.getTipo());
 			}
-			ventaDao.saveOrUpdate(venta);
 			
 			return venta;
 		}
@@ -237,17 +240,22 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		//el stock a la fecha anterior a aplicar el movimento
 		movimiento.setStockAlaFecha(stock);
 
-		stock = stock - productoVenta.getCantidad();
+		
+		if (tipo == MitnickConstants.VENTA){
+			movimiento.setTipo(Movimiento.VENTA);
+			stock = stock - productoVenta.getCantidad();
+		}
+			
+		if (tipo == MitnickConstants.DEVOLUCION){
+			movimiento.setTipo(Movimiento.DEVOLUCION);
+			stock = stock + productoVenta.getCantidad();
+		}
+			
 		//se modifica el stock del producto
 		producto.setStock(stock);
 		
 		movimiento.setCantidad(productoVenta.getCantidad());
 		movimiento.setFecha(new Date());
-		
-		if (tipo == MitnickConstants.VENTA)
-			movimiento.setTipo(Movimiento.VENTA);
-		if (tipo == MitnickConstants.DEVOLUCION)
-			movimiento.setTipo(Movimiento.DEVOLUCION);
 		
 		movimiento.setProducto(producto);
 		
@@ -308,5 +316,14 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			return (VentaDto) entityDTOParser.getDtoFromEntity(venta);
 		return null;
 	}
+	
+	public BigDecimal getSaldoDeudorCliente(VentaDto venta) {
+		return cuotaDao.getSaldoPendiente(venta.getCliente().getId());
+	}
+		
+	public CreditoDto obtenerCredito(String nroNC){
+		return (CreditoDto) entityDTOParser.getDtoFromEntity(ventaDao.getCredito(nroNC));
+	}
+	
 }
 

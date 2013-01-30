@@ -28,7 +28,6 @@ import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.VentaTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.FocusTraversalOnArray;
-import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -237,10 +236,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 
 	protected void keyF5() {
 		try {
-			if (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA || VentaManager.getVentaActual().getCliente()==null)
-				controller.mostrarClienteVenta();
-			else
-				controller.finalizarVenta();
+			controller.mostrarClienteVenta();			
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}

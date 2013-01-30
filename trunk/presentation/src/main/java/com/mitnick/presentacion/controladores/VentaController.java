@@ -12,6 +12,7 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.PrincipalView;
 import com.mitnick.presentacion.vistas.VentaView;
+import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
 import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.DetalleProductoPanel;
@@ -27,6 +28,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
@@ -134,7 +136,10 @@ public class VentaController extends BaseController {
 		pagoPanel.setVisible(false);
 		clienteNuevoPanel.setVisible(false);
 		ventaClientePanel.setVisible(true);
-		ventaClientePanel.actualizarPantalla();
+		if (VentaManager.getVentaActual().getTipo()==MitnickConstants.DEVOLUCION && VentaManager.getVentaActual().getCliente()!=null)
+			ventaClientePanel.actualizarPantallaDevolucion();
+		else
+			ventaClientePanel.actualizarPantalla();
 	}
 	
 	public void mostrarClienteNuevoPanel() {
@@ -262,7 +267,7 @@ public class VentaController extends BaseController {
 		return getMedioPagoServicio().obtenerMediosPagos();
 	}
 	
-	public void agregarPago(MedioPagoDto medioPago, String monto) {
+	public void agregarPago(MedioPagoDto medioPago, String monto, String numeroNC) {
 		logger.debug("Entrado al metodo agregarPago, con medioPago: " + medioPago + " y monto: " + monto);
 		if(Validator.isNull(medioPago))
 			throw new PresentationException("error.venta.medioPago.null");
@@ -271,6 +276,7 @@ public class VentaController extends BaseController {
 		if(!Validator.isDouble(monto))
 			throw new PresentationException("error.venta.monto.formato");
 		PagoDto pago = new PagoDto();
+		pago.setNroNC(numeroNC);
 		pago.setMedioPago(medioPago);
 		pago.setMonto(new BigDecimal(monto));
 		
@@ -287,7 +293,6 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarPago");
 	}
 		
-	//TODO DEVOLUCION!!!!
 	public void finalizarVenta() {
 		if(checkFinalizarVenta()) {
 			try {
@@ -302,14 +307,25 @@ public class VentaController extends BaseController {
 				}
 				else {
 					int tipo = VentaManager.getVentaActual().getTipo();
-					getVentaServicio().cancelar(VentaManager.getVentaActual());
-					VentaManager.crearNuevaVenta(tipo);
-					mostrarVentasPanel();
+					if (tipo == MitnickConstants.VENTA) {
+						getVentaServicio().cancelar(VentaManager.getVentaActual());
+						VentaManager.crearNuevaVenta(tipo);
+						mostrarVentasPanel();
+					} else {
+						this.limpiarVenta();
+						JTabbedPaneConBoton jTabbedPaneConBoton = this.getPrincipalView().jTabbedPaneConBoton;
+						jTabbedPaneConBoton.remove(jTabbedPaneConBoton.getSelectedIndex());		
+					}
+					
 					return;
 				}
 			}
 			getPagoPanel().finalizarVenta();
 		}
+	}
+	
+	public BigDecimal obtenerSaldoDeudorCliente() {
+		return getVentaServicio().getSaldoDeudorCliente(VentaManager.getVentaActual());
 	}
 	
 	public void quitarPago(PagoDto pagoDto) {
@@ -474,4 +490,11 @@ public class VentaController extends BaseController {
 		return ventaServicio.getVentaByNroFactura(nroTicket);
 	}
 	
+	public void pagarCuotasNC() {
+		clienteServicio.pagarCuotasNC(VentaManager.getVentaActual());	
+	}
+	
+	public CreditoDto obtenerCredito(String nroNC){
+		return ventaServicio.obtenerCredito(nroNC);
+	}
 }

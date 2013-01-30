@@ -42,6 +42,7 @@ public class MitnickConstants {
 		public static final String CUENTA_CORRIENTE = PropertiesManager.getProperty("application.medio_pago.cuenta_corriente");
 		public static final String DEBITO = PropertiesManager.getProperty("application.medio_pago.debito");
 		public static final String CREDITO = PropertiesManager.getProperty("application.medio_pago.credito");
+		public static final String NOTA_CREDITO = PropertiesManager.getProperty("application.medio_pago.nota_credito");
 	}
 	
 	public static class TipoComprador {
