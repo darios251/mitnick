@@ -37,6 +37,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
@@ -407,12 +408,33 @@ public class PagoPanel extends BasePanel<VentaController> {
 					CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto, txtMonto.getText());
 					if (cuotasDialog.aceptar) {
 						((VentaController) controller).guardarCuotas(cuotasDialog.getModel().getCuotas());
-						((VentaController) controller).agregarPago(pago, txtMonto.getText());
+						((VentaController) controller).agregarPago(pago, txtMonto.getText(), null);
 					} 
 				}
 			}
-			else
-				((VentaController) controller).agregarPago(pago, txtMonto.getText());
+			else if (pago.isNotaCredito()) {
+				String nroNC = JOptionPane.showInputDialog(PropertiesManager.getProperty("pagoPanel.notaCredito.numeroTicket"));
+				if (nroNC == null)
+					return;
+				CreditoDto credito = ((VentaController) controller).obtenerCredito(nroNC);
+				if (credito == null){
+					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("pagoPanel.notaCredito.noExiste"), "Error", JOptionPane.OK_CANCEL_OPTION);
+					if (option == JOptionPane.CANCEL_OPTION)
+						return;						
+				} else {
+					
+					if (credito.getDisponible().compareTo(new BigDecimal(txtMonto.getText()))<0){
+						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("pagoPanel.notaCredito.disponibleMenorAlTotal", new Object[]{credito.getDisponible()}), "Error", JOptionPane.OK_CANCEL_OPTION);
+						if (option == JOptionPane.CANCEL_OPTION)
+							return;
+					}
+								
+					((VentaController) controller).agregarPago(pago, txtMonto.getText(), nroNC);
+				}
+					
+				
+			} else
+				((VentaController) controller).agregarPago(pago, txtMonto.getText(), null);
 
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
@@ -481,6 +503,26 @@ public class PagoPanel extends BasePanel<VentaController> {
 				((VentaController) controller).limpiarVenta();
 				((VentaController) controller).mostrarVentasPanel();
 			} else {
+				BigDecimal deuda = controller.obtenerSaldoDeudorCliente();
+				BigDecimal devolucion = VentaManager.getVentaActual().getTotal();
+				
+				int option = JOptionPane.CANCEL_OPTION;
+				if (deuda.compareTo(new BigDecimal(0))>0) {
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.cuentaCorriente"), "Información", JOptionPane.YES_NO_OPTION);	
+					if (option == JOptionPane.OK_OPTION){
+						//se pagan cuotas pendientes del cliente con la nota de crédito
+						((VentaController) controller).pagarCuotasNC();
+						if (deuda.compareTo(devolucion)>=0) {
+							deuda = deuda.subtract(devolucion);
+							JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.saldo", new Object[] {devolucion, deuda}));
+						} else {
+							BigDecimal disponible = devolucion.subtract(deuda);
+							JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.disponible", new Object[] {deuda, disponible}));
+						}
+					}
+				}
+				
+				
 				((VentaController) controller).limpiarVenta();
 				JTabbedPaneConBoton jTabbedPaneConBoton = ((VentaController) controller).getPrincipalView().jTabbedPaneConBoton;
 				jTabbedPaneConBoton.remove(jTabbedPaneConBoton.getSelectedIndex());				

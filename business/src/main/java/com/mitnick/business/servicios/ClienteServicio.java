@@ -16,7 +16,9 @@ import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IDireccionDao;
+import com.mitnick.persistence.daos.IMedioPagoDAO;
 import com.mitnick.persistence.daos.IProvinciaDao;
+import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Provincia;
@@ -30,6 +32,7 @@ import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 @SuppressWarnings("rawtypes")
 @Service("clienteServicio")
@@ -49,6 +52,12 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	@Autowired
 	protected ICuotaDao cuotaDao;
+	
+	@Autowired
+	protected IMedioPagoDAO medioPagoDao;
+	
+	@Autowired
+	protected IVentaDAO ventaDao;
 
 	@Transactional
 	@Override
@@ -286,5 +295,39 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		clienteDao.reporteMovimientosCliente(cliente);
 	}
 	
-	
+	/**
+	 * Este metodo se invoca cuando el cliente que realiza la devolucion tiene cuenta corriente con cuotas pendientes de pago.
+	 * Este metodo utiliza el credito otorgado por la devolucion para cancelar las cuotas correspondientes.
+	 */
+	public void pagarCuotasNC(VentaDto venta) {
+		List<Cuota> cuotas = cuotaDao.getCuotaByClienteId(venta.getCliente().getId());
+		BigDecimal pendiente = new BigDecimal(0);
+		if (cuotas!=null){
+			Iterator<Cuota> cuotasIt = cuotas.iterator();
+			boolean seguir = true;
+			List<CuotaDto> cuotasAPagar = new ArrayList<CuotaDto>();
+			while (cuotasIt.hasNext() && seguir){
+				Cuota cuota = cuotasIt.next();
+				pendiente = pendiente.add(cuota.getFaltaPagar());
+				cuotasAPagar.add((CuotaDto)entityDTOParser.getDtoFromEntity(cuota));
+				if (pendiente.compareTo(venta.getTotal())>=0)
+					seguir = false;
+			}			
+			MedioPagoDto medioPagoDto = (MedioPagoDto)entityDTOParser.getDtoFromEntity(medioPagoDao.getByCode(MitnickConstants.Medio_Pago.NOTA_CREDITO));
+			PagoDto pago = new PagoDto();
+			pago.setMedioPago(medioPagoDto);
+			pago.setMonto(venta.getTotal());
+			agregarPago(pago, cuotasAPagar);
+			BigDecimal creditoUsado = new BigDecimal(0);
+			if (pendiente.compareTo(venta.getTotal())>=0)
+				creditoUsado = venta.getTotal();
+			else
+				creditoUsado = pendiente;
+				
+			ventaDao.usarCredito(venta.getNumeroTicket(), creditoUsado);
+			comprobantePago(cuotasAPagar);
+			
+		}
+	}
+		
 }

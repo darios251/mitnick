@@ -11,6 +11,8 @@ public class PagoDto extends BaseDto {
 	private BigDecimal monto;
 	
 	private boolean comprobante = false;
+	
+	private String nroNC;
 
 	public MedioPagoDto getMedioPago() {
 		return medioPago;
@@ -35,6 +37,14 @@ public class PagoDto extends BaseDto {
 	public void setComprobante(boolean comprobante) {
 		this.comprobante = comprobante;
 	}
-	
+
+	public String getNroNC() {
+		return nroNC;
+	}
+
+	public void setNroNC(String nroNC) {
+		this.nroNC = nroNC;
+	}
+
 	
 }

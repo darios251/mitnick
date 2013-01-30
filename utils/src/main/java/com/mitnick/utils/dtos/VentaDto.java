@@ -2,6 +2,7 @@ package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
@@ -38,6 +39,8 @@ public class VentaDto extends BaseDto {
 	private List<CuotaDto> cuotas;
 	
 	private String numeroTicket;
+	
+	private String numeroTicketOriginal;
 	
 	private String tipoTicket; 
 	
@@ -209,6 +212,25 @@ public class VentaDto extends BaseDto {
 		return tipoResponsabilidad;
 	}
 
+	public String getNumeroTicketOriginal() {
+		return numeroTicketOriginal;
+	}
+
+	public void setNumeroTicketOriginal(String numeroTicketOriginal) {
+		this.numeroTicketOriginal = numeroTicketOriginal;
+	}
+
+	public List<PagoDto> getPagoNotaCredito(){
+		Iterator<PagoDto> pagos = getPagos().iterator();
+		List<PagoDto> nCreditos = new ArrayList<PagoDto>();
+		while (pagos.hasNext()){
+			PagoDto pago = pagos.next();
+			if (MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo()))
+				nCreditos.add(pago);
+		}
+		return nCreditos;
+	}
+	
 	@Override
 	public String toString() {
 		return "VentaDto [productos=" + productos + ", subTotal=" + subTotal
@@ -218,9 +240,10 @@ public class VentaDto extends BaseDto {
 				+ ", pagado=" + pagado + ", totalPagado=" + totalPagado
 				+ ", faltaPagar=" + faltaPagar + ", vuelto=" + vuelto
 				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket
+				+ ", numeroTicketOriginal=" + numeroTicketOriginal
 				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa
-				+ ", cancelada=" + cancelada + ", tipo=" + tipo
-				+ ", tipoResponsabilidad=" + tipoResponsabilidad + "]";
+				+ ", cancelada=" + cancelada + ", tipoResponsabilidad="
+				+ tipoResponsabilidad + ", tipo=" + tipo + "]";
 	}
 
 }
