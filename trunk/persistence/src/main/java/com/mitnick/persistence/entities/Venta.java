@@ -415,7 +415,7 @@ public class Venta extends BaseObject implements Serializable {
 		Iterator<Pago> pagos = getPagos().iterator();
 		while (pagos.hasNext()){
 			Pago pago = pagos.next();
-			if (!MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()))
+			if (!MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()) && !MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo()))
 				total = total.add(new BigDecimal(pago.getPago()));
 		}
 		return total;
@@ -429,6 +429,18 @@ public class Venta extends BaseObject implements Serializable {
 			if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()))
 				total = total.add(new BigDecimal(pago.getPago()));
 		}
+		return total;
+	}
+	
+	public BigDecimal getPagoNC(){
+		BigDecimal total = new BigDecimal(0);
+		Iterator<Pago> pagos = getPagos().iterator();
+		while (pagos.hasNext()){
+			Pago pago = pagos.next();
+			if (MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo()))
+				total = total.add(new BigDecimal(pago.getPago()));			
+		}
+		total = total.negate();
 		return total;
 	}
 	

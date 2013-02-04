@@ -12,6 +12,7 @@ public class ReporteMovimientoClienteDto extends ServicioBaseDto {
 	private BigDecimal monto;
 	private BigDecimal debe;
 	private BigDecimal haber;
+	private BigDecimal credito;
 	public Date getFecha() {
 		return fecha;
 	}
@@ -42,10 +43,17 @@ public class ReporteMovimientoClienteDto extends ServicioBaseDto {
 	public void setHaber(BigDecimal haber) {
 		this.haber = haber;
 	}
+	public BigDecimal getCredito() {
+		return credito;
+	}
+	public void setCredito(BigDecimal credito) {
+		this.credito = credito;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((credito == null) ? 0 : credito.hashCode());
 		result = prime * result + ((debe == null) ? 0 : debe.hashCode());
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((haber == null) ? 0 : haber.hashCode());
@@ -66,6 +74,13 @@ public class ReporteMovimientoClienteDto extends ServicioBaseDto {
 			return false;
 		}
 		ReporteMovimientoClienteDto other = (ReporteMovimientoClienteDto) obj;
+		if (credito == null) {
+			if (other.credito != null) {
+				return false;
+			}
+		} else if (!credito.equals(other.credito)) {
+			return false;
+		}
 		if (debe == null) {
 			if (other.debe != null) {
 				return false;
@@ -107,7 +122,8 @@ public class ReporteMovimientoClienteDto extends ServicioBaseDto {
 	public String toString() {
 		return "ReporteMovimientoClienteDto [fecha=" + fecha
 				+ ", nroComprobante=" + nroComprobante + ", monto=" + monto
-				+ ", debe=" + debe + ", haber=" + haber + "]";
+				+ ", debe=" + debe + ", haber=" + haber + ", credito="
+				+ credito + "]";
 	}
 	
 

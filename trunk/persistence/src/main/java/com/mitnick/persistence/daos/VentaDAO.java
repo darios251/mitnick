@@ -51,12 +51,14 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
 		criteria.add(Restrictions.eq("tipo", MitnickConstants.VENTA));
+		criteria.add(Restrictions.eq("canceled", false));
 		
 		criteria.addOrder(Order.desc("fecha"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
 	public Venta saveOrUpdate(Venta venta){
+		
 		if (!venta.isCanceled() && venta.getTipo()==MitnickConstants.DEVOLUCION){
 			//SE CREA LA NOTA DE CREDITO
 			Credito credito = new Credito();
@@ -114,6 +116,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		if(Validator.isNotNull(cliente)){
 			criteria.add(Restrictions.eq("c.id", cliente));
 		}		
+		criteria.add(Restrictions.eq("canceled", false));
 
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
@@ -122,6 +125,8 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 		
 		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
+		criteria.add(Restrictions.eq("canceled", false));
+
 		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
 		if (ventas==null || ventas.isEmpty())
 				return null;

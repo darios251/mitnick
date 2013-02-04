@@ -20,7 +20,9 @@ import com.mitnick.persistence.daos.IMedioPagoDAO;
 import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Cuota;
+import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
@@ -276,16 +278,19 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			VentaHelper.calcularTotales(cuotas.get(i));
 		}
 
-		clienteDao.generarComprobante(cuotas);
+		Comprobante comprobante = clienteDao.generarComprobante(cuotas);
 
 		for (int i = 0; i < cuotas.size(); i++) {
 			if (cuotas.get(i).getPagos()!=null) {
 				Iterator<PagoDto> pagosIt = cuotas.get(i).getPagos().iterator();
 				while (pagosIt.hasNext()){
 					PagoDto pago = pagosIt.next();
+					if (!pago.isComprobante())
+						comprobante.addPago((Pago)entityDTOParser.getEntityFromDto(pago));
 					pago.setComprobante(true);
 				}
 			}
+			clienteDao.saveOrUpdate(comprobante);
 			guardarCuota(cuotas.get(i));
 		}
 		

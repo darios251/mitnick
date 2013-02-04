@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -19,7 +20,9 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 
 	void cargarReporte();
 	
-	void generarComprobante(List<CuotaDto> cuotas);
+	Comprobante generarComprobante(List<CuotaDto> cuotas);
 	
 	void reporteMovimientosCliente(ClienteDto cliente);
+	
+	Comprobante saveOrUpdate(Comprobante comprobante);
 }
