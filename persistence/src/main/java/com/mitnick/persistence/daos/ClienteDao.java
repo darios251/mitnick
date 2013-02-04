@@ -33,6 +33,7 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
+import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
@@ -172,7 +173,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		}
 	}
 
-	public void generarComprobante(List<CuotaDto> cuotas) {
+	public Comprobante generarComprobante(List<CuotaDto> cuotas) {
 		try {
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream(
@@ -231,8 +232,9 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			clienteObject.addComprobante(comprobante);
 			clienteObject = saveOrUpdate(clienteObject);
 			super.getHibernateTemplate().flush();
-			Long idComprobante = clienteObject.getComprobantes()
-					.get(clienteObject.getComprobantes().size() - 1).getId();
+			long id = System.currentTimeMillis();
+			Long idComprobante = new Long(id);
+			comprobante.setId(idComprobante);
 			parameters.put("nroComprobante", idComprobante.toString());
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
@@ -248,12 +250,20 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			File file = new File(cuotas.get(0).getId() + "-comprobante.pdf");
 
 			Desktop.getDesktop().open(file);
-
+			
+			return comprobante;
+			
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+		return null;
 	}
 
+	public Comprobante saveOrUpdate(Comprobante comprobante){
+		getHibernateTemplate().saveOrUpdate(comprobante);
+		return comprobante;
+	}
+	
 	private List<PagoDto> clean(List<PagoDto> pagos) {
 		List<PagoDto> pagosLimpios = new ArrayList<PagoDto>();
 		Iterator<PagoDto> pagosIt = pagos.iterator();
@@ -281,6 +291,26 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 
 		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
+	
+	private BigDecimal getSaldoFavor(ClienteDto cliente) {
+
+		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
+		BigDecimal aFavor = new BigDecimal(0); 
+		criteria.createAlias("cliente", "c");
+		if(Validator.isNotNull(cliente)){
+			criteria.add(Restrictions.eq("c.id", cliente.getId()));
+		}	
+		
+		List<Credito> creditos = getHibernateTemplate().findByCriteria(criteria);
+		if (creditos!=null && !creditos.isEmpty()){
+			for (int i = 0; i < creditos.size(); i++) {
+				Credito credito = creditos.get(i);
+				aFavor = aFavor.add(credito.getDisponible());
+			}
+		}
+			
+		return aFavor;
+	}
 
 	public void reporteMovimientosCliente(ClienteDto cliente) {
 		try {
@@ -296,10 +326,12 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 					movimiento.setNroComprobante("Fact-" + nro);
 					movimiento.setDebe(venta.getPagoCuenta());
 					movimiento.setHaber(venta.getPagoContado());
+					movimiento.setCredito(venta.getPagoNC());
 				} else {
 					movimiento.setNroComprobante("NC-" + nro);
 					movimiento.setDebe(new BigDecimal(0));
-					movimiento.setHaber(venta.getTotal());
+					movimiento.setHaber(new BigDecimal(0));
+					movimiento.setCredito(venta.getTotal());
 				}
 				movimientos.add(movimiento);
 			}
@@ -314,6 +346,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				movimiento.setHaber(comprobante.getTotal());
 				movimiento.setDebe(new BigDecimal(0));
 				movimientos.add(movimiento);
+				//TODO: ver si es credito
 			}
 
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
@@ -325,6 +358,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("saldoDeudor", getSaldoDeudor(cliente).toString());
+			parameters.put("saldoAFavor", getSaldoFavor(cliente).toString());
 			parameters.put("nombreCliente", cliente.getNombre());
 			parameters.put("direccionCliente", cliente.getDireccion()
 					.getDomicilio()

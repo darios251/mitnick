@@ -100,6 +100,9 @@ public class Credito extends BaseObject implements Serializable {
 		this.numeroTicket = numeroTicket;
 	}
 
+	public BigDecimal getDisponible(){
+		return monto.subtract(montoUsado);
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

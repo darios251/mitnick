@@ -192,6 +192,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
+		ventaDto.setId(venta.getId());
 		
 		return ventaDto;
 
