@@ -16,11 +16,13 @@ import com.mitnick.presentacion.vistas.paneles.CuentaCorrientePagoPanel;
 import com.mitnick.presentacion.vistas.paneles.CuentaCorrientePanel;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
+import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.AuthorizationRequired;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.DireccionDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
@@ -43,6 +45,8 @@ public class ClienteController extends BaseController {
 	@Autowired private CuentaCorrientePagoPanel cuentaCorrientePagoPanel;
 	
 	@Autowired private IMedioPagoServicio medioPagoServicio;
+	
+	@Autowired private IVentaServicio ventaServicio;
 	
 	public ClienteController() {
 		
@@ -314,7 +318,7 @@ public class ClienteController extends BaseController {
 		logger.debug("Saliendo del método quitaPago");
 	}
 	
-	public void agregarPago(MedioPagoDto medioPago, String monto) {
+	public void agregarPago(MedioPagoDto medioPago, String monto, String numeroNC) {
 		logger.debug("Entrado al metodo agregarPago, con medioPago: " + medioPago + " y monto: " + monto);
 		if(Validator.isNull(medioPago))
 			throw new PresentationException("error.venta.medioPago.null");
@@ -323,6 +327,7 @@ public class ClienteController extends BaseController {
 		if(!Validator.isDouble(monto))
 			throw new PresentationException("error.venta.monto.formato");
 		PagoDto pago = new PagoDto();
+		pago.setNroNC(numeroNC);
 		pago.setMedioPago(medioPago);
 		pago.setMonto(new BigDecimal(monto));
 		
@@ -462,6 +467,10 @@ public class ClienteController extends BaseController {
 		return medioPagoServicio;
 	}
 
+	public CreditoDto obtenerCredito(String nroNC){
+		return ventaServicio.obtenerCredito(nroNC);
+	}
+	
 
 	@Override
 	public void mostrarUltimoPanelMostrado() {

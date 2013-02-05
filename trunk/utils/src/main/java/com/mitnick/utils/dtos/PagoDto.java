@@ -2,6 +2,8 @@ package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
 
+import com.mitnick.utils.MitnickConstants;
+
 public class PagoDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
@@ -46,5 +48,8 @@ public class PagoDto extends BaseDto {
 		this.nroNC = nroNC;
 	}
 
+	public boolean isNC(){
+		return MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(this.getMedioPago().getCodigo());
+	}
 	
 }

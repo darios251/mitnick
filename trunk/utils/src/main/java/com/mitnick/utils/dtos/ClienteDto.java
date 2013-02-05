@@ -31,6 +31,8 @@ public class ClienteDto extends BaseDto {
 	
 	@Required
 	private DireccionDto direccion;
+	
+	private int cantidadComprobantes;
 
 	public String getNombre() {
 		return nombre;
@@ -94,6 +96,15 @@ public class ClienteDto extends BaseDto {
 
 	public void setActividad(String actividad) {
 		this.actividad = actividad;
+	}
+
+	public int getCantidadComprobantes() {
+		cantidadComprobantes++;
+		return cantidadComprobantes;
+	}
+
+	public void setCantidadComprobantes(int cantidadComprobantes) {
+		this.cantidadComprobantes = cantidadComprobantes;
 	}
 	
 	

@@ -210,7 +210,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		clienteDto.setEmail(cliente.getEmail());
 		clienteDto.setFechaNacimiento(DateHelper.getFecha(cliente.getFechaNacimiento()));
 		clienteDto.setTelefono(cliente.getTelefono());
-
+		clienteDto.setCantidadComprobantes(cliente.getComprobantes().size());
 		if(Validator.isNotNull(cliente.getDireccion()))
 			clienteDto.setDireccion(getDtoFromEntity(cliente.getDireccion()));
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,13 +18,15 @@ import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
 
+import com.mitnick.utils.MitnickConstants;
+
 @Entity(name = "Comprobante")
 public class Comprobante extends BaseObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id 
-	private Long id;
+	private String id;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha")
@@ -36,11 +39,11 @@ public class Comprobante extends BaseObject implements Serializable {
 	@JoinColumn(name = "comprobante_id")
 	private List<Pago> pagos;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -72,6 +75,33 @@ public class Comprobante extends BaseObject implements Serializable {
 		if (pagos==null)
 			pagos = new ArrayList<Pago>();
 		pagos.add(pago);
+	}
+	
+	public BigDecimal getPagoContado(){
+		BigDecimal total = new BigDecimal(0);
+		Iterator<Pago> pagos = getPagos().iterator();
+		while (pagos.hasNext()){
+			Pago pago = pagos.next();
+			if (!MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()) && !MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo()))
+				total = total.add(new BigDecimal(pago.getPago()));
+		}
+		return total;
+	}
+	
+	public BigDecimal getPagoNC(){
+		BigDecimal total = new BigDecimal(0);
+		Iterator<Pago> pagos = getPagos().iterator();
+		while (pagos.hasNext()){
+			Pago pago = pagos.next();
+			if (MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo()))
+				total = total.add(new BigDecimal(pago.getPago()));			
+		}
+		total = total.negate();
+		return total;
+	}
+	
+	public BigDecimal getPagoCuenta(){
+		return new BigDecimal(0);
 	}
 	
 	@Override
