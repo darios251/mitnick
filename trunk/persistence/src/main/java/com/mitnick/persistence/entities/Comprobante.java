@@ -9,8 +9,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -35,7 +33,7 @@ public class Comprobante extends BaseObject implements Serializable {
 	private BigDecimal total;
 	
 	@OneToMany (cascade = {CascadeType.ALL})
-	@JoinColumn(name = "venta_id")
+	@JoinColumn(name = "comprobante_id")
 	private List<Pago> pagos;
 
 	public Long getId() {
