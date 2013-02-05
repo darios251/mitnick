@@ -226,16 +226,15 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("saldoPendiente", saldoPendiente.toString());
 
 			Comprobante comprobante = new Comprobante();
+			String id = String.valueOf(cliente.getId()).concat(String.valueOf(cliente.getCantidadComprobantes()));
+			comprobante.setId(id);
 			comprobante.setFecha(new Date());
 			comprobante.setTotal(pagoComprobante);
 			Cliente clienteObject = findById(cliente.getId());
 			clienteObject.addComprobante(comprobante);
 			clienteObject = saveOrUpdate(clienteObject);
 			super.getHibernateTemplate().flush();
-			long id = System.currentTimeMillis();
-			Long idComprobante = new Long(id);
-			comprobante.setId(idComprobante);
-			parameters.put("nroComprobante", idComprobante.toString());
+			parameters.put("nroComprobante", id);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
@@ -343,10 +342,10 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				String nro = comprobante.getId().toString();
 				movimiento.setNroComprobante("Comp-" + nro);
 				movimiento.setFecha(comprobante.getFecha());
-				movimiento.setHaber(comprobante.getTotal());
-				movimiento.setDebe(new BigDecimal(0));
+				movimiento.setDebe(comprobante.getPagoCuenta());
+				movimiento.setHaber(comprobante.getPagoContado());
+				movimiento.setCredito(comprobante.getPagoNC());
 				movimientos.add(movimiento);
-				//TODO: ver si es credito
 			}
 
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this

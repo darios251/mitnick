@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
+import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Provincia;
@@ -285,8 +288,12 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 				Iterator<PagoDto> pagosIt = cuotas.get(i).getPagos().iterator();
 				while (pagosIt.hasNext()){
 					PagoDto pago = pagosIt.next();
-					if (!pago.isComprobante())
+					if (!pago.isComprobante()) {
 						comprobante.addPago((Pago)entityDTOParser.getEntityFromDto(pago));
+						if (pago.isNC())
+							ventaDao.usarCredito(pago.getNroNC(), pago.getMonto());
+					}
+					
 					pago.setComprobante(true);
 				}
 			}
@@ -295,6 +302,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		}
 		
 	}
+	
 	
 	public void reporteMovimientosCliente(ClienteDto cliente){
 		clienteDao.reporteMovimientosCliente(cliente);

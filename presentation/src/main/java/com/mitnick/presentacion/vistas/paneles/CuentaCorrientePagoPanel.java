@@ -33,6 +33,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
@@ -425,7 +426,27 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 		try {
 			MedioPagoDto pago = (MedioPagoDto)cmbMedioPago.getSelectedItem();
 			
-			controller.agregarPago(pago, txtMonto.getText());
+			if (pago.isNotaCredito()) {
+				String nroNC = JOptionPane.showInputDialog(PropertiesManager.getProperty("pagoPanel.notaCredito.numeroTicket"));
+				if (nroNC == null)
+					return;
+				CreditoDto credito = controller.obtenerCredito(nroNC);
+				if (credito == null){
+					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("pagoPanel.notaCredito.noExiste"), "Error", JOptionPane.OK_CANCEL_OPTION);
+					if (option == JOptionPane.CANCEL_OPTION)
+						return;						
+				} else {
+					
+					if (credito.getDisponible().compareTo(new BigDecimal(txtMonto.getText()))<0){
+						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("pagoPanel.notaCredito.disponibleMenorAlTotal", new Object[]{credito.getDisponible()}), "Error", JOptionPane.OK_CANCEL_OPTION);
+						if (option == JOptionPane.CANCEL_OPTION)
+							return;
+					}
+								
+					controller.agregarPago(pago, txtMonto.getText(), nroNC);
+				}
+			} else
+				controller.agregarPago(pago, txtMonto.getText(), null);
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);

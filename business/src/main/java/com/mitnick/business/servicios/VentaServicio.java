@@ -177,16 +177,17 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		Venta venta = actualizarStock(ventaDto);
 		
 		//TODO IMPRIMIR NOTA DE CREDITO SI VENTA.TIPO = MitnickConstants.DEVOLUCION
-		if(!venta.isPrinted()) {
-			
-			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-		}
-		else
+//		if(!venta.isPrinted()) {
+//			
+//			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
+//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+//			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
+//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+//		}
+//		else
 			venta.setPrinted(true);
-		
+		//TODO: borrar la linea de abajo
+		ventaDto.setNumeroTicket(String.valueOf(System.currentTimeMillis()));	
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());
 		venta.setTipoTicket(ventaDto.getTipoTicket());
 		
