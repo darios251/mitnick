@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +21,6 @@ import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
-import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Provincia;
@@ -174,16 +171,28 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public void guardarCuota(CuotaDto cuotaDto) {
 
 		try {
-			@SuppressWarnings("unchecked")
-			Cuota cuota = (Cuota) entityDTOParser.getEntityFromDto(cuotaDto);
-			cuota.setFechaPago(new Date());
-			cuota = cuotaDao.saveOrUpdate(cuota);
-			cuotaDto.setId(cuota.getId());
+			saveCuota(cuotaDto);
 		} catch (PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar guardar las cuotas");
 		}
 	}
 
+	@Transactional
+
+	private Cuota saveCuota(CuotaDto cuotaDto) {
+
+		try {
+			@SuppressWarnings("unchecked")
+			Cuota cuota = (Cuota) entityDTOParser.getEntityFromDto(cuotaDto);
+			cuota.setFechaPago(new Date());
+			cuota = cuotaDao.saveOrUpdate(cuota);
+			cuotaDto.setId(cuota.getId());
+			return cuota;
+		} catch (PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar guardar las cuotas");
+		}
+	}
+	
 	@Override
 	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas) {
 		if (pago.isComprobante())
@@ -269,7 +278,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			pagoDto = new PagoDto();
 			pagoDto.setComprobante(false);
 			pagoDto.setMedioPago(pago.getMedioPago());
-			pagoDto.setMonto(pago.getMonto());
+			pagoDto.setMonto(new BigDecimal(0));
 			pagoDto.setNroNC(pago.getNroNC());
 			cuota.getPagos().add(pago);
 		}
@@ -287,21 +296,19 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		Comprobante comprobante = clienteDao.generarComprobante(cuotas);
 
 		for (int i = 0; i < cuotas.size(); i++) {
-			if (cuotas.get(i).getPagos()!=null) {
-				Iterator<PagoDto> pagosIt = cuotas.get(i).getPagos().iterator();
+			Cuota cuotaEnt = saveCuota(cuotas.get(i));
+			if (cuotaEnt.getPagos()!=null) {
+				Iterator<Pago> pagosIt = cuotaEnt.getPagos().iterator();
 				while (pagosIt.hasNext()){
-					PagoDto pago = pagosIt.next();
+					Pago pago = pagosIt.next();
 					if (!pago.isComprobante()) {
-						comprobante.addPago((Pago)entityDTOParser.getEntityFromDto(pago));
-						if (pago.isNC())
-							ventaDao.usarCredito(pago.getNroNC(), pago.getMonto());
+						comprobante.addPago(pago);						
 					}
 					
 					pago.setComprobante(true);
 				}
 			}
-			clienteDao.saveOrUpdate(comprobante);
-			guardarCuota(cuotas.get(i));
+			clienteDao.saveOrUpdate(comprobante);			
 		}
 		
 	}

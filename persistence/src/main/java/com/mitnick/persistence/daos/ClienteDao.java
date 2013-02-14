@@ -268,9 +268,12 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		Iterator<PagoDto> pagosIt = pagos.iterator();
 		while (pagosIt.hasNext()) {
 			PagoDto pago = pagosIt.next();
-			PagoDto pagoDto = getPagoMedioPago(pagosLimpios, pago);
+			PagoDto auxiliar = new PagoDto();
+			auxiliar.setMedioPago(pago.getMedioPago());
+			auxiliar.setMonto(pago.getMonto());			
+			PagoDto pagoDto = getPagoMedioPago(pagosLimpios, auxiliar);
 			if (pagoDto == null)
-				pagosLimpios.add(pago);
+				pagosLimpios.add(auxiliar);
 			else
 				pagoDto.setMonto(pagoDto.getMonto().add(pago.getMonto()));
 		}
