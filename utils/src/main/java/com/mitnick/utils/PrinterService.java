@@ -704,7 +704,7 @@ public class PrinterService {
 			Thread.sleep(1000);
 			
 			output.println(INFO_TICKET_FACTURA);
-			//checkErrors();
+			//checkStatus();
 			
 			String line = "";
 			
@@ -715,6 +715,8 @@ public class PrinterService {
 	    		throw new PrinterException(line);
 	    	}
 	    	else {
+	    		while(line.equals("[OK]"))
+	    			line = input.readLine();
 	    		logger.info("info tique factura: ");
 	    		logger.info(line);
 	    		
@@ -923,7 +925,7 @@ public class PrinterService {
 	}
 	
 	protected Socket connect() throws UnknownHostException, IOException {
-		SocketAddress sockaddr = new InetSocketAddress("192.168.56.101",9095); //new InetSocketAddress("192.168.0.104", 9095);
+		SocketAddress sockaddr = new InetSocketAddress("192.168.0.105", 9095);
 		currentConnection = new Socket();
 		currentConnection.connect(sockaddr, 3000);
 		currentConnection.setSoTimeout(15000);
