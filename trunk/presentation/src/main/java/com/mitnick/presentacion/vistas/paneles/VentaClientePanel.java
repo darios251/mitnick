@@ -158,7 +158,10 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		try {
 			if(VentaManager.getVentaActual().getCliente() == null || table.getSelectedRow() != -1) {
 				controller.agregarCliente();
-				mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
+				
+				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.clienteOK");
+				if (mostrarMsg)
+					mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
 			}
 			if (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA)
 				controller.mostrarPagosPanel();

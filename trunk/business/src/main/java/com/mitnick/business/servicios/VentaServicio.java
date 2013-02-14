@@ -187,7 +187,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		}
 		else
 			venta.setPrinted(true);
-
+//		ventaDto.setNumeroTicket(String.valueOf(System.currentTimeMillis()));
+		
 		actualizarStock(venta);
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());
 		venta.setTipoTicket(ventaDto.getTipoTicket());

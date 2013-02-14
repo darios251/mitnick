@@ -48,8 +48,4 @@ public class PagoDto extends BaseDto {
 		this.nroNC = nroNC;
 	}
 
-	public boolean isNC(){
-		return MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(this.getMedioPago().getCodigo());
-	}
-	
 }

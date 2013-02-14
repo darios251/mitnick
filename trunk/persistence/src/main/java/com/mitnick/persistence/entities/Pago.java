@@ -13,6 +13,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.appfuse.model.BaseObject;
 
+import com.mitnick.utils.MitnickConstants;
+
 @Entity(name = "Pago")
 public class Pago extends BaseObject implements Serializable {
 
@@ -139,4 +141,7 @@ public class Pago extends BaseObject implements Serializable {
 				+ ", comprobante=" + comprobante + ", fecha=" + fecha + "]";
 	}
 
+	public boolean isNC(){
+		return MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(this.getMedioPago().getCodigo());
+	}
 }
