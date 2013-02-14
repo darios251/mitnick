@@ -81,6 +81,7 @@ public class PrinterService {
 	private static final String NOTA_CREDITO = "[NOTA-CREDITO]";
 	private static final String INFO_NOTA_CREDITO = "[INFO-NOTA-CREDITO]";
 	private static final String CANCELAR_NOTA_CREDITO = "[CANCELAR-NOTA-CREDITO]";
+	private static final String NUMERO_FACTURA_ORIGINAL = "[LINEA-COMPROBANTE-ORIGEN]";
 	
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicket(VentaDto venta) {
@@ -227,6 +228,8 @@ public class PrinterService {
 			output.println("............");
 			output.println(LINEA_REMITOS_ASOCIADOS);
 			output.println("............");
+			output.println(NUMERO_DOCUMENTO_COMPRADOR);
+			output.println("");
 			output.println(FIN_DATOS_COMPRADOR);
 			
 			checkStatus();
@@ -366,6 +369,8 @@ public class PrinterService {
 			output.println("............");
 			output.println(LINEA_REMITOS_ASOCIADOS);
 			output.println("............");
+			output.println(NUMERO_FACTURA_ORIGINAL);
+			output.println(venta.getNumeroTicketOriginal());
 			output.println(FIN_DATOS_COMPRADOR);
 			
 			checkStatus();
@@ -419,16 +424,14 @@ public class PrinterService {
 			
 			checkStatus();
 			
-			for(PagoDto pago : venta.getPagos()) {
-				output.println(PAYMENT);
-				output.println(PAGO_DESCRIPCION);
-				output.println(""); // linea extra
-				output.println(PAGO_DESCRIPCION);
-				output.println(pago.getMedioPago().getDescripcion());
-				output.println(PAGO_MONTO);
-				output.println(pago.getMonto().setScale (2, BigDecimal.ROUND_HALF_UP));
-				output.println(FIN_PAGO);
-			}
+			output.println(PAYMENT);
+			output.println(PAGO_DESCRIPCION);
+			output.println(""); // linea extra
+			output.println(PAGO_DESCRIPCION);
+			output.println("Credito a favor");
+			output.println(PAGO_MONTO);
+			output.println(venta.getTotal().setScale (2, BigDecimal.ROUND_HALF_UP));
+			output.println(FIN_PAGO);
 			
 			checkStatus();
 			
@@ -763,6 +766,8 @@ public class PrinterService {
 	    		throw new PrinterException(line);
 	    	}
 	    	else {
+	    		while(line.equals("[OK]"))
+    				line = input.readLine();
 	    		logger.info("info tique factura: ");
 	    		logger.info(line);
 	    		
@@ -808,6 +813,8 @@ public class PrinterService {
 	    		throw new PrinterException(line);
 	    	}
 	    	else {
+	    		while(line.equals("[OK]"))
+	    			line = input.readLine();
 	    		logger.info("info ticket:");
 	    		logger.info(line);
 	    		
