@@ -144,6 +144,24 @@ namespace MitnickPrinterService
 
             private string INICIO_CARGA_LOGO = (char)5 + "" + (char)48;
 
+            private string NOTA_CREDITO_COMMAND = (char)13 + "" + (char)1;
+            private string NOTA_CREDITO_COMMAND_EXT = (char)0 + "" + (char)0;
+
+            private string ITEM_NOTA_CREDITO_COMMAND = (char)13 + "" + (char)2;
+            private string ITEM_NOTA_CREDITO_COMMAND_EXT = (char)0 + "" + (char)0;
+            private string SUBTOTAL_NOTA_CREDITO_COMMAND = (char)13 + "" + (char)3;
+            private string SUBTOTAL_NOTA_CREDITO_COMMAND_EXT = (char)0 + "" + (char)0;
+            private string DISCOUNT_NOTA_CREDITO_COMMAND = (char)13 + "" + (char)4;
+            private string DISCOUNT_NOTA_CREDITO_COMMAND_EXT = (char)0 + "" + (char)0;
+            private string PAYMENT_NOTA_CREDITO_COMMAND = (char)13 + "" + (char)5;
+            private string PAYMENT_NOTA_CREDITO_COMMAND_EXT = (char)0 + "" + (char)0;
+            private string CLOSE_NOTA_CREDITO_COMMAND = (char)13 + "" + (char)6;
+            private string CLOSE_NOTA_CREDITO_COMMAND_EXT = (char)0 + "" + (char)1;
+            private string INFO_NOTA_CREDITO = (char)13 + "" + (char)10;
+            private string INFO_NOTA_CREDITO_EXTRA = (char)0 + "" + (char)0;
+            private string CANCELAR_NOTA_CREDITO = (char)13 + "" + (char)7;
+            private string CANCELAR_NOTA_CREDITO_EXTRA = (char)0 + "" + (char)0;
+
             public void Process()
             {
                 var stream = Handler.GetStream();
@@ -174,6 +192,9 @@ namespace MitnickPrinterService
                             break;
                         case "[CONFIGURACION]":
                             Configurar();
+                            break;
+                        case "[NOTA-CREDITO]":
+                            PrintNotaCredito();
                             break;
                         case "[CARGAR-LOGO]":
                             CargarLogo();
@@ -209,6 +230,55 @@ namespace MitnickPrinterService
                 throw new Exception();
             }
 
+            private void PrintNotaCredito()
+            {
+                bool isOpen = Connect();
+
+                if (isOpen)
+                {
+                    if (isOpen) isOpen = epson.AddDataField(NOTA_CREDITO_COMMAND);
+                    if (isOpen) isOpen = epson.AddDataField(NOTA_CREDITO_COMMAND_EXT);
+
+                    string line;
+                    while (!(line = Reader.ReadLine()).Equals("[FIN-TICKET]"))
+                    {
+                        switch (line)
+                        {
+                            case "[DATOS-COMPRADOR]":
+                                PrintDatosComprador();
+                                break;
+                            case "[ITEM]":
+                                PrintItemNotaCredito();
+                                break;
+                            case "[SUBTOTAL]":
+                                PrintSubTotalNotaCredito();
+                                break;
+                            case "[DISCOUNT]":
+                                PrintDiscountNotaCredito();
+                                break;
+                            case "[PAYMENT]":
+                                PrintPaymentNotaCredito();
+                                break;
+                            case "[BLANK-LINE]":
+                                PrintBlankLine();
+                                break;
+                            case "[INFO-NOTA-CREDITO]":
+                                InfoNotaCredito();
+                                break;
+                            case "[CANCELAR-NOTA-CREDITO]":
+                                CancelarNotaCredito();
+                                break;
+                        }
+                    }
+
+                    PrintCloseNotaCredito();
+                }
+                else
+                {
+                    SendConnectionError();
+                }
+            }
+
             private void CancelarTicket()
             {
                 bool isOpen = Connect();
@@ -222,7 +292,7 @@ namespace MitnickPrinterService
                     if (isOpen) isOpen = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    if (epson.ReturnCode != 0) SendStatusMessage();
                     else
                     {
                         Writer.WriteLine(epson.GetExtraField(1));
@@ -244,7 +314,7 @@ namespace MitnickPrinterService
                     if (isOpen) isOpen = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
 
                     for (int i = 1; i <= 14; i++)
                     {
@@ -266,7 +336,30 @@ namespace MitnickPrinterService
                     if (isOpen) isOpen = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    if (epson.ReturnCode != 0) SendStatusMessage();
+                    else
+                    {
+                        Writer.WriteLine(epson.GetExtraField(1));
+                        Writer.Flush();
+                        Writer.WriteLine(epson.GetExtraField(2));
+                        Writer.Flush();
+                    }
+                }
+            }
+
+            private void CancelarNotaCredito()
+            {
+                bool isOpen = Connect();
+
+                if (isOpen)
+                {
+                    if (isOpen) isOpen = epson.AddDataField(CANCELAR_NOTA_CREDITO);
+                    if (isOpen) isOpen = epson.AddDataField(CANCELAR_NOTA_CREDITO_EXTRA);
+
+                    if (isOpen) isOpen = epson.SendCommand();
+                    FPDelay();
+
+                    if (epson.ReturnCode != 0) SendStatusMessage();
                     else
                     {
                         Writer.WriteLine(epson.GetExtraField(1));
@@ -279,7 +372,8 @@ namespace MitnickPrinterService
 
             private void InfoTicketFactura()
             {
-                bool isOpen = Connect();
+                //bool isOpen = Connect();
+                bool isOpen = true;
 
                 if (isOpen)
                 {
@@ -289,7 +383,7 @@ namespace MitnickPrinterService
                     if (isOpen) isOpen = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
 
                     for(int i = 1; i <= 19; i++) {
                         Writer.WriteLine(i +":" + epson.GetExtraField(i));
@@ -297,6 +391,30 @@ namespace MitnickPrinterService
                     }
                 }
             }
+
+            private void InfoNotaCredito()
+            {
+                //bool isOpen = Connect();
+                bool isOpen = true;
+
+                if (isOpen)
+                {
+                    if (isOpen) isOpen = epson.AddDataField(INFO_NOTA_CREDITO);
+                    if (isOpen) isOpen = epson.AddDataField(INFO_NOTA_CREDITO_EXTRA);
+
+                    if (isOpen) isOpen = epson.SendCommand();
+                    FPDelay();
+
+                    SendStatusMessage();
+
+                    for (int i = 1; i <= 19; i++)
+                    {
+                        Writer.WriteLine(i + ":" + epson.GetExtraField(i));
+                        Writer.Flush();
+                    }
+                }
+            }
+
 
             private void CargarLogo()
             {
@@ -309,7 +427,7 @@ namespace MitnickPrinterService
                     if (isOpen) isOpen = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
 
                     //epson.AddDataField(
                 }
@@ -382,7 +500,7 @@ namespace MitnickPrinterService
                     if (isOpen) isOpen = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
                 }
             }
 
@@ -398,7 +516,7 @@ namespace MitnickPrinterService
                     if (isOk) isOk = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
                 }
                 else
                 {
@@ -473,16 +591,16 @@ namespace MitnickPrinterService
                         case "[NUMERO-DOCUMENTO-COMPRADOR]":
                         case "[TIPO-DOCUMENTO-COMPRADOR]":
                         case "[LINEA-REMITOS-ASOCIADOS]":
+                        case "[LINEA-COMPROBANTE-ORIGEN]":
                             if (isOk) isOk = epson.AddDataField(Reader.ReadLine());
                             break;
                     }
                 }
-                if (isOk) isOk = epson.AddDataField("");
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
 
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintCierreZ()
@@ -497,7 +615,7 @@ namespace MitnickPrinterService
                     if (isOk) isOk = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
                 }
                 else
                 {
@@ -515,7 +633,7 @@ namespace MitnickPrinterService
                     if (isOk) isOk = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
                 }
                 else
                 {
@@ -535,7 +653,7 @@ namespace MitnickPrinterService
                     if (isOpen) isOpen = epson.SendCommand();
                     FPDelay();
 
-                    if (epson.ReturnCode != 0) SendErrorMessage();
+                    SendStatusMessage();
 
                     string line;
                     while (!(line = Reader.ReadLine()).Equals("[FIN-TICKET]"))
@@ -591,7 +709,7 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintSurcharge()
@@ -608,7 +726,7 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintDiscountInvoice()
@@ -625,7 +743,24 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
+            }
+
+            private void PrintDiscountNotaCredito()
+            {
+                bool isOk = true;
+                if (isOk) isOk = epson.AddDataField(DISCOUNT_NOTA_CREDITO_COMMAND);
+                if (isOk) isOk = epson.AddDataField(DISCOUNT_NOTA_CREDITO_COMMAND_EXT);
+
+                if (isOk) isOk = epson.AddDataField(Reader.ReadLine());
+
+                string discount = Reader.ReadLine();
+                discount = discount.Replace(",", "").Replace(".", "");
+                if (isOk) isOk = epson.AddDataField(discount);
+
+                if (isOk) isOk = epson.SendCommand();
+                FPDelay();
+                SendStatusMessage();
             }
 
             private void PrintSurchargeInvoice()
@@ -642,7 +777,7 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void SendConnectionError()
@@ -672,7 +807,7 @@ namespace MitnickPrinterService
                 if (isOk) isOk = epson.AddDataField("1");
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintClose()
@@ -708,7 +843,7 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintPayment()
@@ -748,7 +883,7 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintSubTotal()
@@ -758,7 +893,7 @@ namespace MitnickPrinterService
                 if (isOk) isOk = epson.AddDataField(SUBTOTAL_COMMAND_EXT);
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintItem()
@@ -809,7 +944,7 @@ namespace MitnickPrinterService
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
 
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
             private void PrintCloseInvoice()
@@ -845,7 +980,45 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
+            }
+
+            private void PrintCloseNotaCredito()
+            {
+                bool isOk = true;
+                if (isOk) isOk = epson.AddDataField(CLOSE_NOTA_CREDITO_COMMAND);
+                if (isOk) isOk = epson.AddDataField(CLOSE_NOTA_CREDITO_COMMAND_EXT);
+
+                string line;
+                string data = "";
+                int cola = 0;
+
+                while (!(line = Reader.ReadLine()).Equals("[FIN-COLA-TICKET]"))
+                {
+                    switch (line)
+                    {
+                        case "[CLOSE-COLA]":
+                            data = Reader.ReadLine();
+                            cola++;
+                            if (isOk) isOk = epson.AddDataField(cola + "");
+                            if (isOk) isOk = epson.AddDataField(data);
+                            break;
+                        case "[FIN-COLA]":
+                            while (cola < 3)
+                            {
+                                cola++;
+                                if (isOk) isOk = epson.AddDataField(cola + "");
+                                if (isOk) isOk = epson.AddDataField("");
+                            }
+                            break;
+                    }
+                }
+
+                if (isOk) isOk = epson.AddDataField("");
+
+                if (isOk) isOk = epson.SendCommand();
+                FPDelay();
+                SendStatusMessage();
             }
 
             private void PrintPaymentInvoice()
@@ -885,7 +1058,47 @@ namespace MitnickPrinterService
 
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
+            }
+
+            private void PrintPaymentNotaCredito()
+            {
+                bool isOk = true;
+
+                if (isOk) isOk = epson.AddDataField(PAYMENT_NOTA_CREDITO_COMMAND);
+                if (isOk) isOk = epson.AddDataField(PAYMENT_NOTA_CREDITO_COMMAND_EXT);
+
+                string line;
+                string data = "";
+                int descLine = 0;
+
+                while (!(line = Reader.ReadLine()).Equals("[FIN-PAGO]"))
+                {
+                    switch (line)
+                    {
+                        case "[PAGO-MONTO]":
+                            data = Reader.ReadLine();
+                            string newData = data.Replace(",", "").Replace(".", "");
+                            if (isOk) isOk = epson.AddDataField(newData);
+                            break;
+                        case "[PAGO-DESCRIPTION]":
+                            data = Reader.ReadLine();
+                            descLine++;
+                            if (isOk) isOk = epson.AddDataField(data);
+                            break;
+                        case "[FIN-PAGO-DESCRIPTION]":
+                            while (descLine < 2)
+                            {
+                                descLine++;
+                                if (isOk) isOk = epson.AddDataField("");
+                            }
+                            break;
+                    }
+                }
+
+                if (isOk) isOk = epson.SendCommand();
+                FPDelay();
+                SendStatusMessage();
             }
 
             private void PrintSubTotalInvoice()
@@ -895,7 +1108,17 @@ namespace MitnickPrinterService
                 if (isOk) isOk = epson.AddDataField(SUBTOTAL_FACTURA_COMMAND_EXT);
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
+            }
+
+            private void PrintSubTotalNotaCredito()
+            {
+                bool isOk = true;
+                if (isOk) isOk = epson.AddDataField(SUBTOTAL_NOTA_CREDITO_COMMAND);
+                if (isOk) isOk = epson.AddDataField(SUBTOTAL_NOTA_CREDITO_COMMAND_EXT);
+                if (isOk) isOk = epson.SendCommand();
+                FPDelay();
+                SendStatusMessage();
             }
 
             private void PrintItemInvoice()
@@ -946,25 +1169,87 @@ namespace MitnickPrinterService
                 if (isOk) isOk = epson.SendCommand();
                 FPDelay();
 
-                if (epson.ReturnCode != 0) SendErrorMessage();
+                SendStatusMessage();
             }
 
-            public void FPDelay() {
+            private void PrintItemNotaCredito()
+            {
+                bool isOk = true;
+
+                if (isOk) isOk = epson.AddDataField(ITEM_NOTA_CREDITO_COMMAND);
+                if (isOk) isOk = epson.AddDataField(ITEM_NOTA_CREDITO_COMMAND_EXT);
+
+                string line;
+                string data = "";
+                int descLine = 0;
+
+                while (!(line = Reader.ReadLine()).Equals("[FIN-ITEM]"))
+                {
+
+                    switch (line)
+                    {
+                        case "[ITEM-CANTIDAD]":
+                            data = Reader.ReadLine();
+                            string newData = data.Replace(",", "").Replace(".", "") + "0000";
+                            if (isOk) isOk = epson.AddDataField(newData);
+                            break;
+                        case "[ITEM-PRECIO]":
+                        case "[ITEM-IVA]":
+                            data = Reader.ReadLine();
+                            string newData2 = data.Replace(",", "").Replace(".", "") + "00";
+                            if (isOk) isOk = epson.AddDataField(newData2);
+                            break;
+                        case "[ITEM-DESCRIPTION]":
+                            data = Reader.ReadLine();
+                            descLine++;
+                            if (isOk) isOk = epson.AddDataField(data);
+                            break;
+                        case "[FIN-ITEM-DESCRIPTION]":
+                            while (descLine < 5)
+                            {
+                                descLine++;
+                                if (isOk) isOk = epson.AddDataField("");
+                            }
+                            break;
+                    }
+                }
+
+                if (isOk) isOk = epson.AddDataField("");
+                if (isOk) isOk = epson.AddDataField("");
+
+                if (isOk) isOk = epson.SendCommand();
+                FPDelay();
+
+                SendStatusMessage();
+            }
+
+            public void FPDelay()
+            {
                 var start1 = DateTime.Now;
 
-                while(epson.State.Equals(TxFiscalState.EFP_S_Busy)) {
-                    while(DateTime.Now < start1.AddMilliseconds(125)) {
+                while (epson.State.Equals(TxFiscalState.EFP_S_Busy))
+                {
+                    while (DateTime.Now < start1.AddMilliseconds(125))
+                    {
                         Thread.Sleep(150);
-                        if(start1 > DateTime.Now)
+                        if (start1 > DateTime.Now)
                             break;
                     }
                 }
             }
 
-            public void SendErrorMessage() {
-                Writer.WriteLine("[ERROR]");
-                Writer.WriteLine("Código de Retorno: " + String.Format("{0:X}", epson.ReturnCode) + " " + epson.LastError);
-                Writer.Flush();
+            public void SendStatusMessage() {
+                if (epson.ReturnCode != 0)
+                {
+                    Writer.WriteLine("[ERROR]");
+                    Writer.WriteLine("Código de Retorno: " + String.Format("{0:X}", epson.ReturnCode) + " " + epson.LastError);
+                    Writer.Flush();
+                }
+                else
+                {
+                    Writer.WriteLine("[OK]");
+                    Writer.Flush();
+                }
             }
         }
               
