@@ -200,6 +200,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public List<CuotaDto> agregarPago(PagoDto pago, List<CuotaDto> cuotas) {
 		boolean continuar = true;
 		Iterator<CuotaDto> cuotasIt = cuotas.iterator();
+		String nc = pago.getNroNC();
 		while (continuar && cuotasIt.hasNext()){
 			BigDecimal total = pago.getMonto();
 			CuotaDto cuota = cuotasIt.next();
@@ -209,6 +210,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			if (total.compareTo(new BigDecimal(0))>0){
 				MedioPagoDto mp = pago.getMedioPago();
 				pago = new PagoDto();
+				pago.setNroNC(nc);
 				pago.setMonto(total);
 				pago.setComprobante(false);
 				pago.setMedioPago(mp);				
@@ -268,6 +270,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			pagoDto.setComprobante(false);
 			pagoDto.setMedioPago(pago.getMedioPago());
 			pagoDto.setMonto(pago.getMonto());
+			pagoDto.setNroNC(pago.getNroNC());
 			cuota.getPagos().add(pago);
 		}
 		return pagoDto;
@@ -330,6 +333,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			PagoDto pago = new PagoDto();
 			pago.setMedioPago(medioPagoDto);
 			pago.setMonto(venta.getTotal());
+			pago.setNroNC(venta.getNumeroTicket());
 			agregarPago(pago, cuotasAPagar);
 			BigDecimal creditoUsado = new BigDecimal(0);
 			if (pendiente.compareTo(venta.getTotal())>=0)
