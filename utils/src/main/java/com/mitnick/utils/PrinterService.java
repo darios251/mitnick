@@ -78,6 +78,10 @@ public class PrinterService {
 	private static final String INFO_TICKET = "[INFO-TICKET]";
 	private static final String CANCELAR_TICKET = "[CANCELAR-TICKET]";
 	
+	private static final String NOTA_CREDITO = "[NOTA-CREDITO]";
+	private static final String INFO_NOTA_CREDITO = "[INFO-NOTA-CREDITO]";
+	private static final String CANCELAR_NOTA_CREDITO = "[CANCELAR-NOTA-CREDITO]";
+	
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicket(VentaDto venta) {
 		try {
@@ -193,6 +197,9 @@ public class PrinterService {
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicketFactura(VentaDto venta) {
 		try {
+			if(venta.getTipo() == MitnickConstants.DEVOLUCION)
+				return imprimirNotaCredito(venta);
+			
 			connect();
 			output.println(TICKET_FACTURA_TAG);
 			checkStatus();
@@ -320,6 +327,145 @@ public class PrinterService {
 		catch (Exception e) {
 			String errorLine = readErrorLine();
 			cancelarTicketFactura(venta, true);
+			throw new PrinterException(errorLine);
+		}
+		finally {
+			closeConnection();
+		}
+		
+		return true;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public boolean imprimirNotaCredito(VentaDto venta) {
+		try {
+			connect();
+			output.println(NOTA_CREDITO);
+			checkStatus();
+			
+			output.println(DATOS_COMPRADOR);
+			
+			ClienteDto cliente = venta.getCliente();
+			output.println(NOMBRE_COMPRADOR);
+			output.println(cliente.getNombre());
+			output.println(NOMBRE_COMPRADOR);
+			output.println("");
+			output.println(DIRECCION_COMPRADOR);
+			output.println(cliente.getDireccion().getDomicilio());
+			output.println(DIRECCION_COMPRADOR);
+			output.println(cliente.getDireccion().getCodigoPostal() + " - " + cliente.getDireccion().getCiudad().getDescripcion() + " - " + cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion());
+			output.println(DIRECCION_COMPRADOR);
+			output.println("");
+			output.println(TIPO_DOCUMENTO_COMPRADOR);
+			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? "D" : "T");
+			output.println(NUMERO_DOCUMENTO_COMPRADOR);
+			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? cliente.getDocumento() : cliente.getCuit().replaceAll("-", ""));
+			output.println(TIPO_IVA_COMPRADOR);
+			output.println(venta.getTipoResponsabilidad().getTipoComprador());
+			output.println(LINEA_REMITOS_ASOCIADOS);
+			output.println("............");
+			output.println(LINEA_REMITOS_ASOCIADOS);
+			output.println("............");
+			output.println(FIN_DATOS_COMPRADOR);
+			
+			checkStatus();
+			
+			getInfoNotaCredito(venta, true);
+			
+			checkStatus();
+			
+			for(ProductoVentaDto producto : venta.getProductos()) {
+				output.println(ITEM_TAG);
+				
+				output.println(ITEM_DESCRIPCION); //extra 1
+				output.println(producto.getProducto().getDescripcion());
+				output.println(ITEM_DESCRIPCION); //extra 2
+				output.println("");
+				output.println(ITEM_DESCRIPCION); //extra 3
+				output.println("");
+				output.println(ITEM_DESCRIPCION); //extra 4
+				output.println("");
+				output.println(ITEM_DESCRIPCION);
+				output.println("Código -- " + producto.getProducto().getCodigo());
+
+				output.println(ITEM_CANTIDAD);
+				output.println(producto.getCantidad());
+				
+				output.println(ITEM_PRECIO);
+				output.println(producto.getProducto().getPrecioVenta().setScale(2, RoundingMode.HALF_UP));
+				
+				output.println(ITEM_IVA);
+				output.println("21");
+				
+				output.println(FIN_ITEM_TAG);
+			}
+			
+			checkStatus();
+			
+			output.println(SUBTOTAL);
+			
+			checkStatus();
+			
+			if(venta.getAjusteRedondeo().compareTo(BigDecimal.ZERO) < 0) {
+				output.println(DESCUENTO);
+				output.println("Ajuste por redondeo");
+				output.println(venta.getAjusteRedondeo().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+			}
+			else if(venta.getAjusteRedondeo().compareTo(BigDecimal.ZERO) > 0) {
+				output.println(RECARGO);
+				output.println("Ajuste por redondeo");
+				output.println(venta.getAjusteRedondeo().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+			}
+			
+			checkStatus();
+			
+			for(PagoDto pago : venta.getPagos()) {
+				output.println(PAYMENT);
+				output.println(PAGO_DESCRIPCION);
+				output.println(""); // linea extra
+				output.println(PAGO_DESCRIPCION);
+				output.println(pago.getMedioPago().getDescripcion());
+				output.println(PAGO_MONTO);
+				output.println(pago.getMonto().setScale (2, BigDecimal.ROUND_HALF_UP));
+				output.println(FIN_PAGO);
+			}
+			
+			checkStatus();
+			
+			output.println(FIN_TICKET_TAG);
+			
+			output.println(CLOSE_COLA);
+			output.println("Este comprobante es válido para");
+			output.println(CLOSE_COLA);
+			output.println("utilizar en devoluciones en el local");
+			output.println(CLOSE_COLA);
+			output.println("que se presente");
+			output.println("[FIN-COLA-TICKET]");
+			
+			checkStatus();
+			
+			output.println(FIN_TICKET_TAG);
+			
+			checkStatus();
+			
+		    String line = "";
+		    
+		    while(!(line = input.readLine()).equals("<FIN DE IMPRESION>")) {
+		    	if(line.startsWith("[ERROR]")) {
+		    		line = input.readLine();
+		    		throw new PrinterException(line);
+		    	}
+		    	else
+		    		logger.info(line);
+		    }
+			
+		}
+		catch (PrinterException ex) {
+			throw ex;
+		}
+		catch (Exception e) {
+			String errorLine = readErrorLine();
+			cancelarNotaCredito(venta, true);
 			throw new PrinterException(errorLine);
 		}
 		finally {
@@ -598,6 +744,52 @@ public class PrinterService {
 	}
 	
 	@SuppressWarnings("deprecation")
+	public boolean getInfoNotaCredito(VentaDto venta, boolean useCurrentConnection) {
+		try {
+			connect(useCurrentConnection);
+			Thread.sleep(1000);
+			
+			output.println(INFO_NOTA_CREDITO);
+			//checkErrors();
+			
+			String line = "";
+			
+		    line = input.readLine();
+		    
+	    	if(line.startsWith("[ERROR]")) {
+	    		line = input.readLine();
+	    		throw new PrinterException(line);
+	    	}
+	    	else {
+	    		logger.info("info tique factura: ");
+	    		logger.info(line);
+	    		
+	    		if(venta != null) {
+		    		for(int i = 1; i <= 19; i++) {
+		    			if(i == 1)
+			    			venta.setNumeroTicket(line.split(":")[1]);
+		    			else if(i == 2)
+		    				venta.setTipoTicket(line.split(":")[1]);
+		    			if(i < 19) {
+		    				line = input.readLine();
+		    				logger.info(line);
+		    			}
+		    		}
+	    		}
+	    	}
+	    	Thread.sleep(1000);
+		}
+		catch (PrinterException ex) {
+			throw ex;
+		}
+		catch (Exception e) {
+			throw new PrinterException(readErrorLine());
+		}
+		
+		return true;
+	}
+	
+	@SuppressWarnings("deprecation")
 	public boolean getInfoTicket(VentaDto venta, boolean useCurrentConnection) {
 		try {
 			connect(useCurrentConnection);
@@ -645,6 +837,35 @@ public class PrinterService {
 			connect(useCurrentConnection);
 			
 			output.println(CANCELAR_TICKET_FACTURA);
+			
+			String line = input.readLine();
+			
+			if(line.startsWith("[ERROR]")) {
+	    		line = input.readLine();
+	    		throw new PrinterException(line);
+	    	}
+	    	else {
+	    		logger.info("Se canceló el tique factura n°:" + line);
+	    		line = input.readLine();
+	    		logger.info("y el tipo de factura:" + line);
+	    	}
+		}
+		catch (PrinterException ex) {
+			throw ex;
+		}
+		catch (Exception e) {
+			throw new PrinterException(readErrorLine());
+		}
+		
+		return true;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public boolean cancelarNotaCredito(VentaDto venta, boolean useCurrentConnection) {
+		try {
+			connect(useCurrentConnection);
+			
+			output.println(CANCELAR_NOTA_CREDITO);
 			
 			String line = input.readLine();
 			
