@@ -60,7 +60,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			
 			productoVenta.setProducto(producto);
 			productoVenta.setCantidad(1);
-			productoVenta.setPrecioTotal(producto.getPrecioVenta());
+			productoVenta.setPrecioTotal(producto.getPrecioVentaConIva());
 			venta.addProducto(productoVenta);
 		} else
 			productoVenta.setCantidad(productoVenta.getCantidad()+1);
@@ -169,29 +169,32 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Transactional
 	@Override
 	public VentaDto facturar(VentaDto ventaDto) {
-		VentaHelper.calcularTotales(ventaDto);
 		
 		if (ventaDto.getTipo()==MitnickConstants.VENTA && !ventaDto.isPagado()){
 			throw new BusinessException("error.ventaServicio.facturar", "No se puede facturar la venta ya que no se pago el total");
 		}
-		Venta venta = actualizarStock(ventaDto);
 		
-		//TODO IMPRIMIR NOTA DE CREDITO SI VENTA.TIPO = MitnickConstants.DEVOLUCION
-//		if(!venta.isPrinted()) {
-//			
-//			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
-//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-//			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
-//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-//		}
-//		else
+		VentaHelper.calcularTotales(ventaDto);
+		@SuppressWarnings("unchecked")
+		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
+				
+		if(!venta.isPrinted()) {
+			
+			if(venta.getCliente() == null && !printerService.imprimirTicket(ventaDto))
+				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+			else if(venta.getCliente() != null && !printerService.imprimirTicketFactura(ventaDto))
+				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+		}
+		else
 			venta.setPrinted(true);
-		//TODO: borrar la linea de abajo
-		ventaDto.setNumeroTicket(String.valueOf(System.currentTimeMillis()));	
+
+		actualizarStock(venta);
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());
 		venta.setTipoTicket(ventaDto.getTipoTicket());
 		
-		ventaDao.actualizarCreditos(ventaDto);
+		//este metodo se invoca solo si es una venta - la devolucion nunca puede tener pagos realizados con notas de credito.
+		if (MitnickConstants.DEVOLUCION == venta.getTipo())
+			ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
 		ventaDto.setId(venta.getId());
 		
@@ -211,11 +214,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 	
 	@Transactional
-	private Venta actualizarStock(VentaDto ventaDto){
-		VentaHelper.calcularTotales(ventaDto);
+	private Venta actualizarStock(Venta venta){
 		try {
-			@SuppressWarnings("unchecked")
-			Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 			//Actualizacion de stock
 			Iterator<ProductoVenta> productos = venta.getProductos().iterator();
 			while (productos.hasNext()) {
@@ -306,6 +306,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Transactional
 	public void cancelar(VentaDto ventaDto) {
 		ventaDto.setCancelada(true);
+		//se eliminan las cuotas que estuvieran asociadas a la venta
+		ventaDto.setCuotas(new ArrayList<CuotaDto>());
 		@SuppressWarnings("unchecked")
 		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 		

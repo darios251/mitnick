@@ -39,7 +39,7 @@ public class VentaHelper {
 				.iterator();
 		while (productos.hasNext()) {
 			ProductoVentaDto producto = productos.next();
-			BigDecimal precioTotal = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
+			BigDecimal precioTotal = producto.getProducto().getPrecioVentaConIva().multiply(new BigDecimal(producto.getCantidad()));
 			producto.setPrecioTotal(precioTotal);
 			subTotal = subTotal.add(precioTotal);
 			producto.setIva(calcularImpuesto(producto));
