@@ -276,6 +276,10 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		Date fecha = new Date();
 		GregorianCalendar calendar = (GregorianCalendar) Calendar.getInstance();
+		//primer fecha a pagar debe ser 1 mes posterior a la fecha actual
+		calendar.setTime(fecha);
+		calendar.add(Calendar.MONTH, 1);
+		fecha = calendar.getTime();
 		
 		CuotaDto cuota = null; 
 		for (int i = 0; i < cantidadCuotas; i++) {
