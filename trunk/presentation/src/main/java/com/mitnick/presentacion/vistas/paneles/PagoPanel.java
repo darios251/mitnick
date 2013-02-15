@@ -422,16 +422,20 @@ public class PagoPanel extends BasePanel<VentaController> {
 					if (option == JOptionPane.CANCEL_OPTION)
 						return;						
 				} else {
-					
-					if (credito.getDisponible().compareTo(new BigDecimal(txtMonto.getText()))<0){
+					BigDecimal disponible = credito.getDisponible(); 
+					if (disponible.compareTo(new BigDecimal(txtMonto.getText()))<0){
 						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("pagoPanel.notaCredito.disponibleMenorAlTotal", new Object[]{credito.getDisponible()}), "Error", JOptionPane.OK_CANCEL_OPTION);
 						if (option == JOptionPane.CANCEL_OPTION)
 							return;
 					}
-								
-					((VentaController) controller).agregarPago(pago, txtMonto.getText(), nroNC);
+					//si se uso credito se debe modificar la nota de credito o romper si ya no hay credito disponible
+					BigDecimal nuevoDisponible = disponible.subtract(new BigDecimal(txtMonto.getText()));
+					if (nuevoDisponible.compareTo(new BigDecimal(0))<=0)
+						JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.venta.notaCredito.romper"));
+					else
+						JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.venta.notaCredito.disponible", new Object[] {nuevoDisponible}));
 				}
-					
+				((VentaController) controller).agregarPago(pago, txtMonto.getText(), nroNC);
 				
 			} else
 				((VentaController) controller).agregarPago(pago, txtMonto.getText(), null);
