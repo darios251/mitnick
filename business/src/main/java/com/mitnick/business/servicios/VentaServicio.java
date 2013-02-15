@@ -194,7 +194,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		venta.setTipoTicket(ventaDto.getTipoTicket());
 		
 		//este metodo se invoca solo si es una venta - la devolucion nunca puede tener pagos realizados con notas de credito.
-		if (MitnickConstants.DEVOLUCION == venta.getTipo())
+		if (MitnickConstants.DEVOLUCION != venta.getTipo())
 			ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
 		ventaDto.setId(venta.getId());
