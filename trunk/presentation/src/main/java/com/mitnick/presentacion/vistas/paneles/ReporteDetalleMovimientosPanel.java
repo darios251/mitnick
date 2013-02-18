@@ -173,7 +173,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 			
 			btnExportar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					controller.exportarDetalleMovimientoProducto(getTableModel().getMovimientoProducto(), producto, Integer.toBinaryString(stockOriginal), Integer.toString(stockFinal));
+					controller.exportarDetalleMovimientoProducto(getTableModel().getMovimientoProducto(), producto, String.valueOf(stockOriginal), String.valueOf(stockFinal));
 				}
 			});
 			btnExportar.setBounds(735, 299, 60, 60);

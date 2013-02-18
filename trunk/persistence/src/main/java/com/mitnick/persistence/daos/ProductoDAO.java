@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.servicio.servicios.dtos.ConsultaStockDto;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 
 @Repository("productoDao")
@@ -34,6 +35,7 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 			criteria.add(Restrictions.ilike("descripcion", filtro.getDescripcion()));
 		}
 		
+		criteria.add(Restrictions.ne("codigo", PropertiesManager.getProperty("application.producto.comodin")));
 		criteria.add(Restrictions.eq("eliminado", false));
 		criteria.addOrder(Order.desc("codigo"));
 		return getHibernateTemplate().findByCriteria(criteria);

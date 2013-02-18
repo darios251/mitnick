@@ -28,6 +28,9 @@ public class Producto extends BaseObject implements Serializable {
 	@Column(name = "codigo", length = 255)
 	private String codigo;
 	
+	@Column(name = "talle", length = 255)
+	private String talle;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn(name = "marca_id")
 	private Marca marca;
@@ -137,6 +140,14 @@ public class Producto extends BaseObject implements Serializable {
 		return iva;
 	}
 
+	public String getTalle() {
+		return talle;
+	}
+
+	public void setTalle(String talle) {
+		this.talle = talle;
+	}
+
 	public void setIva(BigDecimal iva) {
 		this.iva = iva;
 	}
@@ -181,84 +192,117 @@ public class Producto extends BaseObject implements Serializable {
 		result = prime * result + stock;
 		result = prime * result + stockCompra;
 		result = prime * result + stockMinimo;
+		result = prime * result + ((talle == null) ? 0 : talle.hashCode());
 		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (!(obj instanceof Producto)) {
 			return false;
+		}
 		Producto other = (Producto) obj;
 		if (codigo == null) {
-			if (other.codigo != null)
+			if (other.codigo != null) {
 				return false;
-		} else if (!codigo.equals(other.codigo))
+			}
+		} else if (!codigo.equals(other.codigo)) {
 			return false;
+		}
 		if (descripcion == null) {
-			if (other.descripcion != null)
+			if (other.descripcion != null) {
 				return false;
-		} else if (!descripcion.equals(other.descripcion))
+			}
+		} else if (!descripcion.equals(other.descripcion)) {
 			return false;
-		if (eliminado != other.eliminado)
+		}
+		if (eliminado != other.eliminado) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (iva == null) {
-			if (other.iva != null)
+			if (other.iva != null) {
 				return false;
-		} else if (!iva.equals(other.iva))
+			}
+		} else if (!iva.equals(other.iva)) {
 			return false;
+		}
 		if (marca == null) {
-			if (other.marca != null)
+			if (other.marca != null) {
 				return false;
-		} else if (!marca.equals(other.marca))
+			}
+		} else if (!marca.equals(other.marca)) {
 			return false;
+		}
 		if (precioCompra == null) {
-			if (other.precioCompra != null)
+			if (other.precioCompra != null) {
 				return false;
-		} else if (!precioCompra.equals(other.precioCompra))
+			}
+		} else if (!precioCompra.equals(other.precioCompra)) {
 			return false;
+		}
 		if (precioVenta == null) {
-			if (other.precioVenta != null)
+			if (other.precioVenta != null) {
 				return false;
-		} else if (!precioVenta.equals(other.precioVenta))
+			}
+		} else if (!precioVenta.equals(other.precioVenta)) {
 			return false;
+		}
 		if (proveedor == null) {
-			if (other.proveedor != null)
+			if (other.proveedor != null) {
 				return false;
-		} else if (!proveedor.equals(other.proveedor))
+			}
+		} else if (!proveedor.equals(other.proveedor)) {
 			return false;
-		if (stock != other.stock)
+		}
+		if (stock != other.stock) {
 			return false;
-		if (stockCompra != other.stockCompra)
+		}
+		if (stockCompra != other.stockCompra) {
 			return false;
-		if (stockMinimo != other.stockMinimo)
+		}
+		if (stockMinimo != other.stockMinimo) {
 			return false;
+		}
+		if (talle == null) {
+			if (other.talle != null) {
+				return false;
+			}
+		} else if (!talle.equals(other.talle)) {
+			return false;
+		}
 		if (tipo == null) {
-			if (other.tipo != null)
+			if (other.tipo != null) {
 				return false;
-		} else if (!tipo.equals(other.tipo))
+			}
+		} else if (!tipo.equals(other.tipo)) {
 			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "Producto [id=" + id + ", descripcion=" + descripcion
-				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo
-				+ ", stock=" + stock + ", stockMinimo=" + stockMinimo
-				+ ", stockCompra=" + stockCompra + ", precioVenta="
-				+ precioVenta + ", precioCompra=" + precioCompra + ", iva="
-				+ iva + ", eliminado=" + eliminado + ", proveedor=" + proveedor
-				+ "]";
+				+ ", codigo=" + codigo + ", talle=" + talle + ", marca="
+				+ marca + ", tipo=" + tipo + ", stock=" + stock
+				+ ", stockMinimo=" + stockMinimo + ", stockCompra="
+				+ stockCompra + ", precioVenta=" + precioVenta
+				+ ", precioCompra=" + precioCompra + ", iva=" + iva
+				+ ", eliminado=" + eliminado + ", proveedor=" + proveedor + "]";
 	}
 	
 }

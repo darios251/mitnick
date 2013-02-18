@@ -27,6 +27,7 @@ import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
@@ -221,7 +222,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			Iterator<ProductoVenta> productos = venta.getProductos().iterator();
 			while (productos.hasNext()) {
 				ProductoVenta productoVenta = productos.next();
-				if (!"*".equals(productoVenta.getProducto().getCodigo()))
+				if (!PropertiesManager.getProperty("application.producto.comodin").equals(productoVenta.getProducto().getCodigo()))
 					actualizarStock(productoVenta, venta.getTipo());
 			}
 			
