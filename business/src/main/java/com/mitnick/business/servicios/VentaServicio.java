@@ -124,9 +124,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		venta.setCliente(null);
 		return venta;
 	}
-
-	//TODO: validar medio de pago sin vuelto
-	//restar el vuelto al pago - el pago deberia ser siempre el total 
+	
 	@Override
 	public VentaDto agregarPago(PagoDto pago, VentaDto venta) {
 		validarPago(pago, venta);
@@ -148,6 +146,10 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 
 	private void validarPago(PagoDto pago, VentaDto venta){
+		if (!MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
+			if (venta.getFaltaPagar().compareTo(pago.getMonto())<0)
+				throw new BusinessException("error.ventaServicio.pagoSinVuelto", "El medio de pago no admite vuelto. Pague por el total restante.");
+		}
 		//si es cuenta se debe tener un cliente asociado
 		if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())
 				&& venta.getCliente()==null)
@@ -181,6 +183,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		}
 		
 		VentaHelper.calcularTotales(ventaDto);
+		actualizarPagoEFTVuelto(ventaDto);
 		@SuppressWarnings("unchecked")
 		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 				
@@ -207,6 +210,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		
 		return ventaDto;
 
+	}
+	
+	private void actualizarPagoEFTVuelto(VentaDto venta){
+		for (PagoDto pago : venta.getPagos()){
+			if (pago.isEfectivo()){
+				pago.setMonto(pago.getMonto().subtract(venta.getVuelto()));
+			}
+				
+		}
 	}
 	
 	private ProductoVentaDto getProductoVentaDto(ProductoDto productoDto, VentaDto venta){
@@ -306,6 +318,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		if (cuota!=null){
 			BigDecimal restante = total.subtract(paga);
 			cuota.setTotal(cuota.getTotal().add(restante));
+			cuota.setFaltaPagar(cuota.getFaltaPagar().add(restante));
 		}
 		
 		return cuotas;

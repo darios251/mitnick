@@ -1,6 +1,7 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
 
@@ -28,11 +31,12 @@ public class Pago extends BaseObject implements Serializable {
 	private MedioPago medioPago;
 	
 	@Column(name = "pago", nullable = false)
-	private Long pago;
+	private BigDecimal pago;
 	
 	@Column(name = "comprobante", nullable = false)
 	private boolean comprobante = false;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = true)
 	private Date fecha;
 	
@@ -52,11 +56,11 @@ public class Pago extends BaseObject implements Serializable {
 		this.medioPago = medioPago;
 	}
 
-	public Long getPago() {
+	public BigDecimal getPago() {
 		return pago;
 	}
 
-	public void setPago(Long pago) {
+	public void setPago(BigDecimal pago) {
 		this.pago = pago;
 	}
 
@@ -144,4 +148,5 @@ public class Pago extends BaseObject implements Serializable {
 	public boolean isNC(){
 		return MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(this.getMedioPago().getCodigo());
 	}
+	
 }

@@ -77,14 +77,6 @@ public interface IReportesServicio {
 	 */
 	@Secured(value={"ROLE_ADMIN"})
 	public void consultarVentaPorArticulo(ReportesDto filtro);
-	
-	/**
-	 * Obtiene el detalle de stock disponible de los articulos.
-	 * @param filtro
-	 * @return
-	 */
-	@Secured(value={"ROLE_ADMIN"})
-	public void consultarStockArticulo(ReportesDto filtro);	
 		
 	/**
 	 * Obtiene el detalle de ventas anuales.

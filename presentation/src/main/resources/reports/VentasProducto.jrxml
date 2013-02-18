@@ -95,7 +95,7 @@
 			<textField>
 				<reportElement uuid="32a44ad9-22eb-4076-89b8-d2102adee7ec" x="0" y="0" width="111" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="fa772ff2-7651-4ac8-9f65-8809ac2bd8e2" x="111" y="0" width="111" height="20"/>

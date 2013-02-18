@@ -490,9 +490,8 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 				
 				try {
 					medioPagoList = controller.getMediosPagoCuentaCorriente();
-				}
-				catch(BusinessException e) {
-					// TODO: MANEJAR ESTA EXCEPCIÓN;
+				} catch(BusinessException e) {
+					mostrarMensaje(new PresentationException(e));
 				} 
 				
 				cmbMedioPago.setModel(new MitnickComboBoxModel<MedioPagoDto>());

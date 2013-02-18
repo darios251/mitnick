@@ -50,6 +50,7 @@ public class Cuota extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fechaPago", nullable = true)
 	private Date fechaPago;
 	

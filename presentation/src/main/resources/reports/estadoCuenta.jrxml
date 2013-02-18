@@ -6,14 +6,14 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="fecha_pagar" class="java.util.Date">
+	<field name="fecha_pagar" class="java.lang.String">
 		<fieldDescription><![CDATA[fecha_pagar]]></fieldDescription>
 	</field>
 	<field name="clienteDto" class="com.mitnick.utils.dtos.ClienteDto">
 		<fieldDescription><![CDATA[clienteDto]]></fieldDescription>
 	</field>
-	<field name="total" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[total]]></fieldDescription>
+	<field name="faltaPagar" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[faltaPagar]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -90,14 +90,14 @@
 				<textFieldExpression><![CDATA[$F{clienteDto}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2de98668-ebbf-48ed-9e36-b0833b2b128e" x="455" y="16" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement uuid="e5d7e3ff-ec31-4098-b2b5-882f985d1ef1" x="355" y="16" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{clienteDto}.getTelefono()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a94c443f-4bb3-483a-9df9-0ca267e1f1a3" x="455" y="16" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{faltaPagar}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

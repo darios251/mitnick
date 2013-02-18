@@ -69,7 +69,6 @@ public class Validator extends GenericValidator{
 	}
 
 	public static boolean isPhoneNumber(String telefono) {
-		// TODO implementar esta validaci�n
 		return true;
 	}
 	

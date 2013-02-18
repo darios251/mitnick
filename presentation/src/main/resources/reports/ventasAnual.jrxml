@@ -14,19 +14,19 @@
 	<field name="fecha" class="java.util.Date">
 		<fieldDescription><![CDATA[fecha]]></fieldDescription>
 	</field>
-	<field name="totalCC" class="java.lang.Long">
+	<field name="totalCC" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalCC]]></fieldDescription>
 	</field>
-	<field name="totalCredito" class="java.lang.Long">
+	<field name="totalCredito" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalCredito]]></fieldDescription>
 	</field>
-	<field name="totalDebito" class="java.lang.Long">
+	<field name="totalDebito" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalDebito]]></fieldDescription>
 	</field>
-	<field name="totalEfectivo" class="java.lang.Long">
+	<field name="totalEfectivo" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalEfectivo]]></fieldDescription>
 	</field>
-	<field name="total" class="java.lang.Long">
+	<field name="total" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[total]]></fieldDescription>
 	</field>
 	<background>
@@ -110,7 +110,7 @@
 			<textField pattern="MMMMM-yy">
 				<reportElement uuid="43dc5d1b-fa5c-4e52-89f4-d8c3263458ea" x="0" y="0" width="92" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="2d4edfe0-1578-46ce-8750-17c7fc52de07" x="92" y="0" width="92" height="20"/>

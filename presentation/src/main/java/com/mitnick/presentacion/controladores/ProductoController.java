@@ -208,13 +208,6 @@ public class ProductoController extends BaseController {
 		return productoServicio;
 	}
 
-	public ProductoDto reloadProducto(ProductoDto producto) {
-		
-		//TODO Lucas: ver si hay que hacer esto productoServicio.obtenerProductoPorId(producto.get)
-		
-		return null;
-	}
-
 	@Override
 	public void mostrarUltimoPanelMostrado() {
 		
