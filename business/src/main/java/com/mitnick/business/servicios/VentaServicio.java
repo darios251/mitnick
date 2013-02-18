@@ -220,7 +220,9 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			//Actualizacion de stock
 			Iterator<ProductoVenta> productos = venta.getProductos().iterator();
 			while (productos.hasNext()) {
-				actualizarStock(productos.next(), venta.getTipo());
+				ProductoVenta productoVenta = productos.next();
+				if (!"*".equals(productoVenta.getProducto().getCodigo()))
+					actualizarStock(productoVenta, venta.getTipo());
 			}
 			
 			return venta;
