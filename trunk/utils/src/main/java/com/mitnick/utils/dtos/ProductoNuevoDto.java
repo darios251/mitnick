@@ -16,8 +16,7 @@ public class ProductoNuevoDto extends BaseDto {
 	
 	@Required
 	private TipoDto tipo;
-	
-	@MitnickField(fieldType=FieldType.ALPHABETIC)
+		
 	private String talle;
 	
 	@Required

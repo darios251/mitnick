@@ -229,6 +229,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ProductoDto productoDto = new ProductoDto();
 
 		productoDto.setId(producto.getId());
+		productoDto.setTalle(producto.getTalle());
 		productoDto.setCodigo(producto.getCodigo());
 		productoDto.setDescripcion(producto.getDescripcion());
 		productoDto.setPrecioVenta(producto.getPrecioVenta());
@@ -254,6 +255,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoDto.setPrecioCompra(producto.getPrecioCompra().toString());
 		productoDto.setIva(producto.getIva().toString());
 		productoDto.setStock(producto.getStock() + "");
+		if (producto.getTalle()!=null)
+			productoDto.setTalle(producto.getTalle() + "");
 		productoDto.setStockMinimo(producto.getStockMinimo() + "");
 		productoDto.setStockCompra(producto.getStockCompra() + "");
 		productoDto.setMarca(getDtoFromEntity(producto.getMarca()));
@@ -315,6 +318,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setPrecioVenta(productoDto.getPrecioVenta());
 		producto.setPrecioCompra(productoDto.getPrecioCompra());
 
+		producto.setTalle(productoDto.getTalle());
 		producto.setIva(productoDto.getIva());
 
 		producto.setStock(productoDto.getStock());
@@ -344,6 +348,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setDescripcion(productoDto.getDescripcion());
 		producto.setPrecioVenta(new BigDecimal(productoDto.getPrecioVenta()));
 		producto.setPrecioCompra(new BigDecimal(productoDto.getPrecioCompra()));
+		
+		producto.setTalle(productoDto.getTalle());
+
 
 		producto.setIva(new BigDecimal(productoDto.getIva()));
 
