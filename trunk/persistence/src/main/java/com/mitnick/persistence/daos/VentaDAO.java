@@ -1,20 +1,16 @@
 package com.mitnick.persistence.daos;
 
-import java.awt.Desktop;
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.apache.commons.lang.StringUtils;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -163,13 +159,8 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			@SuppressWarnings("deprecation")
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, super.getHibernateTemplate().getSessionFactory().getCurrentSession().connection());
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(venta.getId() + "-factura.pdf"));
-			exporter.exportReport();
-			
-			File file = new File(venta.getId() + "-factura.pdf");
-			Desktop.getDesktop().open(file);
+			JasperViewer.viewReport(jasperPrint,false);
+
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

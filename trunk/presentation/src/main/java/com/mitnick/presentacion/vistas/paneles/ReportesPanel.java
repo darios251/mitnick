@@ -160,8 +160,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		if (btnReporteDeVentasZapatillas == null) {
 			btnReporteDeVentasZapatillas = new JButton();
 			btnReporteDeVentasZapatillas.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeVentasZapatillas.setToolTipText("productoPanel.tooltip.reporteZapatillas");
-			btnReporteDeVentasZapatillas.setText("productoPanel.button.reporteZapatillas");
+			btnReporteDeVentasZapatillas.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.reporteZapatillas"));
+			btnReporteDeVentasZapatillas.setText(PropertiesManager.getProperty("productoPanel.button.reporteZapatillas"));
 			btnReporteDeVentasZapatillas.setMargin(new Insets(-1, -1, -1, -1));
 			btnReporteDeVentasZapatillas.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteDeVentasZapatillas.setBounds(200, 244, 330, 20);			

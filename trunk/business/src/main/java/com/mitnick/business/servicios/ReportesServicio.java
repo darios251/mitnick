@@ -1,8 +1,5 @@
 package com.mitnick.business.servicios;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,14 +10,12 @@ import java.util.List;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,23 +81,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JRDataSource dr = new JRBeanCollectionDataSource(movimientos);
 			
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
-			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("movimientoProductos.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("movimientoProductos.pdf");
-			Desktop.getDesktop().open(file);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);			
+			JasperViewer.viewReport(jasperPrint,false);
+
 		} 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de movimientos agrupados por producto");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
@@ -134,22 +120,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("detalleNovimientoProducto.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("detalleNovimientoProducto.pdf");
-			Desktop.getDesktop().open(file);
+			JasperViewer.viewReport(jasperPrint,false);
+
 		} 
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de movimientos agrupados por producto");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 	}
 	
 	/**
@@ -278,25 +256,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
-			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventas.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("ventas.pdf");
-			Desktop.getDesktop().open(file);
-
+			JasperViewer.viewReport(jasperPrint,false);
 			
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
@@ -358,23 +325,13 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventas.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("ventas.pdf");
-			Desktop.getDesktop().open(file);
-
+			JasperViewer.viewReport(jasperPrint,false);
 			
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
@@ -437,24 +394,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventasAnual.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("ventasAnual.pdf");
-			Desktop.getDesktop().open(file);
-
+			JasperViewer.viewReport(jasperPrint,false);
 			
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 	}
 
 	private ReporteVentasResultadoDTO getDTOFecha(List<ReporteVentasResultadoDTO> ingresos, Date fecha){
@@ -542,26 +489,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("listadoControl.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("listadoControl.pdf");
-			Desktop.getDesktop().open(file);
+			JasperViewer.viewReport(jasperPrint,false);
 
-			
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+		} 
 		
 	}
 	
@@ -580,23 +515,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("estadoCuenta.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("estadoCuenta.pdf");
-			Desktop.getDesktop().open(file);
+			JasperViewer.viewReport(jasperPrint,false);
+
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		} 
 	}
 	
 	
@@ -614,23 +540,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventasProducto.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("ventasProducto.pdf");
-			Desktop.getDesktop().open(file);			
+			JasperViewer.viewReport(jasperPrint,false);
+	
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
 		}
-		
 	}
 	
 	@Transactional(readOnly=true)
@@ -647,23 +564,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
 			
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventasZapatillas.pdf"));
-			exporter.exportReport();
-			
-			File file = new File("ventasZapatillas.pdf");
-			Desktop.getDesktop().open(file);			
+			JasperViewer.viewReport(jasperPrint,false);
+		
 		}
 		catch(PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} catch (IOException e) {
-			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} 	
 	}
 	
 	@Transactional(readOnly=true)
