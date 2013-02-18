@@ -48,4 +48,7 @@ public class PagoDto extends BaseDto {
 		this.nroNC = nroNC;
 	}
 
+	public boolean isEfectivo(){
+		return MitnickConstants.Medio_Pago.EFECTIVO.equals(this.getMedioPago().getCodigo());
+	}
 }

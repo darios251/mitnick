@@ -23,6 +23,20 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 	}
 
 	@SuppressWarnings("unchecked")
+	public Producto findByCode(String codigo) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
+
+		if (Validator.isNotNull(codigo)) {
+			criteria.add(Restrictions.eq("codigo", codigo));
+		}
+		criteria.add(Restrictions.eq("eliminado", false));
+		List<Producto> productos = getHibernateTemplate()
+				.findByCriteria(criteria);
+		if (productos != null && !productos.isEmpty())
+			return productos.get(0);
+		return null;
+	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Producto> findStockByFiltro(ConsultaStockDto filtro){
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);

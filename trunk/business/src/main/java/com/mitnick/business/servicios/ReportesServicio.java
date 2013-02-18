@@ -212,34 +212,34 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
 				dto.setFecha(venta.getFecha());
 				total = total.add(venta.getTotal());
-				dto.setTotal(venta.getTotal().longValue());
+				dto.setTotal(venta.getTotal());
 				
 				for (Pago pago: venta.getPagos()){
-					Long parcialTotal = pago.getPago();
+					BigDecimal parcialTotal = pago.getPago();
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						parcialTotal = parcialTotal.longValue() + dto.getTotalEfectivo().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
 						dto.setTotalEfectivo(parcialTotal);
-						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
+						totalEfectivo = totalEfectivo.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalDebito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalDebito());
 						dto.setTotalDebito(parcialTotal);
-						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
+						totalDebito = totalDebito.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalCredito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalCredito());
 						dto.setTotalCredito(parcialTotal);
-						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
+						totalCredito = totalCredito.add(pago.getPago());
 					}
 					
 					
 					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalCC().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalCC());
 						dto.setTotalCC(parcialTotal);
-						totalCC = totalCC.add(new BigDecimal(pago.getPago()));
+						totalCC = totalCC.add(pago.getPago());
 					}				
 						
 				}
@@ -280,35 +280,35 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			List<Venta> ventas = ventaDao.findByFiltro(filtro);
 			for (Venta venta: ventas){
 				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, venta.getFecha());
-				Long totalRegistro = dto.getTotal().longValue() + venta.getTotal().longValue();
+				BigDecimal totalRegistro = dto.getTotal().add(venta.getTotal());
 				dto.setTotal(totalRegistro);
 				total = total.add(venta.getTotal());
 				for (Pago pago: venta.getPagos()){
-					Long parcialTotal = pago.getPago();
+					BigDecimal parcialTotal = pago.getPago();
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						parcialTotal = parcialTotal.longValue() + dto.getTotalEfectivo().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
 						dto.setTotalEfectivo(parcialTotal);
-						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
+						totalEfectivo = totalEfectivo.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalDebito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalDebito());
 						dto.setTotalDebito(parcialTotal);
-						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
+						totalDebito = totalDebito.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalCredito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalCredito());
 						dto.setTotalCredito(parcialTotal);
-						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
+						totalCredito = totalCredito.add(pago.getPago());
 					}
 					
 					
 					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalCC().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalCC());
 						dto.setTotalCC(parcialTotal);
-						totalCC = totalCC.add(new BigDecimal(pago.getPago()));
+						totalCC = totalCC.add(pago.getPago());
 					}
 				}
 						
@@ -349,35 +349,35 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			List<Venta> ventas = ventaDao.findByFiltro(filtro);
 			for (Venta venta: ventas){
 				ReporteVentasResultadoDTO dto = getDTOMes(ingresos, venta.getFecha());
-				Long totalRegistro = dto.getTotal().longValue() + venta.getTotal().longValue();
+				BigDecimal totalRegistro = dto.getTotal().add(venta.getTotal());
 				dto.setTotal(totalRegistro);
 				total = total.add(venta.getTotal());
 				for (Pago pago: venta.getPagos()){
-					Long parcialTotal = pago.getPago();
+					BigDecimal parcialTotal = pago.getPago();
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						parcialTotal = parcialTotal.longValue() + dto.getTotalEfectivo().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
 						dto.setTotalEfectivo(parcialTotal);
-						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
+						totalEfectivo = totalEfectivo.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalDebito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalDebito());
 						dto.setTotalDebito(parcialTotal);
-						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
+						totalDebito = totalDebito.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalCredito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalCredito());
 						dto.setTotalCredito(parcialTotal);
-						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
+						totalCredito = totalCredito.add(pago.getPago());
 					}
 					
 					
 					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalCC().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalCC());
 						dto.setTotalCC(parcialTotal);
-						totalCC = totalCC.add(new BigDecimal(pago.getPago()));
+						totalCC = totalCC.add(pago.getPago());
 					}
 				}
 						
@@ -413,7 +413,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}		
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
 		dto.setFecha(fecha);
-		dto.setTotal(new Long(0));
+		dto.setTotal(new BigDecimal(0));
 		ingresos.add(dto);
 		return dto;
 	}
@@ -434,7 +434,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}		
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
 		dto.setFecha(fecha);
-		dto.setTotal(new Long(0));
+		dto.setTotal(new BigDecimal(0));
 		ingresos.add(dto);
 		return dto;
 	}
@@ -452,28 +452,28 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		try{
 			for (Cuota cuota: cuotas){
 				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, cuota.getFechaPago());
-				Long totalRegistro = dto.getTotal().longValue() + cuota.getTotal().longValue();
+				BigDecimal totalRegistro = dto.getTotal().add(cuota.getTotal());
 				dto.setTotal(totalRegistro);
 				total = total.add(cuota.getTotal());
 				for (Pago pago: cuota.getPagos()){
-					Long parcialTotal = pago.getPago();
+					BigDecimal parcialTotal = pago.getPago();
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						parcialTotal = parcialTotal.longValue() + dto.getTotalEfectivo().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
 						dto.setTotalEfectivo(parcialTotal);
-						totalEfectivo = totalEfectivo.add(new BigDecimal(pago.getPago()));
+						totalEfectivo = totalEfectivo.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalDebito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalDebito());
 						dto.setTotalDebito(parcialTotal);
-						totalDebito = totalDebito.add(new BigDecimal(pago.getPago()));
+						totalDebito = totalDebito.add(pago.getPago());
 					}
 						
 					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.longValue() + dto.getTotalCredito().longValue();
+						parcialTotal = parcialTotal.add(dto.getTotalCredito());
 						dto.setTotalCredito(parcialTotal);
-						totalCredito = totalCredito.add(new BigDecimal(pago.getPago()));
+						totalCredito = totalCredito.add(pago.getPago());
 					}
 				}
 						
@@ -573,12 +573,5 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} 	
 	}
-	
-	@Transactional(readOnly=true)
-	@Override
-	public void consultarStockArticulo(ReportesDto filtro) {
-		// TODO Lucas: encontré este método vacío, seguramente está faltando implementar esto
-	}
-	
-	
+		
 }

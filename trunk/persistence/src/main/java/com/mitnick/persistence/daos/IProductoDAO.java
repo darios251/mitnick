@@ -18,4 +18,6 @@ public interface IProductoDAO extends GenericDao<Producto, Long>{
 
 	public List<Producto> findByFiltro(ConsultaProductoDto filtro);	
 
+	public Producto findByCode(String codigo);
+	
 }

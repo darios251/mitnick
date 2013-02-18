@@ -207,7 +207,7 @@ WHERE
 			<textField>
 				<reportElement uuid="ffaad166-b437-41fb-bf82-d8f82069eebb" x="2" y="13" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="3c5aa9ec-0668-4d07-9eb6-b9fafeebed47" x="102" y="13" width="100" height="20"/>

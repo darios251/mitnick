@@ -95,10 +95,6 @@ public class VentaController extends BaseController {
 	}
 	
 	public void mostrarVentasPanel() {
-		// TODO: preguntar si es necesaria esta validación
-		// valido si puede mostrar el panel de ventas
-		//if(pagoPanel != null && pagoPanel.equals(ultimoPanelMostrado) && VentaManager.getVentaActual()!= null && !VentaManager.getVentaActual().getPagos().isEmpty())
-			//throw new PresentationException("error.venta.pagos.noVacio");
 		
 		ultimoPanelMostrado = ventaPanel;
 		buscarProductoPanel.setVisible(false);

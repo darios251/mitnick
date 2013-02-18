@@ -86,15 +86,6 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	public void consultarStockArticulo(ReportesDto dto) {
-		try {
-			getReportesServicio().consultarStockArticulo(dto);
-		}
-		catch(BusinessException e) {
-			e.printStackTrace();
-		}
-	}	
-	
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		reportesPanel.setVisible(true);

@@ -1,17 +1,18 @@
 package com.mitnick.servicio.servicios.dtos;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Date fecha;
-	private Long totalEfectivo= new Long(0);
-	private Long totalCC= new Long(0);
-	private Long totalDebito= new Long(0);
-	private Long totalCredito= new Long(0);
-	private Long total= new Long(0);
+	private BigDecimal totalEfectivo= new BigDecimal(0);
+	private BigDecimal totalCC= new BigDecimal(0);
+	private BigDecimal totalDebito= new BigDecimal(0);
+	private BigDecimal totalCredito= new BigDecimal(0);
+	private BigDecimal total= new BigDecimal(0);
 	
 	public Date getFecha() {
 		return fecha;
@@ -21,43 +22,43 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 		this.fecha = fecha;
 	}
 
-	public Long getTotalEfectivo() {
+	public BigDecimal getTotalEfectivo() {
 		return totalEfectivo;
 	}
 
-	public void setTotalEfectivo(Long totalEfectivo) {
+	public void setTotalEfectivo(BigDecimal totalEfectivo) {
 		this.totalEfectivo = totalEfectivo;
 	}
 
-	public Long getTotalCC() {
+	public BigDecimal getTotalCC() {
 		return totalCC;
 	}
 
-	public void setTotalCC(Long totalCC) {
+	public void setTotalCC(BigDecimal totalCC) {
 		this.totalCC = totalCC;
 	}
 
-	public Long getTotalDebito() {
+	public BigDecimal getTotalDebito() {
 		return totalDebito;
 	}
 
-	public void setTotalDebito(Long totalDebito) {
+	public void setTotalDebito(BigDecimal totalDebito) {
 		this.totalDebito = totalDebito;
 	}
 
-	public Long getTotalCredito() {
+	public BigDecimal getTotalCredito() {
 		return totalCredito;
 	}
 
-	public void setTotalCredito(Long totalCredito) {
+	public void setTotalCredito(BigDecimal totalCredito) {
 		this.totalCredito = totalCredito;
 	}
 
-	public Long getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Long total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 
