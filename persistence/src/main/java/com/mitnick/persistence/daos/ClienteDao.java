@@ -1,7 +1,5 @@
 package com.mitnick.persistence.daos;
 
-import java.awt.Desktop;
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,14 +12,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
@@ -158,16 +154,8 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 							.getSessionFactory().getCurrentSession()
 							.connection());
 
-			String fileName = System.currentTimeMillis() + "-clientes.pdf";
+			JasperViewer.viewReport(jasperPrint,false);
 
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,
-					new java.io.File(fileName));
-			exporter.exportReport();
-
-			File file = new File(fileName);
-			Desktop.getDesktop().open(file);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -239,16 +227,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
 
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-			exporter.setParameter(
-					JRExporterParameter.OUTPUT_FILE,
-					new java.io.File(cuotas.get(0).getId() + "-comprobante.pdf"));
-			exporter.exportReport();
-
-			File file = new File(cuotas.get(0).getId() + "-comprobante.pdf");
-
-			Desktop.getDesktop().open(file);
+			JasperViewer.viewReport(jasperPrint,false);
 			
 			return comprobante;
 			
@@ -370,15 +349,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
 
-			JRExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,
-					new java.io.File(cliente.getNombre() + "-movimientos.pdf"));
-			exporter.exportReport();
-
-			File file = new File(cliente.getNombre() + "-movimientos.pdf");
-
-			Desktop.getDesktop().open(file);
+			JasperViewer.viewReport(jasperPrint,false);
 
 		} catch (Exception e1) {
 			e1.printStackTrace();
