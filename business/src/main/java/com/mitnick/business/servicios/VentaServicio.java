@@ -96,18 +96,23 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 
 	@Override
-	public VentaDto modificarCantidad(ProductoVentaDto producto, int cantidad, VentaDto venta) {
-		ProductoVentaDto pv = getProductoVentaDto(producto.getProducto(), venta);
-		if (pv!=null) {
-			pv.setCantidad(cantidad);
-			VentaHelper.calcularTotales(venta);
-		} else {
-			throw new BusinessException("error.productoServicio.producto.nulo", "Se modifica la cantidad de un producto no agregado a la venta");	
-		}			
+	public VentaDto modificarCantidad(ProductoVentaDto productoVenta, int cantidad, VentaDto venta) {
+		productoVenta.setCantidad(cantidad);
+		VentaHelper.calcularTotales(venta);
 
 		return venta;
 	}
 
+	@Override
+	public VentaDto modificarPrecioUnitario(ProductoVentaDto productoVenta, BigDecimal precioUnitario, VentaDto venta) {
+		BigDecimal ivaProducto = VentaHelper.calcularImpuesto(precioUnitario);
+		productoVenta.getProducto().setPrecioVenta(precioUnitario.subtract(ivaProducto));
+		productoVenta.getProducto().setIva(ivaProducto);
+		VentaHelper.calcularTotales(venta);
+
+		return venta;
+	}
+	
 	@Override
 	public VentaDto agregarCliente(ClienteDto cliente, VentaDto venta) {
 		venta.setCliente(cliente);
