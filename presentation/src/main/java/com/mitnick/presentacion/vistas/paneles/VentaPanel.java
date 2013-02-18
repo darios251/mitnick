@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -136,17 +134,18 @@ public class VentaPanel extends BasePanel<VentaController> {
 	public JTable getTable() {
 		if(table == null) {
 			table = new JTable(getModel());
-			table.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent evento) {
-					if (evento.getClickCount() == 2) {
-						try {
-							controller.mostrarDetalleProductoPanel();
-						} catch (PresentationException ex) {
-							mostrarMensaje(ex);
-						}
-					}
-				}
-			});
+			//se comenta porque no hace falta ya que la tabla es editable
+//			table.addMouseListener(new MouseAdapter() {
+//				public void mouseClicked(MouseEvent evento) {
+//					if (evento.getClickCount() == 2) {
+//						try {
+//							controller.mostrarDetalleProductoPanel();
+//						} catch (PresentationException ex) {
+//							mostrarMensaje(ex);
+//						}
+//					}
+//				}
+//			});
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 			// table.setFillsViewportHeight(true);
@@ -310,6 +309,30 @@ public class VentaPanel extends BasePanel<VentaController> {
 			});
 		}
 		return btnBuscar;
+	}
+	
+	@Override
+	protected void keyF6() {
+		if(table.getRowCount() > 0) {
+			int row = table.getRowCount() - 1;
+			int column = 2;
+			table.changeSelection(row, column, false, false);
+			table.editCellAt(row, column);
+			table.requestFocus();
+			((JTextField)table.getCellEditor(row, column).getTableCellEditorComponent(table, table.getValueAt(row, column), true, row, column)).selectAll();
+		}
+	}
+	
+	@Override
+	protected void keyF7() {
+		if(table.getRowCount() > 0) {
+			int row = table.getRowCount() - 1;
+			int column = 3;
+			table.changeSelection(row, column, false, false);
+			table.editCellAt(row, column);
+			table.requestFocus();
+			((JTextField)table.getCellEditor(row, column).getTableCellEditorComponent(table, table.getValueAt(row, column), true, row, column)).selectAll();
+		}
 	}
 	
 	@Override
