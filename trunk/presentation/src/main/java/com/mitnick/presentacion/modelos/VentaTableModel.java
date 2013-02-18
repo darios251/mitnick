@@ -7,8 +7,12 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import com.mitnick.presentacion.controladores.VentaController;
+import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ProductoVentaDto;
+import com.mitnick.utils.locator.BeanLocator;
+
 
 public class VentaTableModel extends AbstractTableModel implements TableModel{
 
@@ -16,6 +20,8 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 
 	private List<String> columnNames;
 	private List<ProductoVentaDto> data;
+	
+	private VentaController ventaController = (VentaController) BeanLocator.getBean("ventaController");
 	
 	public VentaTableModel() {
 		columnNames = new ArrayList<String>();
@@ -94,12 +100,12 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return false;
+		return columnIndex == 2 || columnIndex == 3;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		ProductoVentaDto fila = data.get(rowIndex);
+		ProductoVentaDto fila = VentaManager.getVentaActual().getProductos().get(rowIndex);//data.get(rowIndex);
 		
 		switch(columnIndex) {
 		case 0: 
@@ -130,10 +136,10 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 				fila.getProducto().setDescripcion(nuevoValor);
 				break;
 			case 2:
-				fila.getProducto().setPrecioVenta(new BigDecimal(nuevoValor));
+				ventaController.modificarPrecioUnitario(fila, nuevoValor);
 				break;
 			case 3:
-				fila.setCantidad(new Integer(nuevoValor));
+				ventaController.modificarCantidad(fila, nuevoValor);
 				break;
 			case 4:
 				fila.setPrecioTotal(new BigDecimal(nuevoValor));
@@ -141,7 +147,7 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		}
 		
 		data.set(rowIndex, fila);
-		fireTableCellUpdated(rowIndex, columnIndex);
+		fireTableRowsUpdated(rowIndex, rowIndex);
 	}
 
 }

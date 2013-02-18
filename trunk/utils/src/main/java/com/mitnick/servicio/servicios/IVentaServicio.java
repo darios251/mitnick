@@ -32,6 +32,9 @@ public interface IVentaServicio {
 	VentaDto modificarCantidad(ProductoVentaDto producto, int cantidad, VentaDto venta);
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	VentaDto modificarPrecioUnitario(ProductoVentaDto producto, BigDecimal precioUnitario, VentaDto venta);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	VentaDto agregarCliente(ClienteDto cliente, VentaDto venta);
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})

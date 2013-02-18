@@ -364,6 +364,26 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método modificarCantidad");
 	}
 
+	public void modificarPrecioUnitario(ProductoVentaDto producto, String precioUnitario) {
+		logger.debug("Entrado al método modificarPrecioUnitario, con producto: " + producto + " y precioUnitario: " + precioUnitario);
+		
+		if(Validator.isNull(producto))
+			throw new PresentationException("error.venta.modificarUnitario.producto.null", "El producto al que se quiere modificar el precio unitario es nulo");
+		if(Validator.isBlankOrNull(precioUnitario))
+			throw new PresentationException("error.venta.modificarPrecioUnitario.precioUnitario.null");
+		if(!Validator.isBigDecimal(precioUnitario))
+			throw new PresentationException("error.venta.modificarPrecioUnitario.precioUnitario.int");
+		
+		try {
+			getVentaServicio().modificarPrecioUnitario(producto, new BigDecimal(precioUnitario), VentaManager.getVentaActual());
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+		
+		logger.debug("Saliendo del método modificarPrecioUnitario");
+	}
+	
 	public List<ClienteDto> obtenerClientesByFilter(ConsultaClienteDto filtroDto) {
 		logger.debug("Entrando al método consultarClienteByFilter con :" + filtroDto);
 		
