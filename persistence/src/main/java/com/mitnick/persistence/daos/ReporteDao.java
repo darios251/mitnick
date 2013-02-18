@@ -45,6 +45,30 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		return resultado;
 	}	
 	
+	public List<ReporteVentaArticuloDTO> consultarVentaPorZapatillas(ReportesDto filtro) {
+		String hql = "SELECT p.codigo, p.descripcion, p.talle, sum(pv.cantidad), sum(pv.precio) from " +
+				Producto.class.getName() + " as p," + ProductoVenta.class.getName() + " as pv, " +
+				Venta.class.getName() + " as v where pv.producto.id=p.id and pv.venta.id=v.id  and p.tipo.id=4" +
+				" group by p.codigo, p.descripcion, p.talle, pv.cantidad, pv.precio";
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> items = getHibernateTemplate().find(hql);
+		List<ReporteVentaArticuloDTO> resultado = new ArrayList<ReporteVentaArticuloDTO>();
+		if (items!=null && !items.isEmpty()){
+			for (Object[] item: items){
+				ReporteVentaArticuloDTO dto = getDTOZapatilla(resultado, item);				
+				int cantidad = dto.getCantidad();
+				dto.setCantidad(cantidad + Integer.parseInt(item[3].toString()));
+				Double total = dto.getTotal();
+				dto.setTotal(total + Double.parseDouble(item[4].toString()));
+				
+			}
+			
+		}
+		
+		return resultado;
+	}
+	
 	private ReporteVentaArticuloDTO getDTOFecha(List<ReporteVentaArticuloDTO> items, Object[] item){
 		for (ReporteVentaArticuloDTO dto: items){
 			if (dto.getFecha().equals((Date)item[4]) && dto.getProductoCodigo().equals(item[0].toString()))
@@ -56,6 +80,21 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		dto.setCantidad(0);
 		dto.setTotal(new Double(0));
 		dto.setFecha((Date)item[4]);
+		items.add(dto);
+		return dto;
+	}
+	
+	private ReporteVentaArticuloDTO getDTOZapatilla(List<ReporteVentaArticuloDTO> items, Object[] item){
+		for (ReporteVentaArticuloDTO dto: items){
+			if (dto.getProductoCodigo().equals(item[0].toString()))
+				return dto;
+		}		
+		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
+		dto.setProductoCodigo(item[0].toString());
+		dto.setProductoDescripcion(item[1].toString());
+		dto.setTalle(item[2].toString());
+		dto.setCantidad(0);
+		dto.setTotal(new Double(0));		
 		items.add(dto);
 		return dto;
 	}

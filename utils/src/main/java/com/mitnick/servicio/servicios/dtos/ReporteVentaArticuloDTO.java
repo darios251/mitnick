@@ -11,6 +11,8 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 	private String productoCodigo;
 	private int cantidad;
 	private Double total;
+	private String talle;
+	
 	public Date getFecha() {
 		return fecha;
 	}
@@ -25,6 +27,12 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 	}
 	public String getProductoCodigo() {
 		return productoCodigo;
+	}
+	public String getTalle() {
+		return talle;
+	}
+	public void setTalle(String talle) {
+		this.talle = talle;
 	}
 	public void setProductoCodigo(String productoCodigo) {
 		this.productoCodigo = productoCodigo;
@@ -53,6 +61,7 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 				* result
 				+ ((productoDescripcion == null) ? 0 : productoDescripcion
 						.hashCode());
+		result = prime * result + ((talle == null) ? 0 : talle.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
 	}
@@ -92,6 +101,13 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 		} else if (!productoDescripcion.equals(other.productoDescripcion)) {
 			return false;
 		}
+		if (talle == null) {
+			if (other.talle != null) {
+				return false;
+			}
+		} else if (!talle.equals(other.talle)) {
+			return false;
+		}
 		if (total == null) {
 			if (other.total != null) {
 				return false;
@@ -106,7 +122,7 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 		return "ReporteVentaArticuloDTO [fecha=" + fecha
 				+ ", productoDescripcion=" + productoDescripcion
 				+ ", productoCodigo=" + productoCodigo + ", cantidad="
-				+ cantidad + ", total=" + total + "]";
+				+ cantidad + ", total=" + total + ", talle=" + talle + "]";
 	}
 	
 	
