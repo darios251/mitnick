@@ -635,6 +635,39 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	@Transactional(readOnly=true)
 	@Override
+	public void consultarVentaZapatillaPorTalle(ReportesDto filtro) {
+		
+		try{
+			List<ReporteVentaArticuloDTO> articulos = reporteDao.consultarVentaPorZapatillas(filtro);
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventasZapatillas.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(articulos);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JRExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+			exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("ventasZapatillas.pdf"));
+			exporter.exportReport();
+			
+			File file = new File("ventasZapatillas.pdf");
+			Desktop.getDesktop().open(file);			
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} catch (IOException e) {
+			// TODO Lucas: revisar si hay que manejar esta excepción - Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Transactional(readOnly=true)
+	@Override
 	public void consultarStockArticulo(ReportesDto filtro) {
 		// TODO Lucas: encontré este método vacío, seguramente está faltando implementar esto
 	}

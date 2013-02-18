@@ -12,5 +12,7 @@ import com.mitnick.servicio.servicios.dtos.ReportesDto;
 public interface IReporteDao extends GenericDao<BaseObject, Serializable> {
 	
 	public List<ReporteVentaArticuloDTO> consultarVentaPorArticulo(ReportesDto filtro) ;
+	
+	public List<ReporteVentaArticuloDTO> consultarVentaPorZapatillas(ReportesDto filtro) ;	
 
 }

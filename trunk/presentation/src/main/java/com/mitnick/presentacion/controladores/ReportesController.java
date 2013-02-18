@@ -67,6 +67,16 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	public void consultarVentaZapatillaPorTalle(ReportesDto dto) {
+		try {
+			getReportesServicio().consultarVentaZapatillaPorTalle(dto);
+		}
+		catch(BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void consultarVentasAnual(ReportesDto dto) {
 		try {
 			getReportesServicio().reporteIngresosAnual(dto);

@@ -109,5 +109,13 @@ public interface IReportesServicio {
 	 */
 	@Secured(value={"ROLE_ADMIN"})
 	public void exportarMovimientosDeProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal);
+	
+	/**
+	 * Obtiene el detalle de venta de zapatillas agrupado por talle.
+	 * @param filtro
+	 * @return
+	 */
+	@Secured(value={"ROLE_ADMIN"})
+	public void consultarVentaZapatillaPorTalle(ReportesDto filtro); 
 
 }

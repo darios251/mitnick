@@ -39,6 +39,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	private JButton btnReporteDeEstado;
 	private JButton btnListadoDeControl;
 	private JButton btnReporteDeVentasProducto;
+	private JButton btnReporteDeVentasZapatillas;	
 	private JButton btnReporteDeVentasAnual;	
 	
 	
@@ -80,19 +81,16 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getTxtFechaFinal());
 		
 		add(getBtnReporteVentas());
-		
-		btnReporteVentasAgrupado = new JButton();
-		btnReporteVentasAgrupado.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnReporteVentasAgrupado.setToolTipText("productoPanel.tooltip.buscarProducto");
-		btnReporteVentasAgrupado.setText("Reporte de Ventas agrupado por fecha");
-		btnReporteVentasAgrupado.setMargin(new Insets(-1, -1, -1, -1));
-		btnReporteVentasAgrupado.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnReporteVentasAgrupado.setBounds(200, 182, 330, 20);
 		add(getBtnReporteVentasAgrupados());
-		add(getBtnReporteDeEstado());
-		add(getBtnListadoDeControl());
 		add(getBtnReporteDeVentasProducto());
+		add(getBtnReporteDeVentasZapatillas());	
+		
+		add(getBtnListadoDeControl());
+		add(getBtnReporteDeEstado());
 		add(getBtnReporteDeVentasAnual());	
+		
+		
+		
 		
 		setFocusTraversalPolicy();
 		this.actualizarPantalla();
@@ -122,16 +120,113 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	}
 	
 	public JButton getBtnReporteVentasAgrupados() {
-
-		btnReporteVentasAgrupado.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evento) {
-				consultarIngresosAgrupados();
-			}
-		});
+		if (btnReporteVentasAgrupado == null) {
+			btnReporteVentasAgrupado = new JButton();
+			btnReporteVentasAgrupado.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVentasAgrupado.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnReporteVentasAgrupado.setText("Reporte de Ventas agrupado por fecha");
+			btnReporteVentasAgrupado.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteVentasAgrupado.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVentasAgrupado.setBounds(200, 182, 330, 20);
+			
+			btnReporteVentasAgrupado.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarIngresosAgrupados();
+				}
+			});
+		}
 		return btnReporteVentasAgrupado;
 	}
 
-
+	private JButton getBtnReporteDeVentasProducto() {
+		if (btnReporteDeVentasProducto == null) {
+			btnReporteDeVentasProducto = new JButton();
+			btnReporteDeVentasProducto.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeVentasProducto.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnReporteDeVentasProducto.setText("Reporte de Ventas por producto");
+			btnReporteDeVentasProducto.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeVentasProducto.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeVentasProducto.setBounds(200, 213, 330, 20);
+			btnReporteDeVentasProducto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarVentaPorArticulo();
+				}
+			});
+		}
+		return btnReporteDeVentasProducto;
+	}
+	
+	private JButton getBtnReporteDeVentasZapatillas() {
+		if (btnReporteDeVentasZapatillas == null) {
+			btnReporteDeVentasZapatillas = new JButton();
+			btnReporteDeVentasZapatillas.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeVentasZapatillas.setToolTipText("productoPanel.tooltip.reporteZapatillas");
+			btnReporteDeVentasZapatillas.setText("productoPanel.button.reporteZapatillas");
+			btnReporteDeVentasZapatillas.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeVentasZapatillas.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeVentasZapatillas.setBounds(200, 244, 330, 20);			
+			btnReporteDeVentasZapatillas.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarVentaZapatilla();
+				}
+			});
+		}
+		return btnReporteDeVentasZapatillas;
+	}
+	
+	private JButton getBtnListadoDeControl() {
+		if (btnListadoDeControl == null) {
+			btnListadoDeControl = new JButton();
+			btnListadoDeControl.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnListadoDeControl.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnListadoDeControl.setText("Listado de Control");
+			btnListadoDeControl.setMargin(new Insets(-1, -1, -1, -1));
+			btnListadoDeControl.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnListadoDeControl.setBounds(200, 275, 330, 20);
+			btnListadoDeControl.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarListadoDeControl();
+				}
+			});
+		}
+		return btnListadoDeControl;
+	}
+	
+	private JButton getBtnReporteDeEstado() {
+		if (btnReporteDeEstado == null) {
+			btnReporteDeEstado = new JButton();
+			btnReporteDeEstado.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeEstado.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnReporteDeEstado.setText("Reporte de Estado de Cuentas");
+			btnReporteDeEstado.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeEstado.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeEstado.setBounds(200, 306, 330, 20);
+			btnReporteDeEstado.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarEstadoCuentas();
+				}
+			});
+		}
+		return btnReporteDeEstado;
+	}
+	
+	private JButton getBtnReporteDeVentasAnual() {
+		if (btnReporteDeVentasAnual == null) {
+			btnReporteDeVentasAnual = new JButton();
+			btnReporteDeVentasAnual.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeVentasAnual.setToolTipText("productoPanel.tooltip.buscarProducto");
+			btnReporteDeVentasAnual.setText("Reporte de Ventas Anual");
+			btnReporteDeVentasAnual.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeVentasAnual.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeVentasAnual.setBounds(200, 337, 330, 20);
+			btnReporteDeVentasAnual.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarVentasAnual();
+				}
+			});
+		}
+		return btnReporteDeVentasAnual;
+	}
 	
 	public JLabel getLblFechaInicio() {
 		if (lblFechaInicio == null) {
@@ -276,76 +371,17 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			mostrarMensaje(ex);
 		}
 	}
-		
-	private JButton getBtnReporteDeVentasAnual() {
-		if (btnReporteDeVentasAnual == null) {
-			btnReporteDeVentasAnual = new JButton();
-			btnReporteDeVentasAnual.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeVentasAnual.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnReporteDeVentasAnual.setText("Reporte de Ventas Anual");
-			btnReporteDeVentasAnual.setMargin(new Insets(-1, -1, -1, -1));
-			btnReporteDeVentasAnual.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteDeVentasAnual.setBounds(200, 306, 330, 20);
-			btnReporteDeVentasAnual.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarVentasAnual();
-				}
-			});
-		}
-		return btnReporteDeVentasAnual;
-	}
 	
-	private JButton getBtnReporteDeEstado() {
-		if (btnReporteDeEstado == null) {
-			btnReporteDeEstado = new JButton();
-			btnReporteDeEstado.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeEstado.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnReporteDeEstado.setText("Reporte de Estado de Cuentas");
-			btnReporteDeEstado.setMargin(new Insets(-1, -1, -1, -1));
-			btnReporteDeEstado.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteDeEstado.setBounds(200, 275, 330, 20);
-			btnReporteDeEstado.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarEstadoCuentas();
-				}
-			});
+	protected void consultarVentaZapatilla() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			controller.consultarVentaZapatillaPorTalle(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
 		}
-		return btnReporteDeEstado;
 	}
-	
-	private JButton getBtnListadoDeControl() {
-		if (btnListadoDeControl == null) {
-			btnListadoDeControl = new JButton();
-			btnListadoDeControl.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnListadoDeControl.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnListadoDeControl.setText("Listado de Control");
-			btnListadoDeControl.setMargin(new Insets(-1, -1, -1, -1));
-			btnListadoDeControl.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnListadoDeControl.setBounds(200, 244, 330, 20);
-			btnListadoDeControl.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarListadoDeControl();
-				}
-			});
-		}
-		return btnListadoDeControl;
-	}
-	private JButton getBtnReporteDeVentasProducto() {
-		if (btnReporteDeVentasProducto == null) {
-			btnReporteDeVentasProducto = new JButton();
-			btnReporteDeVentasProducto.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeVentasProducto.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnReporteDeVentasProducto.setText("Reporte de Ventas por producto");
-			btnReporteDeVentasProducto.setMargin(new Insets(-1, -1, -1, -1));
-			btnReporteDeVentasProducto.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteDeVentasProducto.setBounds(200, 213, 330, 20);
-			btnReporteDeVentasProducto.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarVentaPorArticulo();
-				}
-			});
-		}
-		return btnReporteDeVentasProducto;
-	}
+			
 
 }
