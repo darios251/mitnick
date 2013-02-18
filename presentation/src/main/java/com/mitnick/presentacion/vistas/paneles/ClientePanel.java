@@ -154,7 +154,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 
 	public JLabel getLblNombre() {
 		if (lblNombre == null) {
-			lblNombre = new JLabel("Razón Social");
+			lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
 			lblNombre.setBounds(330, 55, 60, 20);
 		}
 		return lblNombre;
