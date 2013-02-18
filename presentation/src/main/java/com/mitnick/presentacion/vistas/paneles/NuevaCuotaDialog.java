@@ -7,7 +7,6 @@ import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +20,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 
-public class NuevaCuotaDialog extends JDialog {
+public class NuevaCuotaDialog extends BaseDialog {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -42,7 +41,6 @@ public class NuevaCuotaDialog extends JDialog {
 	private JLabel lblFecha;
 	
 	private CuotaDto cuotaDto;
-	
 	
 	public NuevaCuotaDialog(JFrame frame, ClienteDto cliente, CuotaDto cuotaDto, ClienteController clienteController) {
 		super(frame, true);
@@ -99,18 +97,12 @@ public class NuevaCuotaDialog extends JDialog {
 			btnAceptar.setBounds(84, 134, 100, 45);
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					String monto = getTxtMontoCuota().getText();
-					String fecha = getTxtFecha().getText();
-					cuotaDto.setFecha_pagar(fecha);
 					try {
-						cuotaDto.setTotal(new BigDecimal(monto));
-						cuotaDto.setFaltaPagar(new BigDecimal(monto));
-					} catch (Exception ex) {
-						throw new PresentationException("Ingrese una fecha correcta: dd/MM/yyyy", "Ingrese un monto correcto");
+						clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText());
+						setVisible(false);
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
 					}
-
-					clienteController.guardarCuota(cuotaDto);
-					setVisible(false);
 				}
 			});
 		}
@@ -124,7 +116,7 @@ public class NuevaCuotaDialog extends JDialog {
 
 	public JButton getBtnCancelar() {
 		if(btnCancelar == null) {
-			btnCancelar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.cancelar"));;
+			btnCancelar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.cancelar"));
 			btnCancelar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
 			btnCancelar.setBounds(232, 134, 100, 45);
 			btnCancelar.addActionListener(new ActionListener() {
@@ -187,16 +179,16 @@ public class NuevaCuotaDialog extends JDialog {
 	
 	public JLabel getLblErrorTxtMontoCuota() {
 		if (lblErrorTxtMontoCuota == null) {
-			lblErrorTxtMontoCuota = new JLabel("gfkhgfhg");
-			lblErrorTxtMontoCuota.setBounds(310, 86, 110, 20);
+			lblErrorTxtMontoCuota = new JLabel("");
+			lblErrorTxtMontoCuota.setBounds(310, 86, 200, 20);
 		}
 		return lblErrorTxtMontoCuota;
 	}
 
 	public JLabel getLblErrorTxtFecha() {
 		if (lblErrorTxtFecha == null) {
-			lblErrorTxtFecha = new JLabel("adasd");
-			lblErrorTxtFecha.setBounds(310, 55, 110, 20);
+			lblErrorTxtFecha = new JLabel("");
+			lblErrorTxtFecha.setBounds(310, 55, 200, 20);
 		}
 		return lblErrorTxtFecha;
 	}
