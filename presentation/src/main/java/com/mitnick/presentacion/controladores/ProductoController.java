@@ -100,11 +100,12 @@ public class ProductoController extends BaseController {
 	
 	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void guardarProducto(ProductoNuevoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
-			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor, boolean confirmado) {
+			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor, boolean confirmado, String talle) {
 		if(Validator.isNull(producto))
 			producto = new ProductoNuevoDto();
 		
 		producto.setCodigo(codigo);
+		producto.setTalle(talle);
 		producto.setDescripcion(descripcion);
 		producto.setPrecioVenta(precioVenta);
 		producto.setPrecioCompra(precioCompra);
