@@ -24,6 +24,7 @@ import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
+import com.mitnick.utils.dtos.CuotaNuevaDto;
 import com.mitnick.utils.dtos.DireccionDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
@@ -297,8 +298,17 @@ public class ClienteController extends BaseController {
 		cuentaCorrientePanel.setCuotas(cuotas);
 	}
 	
-	public void guardarCuota(CuotaDto cuotaDto){		
-		validateDto(cuotaDto);
+	public void guardarCuota(CuotaDto cuotaDto, String monto, String fecha){
+		CuotaNuevaDto cuotaNuevaDto = new CuotaNuevaDto();
+		cuotaNuevaDto.setFecha(fecha);
+		cuotaNuevaDto.setMontoCuota(monto);
+		
+		validateDto(cuotaNuevaDto);
+		
+		cuotaDto.setFecha_pagar(fecha);
+		cuotaDto.setTotal(new BigDecimal(monto));
+		cuotaDto.setFaltaPagar(new BigDecimal(monto));
+		
 		clienteServicio.guardarCuota(cuotaDto);
 	}
 		
