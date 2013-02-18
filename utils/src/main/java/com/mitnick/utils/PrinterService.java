@@ -932,10 +932,10 @@ public class PrinterService {
 	}
 	
 	protected Socket connect() throws UnknownHostException, IOException {
-		SocketAddress sockaddr = new InetSocketAddress("192.168.0.105", 9095);
+		SocketAddress sockaddr = new InetSocketAddress(PropertiesManager.getProperty("application.printerService.ipaddress"), PropertiesManager.getPropertyAsInteger("application.printerService.portaddress"));
 		currentConnection = new Socket();
-		currentConnection.connect(sockaddr, 3000);
-		currentConnection.setSoTimeout(15000);
+		currentConnection.connect(sockaddr, PropertiesManager.getPropertyAsInteger("application.printerService.openConnectionTimeOut"));
+		currentConnection.setSoTimeout(PropertiesManager.getPropertyAsInteger("application.printerService.connectionTimeOut"));
 		output = new PrintStream(currentConnection.getOutputStream());
 		input = new DataInputStream(currentConnection.getInputStream());
 		return currentConnection;

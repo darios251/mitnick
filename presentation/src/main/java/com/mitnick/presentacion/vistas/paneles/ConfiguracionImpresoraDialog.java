@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mitnick.exceptions.PrinterException;
-import com.mitnick.presentacion.modelos.CuentaCorrienteTableModel;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.View;
@@ -24,7 +23,6 @@ import com.mitnick.utils.locator.BeanLocator;
 public class ConfiguracionImpresoraDialog extends BaseDialog {
 
 	private static final long serialVersionUID = 1L;
-	private CuentaCorrienteTableModel model;
 	
 	@Autowired
 	private PrinterService printerService = (PrinterService) BeanLocator.getBean("printerService");
@@ -142,13 +140,6 @@ public class ConfiguracionImpresoraDialog extends BaseDialog {
 		Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 		
 		return JOptionPane.showOptionDialog( thisDialog, message, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
-	}
-	
-	public CuentaCorrienteTableModel getModel() {
-		if(model == null) {
-			model = new CuentaCorrienteTableModel();
-		}
-		return model;
 	}
 	
 }

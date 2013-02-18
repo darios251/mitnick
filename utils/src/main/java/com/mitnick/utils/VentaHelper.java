@@ -35,10 +35,8 @@ public class VentaHelper {
 		// suma de todos los productos
 		BigDecimal subTotal = BigDecimal.ZERO;
 		BigDecimal impuestos = BigDecimal.ZERO;
-		Iterator<ProductoVentaDto> productos = ventaDto.getProductos()
-				.iterator();
-		while (productos.hasNext()) {
-			ProductoVentaDto producto = productos.next();
+		
+		for(ProductoVentaDto producto : ventaDto.getProductos()) {
 			BigDecimal precioTotal = producto.getProducto().getPrecioVentaConIva().multiply(new BigDecimal(producto.getCantidad()));
 			producto.setPrecioTotal(precioTotal);
 			subTotal = subTotal.add(precioTotal);

@@ -19,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -122,9 +124,13 @@ public class VentaPanel extends BasePanel<VentaController> {
 	public void actualizarPantalla() {
 		if(VentaManager.getVentaActual() != null){
 			getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
-			getLblTotalValor().setText(	VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			getLblSubtotalValor().setText(VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			actualizarTotales();
 		}
+	}
+	
+	private void actualizarTotales() {
+		getLblTotalValor().setText(	VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		getLblSubtotalValor().setText(VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	}
 
 	public JTable getTable() {
@@ -151,6 +157,13 @@ public class VentaPanel extends BasePanel<VentaController> {
 	public VentaTableModel getModel() {
 		if(model == null) {
 			model = new VentaTableModel();
+			model.addTableModelListener(new TableModelListener() {
+				
+				@Override
+				public void tableChanged(TableModelEvent e) {
+					actualizarTotales();
+				}
+			});
 		}
 		return model;
 	}
