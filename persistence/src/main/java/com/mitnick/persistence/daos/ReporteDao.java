@@ -8,11 +8,9 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.appfuse.model.BaseObject;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Venta;
@@ -22,7 +20,6 @@ import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
-import com.mitnick.utils.dtos.PagoDto;
 
 @Repository("reporteDao")
 public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> implements IReporteDao {

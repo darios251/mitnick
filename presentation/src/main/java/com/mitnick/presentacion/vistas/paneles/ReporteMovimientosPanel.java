@@ -63,6 +63,8 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	private MovimientoTableModel model;
 	private JButton btnDetalleMovimientos;
 	private JButton btnCompra;
+	
+	private boolean mostrarError = false;
 
 	@Autowired
 	public ReporteMovimientosPanel(
@@ -187,6 +189,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 			btnBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
+					mostrarError=true;
 					consultarProductos();
 				}
 			});
@@ -344,7 +347,8 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			
 			getModel().setProductosMovimientos(controller.reporteMovimientosAgrupadosPorProducto(dto));
 		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
+			if (mostrarError)
+				mostrarMensaje(ex);			
 			getModel().setProductosMovimientos(new ArrayList<MovimientoProductoDto>());
 		}
 	}
@@ -368,6 +372,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 	@Override
 	public void actualizarPantalla() {
+		mostrarError = false;
 		consultarProductos();
 	}
 
