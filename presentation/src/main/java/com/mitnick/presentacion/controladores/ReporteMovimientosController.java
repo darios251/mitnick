@@ -70,6 +70,11 @@ public class ReporteMovimientosController extends BaseController {
 		reporteDetalleMovimientosPanel.actualizarPantalla();
 	}
 
+	public void mostrarCompraSugerida(ReporteMovimientosDto dto) {
+		logger.info("Mostrando el reporte de compra sugerida");
+		reporteServicio.exportarCompraSugerida(dto);
+	}	
+	
 	public List<MovimientoProductoDto> reporteMovimientosAgrupadosPorProducto(
 			ReporteMovimientosDto filtro) {
 		logger.info("Consultando movimientos de productos por filtro");

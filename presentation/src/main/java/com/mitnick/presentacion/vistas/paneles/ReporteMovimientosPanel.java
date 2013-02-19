@@ -62,6 +62,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	private TableRowSorter<MovimientoTableModel> sorter;
 	private MovimientoTableModel model;
 	private JButton btnDetalleMovimientos;
+	private JButton btnCompra;
 
 	@Autowired
 	public ReporteMovimientosPanel(
@@ -115,6 +116,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		add(getScrollPane());
 
 		add(getBtnBuscar());
+		add(getBtnCompra());
 		add(getBtnDetalleMovimientos());
 		add(getBtnExportar());
 
@@ -291,6 +293,39 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		return btnDetalleMovimientos;
 	}
 
+	public JButton getBtnCompra() {
+		if (btnCompra == null) {
+			btnCompra = new JButton(PropertiesManager
+					.getProperty("productoPanel.button.compraProductos"));
+			btnCompra.setToolTipText(PropertiesManager
+					.getProperty("productoPanel.tooltip.compraProductos"));
+
+
+//			btnCompra.setIcon(new ImageIcon(this.getClass()
+//					.getResource("/img/data_find.png")));
+			btnCompra.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnCompra.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnCompra.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnCompra.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ReporteMovimientosDto dto = new ReporteMovimientosDto();
+					dto.setCodigo(getTxtProductoCodigo().getText());
+					dto.setDescripcion(getTxtProductoDescripcion().getText());
+					dto.setFechaInicio(getFechaInicio());
+					dto.setFechaFin(getFechaFinal());
+					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
+					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
+										
+					controller.mostrarCompraSugerida(dto);
+				}
+			});
+
+			btnCompra.setBounds(735, 230, 60, 60);
+		}
+		return btnCompra;
+	}
+	
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
 				new Component[] { txtProductoCodigo, txtProductoDescripcion,
