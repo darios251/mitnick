@@ -7,13 +7,22 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.appfuse.model.BaseObject;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Venta;
+import com.mitnick.servicio.servicios.dtos.ReporteCompraSugeridaDTO;
+import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
+import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.PagoDto;
 
 @Repository("reporteDao")
 public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> implements IReporteDao {
@@ -97,5 +106,41 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		dto.setTotal(new Double(0));		
 		items.add(dto);
 		return dto;
+	}
+	
+	public List<ReporteCompraSugeridaDTO> consultarCompraSugerida(ReporteMovimientosDto dto) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
+
+		if(!Validator.isBlankOrNull(dto.getCodigo())){
+			criteria.add(Restrictions.eq("codigo", dto.getCodigo()));
+		}
+		if(!Validator.isBlankOrNull(dto.getDescripcion())){
+			criteria.add(Restrictions.ilike("descripcion", "%" + dto.getDescripcion() + "%"));
+		}
+		if(Validator.isNotNull(dto.getMarca()) && dto.getMarca().getId()>=0){
+			criteria.add(Restrictions.eq("marca.id", dto.getMarca().getId()));
+		}
+		if(Validator.isNotNull(dto.getTipo()) && dto.getTipo().getId()>=0){
+			criteria.add(Restrictions.eq("tipo.id", dto.getTipo().getId()));
+		}
+		criteria.add(Restrictions.ne("codigo", PropertiesManager.getProperty("application.producto.comodin")));
+		criteria.add(Restrictions.eq("eliminado", false));
+		List<Producto> productos = getHibernateTemplate().findByCriteria(criteria); 
+		List<ReporteCompraSugeridaDTO> resultado = new ArrayList<ReporteCompraSugeridaDTO>();
+		for (Producto producto : productos){
+			ReporteCompraSugeridaDTO compra = new ReporteCompraSugeridaDTO();
+			compra.setProductoCodigo(producto.getCodigo());
+			compra.setProductoDescripcion(producto.getDescripcion());
+			compra.setStockActual(producto.getStock());
+			compra.setStockMinimo(producto.getStockMinimo());
+			compra.setStockCompra(producto.getStockCompra());
+			int sugerido = producto.getStockCompra() - producto.getStock();
+			if (sugerido>0)
+				compra.setCompraSugerida(sugerido);
+			else
+				compra.setCompraSugerida(0);
+			resultado.add(compra);
+		}
+		return resultado;
 	}
 }

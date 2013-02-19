@@ -32,6 +32,7 @@ import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
+import com.mitnick.servicio.servicios.dtos.ReporteCompraSugeridaDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
@@ -572,6 +573,27 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		} 	
+	}
+	
+	public void exportarCompraSugerida(ReporteMovimientosDto dto) {
+		try{
+			List<ReporteCompraSugeridaDTO> articulos = reporteDao.consultarCompraSugerida(dto);
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/compraSugerida.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(articulos);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
+			
+			JasperViewer.viewReport(jasperPrint,false);
+		
+		}
+		catch(PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException("Error al intentar obtener el reporte de ventas");
+		} 		
 	}
 		
 }
