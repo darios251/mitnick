@@ -74,10 +74,12 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	public ProductoNuevoDto guardarProducto(ProductoNuevoDto productoDto) {
 		validateEntity(productoDto);
 		try {
-			
-			Producto p = productoDao.findByCode(productoDto.getCodigo());
-			if (p!=null)
-				throw new BusinessException("error.productoServicio.codigo.duplicado", "Ya existe un producto con el código ingresado");
+			if (productoDto.getId()==null){
+				//si es un producto nuevo
+				Producto p = productoDao.findByCode(productoDto.getCodigo());
+				if (p!=null)
+					throw new BusinessException("error.productoServicio.codigo.duplicado", "Ya existe un producto con el código ingresado");
+			}
 			
 			//se calcula el impuesto del producto
 			BigDecimal iva = VentaHelper.calcularImpuesto(productoDto);

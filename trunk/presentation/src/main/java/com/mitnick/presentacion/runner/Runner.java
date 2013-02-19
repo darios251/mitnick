@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import com.mitnick.persistence.daos.IConfiguracionDAO;
-import com.mitnick.persistence.dbimport.DBImport;
 import com.mitnick.persistence.entities.Configuracion;
 import com.mitnick.presentacion.utils.DBInitialization;
 import com.mitnick.presentacion.vistas.InicioView;
@@ -19,17 +18,6 @@ import com.mitnick.utils.locator.BeanLocator;
 public class Runner {
 	
 	private static Logger logger = Logger.getLogger(Runner.class);
-	
-	public static void migracionDatos(String[] args){
-		DBInitialization dbInitialization = (DBInitialization) BeanLocator.getBean("dbInitialization");
-		dbInitialization.initializeDB();
-		DBImport dbimport = (DBImport) BeanLocator.getBean("dbImport");
-		dbimport.ejecutar();
-	}
-	
-	public static void main2(String[] args) {
-		migracionDatos(args);
-	}
 	
 	public static void main(String[] args) {
 		InicioView inicio = InicioView.getInstance();
@@ -44,7 +32,7 @@ public class Runner {
 		
 		Thread.currentThread().setName(PropertiesManager.getProperty("application.name"));
 		
-		//checkForRun();
+		checkForRun();
 
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");

@@ -63,13 +63,13 @@ public class DBImport {
 	
 	//migracion de marca
 	
+	//migracion de deudas
 	
-	public void ejecutar() {
-		try {
-			String path = "C:/project/mitnick/archivosSusmann/Copia (2) de comersis/";
+	
+	public void ejecutar(String path) {
+		try {			
 			migrarProductos(path);
-			migrarClientes(path);
-			// migrarClientes(args[0].toString());
+			migrarClientes(path);			
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -151,7 +151,8 @@ public class DBImport {
 						
 				try {
 					System.out.println(producto.toString());
-					productoDao.saveOrUpdate(producto);
+					productoDao.saveOrUpdate(producto);								
+					
 				} catch (Exception e) {	
 					
 					e.printStackTrace();
@@ -164,24 +165,6 @@ public class DBImport {
 			e.printStackTrace();
 		}
 		System.out.println("listo Productos!");
-	}
-	
-	private int getInt(String valor){
-		int retorno = -1;
-		if (valor!=null && !valor.isEmpty()) {
-			Double d = new Double(valor.trim());
-			retorno = d.intValue();
-		}
-			return retorno;
-	}
-		
-	
-	private BigDecimal getBigDecimal(String valor){
-		BigDecimal retorno = new BigDecimal(0);
-		if (valor!=null && !valor.isEmpty()) {
-			retorno = new BigDecimal(valor.trim());
-		}
-			return retorno;
 	}
 	
 	private void migrarClientes(String path) {
@@ -289,4 +272,23 @@ public class DBImport {
 		System.out.println("listo Cliente!");
 	}
 
+	
+	private int getInt(String valor){
+		int retorno = -1;
+		if (valor!=null && !valor.isEmpty()) {
+			Double d = new Double(valor.trim());
+			retorno = d.intValue();
+		}
+			return retorno;
+	}
+		
+	
+	private BigDecimal getBigDecimal(String valor){
+		BigDecimal retorno = new BigDecimal(0);
+		if (valor!=null && !valor.isEmpty()) {
+			retorno = new BigDecimal(valor.trim());
+		}
+			return retorno;
+	}
+	
 }
