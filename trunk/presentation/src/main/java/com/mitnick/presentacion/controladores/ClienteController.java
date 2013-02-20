@@ -138,6 +138,7 @@ public class ClienteController extends BaseController {
 		cuentaCorrientePanel.setVisible(false);
 		clienteNuevoPanel.setVisible(false);
 		clientePanel.setVisible(true);
+		clientePanel.actualizarPantalla();
 	}
 	
 	public void mostrarClienteNuevoPanel() {
