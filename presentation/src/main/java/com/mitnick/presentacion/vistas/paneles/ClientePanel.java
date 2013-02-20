@@ -73,8 +73,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		for (Component component : getComponents()) {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
-		}
-		model.setClientes(new ArrayList<ClienteDto>());
+		}		
 	}
 
 	@Override

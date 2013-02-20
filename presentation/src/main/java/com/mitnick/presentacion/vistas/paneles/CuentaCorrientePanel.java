@@ -94,19 +94,12 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		add(getBtnPagar());
 		add(getBtnVolver());
 		
-		add(getPnlCliente());
-		add(getLblCliente());
+		add(getPnlCliente());		
 		
 		setFocusTraversalPolicy();
 	}
 
-	private JLabel getLblCliente() {
-		if(lblCliente == null) {
-			lblCliente = new JLabel("Cliente:");
-			lblCliente.setBounds(113, 36, 46, 14);
-		}
-		return lblCliente;
-	}
+	
 	
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { getBtnNuevo() }));
@@ -270,7 +263,8 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		if(pnlCliente == null) {
 			pnlCliente = new JPanel();
 			pnlCliente.setLayout(null);
-			pnlCliente.setBounds(188, 23, 536, 39);
+			pnlCliente.setBounds(20, 23, 800, 39);
+			pnlCliente.add(getLblCliente());
 			pnlCliente.add(getLblNombre());
 			pnlCliente.add(getLblDomicilio());
 			pnlCliente.add(getLblTelefono());
@@ -278,32 +272,39 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		return pnlCliente;
 	}
 	
+	private JLabel getLblCliente() {
+		if(lblCliente == null) {
+			lblCliente = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.cliente"));
+			lblCliente.setBounds(10, 11, 50, 14);	
+		}
+		return lblCliente;
+	}
+	
 	public JLabel getLblNombre() {
 		if(lblNombre == null) {
 			lblNombre = new JLabel(cliente.getNombre());
-			lblNombre.setBounds(10, 11, 251, 14);
-			getPnlCliente().add(lblNombre);
+			lblNombre.setBounds(50, 11, 251, 14);			
 		}
 		return lblNombre;
+	}
+	
+	public JLabel getLblTelefono() {
+		if(lblTelefono == null) {
+			lblTelefono = new JLabel("("+cliente.getTelefono()+")");
+			lblTelefono.setBounds(250, 11, 200, 14);
+		}
+		return lblTelefono;
 	}
 	
 	public JLabel getLblDomicilio() {
 		if(lblDomicilio == null) {
 			lblDomicilio = new JLabel(cliente.getDireccion().getDomicilio());
-			lblDomicilio.setBounds(312, 11, 182, 14);
-			getPnlCliente().add(lblDomicilio);
+			lblDomicilio.setBounds(450, 11, 300, 14);	
 		}
 		return lblDomicilio;
 	}
 
-	public JLabel getLblTelefono() {
-		if(lblTelefono == null) {
-			lblTelefono = new JLabel(cliente.getTelefono());
-			lblTelefono.setBounds(143, 11, 182, 14);
-			getPnlCliente().add(lblTelefono);
-		}
-		return lblTelefono;
-	}
+	
 	
 
 	public TableRowSorter<CuotaTableModel> getSorter() {
@@ -332,6 +333,11 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	@Override
 	public void actualizarPantalla() {	
 		controller.actualizarCuotas(getCliente());
+		
+		lblNombre.setText(cliente.getNombre());
+		lblDomicilio.setText(cliente.getDireccion().getDomicilio());
+		lblTelefono.setText("("+cliente.getTelefono()+")");		
+		
 		model.setCuotas(getCuotas());
 		
 	}
