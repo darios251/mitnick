@@ -197,8 +197,7 @@ public class ClienteController extends BaseController {
 		clienteNuevoPanel.setCliente(null);
 		mostrarClienteNuevoPanel();
 	}
-
-	@AuthorizationRequired
+	
 	public void editarCliente() {
 		ClienteDto clienteDto = null;
 		try {

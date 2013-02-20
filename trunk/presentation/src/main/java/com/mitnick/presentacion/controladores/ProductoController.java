@@ -155,8 +155,7 @@ public class ProductoController extends BaseController {
 		productoNuevoPanel.setProducto(null);
 		mostrarProductoNuevoPanel();
 	}
-	
-	@AuthorizationRequired
+		
 	public void editarProducto() {
 		ProductoDto productoDto = null;
 		try {
