@@ -39,11 +39,7 @@ public class Runner {
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 		}
 		
-		boolean loginRequired = PropertiesManager.getPropertyAsBoolean("application.login.requiredAtStart");
-		if(loginRequired)
-			BeanLocator.getBean("loginView");
-		else
-			BeanLocator.getBean("principalView");
+		BeanLocator.getBean("loginView");
 	}
 
 	private static void checkForRun() {

@@ -86,9 +86,13 @@ public class LoginView extends JDialog {
 		getContentPane().add(btnNewButton);
 		
 		boolean loginRequired = PropertiesManager.getPropertyAsBoolean("application.login.requiredAtStart");
-		if(loginRequired) {
+//		if(loginRequired) {
 			InicioView.getInstance().dispose();
 			setVisible(true);
+//		}
+		if(!loginRequired) {
+			txtUser.setText("admin");
+			txtPassword.setText("admin");
 		}
 	}
 

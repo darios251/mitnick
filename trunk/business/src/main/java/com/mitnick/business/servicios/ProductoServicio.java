@@ -109,7 +109,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			
 			producto.setPrecioVenta(producto.getPrecioVenta().subtract(ivaProducto));
 			
-			if (stockOriginal != producto.getStock()){
+			if (stockOriginal != producto.getStock() || productoDto.getId()==null){
 				Movimiento movimiento = new Movimiento();
 				movimiento.setStockAlaFecha(stockOriginal);
 				movimiento.setFecha(new Date());

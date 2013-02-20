@@ -108,12 +108,6 @@ public class PrincipalView extends JFrame
 	{
 		thisView = this;
 		initialize();
-		
-		boolean loginRequired = PropertiesManager.getPropertyAsBoolean("application.login.requiredAtStart");
-		if(!loginRequired) {
-			InicioView.getInstance().dispose();
-			setVisible(true);
-		}
 	}
 
 	private void initialize()
