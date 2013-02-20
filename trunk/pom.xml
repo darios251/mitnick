@@ -79,20 +79,20 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-<!-- 			<plugin>  -->
-<!-- 		        <groupId>org.codehaus.mojo</groupId> -->
-<!-- 		        <artifactId>native2ascii-maven-plugin</artifactId> -->
-<!-- 		        <executions> -->
-<!-- 		          <execution> -->
-<!-- 		            <goals> -->
-<!-- 		              <goal>native2ascii</goal> -->
-<!-- 		            </goals> -->
-<!-- 		            <configuration> -->
+			<plugin> 
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>native2ascii-maven-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>native2ascii</goal>
+		            </goals>
+		            <configuration>
 		              
-<!-- 		            </configuration> -->
-<!-- 		          </execution> -->
-<!-- 		        </executions> -->
-<!-- 		    </plugin>  -->
+		            </configuration>
+		          </execution>
+		        </executions>
+		    </plugin>
         </plugins>
         <testResources>
             <testResource>
@@ -310,7 +310,7 @@
 
     <properties>
         <!-- Application settings -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- project.build.sourceEncoding>UTF-8</project.build.sourceEncoding-->
         <copyright.year>2012</copyright.year>
         <dao.framework>hibernate</dao.framework>
         <amp.genericCore>true</amp.genericCore>
@@ -330,15 +330,15 @@
 
         <!-- Database settings -->
         <dbunit.dataTypeFactoryName>org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</dbunit.dataTypeFactoryName>
-        <dbunit.operation.type>CLEAN_INSERT</dbunit.operation.type>
+        <dbunit.operation.type>REFRESH</dbunit.operation.type>
 		<hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
 		<jdbc.groupId>postgresql</jdbc.groupId>
 		<jdbc.artifactId>postgresql</jdbc.artifactId>
 		<jdbc.version>8.1-407.jdbc3</jdbc.version>
 		<jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
 		<jdbc.url>jdbc:postgresql://localhost/${db.name}</jdbc.url>
-		<jdbc.username>postgres</jdbc.username>
-		<jdbc.password>postgres</jdbc.password>
+		<jdbc.username>postgresM</jdbc.username>
+		<jdbc.password>admin</jdbc.password>
     </properties>
     
     <dependencies>
