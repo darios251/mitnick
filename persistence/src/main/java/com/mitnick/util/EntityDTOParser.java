@@ -124,6 +124,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (D) getDtoFromEntity((Pago) entity);
 		else if(entity instanceof Credito)
 			return (D) getDtoFromEntity((Credito) entity);
+		else if(entity instanceof ProductoVenta)
+			return (D) getDtoFromEntity((ProductoVenta) entity);
 		else return null;
 	}
 
@@ -501,6 +503,15 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoVenta.setIva(productoVentaDto.getIva());
 		productoVenta.setPrecio(productoVentaDto.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP));
 		return productoVenta;
+	}
+	
+	private ProductoVentaDto getDtoFromEntity(ProductoVenta productoVenta) {
+		ProductoVentaDto productoVentaDto = new ProductoVentaDto();
+		productoVentaDto.setProducto(getDtoFromEntity(productoVenta.getProducto()));
+		productoVentaDto.setCantidad(productoVenta.getCantidad());
+		productoVentaDto.setIva(productoVenta.getIva());
+		productoVentaDto.setPrecioTotal(productoVenta.getPrecio());
+		return productoVentaDto;
 	}
 	
 	private Cuota getEntityFromDto(CuotaDto cuotaDto) {

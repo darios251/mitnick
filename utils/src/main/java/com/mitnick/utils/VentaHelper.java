@@ -2,7 +2,9 @@ package com.mitnick.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -30,6 +32,15 @@ public class VentaHelper {
 		return monto;
 	}
 
+	public static List<ProductoVentaDto> getProductosDevolucion(VentaDto ventaDto) {
+		List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
+		for(ProductoVentaDto producto : ventaDto.getProductos()) {
+			producto.setId(null);
+			productos.add(producto);
+		}
+		return productos;
+	}
+	
 	public static void calcularTotales(VentaDto ventaDto) {
 
 		// suma de todos los productos

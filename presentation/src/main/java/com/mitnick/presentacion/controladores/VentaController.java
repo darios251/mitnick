@@ -195,6 +195,10 @@ public class VentaController extends BaseController {
 		pagoPanel.limpiarCamposPantalla();
 	}
 
+	public void actualizarDevolucion() {
+		ventaPanel.actualizarPantalla();
+	}
+	
 	public void agregarProducto(String codigo) {
 		if(Validator.isBlankOrNull(codigo))
 			throw new PresentationException("error.venta.agregarProducto.codigo.null");
