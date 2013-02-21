@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -44,8 +46,11 @@ import com.mitnick.presentacion.vistas.paneles.ConfiguracionImpresoraDialog;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.anotaciones.View;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @View("principalView")
@@ -233,24 +238,30 @@ public class PrincipalView extends JFrame
 					if (nroTicket == null)
 						return;
 					VentaDto venta = ventaController.getVentaByNroFactura(nroTicket);
+					ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
+
 					ClienteDto cliente = null;
+					List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
 					if (venta==null){
 						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.noTicketOriginal"), "Error", JOptionPane.OK_CANCEL_OPTION);
 						if (option == JOptionPane.CANCEL_OPTION)
 							return;						
 					} else {
 						cliente = venta.getCliente();
+						productos = VentaHelper.getProductosDevolucion(venta);						
+						VentaManager.getVentaActual().setCliente(cliente);
+						VentaManager.getVentaActual().setProductos(productos);
+						VentaManager.getVentaActual().setNumeroTicketOriginal(nroTicket);
+						VentaHelper.calcularTotales(VentaManager.getVentaActual());
 					}
 					getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
-					ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
-					VentaManager.getVentaActual().setCliente(cliente);
-					VentaManager.getVentaActual().setNumeroTicketOriginal(nroTicket);
 					logger.info("Mostrando el panel de ventas");
 					
 					ventaController.mostrarUltimoPanelMostrado();
 					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
 					getJTabbedPane().setVisible(true);
 					ventaController.getUltimoPanelMostrado().setVisible(true);
+					ventaController.actualizarDevolucion();
 				}
 			});
 		}
