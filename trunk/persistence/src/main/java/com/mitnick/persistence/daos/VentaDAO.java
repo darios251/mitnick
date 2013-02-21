@@ -122,6 +122,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		
 		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
 		criteria.add(Restrictions.eq("canceled", false));
+		criteria.add(Restrictions.eq("tipo", MitnickConstants.VENTA));
 
 		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
 		if (ventas==null || ventas.isEmpty())
