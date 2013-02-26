@@ -21,6 +21,7 @@ public class Movimiento extends BaseObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	public static int CREACION = 0;
 	public static int AJUSTE = 1;
 	public static int VENTA = 2;
 	public static int DEVOLUCION = 3;

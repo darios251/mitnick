@@ -5,12 +5,14 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,6 +28,7 @@ import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.MovimientoTableModel;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
+import com.mitnick.utils.AllowBlankMaskFormatter;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.MitnickConstants;
@@ -391,20 +394,24 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 	public JTextField getTxtFechaInicio() {
 		if (txtFechaInicio == null) {
-			txtFechaInicio = new JTextField();
-			txtFechaInicio.setColumns(10);
-			txtFechaInicio.setBounds(200, 95, 110, 20);
-			txtFechaInicio.setText("01/01/1900");
+			try {
+				txtFechaInicio = new JFormattedTextField(new AllowBlankMaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 		
+				txtFechaInicio.setColumns(10);
+				txtFechaInicio.setBounds(200, 95, 110, 20);
+				txtFechaInicio.setText("01/01/1900");
+			} catch (ParseException e) {}
 		}
 		return txtFechaInicio;
 	}
 
 	public JTextField getTxtFechaFinal() {
 		if (txtFechaFinal == null) {
-			txtFechaFinal = new JTextField();
-			txtFechaFinal.setColumns(10);
-			txtFechaFinal.setBounds(420, 95, 110, 20);
-			txtFechaFinal.setText(DateHelper.getFecha(new Date()));
+			try {
+				txtFechaFinal = new JFormattedTextField(new AllowBlankMaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 		
+				txtFechaFinal.setColumns(10);
+				txtFechaFinal.setBounds(420, 95, 110, 20);
+				txtFechaFinal.setText(DateHelper.getFecha(new Date()));
+			} catch (ParseException e) {}
 		}
 		return txtFechaFinal;
 	}

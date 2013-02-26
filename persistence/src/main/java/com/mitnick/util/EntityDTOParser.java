@@ -85,6 +85,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 	private String AJUSTE = "Ajuste Manual";
 	private String DEVOLUCION = "Devolución";
+	private String CREACION = "Creación";
 	private String VENTA = "Venta";
 	
 	public List<D> getDtosFromEntities(List<E> entities) {
@@ -398,6 +399,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			movimientoDto.setCantidad(movimiento.getCantidad()*-1);
 		} else if (movimiento.getTipo() == Movimiento.DEVOLUCION) {
 			movimientoDto.setTipo(DEVOLUCION);
+		} else if (movimiento.getTipo() == Movimiento.CREACION) {
+			movimientoDto.setTipo(CREACION);
 		}
 			
 		return movimientoDto;

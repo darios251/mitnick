@@ -1,15 +1,19 @@
 package com.mitnick.presentacion.vistas.formatters;
 
-import java.awt.event.*;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.text.*;
-import javax.swing.*;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.Timer;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
+import com.mitnick.utils.AllowBlankMaskFormatter;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 
@@ -89,7 +93,7 @@ public class FormattedDateField  extends JFormattedTextField implements ActionLi
       propertySupport = new PropertyChangeSupport(this);
       setInputVerifier(new DateVerifier(MitnickConstants.DATE_FORMAT));
   
-      MaskFormatter mf = new MaskFormatter(MASKFORMAT);
+      MaskFormatter mf = new AllowBlankMaskFormatter(MASKFORMAT);
       mf.setValidCharacters("0123456789AP");
       mf.setPlaceholderCharacter('_');     
       mf.setValueClass(String.class);

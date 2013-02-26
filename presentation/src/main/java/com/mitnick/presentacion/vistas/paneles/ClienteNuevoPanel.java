@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +26,7 @@ import com.mitnick.presentacion.controladores.BaseController;
 import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.vistas.formatters.EmailFormatter;
+import com.mitnick.utils.AllowBlankMaskFormatter;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
@@ -368,7 +368,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	public JTextField getTxtCuit() {
 		if (txtCuit == null) {
 			try {
-				txtCuit = new JFormattedTextField(new MaskFormatter(MitnickConstants.CUIT_MASKFORMAT));
+				txtCuit = new JFormattedTextField(new AllowBlankMaskFormatter(MitnickConstants.CUIT_MASKFORMAT));
 				txtCuit.setColumns(10);
 				txtCuit.setBounds(161, 213, 105, 20);
 			} catch (ParseException e) {
@@ -405,7 +405,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	public JTextField getTxtFechaNacimiento() {
 		if (txtFechaNacimiento == null) {
 			try {
-				txtFechaNacimiento = new JFormattedTextField(new MaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 						
+				txtFechaNacimiento = new JFormattedTextField(new AllowBlankMaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 						
 				txtFechaNacimiento.setColumns(10);
 				txtFechaNacimiento.setBounds(161, 351, 105, 20);
 			} catch (ParseException e) {}
