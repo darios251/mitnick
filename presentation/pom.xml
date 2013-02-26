@@ -62,6 +62,52 @@
 <!--                 </execution> -->
 <!--             </executions> -->
 <!--         </plugin> -->
+		<plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.mitnick.presentacion.runner.Runner</mainClass>
+              <classpathPrefix>dependency/</classpathPrefix>
+              <classpathLayoutType>repository</classpathLayoutType>
+            </manifest>
+          </archive>
+        </configuration>
+          <executions>
+             <execution>
+                <id>copy</id>
+                <phase>package</phase>
+                <goals>
+                   <goal>copy-dependencies</goal>
+                </goals>
+             </execution>
+          </executions>
+       </plugin>
+<!--        <plugin> -->
+<!--           <groupId>org.codehaus.izpack</groupId> -->
+<!--           <artifactId>izpack-maven-plugin</artifactId> -->
+<!--           <executions> -->
+<!--             <execution> -->
+<!--                <phase>package</phase> -->
+<!--                <goals> -->
+<!--                   <goal>izpack</goal> -->
+<!--                </goals> -->
+<!--                <configuration> -->
+<!--                   <izpackBasedir>target</izpackBasedir> -->
+<!--                   <installerFile>target/Setup-maven-izpack-1.0-SNAPSHOT.jar</installerFile> -->
+<!--                </configuration> -->
+<!--             </execution> -->
+<!--           </executions> -->
+<!--           <dependencies> -->
+<!--             <dependency> -->
+<!-- 			    <groupId>org.codehaus.izpack</groupId> -->
+<!-- 			    <artifactId>izpack-maven-plugin</artifactId> -->
+<!-- 			    <version>5.0.0-beta11</version> -->
+<!-- 			</dependency> -->
+<!--           </dependencies> -->
+<!--         </plugin> -->
     </plugins>
   </build>
 	
