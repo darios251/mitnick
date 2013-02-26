@@ -46,7 +46,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
-		criteria.add(Restrictions.eq("tipo", MitnickConstants.VENTA));
+
 		criteria.add(Restrictions.eq("canceled", false));
 		
 		criteria.addOrder(Order.desc("fecha"));
@@ -81,6 +81,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void usarCredito(String nroCredito, BigDecimal montoUsado) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
 		
@@ -94,6 +95,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Credito getCredito(String nroCredito) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
 		
@@ -117,6 +119,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Venta findByNumeroFactura(String numeroTicket) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 		

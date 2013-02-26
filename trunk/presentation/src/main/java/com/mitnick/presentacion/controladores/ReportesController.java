@@ -21,25 +21,15 @@ public class ReportesController extends BaseController {
 	private ReportesPanel reportesPanel;
 	
 
-	public void reporteIngresos(ReportesDto dto) {
+	public void reporteIngresos(ReportesDto dto, int tipo) {
 		try {
-			getReportesServicio().reporteIngresos(dto);
+			getReportesServicio().reporteIngresos(dto, tipo);
 		}
 		catch(BusinessException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void reporteIngresosAgrupados(ReportesDto dto) {
-		try {
-			getReportesServicio().reporteIngresosAgrupados(dto);
-		}
-		catch(BusinessException e) {
-			e.printStackTrace();
-		}
-	} 
-	
-	
 	public void consultarEstadoCuentas(ReportesDto dto) {
 		try {
 			getReportesServicio().consultarEstadoCuentas(dto);
@@ -76,15 +66,6 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	
-	public void consultarVentasAnual(ReportesDto dto) {
-		try {
-			getReportesServicio().reporteIngresosAnual(dto);
-		}
-		catch(BusinessException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");

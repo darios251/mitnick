@@ -10,9 +10,14 @@ import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
-import com.mitnick.utils.dtos.VentaDto;
 
 public interface IReportesServicio {
+	
+	public static int TRANSACCIONAL = 0;
+	public static int DIARIO = 1;
+	public static int MENSUAL = 2;
+	public static int ANUAL = 3;
+	
 	
 	/**
 	 * Obtiene para todos los productos el resumen de movimientos para la fecha pasada por parámetro
@@ -31,28 +36,12 @@ public interface IReportesServicio {
 	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteDetalleMovimientosDto filtro);
 	
 	/**
-	 * Obtiene el detalle de ventas para la fecha pasada por parámetro.
-	 * @param filtro
-	 * @return
-	 */
-	@Secured(value={"ROLE_ADMIN"})
-	public List<VentaDto> reporteVentas(ReportesDto filtro);
-	
-	/**
 	 * Obtiene el detalle de ingresos de pagos para la fecha pasada por parámetro.
 	 * @param filtro
 	 * @return
 	 */
 	@Secured(value={"ROLE_ADMIN"})
-	public void reporteIngresos(ReportesDto filtro);
-	
-	/**
-	 * Obtiene el detalle de ingresos de pagos para la fecha pasada por parámetro, agrupados por fecha.
-	 * @param filtro
-	 * @return
-	 */
-	@Secured(value={"ROLE_ADMIN"})
-	public void reporteIngresosAgrupados(ReportesDto filtro);
+	public void reporteIngresos(ReportesDto filtro, int tipo);
 	
 	/**
 	 * Obtiene el detalle de estado de cuentas entre las fechas pasadas por parámetro.
@@ -78,14 +67,6 @@ public interface IReportesServicio {
 	@Secured(value={"ROLE_ADMIN"})
 	public void consultarVentaPorArticulo(ReportesDto filtro);
 		
-	/**
-	 * Obtiene el detalle de ventas anuales.
-	 * @param filtro
-	 * @return
-	 */
-	@Secured(value={"ROLE_ADMIN"})
-	public void reporteIngresosAnual(ReportesDto filtro);
-	
 	/**
 	 * Obtiene el movimiento de stock de los productos.
 	 * @param filtro
