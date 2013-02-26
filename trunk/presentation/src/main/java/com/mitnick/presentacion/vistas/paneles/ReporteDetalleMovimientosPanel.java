@@ -98,17 +98,21 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 		add(lblStokFinal);
 		
 		
-		if (fechaInicio!=null) {
+		if (fechaInicio!=null)
 			lblFechaInicial = new JLabel("Desde: " + DateHelper.getFecha(fechaInicio));
-			lblFechaInicial.setBounds(125, 55, 120, 20);
-			add(lblFechaInicial);
-		}
+		else
+			lblFechaInicial = new JLabel("");
 		
-		if (fechaFin!=null) {	
+		lblFechaInicial.setBounds(125, 55, 120, 20);
+		add(lblFechaInicial);
+		
+		if (fechaFin!=null)	
 			lblFechaFinal = new JLabel("Hasta: " + DateHelper.getFecha(fechaFin));
-			lblFechaFinal.setBounds(330, 55, 120, 20);
-			add(lblFechaFinal);
-		}
+		else
+			lblFechaFinal = new JLabel("");
+		lblFechaFinal.setBounds(330, 55, 120, 20);
+		add(lblFechaFinal);
+		
 		// Creo una tabla con un sorter
 		model = new DetalleMovimientoTableModel();
         sorter = new TableRowSorter<DetalleMovimientoTableModel>(model);
@@ -236,6 +240,21 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 	@Override
 	public void actualizarPantalla() {
 		consultarProductos();
+		
+		lblCdigo.setText("Código: " + producto.getCodigo());
+		lblDescripcin.setText("Descripción: " + producto.getDescripcion());
+		lblStockOriginal.setText("Stock original: " + String.valueOf(stockOriginal));
+		lblStokFinal.setText("Stock final: " + String.valueOf(stockFinal));
+		if (fechaInicio!=null) {
+			lblFechaInicial.setText("Desde: " + DateHelper.getFecha(fechaInicio));
+		} else 
+			lblFechaInicial.setText("");
+		
+		if (fechaFin!=null) {	
+			lblFechaFinal.setText("Hasta: " + DateHelper.getFecha(fechaFin));
+		} else
+			lblFechaFinal.setText("");
+
 	}
 	
 	public Date getFechaInicio() {

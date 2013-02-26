@@ -11,10 +11,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.text.MaskFormatter;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
+import com.mitnick.utils.AllowBlankMaskFormatter;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -156,7 +156,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 	public JTextField getTxtFecha() {
 		if (txtFecha == null) {
 			try{
-				txtFecha =  new JFormattedTextField(new MaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 	
+				txtFecha =  new JFormattedTextField(new AllowBlankMaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 	
 				txtFecha.setColumns(10);
 				txtFecha.setBounds(190, 55, 110, 20);
 			} catch (ParseException e) {}

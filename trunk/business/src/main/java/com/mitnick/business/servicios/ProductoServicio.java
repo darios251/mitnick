@@ -115,6 +115,11 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 				movimiento.setFecha(new Date());
 				movimiento.setTipo(Movimiento.AJUSTE);
 				movimiento.setCantidad(cantidad);
+				if (productoDto.getId()==null){
+					movimiento.setTipo(Movimiento.CREACION);
+					movimiento.setCantidad(producto.getStock());
+				}
+					
 				movimiento.setProducto(producto);
 				movimientoDao.saveOrUpdate(movimiento);
 			}
