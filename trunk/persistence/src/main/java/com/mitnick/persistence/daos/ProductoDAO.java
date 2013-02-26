@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
-import com.mitnick.servicio.servicios.dtos.ConsultaStockDto;
-import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 
 @Repository("productoDao")
@@ -36,24 +34,6 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 			return productos.get(0);
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Producto> findStockByFiltro(ConsultaStockDto filtro){
-		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
-
-		if(!Validator.isBlankOrNull(filtro.getCodigo())){
-			criteria.add(Restrictions.ilike("codigo", filtro.getCodigo()));
-		}
-		
-		if(!Validator.isBlankOrNull(filtro.getDescripcion())){
-			criteria.add(Restrictions.ilike("descripcion", filtro.getDescripcion()));
-		}
-		
-		criteria.add(Restrictions.ne("codigo", PropertiesManager.getProperty("application.producto.comodin")));
-		criteria.add(Restrictions.eq("eliminado", false));
-		criteria.addOrder(Order.desc("codigo"));
-		return getHibernateTemplate().findByCriteria(criteria);
-	}
 
 	public Producto saveOrUpdate(Producto producto){
 		getHibernateTemplate().saveOrUpdate(producto);
@@ -66,7 +46,7 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
 		
 		if(!Validator.isBlankOrNull(filtro.getCodigo())){
-			criteria.add(Restrictions.ilike("codigo", filtro.getCodigo()));
+			criteria.add(Restrictions.ilike("codigo", filtro.getCodigo(), MatchMode.START));
 		}
 		
 		if(!Validator.isBlankOrNull(filtro.getDescripcion())){
