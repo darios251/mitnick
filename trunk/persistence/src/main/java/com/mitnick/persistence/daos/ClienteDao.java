@@ -306,13 +306,13 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				if (venta.getTipo()== MitnickConstants.VENTA){
 					movimiento.setNroComprobante("Fact-" + nro);
 					movimiento.setDebe(venta.getPagoCuenta());
-					movimiento.setHaber(venta.getPagoContado());
-					movimiento.setCredito(venta.getPagoNC());
+					BigDecimal pago = venta.getPagoContado();
+					pago = pago.add(venta.getPagoNC());
+					movimiento.setHaber(pago);
 				} else {
 					movimiento.setNroComprobante("NC-" + nro);
 					movimiento.setDebe(new BigDecimal(0));
-					movimiento.setHaber(new BigDecimal(0));
-					movimiento.setCredito(venta.getTotal());
+					movimiento.setHaber(venta.getTotal());
 				}
 				movimientos.add(movimiento);
 			}
@@ -325,8 +325,9 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				movimiento.setNroComprobante("Comp-" + nro);
 				movimiento.setFecha(comprobante.getFecha());
 				movimiento.setDebe(comprobante.getPagoCuenta());
-				movimiento.setHaber(comprobante.getPagoContado());
-				movimiento.setCredito(comprobante.getPagoNC());
+				BigDecimal pago = comprobante.getPagoContado();
+				pago = pago.add(comprobante.getPagoNC());
+				movimiento.setHaber(pago);
 				movimientos.add(movimiento);
 			}
 

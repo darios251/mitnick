@@ -195,11 +195,6 @@ WHERE
 				</textElement>
 				<text><![CDATA[Debe]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="a0cd7810-8cc0-4be4-bc0f-46660ba95c64" x="477" y="0" width="78" height="20"/>
-				<textElement/>
-				<text><![CDATA[Crédito]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -228,11 +223,6 @@ WHERE
 				<reportElement uuid="24926b54-aeb0-44c0-9081-bee0d243e53b" x="402" y="13" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="40e11f21-a818-41d2-ac76-a46872c92c50" x="477" y="13" width="78" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{credito}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
