@@ -46,6 +46,9 @@ public class Movimiento extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "producto")
 	private Producto producto;
 	
+	@Column(name = "eliminado", nullable = false)
+	private boolean eliminado = false;
+	
 	public Long getId() {
 		return id;
 	}
@@ -88,6 +91,14 @@ public class Movimiento extends BaseObject implements Serializable {
 
 	public Producto getProducto() {
 		return producto;
+	}
+
+	public boolean isEliminado() {
+		return eliminado;
+	}
+
+	public void setEliminado(boolean eliminado) {
+		this.eliminado = eliminado;
 	}
 
 	public void setProducto(Producto producto) {

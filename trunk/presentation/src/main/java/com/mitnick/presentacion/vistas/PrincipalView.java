@@ -49,7 +49,6 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.anotaciones.View;
 import com.mitnick.utils.dtos.ClienteDto;
-import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -108,6 +107,7 @@ public class PrincipalView extends JFrame
 	private JMenuItem menuItemCierreZ;
 	private JMenuItem menuInformeJornada;
 	private JMenuItem menuConfiguracion;
+	private JMenuItem menuResetearStock;
 	
 	public PrincipalView()
 	{
@@ -144,6 +144,7 @@ public class PrincipalView extends JFrame
 			menuProductos.setText(PropertiesManager.getProperty("principalView.menu.productos"));
 			menuProductos.add(PropertiesManager.getProperty("principalView.menu.productos.nuevo"));
 			menuProductos.add(PropertiesManager.getProperty("principalView.menu.productos.consultar"));
+			menuProductos.add(getMenuResetearStock());
 		}
 		return menuProductos;
 	}
@@ -685,6 +686,21 @@ public class PrincipalView extends JFrame
 			});
 		}
 		return menuConfiguracion;
+	}
+	
+	private JMenuItem getMenuResetearStock() {
+		if (menuResetearStock == null) {
+			menuResetearStock = new JMenuItem(PropertiesManager.getProperty("principalView.menu.productos.reset.stock"));
+			menuResetearStock.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("principalView.dialog.confirm.resetStock"));
+					if (opcion == JOptionPane.YES_OPTION) {
+						productoController.resetearStock();
+					}
+				}
+			});
+		}
+		return menuResetearStock;
 	}
 	
 	protected int mostrarMensaje(PrinterException ex) {

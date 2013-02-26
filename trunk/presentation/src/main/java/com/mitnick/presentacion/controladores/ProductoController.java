@@ -37,6 +37,10 @@ public class ProductoController extends BaseController {
 		
 	}
 	
+	public void resetearStock() {
+		productoServicio.resetearMovimiento();
+	}
+	
 	public void mostrarProductoNuevoPanel() {
 		logger.info("Mostrando el panel de producto nuevo");
 		ultimoPanelMostrado = productoNuevoPanel;
