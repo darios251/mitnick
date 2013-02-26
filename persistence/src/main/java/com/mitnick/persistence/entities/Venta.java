@@ -439,8 +439,7 @@ public class Venta extends BaseObject implements Serializable {
 			Pago pago = pagos.next();
 			if (MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo()))
 				total = total.add(pago.getPago());			
-		}
-		total = total.negate();
+		}		
 		return total;
 	}
 	
