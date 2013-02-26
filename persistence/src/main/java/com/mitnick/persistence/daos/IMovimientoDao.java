@@ -15,5 +15,6 @@ public interface IMovimientoDao extends GenericDao<Movimiento, Long>{
 	public List<Movimiento> findByFiltro(ReporteMovimientosDto filtro);
 	
 	public Movimiento saveOrUpdate(Movimiento movimiento);
-
+	
+	public void removeAll(Long idProducto);
 }

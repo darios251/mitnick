@@ -36,10 +36,12 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 			criteria.add(Restrictions.eq("p.id", filtro.getProducto().getId()));
 		}
 		criteria.add(Restrictions.eq("p.eliminado", false));
-		
+		criteria.add(Restrictions.eq("eliminado", false));
 		criteria.addOrder(Order.desc("fecha"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
+	
+	
 
 	@SuppressWarnings("unchecked")
 	public List<Movimiento> findByFiltro(ReporteMovimientosDto filtro) { 
@@ -65,6 +67,7 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 			criteria.add(Restrictions.eq("p.tipo.id", filtro.getTipo().getId()));
 		}
 		criteria.add(Restrictions.eq("p.eliminado", false));
+		criteria.add(Restrictions.eq("eliminado", false));
 		
 		criteria.addOrder(Order.desc("fecha"));
 		return getHibernateTemplate().findByCriteria(criteria);
@@ -73,5 +76,20 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 	public Movimiento saveOrUpdate(Movimiento movimiento){
 		getHibernateTemplate().saveOrUpdate(movimiento);
 		return movimiento;
+	}
+	
+	public void removeAll(Long idProducto){
+		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
+		criteria.createAlias("producto", "p");
+		criteria.add(Restrictions.eq("p.id", idProducto));
+		criteria.add(Restrictions.eq("p.eliminado", false));
+		criteria.add(Restrictions.eq("eliminado", false));
+		
+		List<Movimiento> movimientos = getHibernateTemplate().findByCriteria(criteria);
+		for (Movimiento movimiento : movimientos) {
+			movimiento.setEliminado(true);
+			getHibernateTemplate().saveOrUpdate(movimiento);
+		}
+			
 	}
 }

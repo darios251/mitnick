@@ -36,4 +36,7 @@ public interface IProductoServicio {
 	
 	@Secured(value={"ROLE_ADMIN"})
 	ProductoNuevoDto getProductoNuevo(ProductoDto producto);
+	
+	@Secured(value={"ROLE_ADMIN"})
+	void resetearMovimiento();
 }
