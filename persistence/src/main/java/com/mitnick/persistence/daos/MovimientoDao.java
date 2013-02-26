@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -55,10 +56,10 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		}
 		criteria.createAlias("producto", "p");
 		if(!Validator.isBlankOrNull(filtro.getCodigo())){
-			criteria.add(Restrictions.eq("p.codigo", filtro.getCodigo()));
+			criteria.add(Restrictions.ilike("p.codigo", filtro.getCodigo(), MatchMode.START));
 		}
 		if(!Validator.isBlankOrNull(filtro.getDescripcion())){
-			criteria.add(Restrictions.ilike("p.descripcion", "%" + filtro.getDescripcion() + "%"));
+			criteria.add(Restrictions.ilike("p.descripcion", filtro.getDescripcion(), MatchMode.ANYWHERE));
 		}
 		if(Validator.isNotNull(filtro.getMarca()) && filtro.getMarca().getId()>=0){
 			criteria.add(Restrictions.eq("p.marca.id", filtro.getMarca().getId()));
@@ -78,6 +79,7 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		return movimiento;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void removeAll(Long idProducto){
 		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
 		criteria.createAlias("producto", "p");

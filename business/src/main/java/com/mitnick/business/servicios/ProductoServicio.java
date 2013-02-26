@@ -23,7 +23,6 @@ import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
-import com.mitnick.servicio.servicios.dtos.ConsultaStockDto;
 import com.mitnick.util.EntityDTOParser;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
@@ -184,20 +183,6 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			throw new BusinessException(e,
 					"Error al intentar eliminar el producto");
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Transactional(readOnly = true)
-	@Override
-	public List<ProductoDto> obtenerStock(ConsultaStockDto filtro) {
-		List<ProductoDto> resultado = new ArrayList<ProductoDto>();
-		try {
-			resultado.addAll(entityDTOParser.getDtosFromEntities(productoDao
-					.findStockByFiltro(filtro)));
-		} catch (PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar obtener el stock");
-		}
-		return resultado;
 	}
 
 	@Transactional(readOnly = true)
