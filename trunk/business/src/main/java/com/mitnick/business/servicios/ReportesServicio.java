@@ -114,6 +114,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			parameters.put("codigo", producto.getCodigo());
 			parameters.put("descripcion", producto.getDescripcion());
+			parameters.put("marca", producto.getMarca().getDescripcion());
 			parameters.put("stockOriginal", stockOriginal);
 			parameters.put("stockFinal", stockFinal);
 			
