@@ -44,7 +44,6 @@ import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
-import com.mitnick.utils.dtos.VentaDto;
 
 @SuppressWarnings("rawtypes")
 @Service("reportesServicio")
@@ -183,75 +182,81 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		return movimientoDto;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
-	public List<VentaDto> reporteVentas(ReportesDto filtro) {
-		List<VentaDto> ventas = new ArrayList<VentaDto>();
-		try{
-			ventas.addAll(entityDTOParser.getDtosFromEntities(ventaDao.findByFiltro(filtro)));
-		}
-		catch(PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
-		}
-		
-		return ventas;
-		
-	}
-	
-	@Transactional(readOnly=true)
-	@Override
-	public void reporteIngresos(ReportesDto filtro) {
+	public void reporteIngresos(ReportesDto filtro, int tipo) {
+		//reporte de transacciones realizadas sin agrupar
 		List<ReporteVentasResultadoDTO> ingresos= new ArrayList<ReporteVentasResultadoDTO>();
 		BigDecimal totalEfectivo = new BigDecimal(0);
-		BigDecimal totalDebito = new BigDecimal(0);
-		BigDecimal totalCredito = new BigDecimal(0);
+		BigDecimal totaltarjeta = new BigDecimal(0);
+		BigDecimal totalNC = new BigDecimal(0);
 		BigDecimal totalCC = new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
 		try{
 			List<Venta> ventas = ventaDao.findByFiltro(filtro);
 			for (Venta venta: ventas){
-				ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
-				dto.setFecha(venta.getFecha());
-				total = total.add(venta.getTotal());
-				dto.setTotal(venta.getTotal());
+				ReporteVentasResultadoDTO dto = null; 
+				if (TRANSACCIONAL == tipo){
+					dto = new ReporteVentasResultadoDTO();
+					ingresos.add(dto);
+				}					
+				else if (DIARIO == tipo)
+					dto = getDTOFecha(ingresos, venta.getFecha());
+				else if (MENSUAL == tipo)
+					dto = getDTOMes(ingresos, venta.getFecha());
+				else if (ANUAL == tipo)
+					dto = getDTOAnio(ingresos, venta.getFecha());
 				
-				for (Pago pago: venta.getPagos()){
-					BigDecimal parcialTotal = pago.getPago();
-					
-					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
-						dto.setTotalEfectivo(parcialTotal);
-						totalEfectivo = totalEfectivo.add(pago.getPago());
-					}
+				dto.setFecha(venta.getFecha());
+				if (MitnickConstants.VENTA==venta.getTipo()){
+					dto.setTotal(dto.getTotal().add(venta.getTotal()));
+					total = total.add(venta.getTotal());
+					for (Pago pago: venta.getPagos()){
+						BigDecimal parcialTotal = pago.getPago();
 						
-					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalDebito());
-						dto.setTotalDebito(parcialTotal);
-						totalDebito = totalDebito.add(pago.getPago());
-					}
+						if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
+							parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
+							dto.setTotalEfectivo(parcialTotal);
+							totalEfectivo = totalEfectivo.add(pago.getPago());
+						}
+							
+						if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
+							parcialTotal = parcialTotal.add(dto.getTotalTarjeta());
+							dto.setTotalTarjeta(parcialTotal);
+							totaltarjeta = totaltarjeta.add(pago.getPago());
+						}
+							
+						if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
+							parcialTotal = parcialTotal.add(dto.getTotalTarjeta());
+							dto.setTotalTarjeta(parcialTotal);
+							totaltarjeta = totaltarjeta.add(pago.getPago());
+						}
+											
+						if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
+							parcialTotal = parcialTotal.add(dto.getTotalCC());
+							dto.setTotalCC(parcialTotal);
+							totalCC = totalCC.add(pago.getPago());
+						}	
 						
-					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalCredito());
-						dto.setTotalCredito(parcialTotal);
-						totalCredito = totalCredito.add(pago.getPago());
+						if (MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo())) {
+							parcialTotal = parcialTotal.add(dto.getTotalNC());
+							dto.setTotalNC(parcialTotal);
+							totalNC = totalNC.add(pago.getPago());
+						}	
 					}
-					
-					
-					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalCC());
-						dto.setTotalCC(parcialTotal);
-						totalCC = totalCC.add(pago.getPago());
-					}				
-						
+				} else {
+					//si es una devolucion no se usan medios de pago - se resta del total
+					total = total.subtract(venta.getTotal());
+					dto.setTotal(dto.getTotal().subtract(venta.getTotal()));
 				}
-				ingresos.add(dto);				
+									
 			}
+			
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventas.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("totalEfectivo", totalEfectivo.toString());
-			parameters.put("totalDebito", totalDebito.toString());
-			parameters.put("totalCredito", totalCredito.toString());
+			parameters.put("totalTarjeta", totaltarjeta.toString());
+			parameters.put("totalNC", totalNC.toString());
 			parameters.put("totalCC", totalCC.toString());
 			parameters.put("total", total.toString());
 			
@@ -269,143 +274,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		
 	}
 	
-	@Transactional(readOnly=true)
-	@Override
-	public void reporteIngresosAgrupados(ReportesDto filtro) {
-		List<ReporteVentasResultadoDTO> ingresos= new ArrayList<ReporteVentasResultadoDTO>();
-		BigDecimal totalEfectivo = new BigDecimal(0);
-		BigDecimal totalDebito = new BigDecimal(0);
-		BigDecimal totalCredito = new BigDecimal(0);
-		BigDecimal totalCC = new BigDecimal(0);
-		BigDecimal total = new BigDecimal(0);
-		try{
-			List<Venta> ventas = ventaDao.findByFiltro(filtro);
-			for (Venta venta: ventas){
-				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, venta.getFecha());
-				BigDecimal totalRegistro = dto.getTotal().add(venta.getTotal());
-				dto.setTotal(totalRegistro);
-				total = total.add(venta.getTotal());
-				for (Pago pago: venta.getPagos()){
-					BigDecimal parcialTotal = pago.getPago();
-					
-					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
-						dto.setTotalEfectivo(parcialTotal);
-						totalEfectivo = totalEfectivo.add(pago.getPago());
-					}
-						
-					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalDebito());
-						dto.setTotalDebito(parcialTotal);
-						totalDebito = totalDebito.add(pago.getPago());
-					}
-						
-					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalCredito());
-						dto.setTotalCredito(parcialTotal);
-						totalCredito = totalCredito.add(pago.getPago());
-					}
-					
-					
-					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalCC());
-						dto.setTotalCC(parcialTotal);
-						totalCC = totalCC.add(pago.getPago());
-					}
-				}
-						
-			}
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventas.jasper"));
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("totalEfectivo", totalEfectivo.toString());
-			parameters.put("totalDebito", totalDebito.toString());
-			parameters.put("totalCredito", totalCredito.toString());
-			parameters.put("totalCC", totalCC.toString());
-			parameters.put("total", total.toString());
-			
-			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
-			
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
-			
-			JasperViewer.viewReport(jasperPrint,false);
-			
-		}
-		catch(PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
-		} catch (JRException e) {
-			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		}
-	}
-	
-	
-	@Transactional(readOnly=true)
-	@Override
-	public void reporteIngresosAnual(ReportesDto filtro) {
-		List<ReporteVentasResultadoDTO> ingresos= new ArrayList<ReporteVentasResultadoDTO>();
-		BigDecimal totalEfectivo = new BigDecimal(0);
-		BigDecimal totalDebito = new BigDecimal(0);
-		BigDecimal totalCredito = new BigDecimal(0);
-		BigDecimal totalCC = new BigDecimal(0);
-		BigDecimal total = new BigDecimal(0);
-		try{
-			List<Venta> ventas = ventaDao.findByFiltro(filtro);
-			for (Venta venta: ventas){
-				ReporteVentasResultadoDTO dto = getDTOMes(ingresos, venta.getFecha());
-				BigDecimal totalRegistro = dto.getTotal().add(venta.getTotal());
-				dto.setTotal(totalRegistro);
-				total = total.add(venta.getTotal());
-				for (Pago pago: venta.getPagos()){
-					BigDecimal parcialTotal = pago.getPago();
-					
-					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
-						parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
-						dto.setTotalEfectivo(parcialTotal);
-						totalEfectivo = totalEfectivo.add(pago.getPago());
-					}
-						
-					if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalDebito());
-						dto.setTotalDebito(parcialTotal);
-						totalDebito = totalDebito.add(pago.getPago());
-					}
-						
-					if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalCredito());
-						dto.setTotalCredito(parcialTotal);
-						totalCredito = totalCredito.add(pago.getPago());
-					}
-					
-					
-					if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo())) {
-						parcialTotal = parcialTotal.add(dto.getTotalCC());
-						dto.setTotalCC(parcialTotal);
-						totalCC = totalCC.add(pago.getPago());
-					}
-				}
-						
-			}
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventasAnual.jasper"));
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("totalEfectivo", totalEfectivo.toString());
-			parameters.put("totalDebito", totalDebito.toString());
-			parameters.put("totalCredito", totalCredito.toString());
-			parameters.put("totalCC", totalCC.toString());
-			parameters.put("total", total.toString());
-			
-			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
-			
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
-			
-			JasperViewer.viewReport(jasperPrint,false);
-			
-		}
-		catch(PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
-		} catch (JRException e) {
-			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} 
-	}
-
 	private ReporteVentasResultadoDTO getDTOFecha(List<ReporteVentasResultadoDTO> ingresos, Date fecha){
 		for (ReporteVentasResultadoDTO dto: ingresos){
 			String fechaA = DateHelper.getFecha(fecha);
@@ -432,6 +300,25 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			int year2 = calendario2.get(Calendar.YEAR); 
 
 			if (month==month2 && year==year2)
+				return dto;
+		}		
+		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
+		dto.setFecha(fecha);
+		dto.setTotal(new BigDecimal(0));
+		ingresos.add(dto);
+		return dto;
+	}
+	
+	private ReporteVentasResultadoDTO getDTOAnio(List<ReporteVentasResultadoDTO> ingresos, Date fecha){
+		for (ReporteVentasResultadoDTO dto: ingresos){
+			Calendar calendario = Calendar.getInstance();
+			calendario.setTime(fecha);
+			int year = calendario.get(Calendar.YEAR); 
+			Calendar calendario2 = Calendar.getInstance();
+			calendario2.setTime(dto.getFecha());
+			int year2 = calendario2.get(Calendar.YEAR); 
+
+			if (year==year2)
 				return dto;
 		}		
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();

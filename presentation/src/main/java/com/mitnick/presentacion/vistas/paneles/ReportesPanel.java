@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ReportesController;
+import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.AllowBlankMaskFormatter;
 import com.mitnick.utils.DateHelper;
@@ -34,17 +35,20 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 
 	private JTextField txtFechaInicio;
 	private JTextField txtFechaFinal;
-
-	private JButton btnReporteVentas;
-	private JButton btnReporteVentasAgrupado;;
-	
 	private JLabel lblFechaInicio;
 	private JLabel lblFechaFin;
+
+	private JButton btnReporteVentas;
+	private JButton btnReporteVentasDiario;
+	private JButton btnReporteVentasMensual;
+	private JButton btnReporteVentasAnual;
+	
+
 	private JButton btnReporteDeEstado;
 	private JButton btnListadoDeControl;
+
 	private JButton btnReporteDeVentasProducto;
 	private JButton btnReporteDeVentasZapatillas;	
-	private JButton btnReporteDeVentasAnual;	
 	
 	
 	@Autowired
@@ -85,16 +89,15 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getTxtFechaFinal());
 		
 		add(getBtnReporteVentas());
-		add(getBtnReporteVentasAgrupados());
-		add(getBtnReporteDeVentasProducto());
-		add(getBtnReporteDeVentasZapatillas());	
+		add(getBtnReporteVentasDiario());
+		add(getBtnReporteVentasMensual());
+		add(getBtnReporteVentasAnual());
 		
+//		add(getBtnReporteDeVentasProducto());
+//		add(getBtnReporteDeVentasZapatillas());	
+
 		add(getBtnListadoDeControl());
 		add(getBtnReporteDeEstado());
-		add(getBtnReporteDeVentasAnual());	
-		
-		
-		
 		
 		setFocusTraversalPolicy();
 		this.actualizarPantalla();
@@ -105,9 +108,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	public JButton getBtnReporteVentas() {
 		if (btnReporteVentas == null) {
 			btnReporteVentas = new JButton();
-			btnReporteVentas.setText("Reporte de Ventas");
-			btnReporteVentas.setToolTipText(PropertiesManager
-					.getProperty("productoPanel.tooltip.buscarProducto"));
+			btnReporteVentas.setText(PropertiesManager.getProperty("reportePanel.label.reporteVentas"));
+			btnReporteVentas.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteVentas"));
 
 			btnReporteVentas.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteVentas.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -115,31 +117,70 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 
 			btnReporteVentas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
-					consultarIngresos();
+					consultarIngresos(IReportesServicio.TRANSACCIONAL);
 				}
 			});
-			btnReporteVentas.setBounds(200, 151, 330, 20);
+			btnReporteVentas.setBounds(200, 150, 330, 20);
 		}
 		return btnReporteVentas;
 	}
 	
-	public JButton getBtnReporteVentasAgrupados() {
-		if (btnReporteVentasAgrupado == null) {
-			btnReporteVentasAgrupado = new JButton();
-			btnReporteVentasAgrupado.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteVentasAgrupado.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnReporteVentasAgrupado.setText("Reporte de Ventas agrupado por fecha");
-			btnReporteVentasAgrupado.setMargin(new Insets(-1, -1, -1, -1));
-			btnReporteVentasAgrupado.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteVentasAgrupado.setBounds(200, 182, 330, 20);
-			
-			btnReporteVentasAgrupado.addActionListener(new ActionListener() {
+	public JButton getBtnReporteVentasDiario() {
+		if (btnReporteVentasDiario == null) {
+			btnReporteVentasDiario = new JButton();
+			btnReporteVentasDiario.setText(PropertiesManager.getProperty("reportePanel.label.reporteVentas.diario"));
+			btnReporteVentasDiario.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteVentas.diario"));
+
+			btnReporteVentasDiario.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVentasDiario.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVentasDiario.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVentasDiario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
-					consultarIngresosAgrupados();
+					consultarIngresos(IReportesServicio.DIARIO);
 				}
 			});
+			btnReporteVentasDiario.setBounds(200, 180, 330, 20);
 		}
-		return btnReporteVentasAgrupado;
+		return btnReporteVentasDiario;
+	}
+	public JButton getBtnReporteVentasMensual() {
+		if (btnReporteVentasMensual == null) {
+			btnReporteVentasMensual = new JButton();
+			btnReporteVentasMensual.setText(PropertiesManager.getProperty("reportePanel.label.reporteVentas.mensual"));
+			btnReporteVentasMensual.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteVentas.mensual"));
+
+			btnReporteVentasMensual.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVentasMensual.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVentasMensual.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVentasMensual.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarIngresos(IReportesServicio.MENSUAL);
+				}
+			});
+			btnReporteVentasMensual.setBounds(200, 210, 330, 20);
+		}
+		return btnReporteVentasMensual;
+	}
+	public JButton getBtnReporteVentasAnual() {
+		if (btnReporteVentasAnual == null) {
+			btnReporteVentasAnual = new JButton();
+			btnReporteVentasAnual.setText(PropertiesManager.getProperty("reportePanel.label.reporteVentas.anual"));
+			btnReporteVentasAnual.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteVentas.anual"));
+
+			btnReporteVentasAnual.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVentasAnual.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVentasAnual.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVentasAnual.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarIngresos(IReportesServicio.ANUAL);
+				}
+			});
+			btnReporteVentasAnual.setBounds(200, 240, 330, 20);
+		}
+		return btnReporteVentasAnual;
 	}
 
 	private JButton getBtnReporteDeVentasProducto() {
@@ -186,7 +227,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			btnListadoDeControl.setText("Listado de Control");
 			btnListadoDeControl.setMargin(new Insets(-1, -1, -1, -1));
 			btnListadoDeControl.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnListadoDeControl.setBounds(200, 275, 330, 20);
+			btnListadoDeControl.setBounds(200, 280, 330, 20);
 			btnListadoDeControl.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
 					consultarListadoDeControl();
@@ -204,7 +245,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			btnReporteDeEstado.setText("Reporte de Estado de Cuentas");
 			btnReporteDeEstado.setMargin(new Insets(-1, -1, -1, -1));
 			btnReporteDeEstado.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteDeEstado.setBounds(200, 306, 330, 20);
+			btnReporteDeEstado.setBounds(200, 310, 330, 20);
 			btnReporteDeEstado.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
 					consultarEstadoCuentas();
@@ -212,24 +253,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			});
 		}
 		return btnReporteDeEstado;
-	}
-	
-	private JButton getBtnReporteDeVentasAnual() {
-		if (btnReporteDeVentasAnual == null) {
-			btnReporteDeVentasAnual = new JButton();
-			btnReporteDeVentasAnual.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeVentasAnual.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnReporteDeVentasAnual.setText("Reporte de Ventas Anual");
-			btnReporteDeVentasAnual.setMargin(new Insets(-1, -1, -1, -1));
-			btnReporteDeVentasAnual.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteDeVentasAnual.setBounds(200, 337, 330, 20);
-			btnReporteDeVentasAnual.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarVentasAnual();
-				}
-			});
-		}
-		return btnReporteDeVentasAnual;
 	}
 	
 	public JLabel getLblFechaInicio() {
@@ -309,23 +332,12 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		
 	}
 	
-	protected void consultarIngresos() {
+	protected void consultarIngresos(int tipo) {
 		try {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
-			controller.reporteIngresos(dto);
-		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
-		}
-	}
-	
-	protected void consultarIngresosAgrupados() {
-		try {
-			ReportesDto dto = new ReportesDto();
-			dto.setFechaInicio(getFechaInicio());
-			dto.setFechaFin(getFechaFinal());
-			controller.reporteIngresosAgrupados(dto);
+			controller.reporteIngresos(dto, tipo);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -352,19 +364,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			mostrarMensaje(ex);
 		}
 	}
-	
-	protected void consultarVentasAnual() {
-		try {
-			ReportesDto dto = new ReportesDto();
-			dto.setFechaInicio(getFechaInicio());
-			dto.setFechaFin(getFechaFinal());
-			controller.consultarVentasAnual(dto);
-		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
-		}
-	}
-	
-	
 	
 	protected void consultarVentaPorArticulo() {
 		try {

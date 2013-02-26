@@ -10,10 +10,29 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 	private Date fecha;
 	private BigDecimal totalEfectivo= new BigDecimal(0);
 	private BigDecimal totalCC= new BigDecimal(0);
+	private BigDecimal totalTarjeta= new BigDecimal(0);
 	private BigDecimal totalDebito= new BigDecimal(0);
 	private BigDecimal totalCredito= new BigDecimal(0);
+	private BigDecimal totalNC= new BigDecimal(0);
 	private BigDecimal total= new BigDecimal(0);
 	
+
+	public BigDecimal getTotalDebito() {
+		return totalDebito;
+	}
+
+	public void setTotalDebito(BigDecimal totalDebito) {
+		this.totalDebito = totalDebito;
+	}
+
+	public BigDecimal getTotalCredito() {
+		return totalCredito;
+	}
+
+	public void setTotalCredito(BigDecimal totalCredito) {
+		this.totalCredito = totalCredito;
+	}
+
 	public Date getFecha() {
 		return fecha;
 	}
@@ -38,28 +57,28 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 		this.totalCC = totalCC;
 	}
 
-	public BigDecimal getTotalDebito() {
-		return totalDebito;
-	}
-
-	public void setTotalDebito(BigDecimal totalDebito) {
-		this.totalDebito = totalDebito;
-	}
-
-	public BigDecimal getTotalCredito() {
-		return totalCredito;
-	}
-
-	public void setTotalCredito(BigDecimal totalCredito) {
-		this.totalCredito = totalCredito;
-	}
-
 	public BigDecimal getTotal() {
 		return total;
 	}
 
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+
+	public BigDecimal getTotalTarjeta() {
+		return totalTarjeta;
+	}
+
+	public void setTotalTarjeta(BigDecimal totalTarjeta) {
+		this.totalTarjeta = totalTarjeta;
+	}
+
+	public BigDecimal getTotalNC() {
+		return totalNC;
+	}
+
+	public void setTotalNC(BigDecimal totalNC) {
+		this.totalNC = totalNC;
 	}
 
 	@Override
@@ -75,6 +94,9 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 				+ ((totalDebito == null) ? 0 : totalDebito.hashCode());
 		result = prime * result
 				+ ((totalEfectivo == null) ? 0 : totalEfectivo.hashCode());
+		result = prime * result + ((totalNC == null) ? 0 : totalNC.hashCode());
+		result = prime * result
+				+ ((totalTarjeta == null) ? 0 : totalTarjeta.hashCode());
 		return result;
 	}
 
@@ -132,17 +154,30 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 		} else if (!totalEfectivo.equals(other.totalEfectivo)) {
 			return false;
 		}
+		if (totalNC == null) {
+			if (other.totalNC != null) {
+				return false;
+			}
+		} else if (!totalNC.equals(other.totalNC)) {
+			return false;
+		}
+		if (totalTarjeta == null) {
+			if (other.totalTarjeta != null) {
+				return false;
+			}
+		} else if (!totalTarjeta.equals(other.totalTarjeta)) {
+			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "ReporteVentasResultadoDTO [fecha=" + fecha + ", totalEfectivo="
-				+ totalEfectivo + ", totalCC=" + totalCC + ", totalDebito="
-				+ totalDebito + ", totalCredito=" + totalCredito + ", total="
-				+ total + "]";
+				+ totalEfectivo + ", totalCC=" + totalCC + ", totalTarjeta="
+				+ totalTarjeta + ", totalDebito=" + totalDebito
+				+ ", totalCredito=" + totalCredito + ", totalNC=" + totalNC
+				+ ", total=" + total + "]";
 	}
-	
-	
 
 }
