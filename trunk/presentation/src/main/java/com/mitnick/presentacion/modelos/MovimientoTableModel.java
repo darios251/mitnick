@@ -19,6 +19,8 @@ private static final long serialVersionUID = 1L;
 	public MovimientoTableModel() {
 		columnNames = new ArrayList<String>();
 		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.codigo"));
+		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.descripcion"));
+		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.marca"));
 		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.original"));
 		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.ventas"));
 		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.ajustes"));
@@ -95,14 +97,18 @@ private static final long serialVersionUID = 1L;
 
 		switch(columnIndex) {
 			case 0:
-				return fila.getProducto().getDescripcion(); 
+				return fila.getProducto().getCodigo(); 
 			case 1: 
-				return fila.getStockOriginal();
+				return fila.getProducto().getDescripcion();
 			case 2: 
-				return fila.getVentas();			
+				return fila.getProducto().getMarca().getDescripcion();
 			case 3: 
-				return fila.getAjustes();			
+				return fila.getStockOriginal();
 			case 4: 
+				return fila.getVentas();			
+			case 5: 
+				return fila.getAjustes();			
+			case 6: 
 				return fila.getStockFinal();			
 		}
 		return data.get(-1);
@@ -113,13 +119,13 @@ private static final long serialVersionUID = 1L;
 		MovimientoProductoDto fila =  data.get(rowIndex);
 		int valor = Integer.parseInt((String)aValue);
 		switch(columnIndex) {
-			case 1: 
-				fila.setStockOriginal(valor); break; 
-			case 2: 
-				fila.setVentas(valor); break; 
 			case 3: 
-				fila.setAjustes(valor); break; 	
+				fila.setStockOriginal(valor); break; 
 			case 4: 
+				fila.setVentas(valor); break; 
+			case 5: 
+				fila.setAjustes(valor); break; 	
+			case 6: 
 				fila.setStockFinal(valor); break; 				
 						
 		}
