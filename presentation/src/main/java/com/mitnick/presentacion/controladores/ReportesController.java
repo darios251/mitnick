@@ -48,25 +48,6 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	public void consultarVentaPorArticulo(ReportesDto dto) {
-		try {
-			getReportesServicio().consultarVentaPorArticulo(dto);
-		}
-		catch(BusinessException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void consultarVentaZapatillaPorTalle(ReportesDto dto) {
-		try {
-			getReportesServicio().consultarVentaZapatillaPorTalle(dto);
-		}
-		catch(BusinessException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		reportesPanel.setVisible(true);

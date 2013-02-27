@@ -67,6 +67,9 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	private JButton btnDetalleMovimientos;
 	private JButton btnCompra;
 	
+	private JButton btnReporteVenta;
+	
+	
 	private boolean mostrarError = false;
 
 	@Autowired
@@ -93,8 +96,6 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			getCmbTipo().setSelectedIndex(0);
 		} catch (Exception e) {
 		}
-//		getModel().setProductosMovimientos(
-//				new ArrayList<MovimientoProductoDto>());
 	}
 
 	@Override
@@ -122,6 +123,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 		add(getBtnBuscar());
 		add(getBtnCompra());
+		add(getBtnReporteVenta());
 		add(getBtnDetalleMovimientos());
 		add(getBtnExportar());
 
@@ -330,6 +332,38 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			btnCompra.setBounds(735, 230, 60, 60);
 		}
 		return btnCompra;
+	}
+	
+	public JButton getBtnReporteVenta() {
+		if (btnReporteVenta == null) {
+			btnReporteVenta = new JButton(PropertiesManager
+					.getProperty("movmientosPanel.label.producto.reporteVenta"));
+			btnReporteVenta.setToolTipText(PropertiesManager
+					.getProperty("movmientosPanel.tooltip.producto.reporteVenta"));
+
+//			btnReporteVenta.setIcon(new ImageIcon(this.getClass()
+//					.getResource("/img/data_find.png")));
+			btnReporteVenta.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVenta.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVenta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ReporteMovimientosDto dto = new ReporteMovimientosDto();
+					dto.setCodigo(getTxtProductoCodigo().getText());
+					dto.setDescripcion(getTxtProductoDescripcion().getText());
+					dto.setFechaInicio(getFechaInicio());
+					dto.setFechaFin(getFechaFinal());
+					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
+					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
+										
+					controller.consultarVentaPorArticulo(dto);
+				}
+			});
+
+			btnReporteVenta.setBounds(735, 169, 60, 60);
+		}
+		return btnReporteVenta;
 	}
 	
 	protected void setFocusTraversalPolicy() {

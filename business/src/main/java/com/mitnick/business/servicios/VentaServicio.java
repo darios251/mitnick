@@ -340,6 +340,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		ventaDao.saveOrUpdate(venta);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public VentaDto getVentaByNroFactura(String nroTicket){
 		Venta venta = ventaDao.findByNumeroFactura(nroTicket);
 		if (venta!=null)
@@ -351,6 +352,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		return cuotaDao.getSaldoPendiente(venta.getCliente().getId());
 	}
 		
+	@SuppressWarnings("unchecked")
 	public CreditoDto obtenerCredito(String nroNC){
 		return (CreditoDto) entityDTOParser.getDtoFromEntity(ventaDao.getCredito(nroNC));
 	}

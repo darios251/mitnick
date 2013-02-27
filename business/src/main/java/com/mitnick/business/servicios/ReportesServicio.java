@@ -417,10 +417,10 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	@Transactional(readOnly=true)
 	@Override
-	public void consultarVentaPorArticulo(ReportesDto filtro) {
+	public void consultarVentaPorArticulo(ReporteMovimientosDto dto) {
 		
 		try{
-			List<ReporteVentaArticuloDTO> articulos = reporteDao.consultarVentaPorArticulo(filtro);
+			List<ReporteVentaArticuloDTO> articulos = reporteDao.consultarVentaPorArticulo(dto);
 			
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventasProducto.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
@@ -437,30 +437,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException("Error al intentar obtener el reporte de ventas");
 		}
-	}
-	
-	@Transactional(readOnly=true)
-	@Override
-	public void consultarVentaZapatillaPorTalle(ReportesDto filtro) {
-		
-		try{
-			List<ReporteVentaArticuloDTO> articulos = reporteDao.consultarVentaPorZapatillas(filtro);
-			
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventasZapatillas.jasper"));
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			
-			JRDataSource dr = new JRBeanCollectionDataSource(articulos);
-			
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, dr);
-			
-			JasperViewer.viewReport(jasperPrint,false);
-		
-		}
-		catch(PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar obtener el reporte de ventas");
-		} catch (JRException e) {
-			throw new BusinessException("Error al intentar obtener el reporte de ventas");
-		} 	
 	}
 	
 	public void exportarCompraSugerida(ReporteMovimientosDto dto) {
