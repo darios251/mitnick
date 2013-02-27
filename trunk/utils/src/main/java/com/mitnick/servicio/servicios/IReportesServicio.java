@@ -65,7 +65,7 @@ public interface IReportesServicio {
 	 * @return
 	 */
 	@Secured(value={"ROLE_ADMIN"})
-	public void consultarVentaPorArticulo(ReportesDto filtro);
+	public void consultarVentaPorArticulo(ReporteMovimientosDto filtro);
 		
 	/**
 	 * Obtiene el movimiento de stock de los productos.
@@ -82,14 +82,6 @@ public interface IReportesServicio {
 	 */
 	@Secured(value={"ROLE_ADMIN"})
 	public void exportarMovimientosDeProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal);
-	
-	/**
-	 * Obtiene el detalle de venta de zapatillas agrupado por talle.
-	 * @param filtro
-	 * @return
-	 */
-	@Secured(value={"ROLE_ADMIN"})
-	public void consultarVentaZapatillaPorTalle(ReportesDto filtro); 
 	
 	/**
 	 * Obtiene el detalle de compra sugerida para los productos seleccionados.

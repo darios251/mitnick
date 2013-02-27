@@ -15,11 +15,17 @@
 	<field name="productoDescripcion" class="java.lang.String">
 		<fieldDescription><![CDATA[productoDescripcion]]></fieldDescription>
 	</field>
+	<field name="productoMarca" class="java.lang.String">
+		<fieldDescription><![CDATA[productoMarca]]></fieldDescription>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="talle" class="java.lang.String">
+		<fieldDescription><![CDATA[talle]]></fieldDescription>
+	</field>
 	<field name="cantidad" class="java.lang.Integer">
 		<fieldDescription><![CDATA[cantidad]]></fieldDescription>
-	</field>
-	<field name="total" class="java.lang.Double">
-		<fieldDescription><![CDATA[total]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -51,35 +57,35 @@
 	<columnHeader>
 		<band height="34" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="c0835e53-dd78-438b-813d-92e439338ecb" x="0" y="0" width="111" height="20" forecolor="#000099"/>
+				<reportElement uuid="c0835e53-dd78-438b-813d-92e439338ecb" x="0" y="0" width="59" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3d8cdde0-2dc3-4dac-b974-ed3b4eb51c10" x="111" y="0" width="111" height="20" forecolor="#000099"/>
+				<reportElement uuid="3d8cdde0-2dc3-4dac-b974-ed3b4eb51c10" x="59" y="0" width="69" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Artículo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="222" y="0" width="167" height="20" forecolor="#000099"/>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="128" y="0" width="115" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c82be9f0-9ad4-4c4b-ae4b-74ed75415929" x="389" y="0" width="55" height="20" forecolor="#000099"/>
+				<reportElement uuid="c82be9f0-9ad4-4c4b-ae4b-74ed75415929" x="450" y="1" width="43" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4b3e6a88-186a-404f-b990-ca81f8b1e64a" x="444" y="0" width="111" height="20" forecolor="#000099"/>
+				<reportElement uuid="4b3e6a88-186a-404f-b990-ca81f8b1e64a" x="493" y="0" width="62" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
@@ -88,32 +94,56 @@
 			<line>
 				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="3" y="21" width="552" height="1" forecolor="#000099"/>
 			</line>
+			<staticText>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="280" y="1" width="93" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="373" y="2" width="60" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Talle]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement uuid="32a44ad9-22eb-4076-89b8-d2102adee7ec" x="0" y="0" width="111" height="20"/>
+				<reportElement uuid="5fdd5dc8-a85d-4eca-bdf1-428c1a5b6a92" x="0" y="0" width="59" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="fa772ff2-7651-4ac8-9f65-8809ac2bd8e2" x="111" y="0" width="111" height="20"/>
+				<reportElement uuid="d6ceed34-7d22-4936-b44c-6041977656b6" x="59" y="1" width="69" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{productoCodigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ec427c04-5afa-44dd-8ae9-faf49f9059c1" x="222" y="0" width="167" height="20"/>
+				<reportElement uuid="01b8adf4-c083-4baa-ba3f-6f95f791dac0" x="128" y="1" width="152" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{productoDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9853503b-4e4c-4090-859b-26ca10d316cf" x="389" y="0" width="55" height="20"/>
+				<reportElement uuid="fa245fed-4e80-4b0e-878d-eaeb517946a9" x="280" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{productoMarca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="15000d72-e03d-40a2-b58a-d46b8ed8aa83" x="380" y="1" width="70" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{talle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e8048cb4-85d8-460a-8e88-04513a7d44a4" x="450" y="0" width="43" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ea519766-2521-4974-851b-b70a42995010" x="444" y="0" width="111" height="20"/>
+				<reportElement uuid="ba06ec29-ecd2-4dc8-b9e2-1e289f398d1d" x="493" y="0" width="62" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>

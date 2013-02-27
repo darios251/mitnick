@@ -1,5 +1,6 @@
 package com.mitnick.servicio.servicios.dtos;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ReporteVentaArticuloDTO extends ServicioBaseDto {
@@ -8,9 +9,10 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 	
 	private Date fecha;
 	private String productoDescripcion;
+	private String productoMarca;
 	private String productoCodigo;
 	private int cantidad;
-	private Double total;
+	private BigDecimal total;
 	private String talle;
 	
 	public Date getFecha() {
@@ -43,11 +45,26 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	public Double getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
-	public void setTotal(Double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+	
+	public String getProductoMarca() {
+		return productoMarca;
+	}
+	public void setProductoMarca(String productoMarca) {
+		this.productoMarca = productoMarca;
+	}
+	@Override
+	public String toString() {
+		return "ReporteVentaArticuloDTO [fecha=" + fecha
+				+ ", productoDescripcion=" + productoDescripcion
+				+ ", productoMarca=" + productoMarca + ", productoCodigo="
+				+ productoCodigo + ", cantidad=" + cantidad + ", total="
+				+ total + ", talle=" + talle + "]";
 	}
 	@Override
 	public int hashCode() {
@@ -61,6 +78,8 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 				* result
 				+ ((productoDescripcion == null) ? 0 : productoDescripcion
 						.hashCode());
+		result = prime * result
+				+ ((productoMarca == null) ? 0 : productoMarca.hashCode());
 		result = prime * result + ((talle == null) ? 0 : talle.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
@@ -101,6 +120,13 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 		} else if (!productoDescripcion.equals(other.productoDescripcion)) {
 			return false;
 		}
+		if (productoMarca == null) {
+			if (other.productoMarca != null) {
+				return false;
+			}
+		} else if (!productoMarca.equals(other.productoMarca)) {
+			return false;
+		}
 		if (talle == null) {
 			if (other.talle != null) {
 				return false;
@@ -117,13 +143,7 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 		}
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "ReporteVentaArticuloDTO [fecha=" + fecha
-				+ ", productoDescripcion=" + productoDescripcion
-				+ ", productoCodigo=" + productoCodigo + ", cantidad="
-				+ cantidad + ", total=" + total + ", talle=" + talle + "]";
-	}
+	
 	
 	
 

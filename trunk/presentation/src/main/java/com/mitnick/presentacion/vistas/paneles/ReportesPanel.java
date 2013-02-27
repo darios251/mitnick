@@ -47,10 +47,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	private JButton btnReporteDeEstado;
 	private JButton btnListadoDeControl;
 
-	private JButton btnReporteDeVentasProducto;
-	private JButton btnReporteDeVentasZapatillas;	
-	
-	
 	@Autowired
 	public ReportesPanel(@Qualifier("reportesController") ReportesController reportesController) {
 		controller = reportesController;
@@ -181,42 +177,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			btnReporteVentasAnual.setBounds(200, 240, 330, 20);
 		}
 		return btnReporteVentasAnual;
-	}
-
-	private JButton getBtnReporteDeVentasProducto() {
-		if (btnReporteDeVentasProducto == null) {
-			btnReporteDeVentasProducto = new JButton();
-			btnReporteDeVentasProducto.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeVentasProducto.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnReporteDeVentasProducto.setText("Reporte de Ventas por producto");
-			btnReporteDeVentasProducto.setMargin(new Insets(-1, -1, -1, -1));
-			btnReporteDeVentasProducto.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteDeVentasProducto.setBounds(200, 213, 330, 20);
-			btnReporteDeVentasProducto.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarVentaPorArticulo();
-				}
-			});
-		}
-		return btnReporteDeVentasProducto;
-	}
-	
-	private JButton getBtnReporteDeVentasZapatillas() {
-		if (btnReporteDeVentasZapatillas == null) {
-			btnReporteDeVentasZapatillas = new JButton();
-			btnReporteDeVentasZapatillas.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeVentasZapatillas.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.reporteZapatillas"));
-			btnReporteDeVentasZapatillas.setText(PropertiesManager.getProperty("productoPanel.button.reporteZapatillas"));
-			btnReporteDeVentasZapatillas.setMargin(new Insets(-1, -1, -1, -1));
-			btnReporteDeVentasZapatillas.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteDeVentasZapatillas.setBounds(200, 244, 330, 20);			
-			btnReporteDeVentasZapatillas.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarVentaZapatilla();
-				}
-			});
-		}
-		return btnReporteDeVentasZapatillas;
 	}
 	
 	private JButton getBtnListadoDeControl() {
@@ -363,29 +323,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
-	}
-	
-	protected void consultarVentaPorArticulo() {
-		try {
-			ReportesDto dto = new ReportesDto();
-			dto.setFechaInicio(getFechaInicio());
-			dto.setFechaFin(getFechaFinal());
-			controller.consultarVentaPorArticulo(dto);
-		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
-		}
-	}
-	
-	protected void consultarVentaZapatilla() {
-		try {
-			ReportesDto dto = new ReportesDto();
-			dto.setFechaInicio(getFechaInicio());
-			dto.setFechaFin(getFechaFinal());
-			controller.consultarVentaZapatillaPorTalle(dto);
-		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
-		}
-	}
+	}	
 			
 
 }

@@ -110,6 +110,17 @@ public class ReporteMovimientosController extends BaseController {
 		return resultado;
 	}
 
+
+	public void consultarVentaPorArticulo(ReporteMovimientosDto dto) {
+		try {
+			getReporteServicio().consultarVentaPorArticulo(dto);
+		}
+		catch(BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public List<MarcaDto> obtenerMarcas() {
 		try {
 			return productoServicio.obtenerMarcas();

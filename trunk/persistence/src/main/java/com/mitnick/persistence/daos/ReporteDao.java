@@ -1,23 +1,22 @@
 package com.mitnick.persistence.daos;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.appfuse.model.BaseObject;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
-import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReporteCompraSugeridaDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
-import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 
@@ -28,83 +27,72 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		super(BaseObject.class);
 	}
 
-	public List<ReporteVentaArticuloDTO> consultarVentaPorArticulo(ReportesDto filtro) {
-		String hql = "SELECT p.codigo, p.descripcion, sum(pv.cantidad), sum(pv.precio), v.fecha from " +
-				Producto.class.getName() + " as p," + ProductoVenta.class.getName() + " as pv, " +
-				Venta.class.getName() + " as v where pv.producto.id=p.id and pv.venta.id=v.id " +
-				" group by p.codigo, p.descripcion, pv.cantidad, pv.precio, v.fecha ";
+	@SuppressWarnings("unchecked")
+	public List<ReporteVentaArticuloDTO> consultarVentaPorArticulo(ReporteMovimientosDto dto) {
 		
-		@SuppressWarnings("unchecked")
-		List<Object[]> items = getHibernateTemplate().find(hql);
-		List<ReporteVentaArticuloDTO> resultado = new ArrayList<ReporteVentaArticuloDTO>();
-		if (items!=null && !items.isEmpty()){
-			for (Object[] item: items){
-				ReporteVentaArticuloDTO dto = getDTOFecha(resultado, item);
-				int cantidad = dto.getCantidad();
-				dto.setCantidad(cantidad + Integer.parseInt(item[2].toString()));
-				Double total = dto.getTotal();
-				dto.setTotal(total + Double.parseDouble(item[3].toString()));
-			}
-			
+		DetachedCriteria criteria = DetachedCriteria.forClass(ProductoVenta.class);
+
+		criteria.createAlias("producto", "p");
+		
+		if(!Validator.isBlankOrNull(dto.getCodigo())){
+			criteria.add(Restrictions.ilike("p.descripcion", dto.getDescripcion(), MatchMode.START));
+		}
+		if(!Validator.isBlankOrNull(dto.getDescripcion())){
+			criteria.add(Restrictions.ilike("p.descripcion", dto.getDescripcion(), MatchMode.ANYWHERE));
+		}
+		if(Validator.isNotNull(dto.getMarca()) && dto.getMarca().getId()>=0){
+			criteria.add(Restrictions.eq("p.marca.id", dto.getMarca().getId()));
+		}
+		if(Validator.isNotNull(dto.getTipo()) && dto.getTipo().getId()>=0){
+			criteria.add(Restrictions.eq("p.tipo.id", dto.getTipo().getId()));
 		}
 		
+		criteria.createAlias("venta", "v");
+		
+		if(Validator.isNotNull(dto.getFechaInicio())){
+			criteria.add(Restrictions.gt("v.fecha", dto.getFechaInicio()));
+		}
+		if(Validator.isNotNull(dto.getFechaFin())){
+			criteria.add(Restrictions.le("v.fecha", dto.getFechaFin()));
+		}
+		
+		criteria.add(Restrictions.ne("p.codigo", PropertiesManager.getProperty("application.producto.comodin")));
+		criteria.add(Restrictions.eq("p.eliminado", false));
+		criteria.add(Restrictions.eq("v.canceled", false));
+		
+		List<ProductoVenta> productos = getHibernateTemplate().findByCriteria(criteria); 
+		List<ReporteVentaArticuloDTO> resultado = new ArrayList<ReporteVentaArticuloDTO>();
+		for (ProductoVenta producto: productos){
+			ReporteVentaArticuloDTO repdto = getDTOFecha(resultado, producto);
+			int cantidad = repdto .getCantidad();
+			repdto.setCantidad(cantidad + producto.getCantidad());
+			BigDecimal total = repdto .getTotal();
+			repdto.setTotal(total.add(producto.getPrecio()));
+			repdto.setProductoMarca(producto.getProducto().getMarca().getDescripcion());
+			if (producto.getProducto().getTalle()==null)
+				repdto.setTalle("");
+			else
+				repdto.setTalle(producto.getProducto().getTalle());
+		}
 		return resultado;
 	}	
 	
-	public List<ReporteVentaArticuloDTO> consultarVentaPorZapatillas(ReportesDto filtro) {
-		String hql = "SELECT p.codigo, p.descripcion, p.talle, sum(pv.cantidad), sum(pv.precio) from " +
-				Producto.class.getName() + " as p," + ProductoVenta.class.getName() + " as pv, " +
-				Venta.class.getName() + " as v where pv.producto.id=p.id and pv.venta.id=v.id  and p.tipo.id=4" +
-				" group by p.codigo, p.descripcion, p.talle, pv.cantidad, pv.precio";
-		
-		@SuppressWarnings("unchecked")
-		List<Object[]> items = getHibernateTemplate().find(hql);
-		List<ReporteVentaArticuloDTO> resultado = new ArrayList<ReporteVentaArticuloDTO>();
-		if (items!=null && !items.isEmpty()){
-			for (Object[] item: items){
-				ReporteVentaArticuloDTO dto = getDTOZapatilla(resultado, item);				
-				int cantidad = dto.getCantidad();
-				dto.setCantidad(cantidad + Integer.parseInt(item[3].toString()));
-				Double total = dto.getTotal();
-				dto.setTotal(total + Double.parseDouble(item[4].toString()));
-				
-			}
-			
-		}
-		
-		return resultado;
-	}
-	
-	private ReporteVentaArticuloDTO getDTOFecha(List<ReporteVentaArticuloDTO> items, Object[] item){
+	private ReporteVentaArticuloDTO getDTOFecha(List<ReporteVentaArticuloDTO> items, ProductoVenta producto){
 		for (ReporteVentaArticuloDTO dto: items){
-			if (dto.getFecha().equals((Date)item[4]) && dto.getProductoCodigo().equals(item[0].toString()))
+			if (dto.getFecha().equals(producto.getVenta().getFecha()) && dto.getProductoCodigo().equals(producto.getProducto().getCodigo()))
 				return dto;
 		}		
 		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
-		dto.setProductoCodigo(item[0].toString());
-		dto.setProductoDescripcion(item[1].toString());
+		dto.setProductoCodigo(producto.getProducto().getCodigo());
+		dto.setProductoDescripcion(producto.getProducto().getDescripcion());
 		dto.setCantidad(0);
-		dto.setTotal(new Double(0));
-		dto.setFecha((Date)item[4]);
+		dto.setTotal(new BigDecimal(0));
+		dto.setFecha(producto.getVenta().getFecha());
 		items.add(dto);
 		return dto;
 	}
 	
-	private ReporteVentaArticuloDTO getDTOZapatilla(List<ReporteVentaArticuloDTO> items, Object[] item){
-		for (ReporteVentaArticuloDTO dto: items){
-			if (dto.getProductoCodigo().equals(item[0].toString()))
-				return dto;
-		}		
-		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
-		dto.setProductoCodigo(item[0].toString());
-		dto.setProductoDescripcion(item[1].toString());
-		dto.setTalle(item[2].toString());
-		dto.setCantidad(0);
-		dto.setTotal(new Double(0));		
-		items.add(dto);
-		return dto;
-	}
-	
+	@SuppressWarnings("unchecked")
 	public List<ReporteCompraSugeridaDTO> consultarCompraSugerida(ReporteMovimientosDto dto) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
 
@@ -120,6 +108,7 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		if(Validator.isNotNull(dto.getTipo()) && dto.getTipo().getId()>=0){
 			criteria.add(Restrictions.eq("tipo.id", dto.getTipo().getId()));
 		}
+
 		criteria.add(Restrictions.ne("codigo", PropertiesManager.getProperty("application.producto.comodin")));
 		criteria.add(Restrictions.eq("eliminado", false));
 		List<Producto> productos = getHibernateTemplate().findByCriteria(criteria); 
