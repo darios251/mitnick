@@ -72,7 +72,10 @@ public class VentaController extends BaseController {
 	}
 	
 	public List<CuotaDto> getCuotas(String cuotas, String total){
-		return ventaServicio.generarCuotas(Integer.parseInt(cuotas), new BigDecimal(total), VentaManager.getVentaActual().getCliente());
+		if (Validator.isInt(cuotas))
+			return ventaServicio.generarCuotas(Integer.parseInt(cuotas), new BigDecimal(total), VentaManager.getVentaActual().getCliente());
+		else
+			throw new PresentationException("error.venta.cantidad.cuotas");
 	}
 	
 	public void guardarCuotas(List<CuotaDto> cuotas){
