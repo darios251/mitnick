@@ -70,6 +70,22 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		validateEntity(cliente);
 
 		try {
+			if (clienteDto.getId() == null) {
+				// si es un cliente nuevo
+				
+				Cliente c = clienteDao.findByDocumentoEq(clienteDto.getDocumento());
+				if (c != null)
+					throw new BusinessException(
+							"error.cliente.documento.duplicado",
+							"Ya existe un cliente con el documento ingresado");
+				
+				c = clienteDao.findByCuitEq(clienteDto.getCuit());
+				if (c != null)
+					throw new BusinessException(
+							"error.cliente.cuit.duplicado",
+							"Ya existe un cliente con el cuit ingresado");
+			}
+			
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
 		} catch (PersistenceException e) {
@@ -318,6 +334,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		clienteDao.reporteMovimientosCliente(cliente);
 	}
 	
+	@SuppressWarnings("unchecked")
 	/**
 	 * Este metodo se invoca cuando el cliente que realiza la devolucion tiene cuenta corriente con cuotas pendientes de pago.
 	 * Este metodo utiliza el credito otorgado por la devolucion para cancelar las cuotas correspondientes.

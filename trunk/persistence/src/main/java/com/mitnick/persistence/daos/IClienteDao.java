@@ -25,4 +25,9 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	void reporteMovimientosCliente(ClienteDto cliente);
 	
 	Comprobante saveOrUpdate(Comprobante comprobante);
+	
+	Cliente findByDocumentoEq(String documento);
+	
+	Cliente findByCuitEq(String cuit);
+	
 }

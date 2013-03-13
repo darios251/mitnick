@@ -78,6 +78,36 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 	}
 
 	@SuppressWarnings("unchecked")
+	public Cliente findByDocumentoEq(String documento) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
+
+		if (!Validator.isBlankOrNull(documento)) {
+			criteria.add(Restrictions.eq("documento", documento));
+		}
+		criteria.add(Restrictions.eq("eliminado", false));
+		List<Cliente> clientes = getHibernateTemplate()
+				.findByCriteria(criteria);
+		if (clientes != null && !clientes.isEmpty())
+			return clientes.get(0);
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Cliente findByCuitEq(String cuit) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
+
+		if (!Validator.isBlankOrNull(cuit)) {
+			criteria.add(Restrictions.eq("cuit", cuit));
+		}
+		criteria.add(Restrictions.eq("eliminado", false));
+		List<Cliente> clientes = getHibernateTemplate()
+				.findByCriteria(criteria);
+		if (clientes != null && !clientes.isEmpty())
+			return clientes.get(0);
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public Cliente findById(Long id) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
 
@@ -273,6 +303,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
 	
+	@SuppressWarnings("unchecked")
 	private BigDecimal getSaldoFavor(ClienteDto cliente) {
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
