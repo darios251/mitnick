@@ -777,6 +777,10 @@ public class PrinterService {
 			output.println(INGRESOS_BRUTOS_3);
 			configuracion.setIngresosBrutos3(input.readLine());
 			
+			output.println(INFO_CONFIGURACION);
+			output.println(INGRESO_ACTIVIDADES);
+			configuracion.setFechaInicioActividades(input.readLine());
+			
 			output.println(FIN_TICKET_TAG);
 			checkStatus();
 			
