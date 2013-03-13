@@ -46,7 +46,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 		super(frame, true);
 		this.clienteController = clienteController;
 		getContentPane().setLayout(null);
-		setSize(446, 245);
+		setSize(500, 245);
 		
 		setLocationRelativeTo(null);
 				
