@@ -205,23 +205,25 @@ public class PrinterService {
 			output.println(TICKET_FACTURA_TAG);
 			checkStatus();
 			
+			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador() == MitnickConstants.TipoComprador.CONSUMIDOR_FINAL;
+			
 			output.println(DATOS_COMPRADOR);
 			
 			ClienteDto cliente = venta.getCliente();
 			output.println(NOMBRE_COMPRADOR);
-			output.println(cliente.getNombre());
+			output.println(consumidorFinal ? "" : cliente.getNombre());
 			output.println(NOMBRE_COMPRADOR);
 			output.println("");
 			output.println(DIRECCION_COMPRADOR);
-			output.println(cliente.getDireccion().getDomicilio());
+			output.println(consumidorFinal ? "" : cliente.getDireccion().getDomicilio());
 			output.println(DIRECCION_COMPRADOR);
-			output.println(cliente.getDireccion().getCodigoPostal() + " - " + cliente.getDireccion().getCiudad().getDescripcion() + " - " + cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion());
+			output.println(consumidorFinal ? "" : cliente.getDireccion().getCodigoPostal() + " - " + cliente.getDireccion().getCiudad().getDescripcion() + " - " + cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion());
 			output.println(DIRECCION_COMPRADOR);
 			output.println("");
 			output.println(TIPO_DOCUMENTO_COMPRADOR);
-			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? "D" : "T");
+			output.println(consumidorFinal ? "" : Validator.isBlankOrNull(cliente.getCuit()) ? "D" : "T");
 			output.println(NUMERO_DOCUMENTO_COMPRADOR);
-			output.println(Validator.isBlankOrNull(cliente.getCuit()) ? cliente.getDocumento() : cliente.getCuit().replaceAll("-", ""));
+			output.println(consumidorFinal ? "" : Validator.isBlankOrNull(cliente.getCuit()) ? cliente.getDocumento() : cliente.getCuit().replaceAll("-", ""));
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println(venta.getTipoResponsabilidad().getTipoComprador());
 			output.println(LINEA_REMITOS_ASOCIADOS);
@@ -622,55 +624,76 @@ public class PrinterService {
 	public boolean configurarImpresora(ConfiguracionImpresoraDto configuracion) {
 		try {
 			connect();
-			output.println(CONFIGURAR);
-			output.println(DOMICILIO_COMERCIAL_1);
-			output.println(configuracion.getDomicilioComercial1());
-			checkStatus();
 			
-			output.println(CONFIGURAR);
-			output.println(DOMICILIO_COMERCIAL_2);
-			output.println(configuracion.getDomicilioComercial2());
-			checkStatus();
+			if(configuracion.getDomicilioComercial1() != null) {
+				output.println(CONFIGURAR);
+				output.println(DOMICILIO_COMERCIAL_1);
+				output.println(configuracion.getDomicilioComercial1());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(DOMICILIO_COMERCIAL_3);
-			output.println(configuracion.getDomicilioComercial3());
-			checkStatus();
+			if(configuracion.getDomicilioComercial2() != null) {
+				output.println(CONFIGURAR);
+				output.println(DOMICILIO_COMERCIAL_2);
+				output.println(configuracion.getDomicilioComercial2());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(DOMICILIO_FISCAL_1);
-			output.println(configuracion.getDomicilioFiscal1());
-			checkStatus();
+			if(configuracion.getDomicilioComercial3() != null) {
+				output.println(CONFIGURAR);
+				output.println(DOMICILIO_COMERCIAL_3);
+				output.println(configuracion.getDomicilioComercial3());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(DOMICILIO_FISCAL_2);
-			output.println(configuracion.getDomicilioFiscal2());
-			checkStatus();
+			if(configuracion.getDomicilioFiscal1() != null) {
+				output.println(CONFIGURAR);
+				output.println(DOMICILIO_FISCAL_1);
+				output.println(configuracion.getDomicilioFiscal1());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(DOMICILIO_FISCAL_3);
-			output.println(configuracion.getDomicilioFiscal3());
-			checkStatus();
+			if(configuracion.getDomicilioFiscal2() != null) {
+				output.println(CONFIGURAR);
+				output.println(DOMICILIO_FISCAL_2);
+				output.println(configuracion.getDomicilioFiscal2());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(INGRESOS_BRUTOS_1);
-			output.println(configuracion.getIngresosBrutos1());
-			checkStatus();
+			if(configuracion.getDomicilioFiscal3() != null) {
+				output.println(CONFIGURAR);
+				output.println(DOMICILIO_FISCAL_3);
+				output.println(configuracion.getDomicilioFiscal3());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(INGRESOS_BRUTOS_2);
-			output.println(configuracion.getIngresosBrutos2());
-			checkStatus();
+			if(configuracion.getIngresosBrutos1() != null) {
+				output.println(CONFIGURAR);
+				output.println(INGRESOS_BRUTOS_1);
+				output.println(configuracion.getIngresosBrutos1());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(INGRESOS_BRUTOS_3);
-			output.println(configuracion.getIngresosBrutos3());
-			checkStatus();
+			if(configuracion.getIngresosBrutos2() != null) {
+				output.println(CONFIGURAR);
+				output.println(INGRESOS_BRUTOS_2);
+				output.println(configuracion.getIngresosBrutos2());
+				checkStatus();
+			}
 			
-			output.println(CONFIGURAR);
-			output.println(INGRESO_ACTIVIDADES);
-			output.println(configuracion.getFechaInicioActividades());
-			checkStatus();
+			if(configuracion.getIngresosBrutos3() != null) {
+				output.println(CONFIGURAR);
+				output.println(INGRESOS_BRUTOS_3);
+				output.println(configuracion.getIngresosBrutos3());
+				checkStatus();
+			}
+			
+			if(configuracion.getFechaInicioActividades() != null) {
+				output.println(CONFIGURAR);
+				output.println(INGRESO_ACTIVIDADES);
+				output.println(configuracion.getFechaInicioActividades());
+				checkStatus();
+			}
 			
 			output.println(FIN_TICKET_TAG);
 			checkStatus();

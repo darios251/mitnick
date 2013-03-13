@@ -65,6 +65,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 	private JLabel lblMedioPago;
 	private JLabel lblAPagarValor;
 	private JLabel lblTotalAPagar;
+	private JLabel lblTeclasAccesoRapido;
 
 	private JComboBox<MedioPagoDto> cmbMedioPago;
 
@@ -100,7 +101,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 	@Override
 	protected void initializeComponents() {
 		setLayout(null);
-		setSize(new Dimension(815, 470));
+		setSize(new Dimension(815, 570));
 
 		add(getLblMedioPago());
 		add(getCmbMedioPago());
@@ -125,6 +126,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 		add(getLblConsumidorFinal());
 		add(getPnlCliente());
 		add(getLblCliente());
+		add(getLblTeclasAccesoRapido());
 
 		setFocusTraversalPolicy();
 	}
@@ -135,6 +137,15 @@ public class PagoPanel extends BasePanel<VentaController> {
 			lblCliente.setBounds(113, 36, 46, 14);
 		}
 		return lblCliente;
+	}
+	
+	public JLabel getLblTeclasAccesoRapido() {
+		if (lblTeclasAccesoRapido == null) {
+			lblTeclasAccesoRapido = new JLabel("Enter: Agregar Pago | Esc: Volver");
+			lblTeclasAccesoRapido.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTeclasAccesoRapido.setBounds(40, 550, 180, 20);
+		}
+		return lblTeclasAccesoRapido;
 	}
 
 	public JTextField getTxtMonto() {
@@ -512,9 +523,9 @@ public class PagoPanel extends BasePanel<VentaController> {
 				
 				int option = JOptionPane.CANCEL_OPTION;
 				if (deuda.compareTo(new BigDecimal(0))>0) {
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.cuentaCorriente"), "Información", JOptionPane.YES_NO_OPTION);	
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.cuentaCorriente"), "Informaciï¿½n", JOptionPane.YES_NO_OPTION);	
 					if (option == JOptionPane.OK_OPTION){
-						//se pagan cuotas pendientes del cliente con la nota de crédito
+						//se pagan cuotas pendientes del cliente con la nota de crï¿½dito
 						((VentaController) controller).pagarCuotasNC();
 						if (deuda.compareTo(devolucion)>=0) {
 							deuda = deuda.subtract(devolucion);

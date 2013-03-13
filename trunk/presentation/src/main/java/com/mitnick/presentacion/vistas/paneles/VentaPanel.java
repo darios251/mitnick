@@ -48,6 +48,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 	private JLabel lblTotalValor;
 	private JLabel lblSutotal;
 	private JLabel lblSubtotalValor;
+	private JLabel lblTeclasAccesoRapido;
 
 	private JButton btnContinuar;
 	private JButton btnQuitar;
@@ -79,7 +80,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 	@Override
 	protected void initializeComponents() {
 		setLayout(null);
-		setSize(new Dimension(815, 470));
+		setSize(new Dimension(815, 570));
 
 		add(getScrollPane());
 		add(getLblCdigo());
@@ -93,6 +94,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 		add(getLblTotal());
 		add(getLblTotalValor());
 		add(getBtnAgregar());
+		add(getLblTeclasAccesoRapido());
 		
 		setFocusTraversalPolicy();
 		setFocusable(true);
@@ -224,6 +226,15 @@ public class VentaPanel extends BasePanel<VentaController> {
 			lblSubtotalValor.setBounds(377, 441, 88, 20);
 		}
 		return lblSubtotalValor;
+	}
+	
+	public JLabel getLblTeclasAccesoRapido() {
+		if (lblTeclasAccesoRapido == null) {
+			lblTeclasAccesoRapido = new JLabel("F3: Buscar | F5: Siguiente | F6: Cambiar Precio | F7: Cambia Cantidad | +: Agregar Producto | -: Eliminar Producto");
+			lblTeclasAccesoRapido.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTeclasAccesoRapido.setBounds(40, 550, 550, 20);
+		}
+		return lblTeclasAccesoRapido;
 	}
 
 	public JButton getBtnContinuar() {
