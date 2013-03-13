@@ -53,8 +53,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Autowired
 	protected PrinterService printerService;
 	
-	@Override
-	public VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
+	
+	private VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
 		ProductoVentaDto productoVenta = getProductoVentaDto(producto, venta);
 		if (productoVenta == null) {
 			productoVenta = new ProductoVentaDto();
@@ -69,6 +69,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		VentaHelper.calcularTotales(venta);
 		
 		return venta;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public VentaDto agregarProducto(String productoCode, VentaDto venta) {
+		ProductoDto productoDTO = (ProductoDto)entityDTOParser.getDtoFromEntity(productoDao.findByCode(productoCode));
+		if (productoDTO==null)
+			throw new BusinessException("error.venta.agregarProducto.productoNoEncontrado", "El producto no se encuentra");
+		return agregarProducto(productoDTO, venta);
 	}
 
 	@Override

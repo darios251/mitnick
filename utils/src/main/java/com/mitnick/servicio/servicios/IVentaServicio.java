@@ -10,14 +10,13 @@ import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
-import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 public interface IVentaServicio {
 
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
-	VentaDto agregarProducto(ProductoDto producto, VentaDto venta);
+	VentaDto agregarProducto(String productoCode, VentaDto venta); 
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	VentaDto quitarProducto(ProductoVentaDto producto, VentaDto venta);
