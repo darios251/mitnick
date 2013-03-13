@@ -35,7 +35,7 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		criteria.createAlias("producto", "p");
 		
 		if(!Validator.isBlankOrNull(dto.getCodigo())){
-			criteria.add(Restrictions.ilike("p.descripcion", dto.getDescripcion(), MatchMode.START));
+			criteria.add(Restrictions.ilike("p.codigo", dto.getCodigo(), MatchMode.START));
 		}
 		if(!Validator.isBlankOrNull(dto.getDescripcion())){
 			criteria.add(Restrictions.ilike("p.descripcion", dto.getDescripcion(), MatchMode.ANYWHERE));
