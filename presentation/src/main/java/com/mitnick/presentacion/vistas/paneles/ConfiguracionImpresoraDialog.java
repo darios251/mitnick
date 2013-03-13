@@ -33,10 +33,17 @@ public class ConfiguracionImpresoraDialog extends BaseDialog {
 	private JTextField txtDomicilioComercial1;
 	private JTextField txtDomicilioComercial2;
 	private JTextField txtDomicilioComercial3;
+	private JTextField txtIngresosBrutos1;
+	private JTextField txtIngresosBrutos2;
+	private JTextField txtIngresosBrutos3;
+	private JLabel lblIngresosBrutos1;
+	private JLabel lblIngresosBrutos2;
+	private JLabel lblIngresosBrutos3;
 	private JLabel lblFechaInicioActividades;
 	private JTextField txtFechaInicioActividades;
 	private JButton btnGuardar;
 	private JDialog thisDialog;
+	private ConfiguracionImpresoraDto configuracion;
 	
 	public ConfiguracionImpresoraDialog(JFrame frame) {
 		super(frame, true);
@@ -106,16 +113,45 @@ public class ConfiguracionImpresoraDialog extends BaseDialog {
 		txtFechaInicioActividades.setBounds(164, 217, 86, 20);
 		getContentPane().add(txtFechaInicioActividades);
 		
+		lblIngresosBrutos1 = new JLabel("Ingresos Brutos 1");
+		lblIngresosBrutos1.setBounds(20, 248, 134, 14);
+		getContentPane().add(lblIngresosBrutos1);
+		
+		txtIngresosBrutos1 = new JTextField();
+		txtIngresosBrutos1.setColumns(10);
+		txtIngresosBrutos1.setBounds(164, 248, 86, 20);
+		getContentPane().add(txtIngresosBrutos1);
+		
+		lblIngresosBrutos2 = new JLabel("Ingresos Brutos 2");
+		lblIngresosBrutos2.setBounds(20, 279, 134, 14);
+		getContentPane().add(lblIngresosBrutos2);
+		
+		txtIngresosBrutos2 = new JTextField();
+		txtIngresosBrutos2.setColumns(10);
+		txtIngresosBrutos2.setBounds(164, 279, 86, 20);
+		getContentPane().add(txtIngresosBrutos2);
+		
+		lblIngresosBrutos3 = new JLabel("Ingresos Brutos 3");
+		lblIngresosBrutos3.setBounds(20, 310, 134, 14);
+		getContentPane().add(lblIngresosBrutos3);
+		
+		txtIngresosBrutos3 = new JTextField();
+		txtIngresosBrutos3.setColumns(10);
+		txtIngresosBrutos3.setBounds(164, 310, 86, 20);
+		getContentPane().add(txtIngresosBrutos3);
+		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConfiguracionImpresoraDto configuracion = new ConfiguracionImpresoraDto();
 				configuracion.setDomicilioComercial1(txtDomicilioComercial1.getText());
 				configuracion.setDomicilioComercial2(txtDomicilioComercial2.getText());
 				configuracion.setDomicilioComercial3(txtDomicilioComercial3.getText());
 				configuracion.setDomicilioFiscal1(txtDomicilioFiscal1.getText());
 				configuracion.setDomicilioFiscal2(txtDomicilioFiscal2.getText());
 				configuracion.setDomicilioFiscal3(txtDomicilioFiscal3.getText());
+				configuracion.setIngresosBrutos1(txtIngresosBrutos1.getText());
+				configuracion.setIngresosBrutos2(txtIngresosBrutos2.getText());
+				configuracion.setIngresosBrutos3(txtIngresosBrutos3.getText());
 				configuracion.setFechaInicioActividades(txtFechaInicioActividades.getText());
 				
 				try {
@@ -124,16 +160,34 @@ public class ConfiguracionImpresoraDialog extends BaseDialog {
 				catch (PrinterException ex) {
 					mostrarMensajeError(ex.getMessage());
 				}
+				
+				thisDialog.dispose();
 			}
 		});
 		
-		btnGuardar.setBounds(164, 256, 89, 23);
+		btnGuardar.setBounds(164, 356, 89, 23);
 		getContentPane().add(btnGuardar);
-		setSize(299, 328);
+		setSize(299, 428);
 		
 		setLocationRelativeTo(null);
 		
 		setVisible(true);
+	}
+	
+	@Override
+	public void setVisible(boolean b) {
+		super.setVisible(b);
+		
+		configuracion = printerService.getInfoConfiguracion();
+		txtDomicilioComercial1.setText(configuracion.getDomicilioComercial1());
+		txtDomicilioComercial2.setText(configuracion.getDomicilioComercial2());
+		txtDomicilioComercial3.setText(configuracion.getDomicilioComercial3());
+		txtDomicilioFiscal1.setText(configuracion.getDomicilioFiscal1());
+		txtDomicilioFiscal2.setText(configuracion.getDomicilioFiscal2());
+		txtDomicilioFiscal3.setText(configuracion.getDomicilioFiscal3());
+		txtIngresosBrutos1.setText(configuracion.getIngresosBrutos1());
+		txtIngresosBrutos2.setText(configuracion.getIngresosBrutos2());
+		txtIngresosBrutos3.setText(configuracion.getIngresosBrutos3());
 	}
 	
 	protected int mostrarMensajeError ( String message ) {
