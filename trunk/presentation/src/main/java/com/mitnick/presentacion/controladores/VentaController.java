@@ -1,7 +1,6 @@
 package com.mitnick.presentacion.controladores;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
-import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -32,7 +30,6 @@ import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
-import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.TipoCompradorDto;
 import com.mitnick.utils.dtos.VentaDto;
@@ -203,20 +200,13 @@ public class VentaController extends BaseController {
 		if(Validator.isBlankOrNull(codigo))
 			throw new PresentationException("error.venta.agregarProducto.codigo.null");
 		
-		ConsultaProductoDto filtro = new ConsultaProductoDto();
-		filtro.setCodigo(codigo);
-		
-		List<ProductoDto> productos = null;
-		
-		try {
-			productos = new ArrayList<ProductoDto>(getProductoServicio().consultaProducto(filtro));
-		}
-		catch(BusinessException e) {
-			throw new PresentationException(e);
-		}
-		
-		if(Validator.isNotEmptyOrNull(productos)) {
-			VentaManager.setVentaActual(ventaServicio.agregarProducto(productos.get(0), VentaManager.getVentaActual()));
+		if(Validator.isNotBlankOrNull(codigo)) {
+			try {
+				VentaManager.setVentaActual(ventaServicio.agregarProducto(codigo, VentaManager.getVentaActual()));
+			} catch (BusinessException be) {
+				throw new PresentationException("error.venta.agregarProducto.productoNoEncontrado");
+			}
+			
 			ventaPanel.actualizarPantalla();
 		}
 		else {

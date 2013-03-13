@@ -422,7 +422,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		try{
 			List<ReporteVentaArticuloDTO> articulos = reporteDao.consultarVentaPorArticulo(dto);
 			
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/ventasProducto.jasper"));
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/VentasProducto.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			
 			JRDataSource dr = new JRBeanCollectionDataSource(articulos);
