@@ -188,6 +188,7 @@ public class ConfiguracionImpresoraDialog extends BaseDialog {
 		txtIngresosBrutos1.setText(configuracion.getIngresosBrutos1());
 		txtIngresosBrutos2.setText(configuracion.getIngresosBrutos2());
 		txtIngresosBrutos3.setText(configuracion.getIngresosBrutos3());
+		txtFechaInicioActividades.setText(configuracion.getFechaInicioActividades());
 	}
 	
 	protected int mostrarMensajeError ( String message ) {
