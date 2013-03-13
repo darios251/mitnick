@@ -37,15 +37,15 @@
 				</textElement>
 				<text><![CDATA[Compra sugerida de Productos]]></text>
 			</staticText>
-			<image>
-				<reportElement uuid="b576b36d-5dbe-4b11-adf9-ddb92ea82086" x="0" y="0" width="128" height="50"/>
-				<imageExpression><![CDATA["D:\\susmann\\img\\logoSusmannReportes.jpg"]]></imageExpression>
-			</image>
 			<textField pattern="dd/MM/yyyy h:mm a">
 				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="455" y="48" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement uuid="146047e8-757f-4f40-a3fc-31eeabc090b9" x="0" y="0" width="128" height="50"/>
+				<imageExpression><![CDATA["D:\\susmann\\img\\logoSusmannReportes.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -61,28 +61,28 @@
 				<text><![CDATA[Artículo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ced20d85-d3ee-43ed-8628-a64e27b1d8c1" x="278" y="2" width="37" height="20" forecolor="#000099"/>
+				<reportElement uuid="ced20d85-d3ee-43ed-8628-a64e27b1d8c1" x="338" y="3" width="37" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Stock]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a9d07a18-519a-4628-a8c0-04ee89193c23" x="325" y="3" width="65" height="20" forecolor="#000099"/>
+				<reportElement uuid="a9d07a18-519a-4628-a8c0-04ee89193c23" x="375" y="3" width="50" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Mínimo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="30377159-2d66-4bc4-8e4a-e5bffaa9fb45" x="393" y="3" width="62" height="20" forecolor="#000099"/>
+				<reportElement uuid="30377159-2d66-4bc4-8e4a-e5bffaa9fb45" x="428" y="2" width="62" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Compra]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2be0ea65-10a5-4a6b-9c6c-09813c2bc293" x="469" y="2" width="64" height="20" forecolor="#000099"/>
+				<reportElement uuid="2be0ea65-10a5-4a6b-9c6c-09813c2bc293" x="490" y="2" width="64" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
@@ -108,29 +108,29 @@
 				<textFieldExpression><![CDATA[$F{productoCodigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="7afabc08-7561-44e2-97e3-a2484d1e0c6b" x="103" y="0" width="175" height="20"/>
+				<reportElement uuid="7afabc08-7561-44e2-97e3-a2484d1e0c6b" x="103" y="0" width="235" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{productoDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="6820e730-d3a2-48e2-8169-8ebb68ad540a" x="278" y="0" width="47" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{stockActual}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="0cbf36f9-7dc5-468c-bf94-4361376af057" x="325" y="0" width="65" height="20"/>
+				<reportElement uuid="0cbf36f9-7dc5-468c-bf94-4361376af057" x="375" y="0" width="50" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{stockMinimo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2d72cc40-742b-444e-bbba-e4f01c9e3500" x="393" y="0" width="65" height="20"/>
+				<reportElement uuid="2d72cc40-742b-444e-bbba-e4f01c9e3500" x="425" y="0" width="65" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{stockCompra}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="56ff62b8-f0a2-47af-bece-2b0683960252" x="469" y="0" width="64" height="20"/>
+				<reportElement uuid="56ff62b8-f0a2-47af-bece-2b0683960252" x="493" y="0" width="61" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{compraSugerida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6820e730-d3a2-48e2-8169-8ebb68ad540a" x="338" y="0" width="37" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{stockActual}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
