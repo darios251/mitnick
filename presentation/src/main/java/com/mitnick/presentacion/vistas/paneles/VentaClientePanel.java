@@ -46,6 +46,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	private JButton btnContinuar;
 	private JLabel lblNombre;
 	private JLabel lblNumeroDocumento;
+	private JLabel lblTeclasAccesoRapido;
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JButton btnNuevo;
@@ -84,7 +85,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	@Override
 	protected void initializeComponents() {
 		setLayout(null);
-		setSize(new Dimension(815, 470));
+		setSize(new Dimension(815, 570));
 		
 		add(getScrollPane());
 		
@@ -102,6 +103,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		
 		add(getLblTipoComprador());
 		add(getCmbTipoComprador());
+		add(getLblTeclasAccesoRapido());
 		
 		setFocusTraversalPolicy();
 	}
@@ -156,7 +158,8 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	protected void continuar() {
 		try {
-			if(VentaManager.getVentaActual().getCliente() == null || table.getSelectedRow() != -1) {
+			TipoCompradorDto tipoComprador = (TipoCompradorDto) cmbTipoComprador.getSelectedItem();
+			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
 				controller.agregarCliente();
 				
 				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.clienteOK");
@@ -171,9 +174,9 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 				
 				int option = JOptionPane.CANCEL_OPTION;
 				if (deuda.compareTo(new BigDecimal(0))>0) 
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.deuda", new Object[] {devolucion, deuda}), "Información", JOptionPane.OK_CANCEL_OPTION);	
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.deuda", new Object[] {devolucion, deuda}), "Informaciï¿½n", JOptionPane.OK_CANCEL_OPTION);	
 				else
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito", new Object[] {devolucion, devolucion}), "Información", JOptionPane.OK_CANCEL_OPTION);
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito", new Object[] {devolucion, devolucion}), "Informaciï¿½n", JOptionPane.OK_CANCEL_OPTION);
 				
 				if (option != JOptionPane.CANCEL_OPTION)					
 					controller.finalizarVenta();
@@ -207,6 +210,15 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			scrollPane.setBounds(25, 109, 700, 315);
 		}
 		return scrollPane;
+	}
+	
+	public JLabel getLblTeclasAccesoRapido() {
+		if (lblTeclasAccesoRapido == null) {
+			lblTeclasAccesoRapido = new JLabel("F3: Buscar | F5: Siguiente | +: Nuevo Cliente | Esc: Volver");
+			lblTeclasAccesoRapido.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblTeclasAccesoRapido.setBounds(40, 550, 300, 20);
+		}
+		return lblTeclasAccesoRapido;
 	}
 
 	public JButton getBtnNuevo() {
