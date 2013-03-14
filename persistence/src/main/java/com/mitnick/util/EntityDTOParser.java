@@ -178,24 +178,25 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		cliente.setActividad(clienteDto.getActividad());
 		cliente.setNombre(clienteDto.getNombre());
-		cliente.setCuit(clienteDto.getCuit());
+		if (Validator.isNotNull(clienteDto.getCuit()))
+			cliente.setCuit(clienteDto.getCuit());
 		cliente.setDocumento(clienteDto.getDocumento());
 		cliente.setEmail(clienteDto.getEmail());
-		if (Validator.isDate(clienteDto.getFechaNacimiento(), MitnickConstants.DATE_FORMAT, true))
+		if (Validator.isNotNull(clienteDto.getFechaNacimiento()) && Validator.isDate(clienteDto.getFechaNacimiento(), MitnickConstants.DATE_FORMAT, true))
 			cliente.setFechaNacimiento(DateHelper.getFecha(clienteDto.getFechaNacimiento()));
 		cliente.setTelefono(clienteDto.getTelefono());
 		Ciudad ciudad = null;
-		ciudad = (Ciudad) ciudadDao.get(new Long(clienteDto.getDireccion().getCiudad().getId()));
+		if (Validator.isNotNull(clienteDto.getDireccion())&& Validator.isNotNull(clienteDto.getDireccion().getCiudad()))
+			ciudad = (Ciudad) ciudadDao.get(new Long(clienteDto.getDireccion().getCiudad().getId()));
 		
 		Direccion direccion = cliente.getDireccion();
 
-		if(Validator.isNull(direccion)) {
-			direccion = new Direccion();
+		if(Validator.isNull(direccion) && Validator.isNotNull(clienteDto.getDireccion())) {
+			direccion = new Direccion();	
 			direccion.setCodigoPostal(clienteDto.getDireccion().getCodigoPostal());
-			direccion.setCiudad(ciudad);
 			direccion.setDomicilio(clienteDto.getDireccion().getDomicilio());
-		}
-		else
+			direccion.setCiudad(ciudad);
+		} else if (Validator.isNotNull(direccion))
 			direccion.setCiudad(ciudad);
 		
 		cliente.setDireccion(direccion);
@@ -208,12 +209,16 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		clienteDto.setId(cliente.getId());
 		clienteDto.setActividad(cliente.getActividad());
 		clienteDto.setNombre(cliente.getNombre());
-		clienteDto.setCuit(cliente.getCuit().toString());
-		clienteDto.setDocumento(cliente.getDocumento().toString());
+		if (Validator.isNotNull(cliente.getCuit()))
+			clienteDto.setCuit(cliente.getCuit().toString());
+		if (Validator.isNotNull(cliente.getDocumento()))
+			clienteDto.setDocumento(cliente.getDocumento().toString());
 		clienteDto.setEmail(cliente.getEmail());
-		clienteDto.setFechaNacimiento(DateHelper.getFecha(cliente.getFechaNacimiento()));
+		if (Validator.isNotNull(cliente.getFechaNacimiento()))
+			clienteDto.setFechaNacimiento(DateHelper.getFecha(cliente.getFechaNacimiento()));
 		clienteDto.setTelefono(cliente.getTelefono());
-		clienteDto.setCantidadComprobantes(cliente.getComprobantes().size());
+		if (Validator.isNotNull(cliente.getComprobantes()))
+			clienteDto.setCantidadComprobantes(cliente.getComprobantes().size());
 		if(Validator.isNotNull(cliente.getDireccion()))
 			clienteDto.setDireccion(getDtoFromEntity(cliente.getDireccion()));
 
@@ -254,11 +259,21 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoDto.setId(producto.getId());
 		productoDto.setCodigo(producto.getCodigo());
 		productoDto.setDescripcion(producto.getDescripcion());
-		productoDto.setPrecioVenta(producto.getPrecioVenta().toString());
-		productoDto.setPrecioCompra(producto.getPrecioCompra().toString());
+		BigDecimal precio = producto.getPrecioVenta();
+		if (Validator.isNull(precio))
+			productoDto.setPrecioVenta("");
+		else
+			productoDto.setPrecioVenta(precio.toString());
+		
+		precio = producto.getPrecioCompra();
+		if (Validator.isNull(precio))
+			productoDto.setPrecioCompra("");
+		else
+			productoDto.setPrecioCompra(precio.toString());
+				
 		productoDto.setIva(producto.getIva().toString());
 		productoDto.setStock(producto.getStock() + "");
-		if (producto.getTalle()!=null)
+		if (Validator.isNotNull(producto.getTalle()))
 			productoDto.setTalle(producto.getTalle() + "");
 		productoDto.setStockMinimo(producto.getStockMinimo() + "");
 		productoDto.setStockCompra(producto.getStockCompra() + "");
@@ -270,6 +285,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	}
 	
 	private ProveedorDto getDtoFromEntity(Proveedor proveedor) {
+		if (Validator.isNull(proveedor))
+			return null;
 		ProveedorDto proveedorDto = new ProveedorDto();
 
 		proveedorDto.setId(proveedor.getId());
@@ -295,6 +312,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		return cuotaDto;
 	}
 	private TipoDto getDtoFromEntity(Tipo tipo) {
+		if (Validator.isNull(tipo))
+			return null;
 		TipoDto tipoDto = new TipoDto();
 		tipoDto.setDescripcion(tipo.getDescripcion());
 		tipoDto.setId(tipo.getId());
@@ -302,6 +321,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	}
 
 	private MarcaDto getDtoFromEntity(Marca marca) {
+		if (Validator.isNull(marca))
+			return null;
 		MarcaDto marcaDto = new MarcaDto();
 		marcaDto.setDescripcion(marca.getDescripcion());
 		marcaDto.setId(marca.getId());
@@ -328,13 +349,18 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setStockMinimo(productoDto.getStockMinimo());
 		producto.setStockCompra(productoDto.getStockCompra());
 
-		Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
-		producto.setMarca(marca);
+		if (Validator.isNotNull(productoDto.getMarca())){
+			Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
+			producto.setMarca(marca);
+		}
 
-		Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
-		producto.setTipo(tipo);
-		
-		producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
+		if (Validator.isNotNull(productoDto.getTipo())){		
+			Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
+			producto.setTipo(tipo);
+		}
+
+		if (Validator.isNotNull(productoDto.getProveedor()))
+			producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
 		
 		return producto;
 	}
@@ -361,13 +387,18 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setStockMinimo(Integer.parseInt(productoDto.getStockMinimo()));
 		producto.setStockCompra(Integer.parseInt(productoDto.getStockCompra()));
 
-		Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
-		producto.setMarca(marca);
+		if (Validator.isNotNull(productoDto.getMarca())){
+			Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
+			producto.setMarca(marca);
+		}
 
-		Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
-		producto.setTipo(tipo);
+		if (Validator.isNotNull(productoDto.getTipo())){
+			Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
+			producto.setTipo(tipo);
+		}
 		
-		producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
+		if (Validator.isNotNull(productoDto.getProveedor()))
+			producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
 		
 		return producto;
 	}
@@ -458,7 +489,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		if (Validator.isNotNull(ventaDto.getCliente())){
 			Cliente cliente = clienteDao.get(ventaDto.getCliente().getId());
 			venta.setCliente(cliente);
-			if (ventaDto.getCuotas()!=null &&! ventaDto.getCuotas().isEmpty()){
+			if (Validator.isEmptyOrNull(ventaDto.getCuotas())) {
 				List<Cuota> cuotas = new ArrayList<Cuota>();
 				for (CuotaDto cuotaDto : ventaDto.getCuotas()){
 					Cuota cuota = getEntityFromDto(cuotaDto);
@@ -519,7 +550,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	
 	private Cuota getEntityFromDto(CuotaDto cuotaDto) {
 		Cuota cuota = new Cuota();
-		if (cuotaDto.getId()!=null)
+		if (Validator.isNotNull(cuotaDto.getId()))
 			cuota = cuotaDao.get(cuotaDto.getId());
 		if (Validator.isDate(cuotaDto.getFecha_pagar(), MitnickConstants.DATE_FORMAT, true))
 			cuota.setFecha_pagar(DateHelper.getFecha(cuotaDto.getFecha_pagar()));
@@ -528,11 +559,11 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cuota.setFaltaPagar(cuotaDto.getFaltaPagar());
 		cuota.setCliente(getEntityFromDto(cuotaDto.getClienteDto()));
 		List<Pago> pagos = new ArrayList<Pago>();
-		if (cuota.getPagos()!=null)
+		if (Validator.isNotNull(cuotaDto.getPagos()))		
 			pagos = cuota.getPagos();
 		
 		for (PagoDto pagoDto : cuotaDto.getPagos()){
-			if (pagoDto.getId()==null)
+			if (Validator.isNull(pagoDto.getId()))
 				pagos.add(getEntityFromDto(pagoDto));
 		}
 
@@ -561,7 +592,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		direccionDto.setCodigoPostal(direccion.getCodigoPostal());
 		direccionDto.setDomicilio(direccion.getDomicilio());
 		direccionDto.setId(direccion.getId());
-		direccionDto.setCiudad(getDtoFromEntity(direccion.getCiudad()));
+		if (Validator.isNotNull(direccion.getCiudad()))
+			direccionDto.setCiudad(getDtoFromEntity(direccion.getCiudad()));
 		return direccionDto;
 	}
 	

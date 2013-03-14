@@ -29,10 +29,10 @@ public class Cliente extends BaseObject implements Serializable {
 	private Long id;
 	
 	@Column(name = "nombre", length = 30, nullable = false)
-	private String nombre;
+	private String nombre="";
 	
-	@Column(name = "actividad", length = 30, nullable = false)
-	private String actividad;
+	@Column(name = "actividad", length = 30)
+	private String actividad="";
 	
 	@Column(name = "documento", length = 10, nullable = true, unique = true)
 	private String documento;
@@ -41,10 +41,10 @@ public class Cliente extends BaseObject implements Serializable {
 	private String cuit;
 
 	@Column(name = "telefono", length = 40, nullable = true)
-	private String telefono;
+	private String telefono="";
 	
 	@Column(name = "email", length = 40, nullable = true)
-	private String email;
+	private String email="";
 	
 	@Column(name = "eliminado", nullable = false)
 	private boolean eliminado = false;
@@ -100,6 +100,9 @@ public class Cliente extends BaseObject implements Serializable {
 	}
 
 	public void setCuit(String cuit) {
+		cuit = cuit.trim();
+		if (cuit.startsWith("-"))
+			cuit = null;
 		this.cuit = cuit;
 	}
 

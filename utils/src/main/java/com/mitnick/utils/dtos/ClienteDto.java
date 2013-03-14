@@ -2,7 +2,6 @@ package com.mitnick.utils.dtos;
 
 import org.hibernate.validator.constraints.MitnickField;
 import org.hibernate.validator.constraints.MitnickField.FieldType;
-import org.hibernate.validator.constraints.Required;
 
 public class ClienteDto extends BaseDto {
 
@@ -11,13 +10,13 @@ public class ClienteDto extends BaseDto {
 	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
 	private String nombre;
 	
-	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
+	@MitnickField(fieldType=FieldType.NAME, min=3, max=30)
 	private String actividad;
 	
-	@MitnickField(required=true, min=8, max=10, fieldType=FieldType.INTEGER)
+	@MitnickField(min=8, max=10, fieldType=FieldType.INTEGER)
 	private String documento;
 	
-	@MitnickField(required=true, min=12, max=13, fieldType=FieldType.CUIT)
+	@MitnickField(min=12, max=13, fieldType=FieldType.CUIT)
 	private String cuit;
 	
 	@MitnickField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
@@ -28,11 +27,10 @@ public class ClienteDto extends BaseDto {
 	
 	@MitnickField(fieldType=FieldType.DATE)
 	private String fechaNacimiento;
-	
-	@Required
+		
 	private DireccionDto direccion;
 	
-	private int cantidadComprobantes;
+	private int cantidadComprobantes=0;
 
 	public String getNombre() {
 		return nombre;

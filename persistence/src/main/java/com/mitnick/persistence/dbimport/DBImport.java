@@ -2,6 +2,7 @@ package com.mitnick.persistence.dbimport;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import nl.knaw.dans.common.dbflib.Record;
 import nl.knaw.dans.common.dbflib.Table;
 import nl.knaw.dans.common.dbflib.ValueTooLargeException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +25,13 @@ import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Direccion;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Provincia;
+import com.mitnick.utils.PropertiesManager;
 
 @Service("dbImport")
 public class DBImport {
 
+	private static Logger logger = Logger.getLogger(DBImport.class);
+	
 	@Autowired
 	protected IClienteDao clienteDao;
 
@@ -58,13 +63,7 @@ public class DBImport {
 	private static String STOCK ="STOCK";
 	private static String STOCKMIN ="STOCKMIN";
 	private static String STOCKMAX ="STOCKMAX";          
-	private static String PRECIOVTA ="PRECIOVTA";
-	private static String TASA_IVA ="TASA_IVA";
-	
-	//migracion de marca
-	
-	//migracion de deudas
-	
+	private static String PRECIOVTA ="PRECIOVTA";	
 	
 	public void ejecutar(String path) {
 		try {			
@@ -72,7 +71,7 @@ public class DBImport {
 			migrarClientes(path);			
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -102,13 +101,11 @@ public class DBImport {
 				String stockMinimo = "";
 				String stockCompra = "";
 				String precioVenta = "";
-				String iva = "";
-				
 
 				for (final Field field : fields) {
 					try {
 						byte[] rawValue = record.getRawValue(field);
-						System.out.println(field.getName()
+						logger.info(field.getName()
 								+ " : "
 								+ (rawValue == null ? "<NULL>" : new String(
 										rawValue)));
@@ -129,42 +126,56 @@ public class DBImport {
 									: new String(rawValue));
 						if (PRECIOVTA.equals(field.getName()))
 							precioVenta = (rawValue == null ? "<NULL>" : new String(
-									rawValue));
-						if (TASA_IVA.equals(field.getName()))
-							iva = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+									rawValue));						
 
 					} catch (ValueTooLargeException vtle) {
 						// Cannot happen :)
 					}
 				}
 
-				producto.setCodigo(codigo);
-				producto.setDescripcion(descripcion);
-				producto.setEliminado(false);
-				producto.setIva(getBigDecimal(iva));
-				producto.setPrecioVenta(getBigDecimal(precioVenta));
-				producto.setStock(getInt(stock));
-				producto.setStockCompra(getInt(stockCompra));
-				producto.setStockMinimo(getInt(stockMinimo));
-				
+				codigo = codigo.trim();
+				if (!codigo.equals("")) {
+					producto.setCodigo(codigo.trim());
+					producto.setDescripcion(descripcion);
+					producto.setEliminado(false);
+					
+					String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
+					BigDecimal precioSinIva = getBigDecimal(precioVenta).setScale(2, BigDecimal.ROUND_HALF_UP);
+					BigDecimal ivaPerc =  getBigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP);
+					BigDecimal precioPerc = new BigDecimal(100).setScale(2, BigDecimal.ROUND_HALF_UP).subtract(ivaPerc);
+					BigDecimal iva = ivaPerc.multiply(precioSinIva).setScale(2, BigDecimal.ROUND_HALF_UP);
+					iva = iva.divide(BigDecimal.ONE.add(precioPerc),2, RoundingMode.HALF_UP);
+					BigDecimal precioFinal = precioSinIva.add(iva.setScale(2, BigDecimal.ROUND_HALF_UP));
+					
+					producto.setIva(iva);
+					producto.setPrecioVenta(precioSinIva);
+					
+					producto.setStock(getInt(stock));
+					producto.setStockCompra(getInt(stockCompra));
+					producto.setStockMinimo(getInt(stockMinimo));
+					producto.setPrecioCompra(new BigDecimal(0));
+					
+					logger.info("IVA: ".concat(iva.toString()).concat(" PRECIO FINAL: ").concat(precioFinal.toString()));
+							
+					try {
+						logger.info(producto.toString());
+						productoDao.saveOrUpdate(producto);								
 						
-				try {
-					System.out.println(producto.toString());
-					productoDao.saveOrUpdate(producto);								
-					
-				} catch (Exception e) {	
-					
-					e.printStackTrace();
-				}
+					} catch (Exception e) {	
+						logger.error("PRODUCTO NO GUARDADO: ".concat(producto.toString()));
+						logger.error(e);
+					}
 
-				System.out.println();
+				} else
+					logger.error("PRODUCTO NO GUARDADO POR CODIGO VACIO: ".concat(descripcion));
+					
+								
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
-		System.out.println("listo Productos!");
+		logger.info("listo Productos!");
 	}
 	
 	private void migrarClientes(String path) {
@@ -197,7 +208,7 @@ public class DBImport {
 				for (final Field field : fields) {
 					try {
 						byte[] rawValue = record.getRawValue(field);
-						System.out.println(field.getName()
+						logger.info(field.getName()
 								+ " : "
 								+ (rawValue == null ? "<NULL>" : new String(
 										rawValue)));
@@ -227,10 +238,10 @@ public class DBImport {
 									: new String(rawValue));
 
 					} catch (ValueTooLargeException vtle) {
-						// Cannot happen :)
+						//
 					}
 				}
-
+				
 				if (postal!=null && !postal.trim().isEmpty())
 					if (provincia != null) {
 						Provincia prov = provinciaDao.get(new Long(provincia.trim()));
@@ -252,24 +263,22 @@ public class DBImport {
 					}
 				cliente.setActividad(new String(actividad.toString().getBytes("ISO-8859-1")));				
 				if (!nullCuit.equals(cuit.trim()))
-					cliente.setCuit(cuit);
+					cliente.setCuit(cuit.trim());
 				cliente.setNombre(new String(nombre.toString().getBytes("ISO-8859-1")));
 				cliente.setTelefono(telefono);				
 				try {
-					System.out.println(cliente.toString());
+					logger.info(cliente.toString());
 					clienteDao.saveOrUpdate(cliente);
 				} catch (Exception e) {	
-					
+					logger.error("CLIENTE NO GUARDADO: ".concat(cliente.toString()));
 					e.printStackTrace();
-				}
-
-				System.out.println();
+				}				
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
-		System.out.println("listo Cliente!");
+		logger.info("listo Cliente!");
 	}
 
 	

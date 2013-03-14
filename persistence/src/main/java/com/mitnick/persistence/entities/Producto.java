@@ -23,13 +23,13 @@ public class Producto extends BaseObject implements Serializable {
 	private Long id;
 	
 	@Column(name = "descripcion", length = 255)
-	private String descripcion;
+	private String descripcion = "";
 	
 	@Column(name = "codigo", length = 255)
-	private String codigo;
+	private String codigo = "";
 	
 	@Column(name = "talle", length = 255)
-	private String talle;
+	private String talle="";
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn(name = "marca_id")
@@ -40,7 +40,7 @@ public class Producto extends BaseObject implements Serializable {
 	private Tipo tipo;
 	
 	@Column(name = "stock")
-	private int stock;
+	private int stock = -1;
 	
 	@Column(name = "stockMinimo")
 	private int stockMinimo = -1;
@@ -49,13 +49,13 @@ public class Producto extends BaseObject implements Serializable {
 	private int stockCompra = -1;
 	
 	@Column(name = "precioVenta")
-	private BigDecimal precioVenta;
+	private BigDecimal precioVenta = new BigDecimal(0);
 	
 	@Column(name = "precioCompra")
-	private BigDecimal precioCompra;
+	private BigDecimal precioCompra = new BigDecimal(0);
 
 	@Column(name = "iva")
-	private BigDecimal iva;
+	private BigDecimal iva = new BigDecimal(0);
 	
 	@Column(name = "eliminado", nullable = false)
 	private boolean eliminado = false;

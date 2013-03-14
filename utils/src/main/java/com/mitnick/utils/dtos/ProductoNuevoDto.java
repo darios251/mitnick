@@ -2,24 +2,21 @@ package com.mitnick.utils.dtos;
 
 import org.hibernate.validator.constraints.MitnickField;
 import org.hibernate.validator.constraints.MitnickField.FieldType;
-import org.hibernate.validator.constraints.Required;
 
 public class ProductoNuevoDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 
-	@MitnickField(required=true, fieldType=FieldType.INTEGER, min=3, max=20)
+	@MitnickField(required=true, fieldType=FieldType.INTEGER)
 	private String codigo;
 	
 	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=255)
 	private String descripcion;
-	
-	@Required
+		
 	private TipoDto tipo;
 		
 	private String talle;
 	
-	@Required
 	private MarcaDto marca;
 	
 	@MitnickField(required=true, fieldType=FieldType.BIGDECIMAL)
@@ -40,10 +37,9 @@ public class ProductoNuevoDto extends BaseDto {
 	@MitnickField(required=true, fieldType=FieldType.INTEGER)
 	private String stockMinimo="-1";
 	
-	@MitnickField(required=true, fieldType=FieldType.INTEGER)
+	@MitnickField(fieldType=FieldType.INTEGER)
 	private String stockCompra;
-	
-	@Required
+		
 	private ProveedorDto proveedor;
 	
 	private boolean confirmado = false;

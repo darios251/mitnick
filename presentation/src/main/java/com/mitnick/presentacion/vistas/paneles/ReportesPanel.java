@@ -66,7 +66,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 				((JTextField) component).setText("");
 		}
 		try {
-			txtFechaInicio.setText("01/01/1900");
+			txtFechaInicio.setText(DateHelper.getFecha(new Date()));
 			txtFechaFinal.setText(DateHelper.getFecha(new Date()));
 		} catch (Exception e) {
 		}
@@ -183,8 +183,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		if (btnListadoDeControl == null) {
 			btnListadoDeControl = new JButton();
 			btnListadoDeControl.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnListadoDeControl.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnListadoDeControl.setText("Listado de Control");
+			btnListadoDeControl.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.listadoControl"));
+			btnListadoDeControl.setText(PropertiesManager.getProperty("reportePanel.label.listadoControl"));
 			btnListadoDeControl.setMargin(new Insets(-1, -1, -1, -1));
 			btnListadoDeControl.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnListadoDeControl.setBounds(200, 280, 330, 20);
@@ -201,8 +201,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		if (btnReporteDeEstado == null) {
 			btnReporteDeEstado = new JButton();
 			btnReporteDeEstado.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeEstado.setToolTipText("productoPanel.tooltip.buscarProducto");
-			btnReporteDeEstado.setText("Reporte de Estado de Cuentas");
+			btnReporteDeEstado.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.estadoCuentas"));
+			btnReporteDeEstado.setText(PropertiesManager.getProperty("reportePanel.label.estadoCuentas"));
 			btnReporteDeEstado.setMargin(new Insets(-1, -1, -1, -1));
 			btnReporteDeEstado.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteDeEstado.setBounds(200, 310, 330, 20);
@@ -217,7 +217,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	
 	public JLabel getLblFechaInicio() {
 		if (lblFechaInicio == null) {
-			lblFechaInicio = new JLabel("Inicio");
+			lblFechaInicio = new JLabel(PropertiesManager.getProperty("label.inicio"));
 			lblFechaInicio.setBounds(125, 95, 90, 20);
 		}
 		return lblFechaInicio;
@@ -225,7 +225,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 
 	public JLabel getLblFechaFin() {
 		if (lblFechaFin == null) {
-			lblFechaFin = new JLabel("Fin");
+			lblFechaFin = new JLabel(PropertiesManager.getProperty("label.fin"));
 			lblFechaFin.setBounds(350, 95, 60, 20);
 		}
 		return lblFechaFin;
@@ -251,7 +251,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 				txtFechaInicio = new JFormattedTextField(new AllowBlankMaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 	
 				txtFechaInicio.setColumns(10);
 				txtFechaInicio.setBounds(200, 95, 110, 20);
-				txtFechaInicio.setText("01/01/1900");
+				txtFechaInicio.setText(DateHelper.getFecha(new Date()));
 			} catch (ParseException e) {}
 		}
 		return txtFechaInicio;

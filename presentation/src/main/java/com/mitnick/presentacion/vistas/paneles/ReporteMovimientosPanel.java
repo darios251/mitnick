@@ -377,8 +377,6 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			ReporteMovimientosDto dto = new ReporteMovimientosDto();
 			dto.setCodigo(getTxtProductoCodigo().getText());
 			dto.setDescripcion(getTxtProductoDescripcion().getText());
-			dto.setFechaInicio(getFechaInicio());
-			dto.setFechaFin(getFechaFinal());
 			dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
 			dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
 			

@@ -61,6 +61,9 @@ public class Validator extends GenericValidator{
 
 	public static boolean isCuit(String cuit) {
 		try {
+			cuit = cuit.trim();
+			if (cuit.startsWith("-"))
+				return true;
 			return Cuit.validar(cuit);
 		}
 		catch(Exception e) {
@@ -88,6 +91,13 @@ public class Validator extends GenericValidator{
 			return true;
 		
 		return value.matches(PropertiesManager.getProperty("application.alphabetic.pattern"));
+	}
+	
+	public static boolean isDate(String value, String datePattern, boolean strict) {
+		value = value.trim();
+		if (value.startsWith("/"))
+				return true;
+		return GenericValidator.isDate(value, datePattern, strict);
 	}
 	
 	public static boolean isNumeric(String value) {
