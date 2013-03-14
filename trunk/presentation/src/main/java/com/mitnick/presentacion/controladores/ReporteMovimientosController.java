@@ -60,8 +60,6 @@ public class ReporteMovimientosController extends BaseController {
 		logger.info("Mostrando el panel de movimientos");
 		int index = getReporteMovimientosPanel().getTable().getSelectedRow();
 		reporteDetalleMovimientosPanel.setProducto(getReporteMovimientosPanel().getModel().getMovimiento(index).getProducto());
-		reporteDetalleMovimientosPanel.setFechaInicio(getReporteMovimientosPanel().getFechaInicio());
-		reporteDetalleMovimientosPanel.setFechaFin(getReporteMovimientosPanel().getFechaFinal());
 		reporteDetalleMovimientosPanel.setStockOriginal(getReporteMovimientosPanel().getModel().getMovimiento(index).getStockOriginal());
 		reporteDetalleMovimientosPanel.setStockFinal(getReporteMovimientosPanel().getModel().getMovimiento(index).getStockFinal());
 		reporteMovimientosPanel.setVisible(false);

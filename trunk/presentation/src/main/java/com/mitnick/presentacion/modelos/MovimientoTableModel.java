@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 
 public class MovimientoTableModel extends AbstractTableModel implements TableModel{
@@ -100,8 +101,10 @@ private static final long serialVersionUID = 1L;
 				return fila.getProducto().getCodigo(); 
 			case 1: 
 				return fila.getProducto().getDescripcion();
-			case 2: 
-				return fila.getProducto().getMarca().getDescripcion();
+			case 2:
+				if (Validator.isNull(fila.getProducto().getMarca()) || Validator.isNull(fila.getProducto().getMarca().getDescripcion()))
+					return "";
+				return fila.getProducto().getMarca().getDescripcion();		
 			case 3: 
 				return fila.getStockOriginal();
 			case 4: 

@@ -580,7 +580,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 				txtDomicilio.setText(cliente.getDireccion().getDomicilio());
 			if (Validator.isNotNull(txtCodigoPostal) && Validator.isNotNull(cliente.getDireccion())	&& Validator.isNotBlankOrNull(cliente.getDireccion().getCodigoPostal()))
 				txtCodigoPostal.setText(cliente.getDireccion().getCodigoPostal());
-			if (Validator.isNotNull(cmbProvincia) && Validator.isNotNull(cliente.getDireccion()))
+			if (Validator.isNotNull(cmbProvincia) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getCiudad()))
 				cmbProvincia.getModel().setSelectedItem(cliente.getDireccion().getCiudad().getPrinvincia());
 			if (Validator.isNotNull(cmbCiudad) && Validator.isNotNull(cliente.getDireccion()))
 				cmbCiudad.getModel().setSelectedItem(cliente.getDireccion().getCiudad());

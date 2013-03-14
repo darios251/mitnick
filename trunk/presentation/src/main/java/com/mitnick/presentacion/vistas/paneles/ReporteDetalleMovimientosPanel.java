@@ -6,7 +6,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -24,7 +23,6 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.modelos.DetalleMovimientoTableModel;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
-import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.FocusTraversalOnArray;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
@@ -41,8 +39,6 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 	private JLabel lblDescripcin;
 	private JLabel lblStockOriginal;
 	private JLabel lblStokFinal;
-	private JLabel lblFechaInicial;
-	private JLabel lblFechaFinal;
 
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -52,8 +48,6 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 	private DetalleMovimientoTableModel model;
 	
 	private ProductoDto producto;
-	private Date fechaInicio;
-	private Date fechaFin;
 	private int stockOriginal;
 	private int stockFinal;
 	
@@ -97,22 +91,6 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 		lblStokFinal.setBounds(330, 35, 100, 20);
 		add(lblStokFinal);
 		
-		
-		if (fechaInicio!=null)
-			lblFechaInicial = new JLabel("Desde: " + DateHelper.getFecha(fechaInicio));
-		else
-			lblFechaInicial = new JLabel("");
-		
-		lblFechaInicial.setBounds(125, 55, 120, 20);
-		add(lblFechaInicial);
-		
-		if (fechaFin!=null)	
-			lblFechaFinal = new JLabel("Hasta: " + DateHelper.getFecha(fechaFin));
-		else
-			lblFechaFinal = new JLabel("");
-		lblFechaFinal.setBounds(330, 55, 120, 20);
-		add(lblFechaFinal);
-		
 		// Creo una tabla con un sorter
 		model = new DetalleMovimientoTableModel();
         sorter = new TableRowSorter<DetalleMovimientoTableModel>(model);
@@ -153,14 +131,6 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 		return lblStokFinal;
 	}
 
-	public JLabel getLblFechaInicial() {
-		return lblFechaInicial;
-	}
-
-	public JLabel getLblFechaFinal() {
-		return lblFechaFinal;
-	}
-
 	public JScrollPane getScrollPane() {
 		return scrollPane;
 	}
@@ -168,7 +138,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 	public JButton getBtnExportar() {
 		if(btnExportar == null) {
 			btnExportar = new JButton();
-			btnExportar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.detallesMovimientos"));
+			btnExportar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.exportar"));
 			
 			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/exportar.jpg")));
 			btnExportar.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -214,13 +184,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 		try {
 			ReporteDetalleMovimientosDto dto = new ReporteDetalleMovimientosDto();
 			dto.setProducto(producto);
-			dto.setFechaInicio(fechaInicio);
-			dto.setFechaFin(fechaFin);
 			List<MovimientoDto> movimientos = controller.reporteMovimientosDeProducto(dto);
-			if (fechaInicio==null)
-				fechaInicio = movimientos.get(0).getFecha();
-			if (fechaFin==null)
-				fechaFin = movimientos.get(movimientos.size()-1).getFecha();
 			model.setProductosMovimientos(movimientos);
 		}
 		catch (PresentationException ex) {
@@ -245,32 +209,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 		lblDescripcin.setText("Descripción: " + producto.getDescripcion());
 		lblStockOriginal.setText("Stock original: " + String.valueOf(stockOriginal));
 		lblStokFinal.setText("Stock final: " + String.valueOf(stockFinal));
-		if (fechaInicio!=null) {
-			lblFechaInicial.setText("Desde: " + DateHelper.getFecha(fechaInicio));
-		} else 
-			lblFechaInicial.setText("");
-		
-		if (fechaFin!=null) {	
-			lblFechaFinal.setText("Hasta: " + DateHelper.getFecha(fechaFin));
-		} else
-			lblFechaFinal.setText("");
 
-	}
-	
-	public Date getFechaInicio() {
-		return fechaInicio;
-	}
-
-	public void setFechaInicio(Date fechaInicio) {
-		this.fechaInicio = fechaInicio;
-	}
-
-	public Date getFechaFin() {
-		return fechaFin;
-	}
-
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
 	}
 
 	@Override

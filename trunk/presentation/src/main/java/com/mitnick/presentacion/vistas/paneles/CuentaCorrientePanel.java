@@ -290,7 +290,10 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	
 	public JLabel getLblTelefono() {
 		if(lblTelefono == null) {
-			lblTelefono = new JLabel("("+cliente.getTelefono()+")");
+			if (Validator.isNotNull(cliente.getTelefono()))
+				lblTelefono = new JLabel("("+cliente.getTelefono()+")");
+			else
+				lblTelefono = new JLabel("");
 			lblTelefono.setBounds(250, 11, 200, 14);
 		}
 		return lblTelefono;
@@ -298,7 +301,10 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	
 	public JLabel getLblDomicilio() {
 		if(lblDomicilio == null) {
-			lblDomicilio = new JLabel(cliente.getDireccion().getDomicilio());
+			if (Validator.isNotNull(cliente.getDireccion()))
+				lblDomicilio = new JLabel(cliente.getDireccion().getDomicilio());
+			else
+				lblDomicilio = new JLabel("");
 			lblDomicilio.setBounds(450, 11, 300, 14);	
 		}
 		return lblDomicilio;
@@ -335,8 +341,16 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		controller.actualizarCuotas(getCliente());
 		
 		lblNombre.setText(cliente.getNombre());
-		lblDomicilio.setText(cliente.getDireccion().getDomicilio());
-		lblTelefono.setText("("+cliente.getTelefono()+")");		
+		
+		if (Validator.isNotNull(cliente.getDireccion()))
+			lblDomicilio.setText(cliente.getDireccion().getDomicilio());
+		else
+			lblDomicilio.setText("");
+		
+		if (Validator.isNotNull(cliente.getTelefono()))
+			lblTelefono.setText("("+cliente.getTelefono()+")");		
+		else
+			lblTelefono.setText("");		
 		
 		model.setCuotas(getCuotas());
 		

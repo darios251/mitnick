@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -548,7 +549,11 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 		if (Validator.isNotNull(producto)) {
 			getTxtCodigo().setText(producto.getCodigo());
 			getTxtDescripcion().setText(producto.getDescripcion());
-			getTxtPrecioVenta().setText(producto.getPrecioVenta());
+			
+			BigDecimal precioFinal = new BigDecimal(producto.getPrecioVenta());
+			BigDecimal imp = new BigDecimal(producto.getIva());
+			precioFinal = precioFinal.add(imp);
+			getTxtPrecioVenta().setText(precioFinal.toString());
 			getTxtPrecioCompra().setText(producto.getPrecioCompra());
 			getTxtStock().setText(producto.getStock());
 			getTxtStockMinimo().setText(producto.getStockMinimo());

@@ -217,12 +217,6 @@
 		    <value>3016</value>
 		    <value>6</value>
 		</row>
-		<row>
-		    <value>2</value>
-		    <value>Av. General López 2546 piso 2 Departamento D</value>
-		    <value>2546</value>
-		    <value>6</value>
-		</row>
 	</table>
 	<table name="Empresa">
 	    <column>id</column>
@@ -252,43 +246,6 @@
 	    </row>
 	</table>
 	
-	<table name="Cliente">
-	  <column>id</column>
-	  <column>actividad</column>
-	  <column>nombre</column>
-	  <column>documento</column>
-	  <column>cuit</column>
-	  <column>telefono</column>
-	  <column>email</column>
-	  <column>fecha_nacimiento</column>
-	  <column>eliminado</column>
-	  <column>direccion_id</column>
-	  
-	  <row>
-	    <value>1</value>
-	    <value>Ingeniera en Sistemas</value>
-	    <value>Agustina Berraz</value>
-	    <value>28764155</value>
-	    <value>27-28764155-4</value>
-	    <value>154071797</value>
-	    <value>agustinabm@gmail.com</value>
-	    <value>1981-05-07</value>
-	    <value>false</value>	
-	    <value>1</value>    
-	  </row>
-	  <row>
-	    <value>2</value>
-	    <value>Ingeniero en Sistemas</value>
-	    <value>Lucas GarcÃ­a</value>
-	    <value>31115019</value>
-	    <value>20-31115019-8</value>
-	    <value>154469075</value>
-	    <value>lukasg04@gmail.com</value>
-	    <value>1984-09-15</value>
-	    <value>false</value>	
-	    <value>2</value>    
-	  </row>
-	</table>
 	
 	<table name="Tipo">
 	  <column>id</column>
@@ -330,89 +287,7 @@
 	  	<value>Prada</value>
 	  </row>
 	</table>
-	<table name="Proveedor">
-		<column>id</column>
-		<column>codigo</column>
-		<column>nombre</column>
-		<column>telefono</column>
-		<column>eliminado</column>
-		
-		<row>
-			<value>1</value>
-			<value>111</value>
-			<value>Proveedor 1</value>
-			<value>342154469075</value>
-			<value>false</value>
-		</row>
-		<row>
-			<value>2</value>
-			<value>222</value>
-			<value>Proveedor 2</value>
-			<value>342154469075</value>
-			<value>false</value>
-		</row>
-	</table>
-	<table name="Producto">
-	  <column>id</column>
-	  <column>codigo</column>
-	  <column>descripcion</column>
-	  <column>marca_id</column>
-	  <column>tipo_id</column>
-	  <column>stock</column>	  
-	  <column>stockminimo</column>
-	  <column>stockcompra</column>
-	  <column>preciocompra</column>
-	  <column>precioventa</column>
-	  <column>iva</column>
-	  <column>eliminado</column>
-	  <column>proveedor_id</column>
-	  
-	  <row>
-	    <value>0</value>
-	    <value>*</value>
-	    <value>Comodin</value>
-	    <value>1</value>
-	    <value>2</value>
-	    <value>10</value>
-	    <value>5</value>
-	    <value>7</value>
-	    <value>0</value>
-	    <value>0</value>
-	    <value>0</value>
-	    <value>false</value>
-	    <value>1</value>
-	  </row>
-	  <row>
-	    <value>1</value>
-	    <value>111</value>
-	    <value>Pantalón</value>
-	    <value>1</value>
-	    <value>2</value>
-	    <value>10</value>
-	    <value>5</value>
-	    <value>7</value>
-	    <value>210</value>
-	    <value>250</value>
-	    <value>52.5</value>
-	    <value>false</value>
-	    <value>1</value>
-	  </row>
-	  <row>
-	    <value>2</value>
-	    <value>222</value>
-	    <value>Camisa</value>
-	    <value>2</value>
-	    <value>2</value>
-	    <value>10</value>
-	    <value>5</value>
-	    <value>7</value>
-	    <value>212.5</value>
-	    <value>230.5</value>
-	    <value>52.5</value>
-	    <value>false</value>
-	    <value>1</value>
-	  </row>
-	</table>
+	
 	
 	<table name="Medio_Pago">
 	  <column>id</column>
@@ -492,5 +367,30 @@
 	        <value>V</value>
 	    </row>
 	    
+	</table>
+	<table name="Producto">
+	  <column>id</column>
+	  <column>codigo</column>
+	  <column>descripcion</column>
+	  <column>stock</column>	  
+	  <column>stockminimo</column>
+	  <column>stockcompra</column>
+	  <column>preciocompra</column>
+	  <column>precioventa</column>
+	  <column>iva</column>
+	  <column>eliminado</column>
+	  
+	  <row>
+	    <value>0</value>
+	    <value>*</value>
+	    <value>Comodin</value>
+	    <value>0</value>
+	    <value>0</value>
+	    <value>0</value>
+	    <value>0</value>
+	    <value>0</value>
+	    <value>0</value>
+	    <value>false</value>	    
+	  </row>	  
 	</table>
 </dataset>
