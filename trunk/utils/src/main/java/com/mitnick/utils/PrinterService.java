@@ -29,6 +29,8 @@ public class PrinterService {
 	protected PrintStream output = null;
 	protected DataInputStream input = null;
 	
+	private static final int TIME_TO_WAIT = 600;
+	
 	private static final String TICKET_TAG = "[TICKET]";
 	private static final String FIN_TICKET_TAG = "[FIN-TICKET]";
 	private static final String ITEM_TAG = "[ITEM]";
@@ -631,7 +633,7 @@ public class PrinterService {
 				output.println(DOMICILIO_COMERCIAL_1);
 				output.println(configuracion.getDomicilioComercial1());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getDomicilioComercial2() != null) {
@@ -639,7 +641,7 @@ public class PrinterService {
 				output.println(DOMICILIO_COMERCIAL_2);
 				output.println(configuracion.getDomicilioComercial2());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getDomicilioComercial3() != null) {
@@ -647,7 +649,7 @@ public class PrinterService {
 				output.println(DOMICILIO_COMERCIAL_3);
 				output.println(configuracion.getDomicilioComercial3());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getDomicilioFiscal1() != null) {
@@ -655,7 +657,7 @@ public class PrinterService {
 				output.println(DOMICILIO_FISCAL_1);
 				output.println(configuracion.getDomicilioFiscal1());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getDomicilioFiscal2() != null) {
@@ -663,7 +665,7 @@ public class PrinterService {
 				output.println(DOMICILIO_FISCAL_2);
 				output.println(configuracion.getDomicilioFiscal2());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getDomicilioFiscal3() != null) {
@@ -671,7 +673,7 @@ public class PrinterService {
 				output.println(DOMICILIO_FISCAL_3);
 				output.println(configuracion.getDomicilioFiscal3());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getIngresosBrutos1() != null) {
@@ -679,7 +681,7 @@ public class PrinterService {
 				output.println(INGRESOS_BRUTOS_1);
 				output.println(configuracion.getIngresosBrutos1());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getIngresosBrutos2() != null) {
@@ -687,7 +689,7 @@ public class PrinterService {
 				output.println(INGRESOS_BRUTOS_2);
 				output.println(configuracion.getIngresosBrutos2());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getIngresosBrutos3() != null) {
@@ -695,7 +697,7 @@ public class PrinterService {
 				output.println(INGRESOS_BRUTOS_3);
 				output.println(configuracion.getIngresosBrutos3());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			if(configuracion.getFechaInicioActividades() != null) {
@@ -703,7 +705,7 @@ public class PrinterService {
 				output.println(INGRESO_ACTIVIDADES);
 				output.println(configuracion.getFechaInicioActividades());
 				checkStatus();
-				Thread.sleep(1000);
+				Thread.sleep(TIME_TO_WAIT);
 			}
 			
 			output.println(FIN_TICKET_TAG);
@@ -744,42 +746,62 @@ public class PrinterService {
 			output.println(INFO_CONFIGURACION);
 			output.println(DOMICILIO_COMERCIAL_1);
 			configuracion.setDomicilioComercial1(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 
 			output.println(INFO_CONFIGURACION);
 			output.println(DOMICILIO_COMERCIAL_2);
 			configuracion.setDomicilioComercial2(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(DOMICILIO_COMERCIAL_3);
 			configuracion.setDomicilioComercial3(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(DOMICILIO_FISCAL_1);
 			configuracion.setDomicilioFiscal1(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(DOMICILIO_FISCAL_2);
 			configuracion.setDomicilioFiscal2(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(DOMICILIO_FISCAL_3);
 			configuracion.setDomicilioFiscal3(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(INGRESOS_BRUTOS_1);
 			configuracion.setIngresosBrutos1(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(INGRESOS_BRUTOS_2);
 			configuracion.setIngresosBrutos2(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(INGRESOS_BRUTOS_3);
 			configuracion.setIngresosBrutos3(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(INFO_CONFIGURACION);
 			output.println(INGRESO_ACTIVIDADES);
 			configuracion.setFechaInicioActividades(input.readLine());
+			Thread.sleep(TIME_TO_WAIT);
+			checkStatus();
 			
 			output.println(FIN_TICKET_TAG);
 			checkStatus();
@@ -799,7 +821,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(), e);
 		}
 		finally {
 			closeConnection();
