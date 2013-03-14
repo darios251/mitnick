@@ -171,13 +171,6 @@ public class ConfiguracionImpresoraDialog extends BaseDialog {
 		
 		setLocationRelativeTo(null);
 		
-		setVisible(true);
-	}
-	
-	@Override
-	public void setVisible(boolean b) {
-		super.setVisible(b);
-		
 		configuracion = printerService.getInfoConfiguracion();
 		txtDomicilioComercial1.setText(configuracion.getDomicilioComercial1());
 		txtDomicilioComercial2.setText(configuracion.getDomicilioComercial2());
@@ -189,6 +182,8 @@ public class ConfiguracionImpresoraDialog extends BaseDialog {
 		txtIngresosBrutos2.setText(configuracion.getIngresosBrutos2());
 		txtIngresosBrutos3.setText(configuracion.getIngresosBrutos3());
 		txtFechaInicioActividades.setText(configuracion.getFechaInicioActividades());
+		
+		setVisible(true);
 	}
 	
 	protected int mostrarMensajeError ( String message ) {
