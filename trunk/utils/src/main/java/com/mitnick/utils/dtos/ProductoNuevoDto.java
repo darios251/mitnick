@@ -22,7 +22,7 @@ public class ProductoNuevoDto extends BaseDto {
 	@MitnickField(required=true, fieldType=FieldType.BIGDECIMAL)
 	private String precioVenta;
 	
-	@MitnickField(required=true, fieldType=FieldType.BIGDECIMAL)
+	@MitnickField(fieldType=FieldType.BIGDECIMAL)
 	private String precioCompra;
 	
 	@MitnickField(fieldType=FieldType.BIGDECIMAL)
