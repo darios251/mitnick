@@ -205,6 +205,7 @@ public class ClienteController extends BaseController {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
+			index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
@@ -230,6 +231,7 @@ public class ClienteController extends BaseController {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
+			index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
