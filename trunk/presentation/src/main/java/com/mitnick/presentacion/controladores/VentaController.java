@@ -131,7 +131,7 @@ public class VentaController extends BaseController {
 		if (VentaManager.getVentaActual().getProductos().isEmpty())
 			throw new PresentationException(
 					"error.venta.pagos.productos.vacios");
-		else if (BigDecimal.ZERO.equals(VentaManager.getVentaActual()
+		else if (!Validator.isMoreThanZero(VentaManager.getVentaActual()
 				.getTotal()))
 			throw new PresentationException("error.venta.pagos.total.cero");
 		ultimoPanelMostrado = ventaClientePanel;
@@ -545,6 +545,13 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método validarCliente");
 	}
 
+
+	public void validarTotalVenta() {
+		if (!Validator.isMoreThanZero(VentaManager.getVentaActual().getTotal()))
+			throw new PresentationException(
+					"error.venta.pagos.total.cero");
+	}
+	
 	public void desagregarCliente() {
 		logger.debug("Entrando al método desagregarCliente");
 

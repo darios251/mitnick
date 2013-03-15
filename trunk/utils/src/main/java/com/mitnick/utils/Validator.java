@@ -26,6 +26,11 @@ public class Validator extends GenericValidator{
 		return !Validator.isNull(object);
 	}
 	
+	public static boolean isMoreThanZero(BigDecimal value)
+	{
+		return value.compareTo(new BigDecimal(0))>0;
+	}
+	
 	public static boolean isNotBlankOrNull(String object)
 	{
 		return !Validator.isBlankOrNull(object);
