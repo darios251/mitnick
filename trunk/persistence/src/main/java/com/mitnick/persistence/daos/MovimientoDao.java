@@ -55,10 +55,10 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
 		criteria.createAlias("producto", "p");
-		if(!Validator.isBlankOrNull(filtro.getCodigo())){
+		if(Validator.isNotBlankOrNull(filtro.getCodigo())){
 			criteria.add(Restrictions.ilike("p.codigo", filtro.getCodigo(), MatchMode.START));
 		}
-		if(!Validator.isBlankOrNull(filtro.getDescripcion())){
+		if(Validator.isNotBlankOrNull(filtro.getDescripcion())){
 			criteria.add(Restrictions.ilike("p.descripcion", filtro.getDescripcion(), MatchMode.ANYWHERE));
 		}
 		if(Validator.isNotNull(filtro.getMarca()) && filtro.getMarca().getId()>=0){

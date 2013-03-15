@@ -29,11 +29,11 @@ public class ProveedorDAO extends GenericDaoHibernate<Proveedor, Long>  implemen
 	public List<Proveedor> findByFiltro(ConsultaProveedorDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Proveedor.class);
 		
-		if(!Validator.isBlankOrNull(filtro.getCodigo())){
+		if(Validator.isNotBlankOrNull(filtro.getCodigo())){
 			criteria.add(Restrictions.ilike("codigo", filtro.getCodigo()));
 		}
 		
-		if(!Validator.isBlankOrNull(filtro.getNombre())){
+		if(Validator.isNotBlankOrNull(filtro.getNombre())){
 			criteria.add(Restrictions.ilike("nombre", filtro.getNombre()));
 		}
 		

@@ -102,7 +102,7 @@ public class Validator extends GenericValidator{
 	
 	public static boolean isNumeric(String value) {
 		if(isBlankOrNull(value))
-			return true;
+			return false;
 		
 		return value.matches(PropertiesManager.getProperty("application.numeric.pattern"));
 	}

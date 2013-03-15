@@ -591,7 +591,11 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 				cmbCiudad.getModel().setSelectedItem(cliente.getDireccion().getCiudad());
 			else
 				cmbCiudad.setSelectedItem(null);
+		} else {
+			cmbProvincia.setSelectedItem(null);
+			cmbCiudad.setSelectedItem(null);
 		}
+			
 	}
 
 	@Override
