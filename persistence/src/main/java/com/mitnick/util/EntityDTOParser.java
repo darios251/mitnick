@@ -185,21 +185,26 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		if (Validator.isNotNull(clienteDto.getFechaNacimiento()) && Validator.isDate(clienteDto.getFechaNacimiento(), MitnickConstants.DATE_FORMAT, true))
 			cliente.setFechaNacimiento(DateHelper.getFecha(clienteDto.getFechaNacimiento()));
 		cliente.setTelefono(clienteDto.getTelefono());
-		Ciudad ciudad = null;
-		if (Validator.isNotNull(clienteDto.getDireccion())&& Validator.isNotNull(clienteDto.getDireccion().getCiudad()))
-			ciudad = (Ciudad) ciudadDao.get(new Long(clienteDto.getDireccion().getCiudad().getId()));
 		
-		Direccion direccion = cliente.getDireccion();
-
-		if(Validator.isNull(direccion) && Validator.isNotNull(clienteDto.getDireccion())) {
-			direccion = new Direccion();	
+		//si se desea asignar una direccion para el cliente
+		if (Validator.isNotNull(clienteDto.getDireccion())&&Validator.isNotBlankOrNull(clienteDto.getDireccion().getDomicilio())){
+			Direccion direccion = cliente.getDireccion();
+			
+			if (Validator.isNull(direccion))
+				direccion = new Direccion();
+			
+			Ciudad ciudad = null;
+			if (Validator.isNotNull(clienteDto.getDireccion().getCiudad()))
+				ciudad = (Ciudad) ciudadDao.get(new Long(clienteDto.getDireccion().getCiudad().getId()));
+			
 			direccion.setCodigoPostal(clienteDto.getDireccion().getCodigoPostal());
 			direccion.setDomicilio(clienteDto.getDireccion().getDomicilio());
 			direccion.setCiudad(ciudad);
-		} else if (Validator.isNotNull(direccion))
-			direccion.setCiudad(ciudad);
+			cliente.setDireccion(direccion);
+		} else
+			cliente.setDireccion(null);
+
 		
-		cliente.setDireccion(direccion);
 
 		return cliente;
 	}

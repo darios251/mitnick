@@ -28,6 +28,7 @@ import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
@@ -127,7 +128,23 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		venta.setCliente(cliente);
 		return venta;
 	}
+	
+	@Override
+	public VentaDto desagregarCliente(VentaDto venta) {
+		venta.setCliente(null);
+		return venta;
+	}
 
+	@Override
+	public void validarCliente(ClienteDto cliente) {
+		if (Validator.isBlankOrNull(cliente.getCuit()))
+			throw new BusinessException("error.venta.cliente.cuit.null", "El cuit del cliente es nulo.");
+		if (Validator.isBlankOrNull(cliente.getDocumento()))
+			throw new BusinessException("error.venta.cliente.documento.null", "El documento del cliente es nulo.");
+		if (Validator.isNull(cliente.getDireccion())||Validator.isBlankOrNull(cliente.getDireccion().getDomicilio()))
+			throw new BusinessException("error.venta.cliente.domicilio.null", "El domicilio del cliente es nulo.");
+	}
+	
 	@Override
 	public VentaDto quitarCliente(VentaDto venta) {
 		venta.setCliente(null);

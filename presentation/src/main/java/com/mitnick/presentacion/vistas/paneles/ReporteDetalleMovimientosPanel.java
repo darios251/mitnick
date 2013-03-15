@@ -137,10 +137,10 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 
 	public JButton getBtnExportar() {
 		if(btnExportar == null) {
-			btnExportar = new JButton();
+			btnExportar = new JButton(PropertiesManager.getProperty("productoPanel.label.exportar"));
 			btnExportar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.exportar"));
 			
-			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/exportar.jpg")));
+//			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/exportar.jpg")));
 			btnExportar.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnExportar.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnExportar.setMargin(new Insets(-1, -1, -1, -1));
@@ -157,7 +157,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 	
 	public JButton getBtnVolver() {
 		if(btnVolver == null) {
-			btnVolver = new JButton();
+			btnVolver = new JButton(PropertiesManager.getProperty("movimientoStock.label.volver"));
 			btnVolver.setToolTipText(PropertiesManager.getProperty("movimientoStock.tooltip.volver"));
 			
 			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));

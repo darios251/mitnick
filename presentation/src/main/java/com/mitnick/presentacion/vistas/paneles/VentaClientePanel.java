@@ -120,8 +120,8 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	public JButton getBtnBuscar() {
 		if(btnBuscar == null) {
-			btnBuscar = new JButton("");
-			btnBuscar.setToolTipText("Buscar Cliente");
+			btnBuscar = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.buscar"));
+			btnBuscar.setToolTipText(PropertiesManager.getProperty("ventaClientePanel.tooltip.buscar"));
 			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar_cliente.png")));
 			btnBuscar.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnBuscar.setVerticalTextPosition( SwingConstants.BOTTOM );
@@ -159,13 +159,27 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	protected void continuar() {
 		try {
 			TipoCompradorDto tipoComprador = (TipoCompradorDto) cmbTipoComprador.getSelectedItem();
+			
 			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
+				controller.validarCliente();
 				controller.agregarCliente();
 				
 				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.clienteOK");
 				if (mostrarMsg)
 					mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
+			} else {
+				int index = getTable().getSelectedRow();
+				if (index>-1){
+					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.consulta.agregar"), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.YES_NO_OPTION);
+					if (option == JOptionPane.YES_OPTION)
+						controller.agregarCliente();
+					else
+						controller.desagregarCliente();
+				} else {
+					controller.desagregarCliente();
+				}
 			}
+			
 			if (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA)
 				controller.mostrarPagosPanel();
 			else {
@@ -174,9 +188,9 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 				
 				int option = JOptionPane.CANCEL_OPTION;
 				if (deuda.compareTo(new BigDecimal(0))>0) 
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.deuda", new Object[] {devolucion, deuda}), "Informaci�n", JOptionPane.OK_CANCEL_OPTION);	
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.deuda", new Object[] {devolucion, deuda}), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.OK_CANCEL_OPTION);	
 				else
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito", new Object[] {devolucion, devolucion}), "Informaci�n", JOptionPane.OK_CANCEL_OPTION);
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito", new Object[] {devolucion, devolucion}), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.OK_CANCEL_OPTION);
 				
 				if (option != JOptionPane.CANCEL_OPTION)					
 					controller.finalizarVenta();
@@ -223,8 +237,8 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	public JButton getBtnNuevo() {
 		if (btnNuevo == null) {
-			btnNuevo = new JButton("");
-			btnNuevo.setToolTipText("Agregar Cliente");
+			btnNuevo = new JButton(PropertiesManager.getProperty("clientePanel.button.label.agregarCliente"));
+			btnNuevo.setToolTipText(PropertiesManager.getProperty("clientePanel.button.tooltip.agregarCliente"));
 			btnNuevo.setIcon(new ImageIcon(this.getClass().getResource("/img/nuevo_cliente.png")));
 			btnNuevo.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnNuevo.setVerticalTextPosition( SwingConstants.BOTTOM );
@@ -267,8 +281,8 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	public JButton getBtnVolver() {
 		if(btnVolver == null) {
-			btnVolver = new JButton("Volver");
-			btnVolver.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.volver"));
+			btnVolver = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.volver"));
+			btnVolver.setToolTipText(PropertiesManager.getProperty("ventaClientePanel.tooltip.volver"));
 			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnVolver.setMargin(new Insets(-1, -1, -1, -1));

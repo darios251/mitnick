@@ -562,7 +562,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 			if (getCmbMarca().getModel().getSize() > 0)
 				getCmbMarca().setSelectedItem(producto.getMarca());
 			if (getCmbTipo().getModel().getSize() > 0)
-				getCmbMarca().setSelectedItem(producto.getTipo());
+				getCmbTipo().setSelectedItem(producto.getTipo());
 			if (getCmbProveedores().getModel().getSize() > 0)
 				getCmbProveedores().setSelectedItem(producto.getProveedor());
 		}

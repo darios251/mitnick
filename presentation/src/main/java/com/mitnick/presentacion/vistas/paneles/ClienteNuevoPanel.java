@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -506,7 +507,9 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 				public void actionPerformed(ActionEvent e) {
 					cmbCiudad.removeAllItems();
 					try {
-						((MitnickComboBoxModel<CiudadDto>) cmbCiudad.getModel()).addItems(controller.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem()));
+						List<CiudadDto> ciudades = controller.obtenerCiudadesPorProvincia((ProvinciaDto) cmbProvincia.getSelectedItem());
+						if (Validator.isNotNull(ciudades))
+							((MitnickComboBoxModel<CiudadDto>) cmbCiudad.getModel()).addItems(ciudades);
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
 					}
@@ -582,8 +585,12 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 				txtCodigoPostal.setText(cliente.getDireccion().getCodigoPostal());
 			if (Validator.isNotNull(cmbProvincia) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getCiudad()))
 				cmbProvincia.getModel().setSelectedItem(cliente.getDireccion().getCiudad().getPrinvincia());
+			else
+				cmbProvincia.setSelectedItem(null);
 			if (Validator.isNotNull(cmbCiudad) && Validator.isNotNull(cliente.getDireccion()))
 				cmbCiudad.getModel().setSelectedItem(cliente.getDireccion().getCiudad());
+			else
+				cmbCiudad.setSelectedItem(null);
 		}
 	}
 

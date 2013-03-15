@@ -443,6 +443,46 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarCliente");
 	}
 	
+	public void validarCliente() {
+		logger.debug("Entrando al método validarCliente");
+		
+		ClienteDto cliente = null;
+		try {
+			int index = getVentaClientePanel().getTable().getSelectedRow();
+			cliente = getVentaClientePanel().getModel().getCliente(index);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getVentaClientePanel().getModel().getRowCount() == 0) {
+				throw new PresentationException("error.ventaClientePanel.clientes.vacio");
+			}
+			else {
+				throw new PresentationException("error.ventaClientePanel.cliente.noSeleccionado");
+			}
+		}
+		
+		try {
+			ventaServicio.validarCliente(cliente);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+		
+		logger.debug("Saliendo del método validarCliente");
+	}
+	
+	public void desagregarCliente() {
+		logger.debug("Entrando al método desagregarCliente");
+		
+		try {
+			ventaServicio.desagregarCliente(VentaManager.getVentaActual());
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+				
+		logger.debug("Saliendo del método desagregarCliente");
+	}
+	
 	public void setTipoResponsable(TipoCompradorDto tipoComprador) {
 		VentaManager.getVentaActual().setTipoResponsabilidad(tipoComprador);
 	}
