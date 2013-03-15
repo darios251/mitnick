@@ -79,10 +79,14 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
 		}
-		getCmbTipoComprador().setSelectedIndex(0);
 		deshabilitarComponentes();
 	}
 
+		
+	public void limpiarComboPantalla() {
+		getCmbTipoComprador().setSelectedIndex(0);
+	}
+	
 	@Override
 	protected void initializeComponents() {
 		setLayout(null);
