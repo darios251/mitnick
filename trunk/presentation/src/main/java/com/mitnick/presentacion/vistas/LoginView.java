@@ -57,6 +57,13 @@ public class LoginView extends JDialog {
 		txtUser.setBounds(131, 25, 86, 20);
 		getContentPane().add(txtUser);
 		txtUser.setColumns(10);
+		txtUser.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if((int)e.getKeyChar() == KeyEvent.VK_ENTER)
+					doLogin();
+			}
+		});
 		
 		JLabel lblNewLabel_1 = new JLabel(PropertiesManager.getProperty("loginView.label.password"));
 		lblNewLabel_1.setBounds(36, 63, 85, 14);

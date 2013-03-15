@@ -9,13 +9,15 @@ import javax.swing.table.TableModel;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.ClienteDto;
 
-public class ClienteTableModel extends AbstractTableModel implements TableModel{
+public class ClienteTableModel extends AbstractTableModel implements TableModel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private List<String> columnNames;
 	private List<ClienteDto> data;
 	
+	protected int[] row;
+
 	public ClienteTableModel() {
 		columnNames = new ArrayList<String>();
 		columnNames.add(PropertiesManager.getProperty("clienteTableModel.nombre"));
@@ -113,4 +115,5 @@ public class ClienteTableModel extends AbstractTableModel implements TableModel{
 		data.set(rowIndex, fila);
 		fireTableCellUpdated(rowIndex, columnIndex);
 	}
+	  
 }
