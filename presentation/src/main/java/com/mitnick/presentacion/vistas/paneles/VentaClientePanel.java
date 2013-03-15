@@ -146,6 +146,8 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	protected void continuar() {
 		try {
+			controller.validarTotalVenta();
+			
 			TipoCompradorDto tipoComprador = (TipoCompradorDto) cmbTipoComprador.getSelectedItem();
 			
 			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
