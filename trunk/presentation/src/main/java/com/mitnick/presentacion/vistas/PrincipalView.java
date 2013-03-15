@@ -46,6 +46,7 @@ import com.mitnick.presentacion.vistas.paneles.ConfiguracionImpresoraDialog;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.anotaciones.View;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -203,6 +204,11 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
+					if (Validator.isNotNull(VentaManager.getVentaActual()) && Validator.isNotEmptyOrNull(VentaManager.getVentaActual().getProductos())) {
+						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION);
+						if (option == JOptionPane.CANCEL_OPTION)
+							return;	
+					}
 					logger.info("Agregando el panel de ventas al tabbedPane");
 					getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
 					ventaController.crearNuevaVenta(MitnickConstants.VENTA);
@@ -211,6 +217,7 @@ public class PrincipalView extends JFrame
 					ventaController.mostrarUltimoPanelMostrado();
 					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
 					getJTabbedPane().setVisible(true);
+					ventaController.limpiarPanelClienteVenta();
 					ventaController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
@@ -235,6 +242,11 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
+					if (Validator.isNotNull(VentaManager.getVentaActual()) && Validator.isNotEmptyOrNull(VentaManager.getVentaActual().getProductos())) {
+						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION);
+						if (option == JOptionPane.CANCEL_OPTION)
+							return;	
+					}
 					String nroTicket = JOptionPane.showInputDialog(PropertiesManager.getProperty("ventaPanel.devolucion.nroTicket"));
 					if (nroTicket == null)
 						return;

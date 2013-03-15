@@ -83,6 +83,11 @@ public class VentaController extends BaseController {
 	public void guardarCuotas(List<CuotaDto> cuotas) {
 		ventaServicio.guardarCuotas(VentaManager.getVentaActual(), cuotas);
 	}
+	
+	public void limpiarPanelClienteVenta(){
+		if (Validator.isNotNull(ventaClientePanel))
+			ventaClientePanel.limpiarComboPantalla();
+	}
 
 	public void mostrarBuscarArticuloPanel() {
 		ultimoPanelMostrado = buscarProductoPanel;
