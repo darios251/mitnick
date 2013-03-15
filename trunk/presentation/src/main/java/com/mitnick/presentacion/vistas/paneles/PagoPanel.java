@@ -512,10 +512,10 @@ public class PagoPanel extends BasePanel<VentaController> {
 	public void finalizarVenta() {
 		try {
 			int tipo = VentaManager.getVentaActual().getTipo();
+			((VentaController) controller).limpiarVenta();
 			if (tipo == MitnickConstants.VENTA){
 				mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
 				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
-				((VentaController) controller).limpiarVenta();
 				((VentaController) controller).mostrarVentasPanel();
 			} else {
 				BigDecimal deuda = controller.obtenerSaldoDeudorCliente();

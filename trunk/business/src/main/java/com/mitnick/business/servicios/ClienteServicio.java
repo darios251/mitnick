@@ -311,9 +311,9 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			VentaHelper.calcularTotales(cuotas.get(i));
 		}
 
-		Comprobante comprobante = clienteDao.generarComprobante(cuotas);
-		
 		ventaDao.actualizarCreditos(cuotas);
+		
+		Comprobante comprobante = clienteDao.generarComprobante(cuotas);
 		
 		for (int i = 0; i < cuotas.size(); i++) {
 			Cuota cuotaEnt = saveCuota(cuotas.get(i));

@@ -99,7 +99,8 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		List<Credito> creditos = getHibernateTemplate().findByCriteria(criteria);
 		if (creditos!=null && !creditos.isEmpty()) {
 			Credito credito = creditos.get(0);
-			credito.setMontoUsado(montoUsado);
+			BigDecimal montoUsadoAntes=credito.getMontoUsado();
+			credito.setMontoUsado(montoUsado.add(montoUsadoAntes));
 			getHibernateTemplate().saveOrUpdate(credito);	
 		}
 		
