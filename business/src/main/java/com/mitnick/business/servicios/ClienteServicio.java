@@ -172,37 +172,22 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	@Transactional
 	@Override
-	public void guardarCuotas(List<CuotaDto> cuotasDtos) {
-
-		try {
-			for (int i = 0; i < cuotasDtos.size(); i++) {
-				CuotaDto cuotaDto = cuotasDtos.get(i);
-				guardarCuota(cuotaDto);
-			}
-		} catch (PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar guardar las cuotas");
-		}
-	}
-
-	@Transactional
-	@Override
 	public void guardarCuota(CuotaDto cuotaDto) {
 
 		try {
-			saveCuota(cuotaDto);
+			saveCuota(cuotaDto, null);
 		} catch (PersistenceException e) {
 			throw new BusinessException(e, "Error al intentar guardar las cuotas");
 		}
 	}
 
 	@Transactional
-
-	private Cuota saveCuota(CuotaDto cuotaDto) {
+	private Cuota saveCuota(CuotaDto cuotaDto, Date fechaPago) {
 
 		try {
 			@SuppressWarnings("unchecked")
 			Cuota cuota = (Cuota) entityDTOParser.getEntityFromDto(cuotaDto);
-			cuota.setFechaPago(new Date());
+			cuota.setFechaPago(fechaPago);
 			cuota = cuotaDao.saveOrUpdate(cuota);
 			cuotaDto.setId(cuota.getId());
 			return cuota;
@@ -210,7 +195,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			throw new BusinessException(e, "Error al intentar guardar las cuotas");
 		}
 	}
-	
+		
 	@Override
 	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas) {
 		if (pago.isComprobante())
@@ -315,8 +300,8 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		
 		Comprobante comprobante = clienteDao.generarComprobante(cuotas);
 		
-		for (int i = 0; i < cuotas.size(); i++) {
-			Cuota cuotaEnt = saveCuota(cuotas.get(i));
+		for (int i = 0; i < cuotas.size(); i++) {			
+			Cuota cuotaEnt = saveCuota(cuotas.get(i), new Date());
 			if (cuotaEnt.getPagos()!=null) {
 				Iterator<Pago> pagosIt = cuotaEnt.getPagos().iterator();
 				while (pagosIt.hasNext()){
@@ -324,7 +309,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 					if (!pago.isComprobante()) {
 						comprobante.addPago(pago);						
 					}
-					
+					pago.setFecha(new Date());
 					pago.setComprobante(true);
 				}
 			}

@@ -39,9 +39,6 @@ public interface IClienteServicio {
 	void eliminarCuota(CuotaDto cuota);
 	
 	@Secured(value={"ROLE_ADMIN"})
-	void guardarCuotas(List<CuotaDto> cuotasDtos);
-	
-	@Secured(value={"ROLE_ADMIN"})
 	public void guardarCuota(CuotaDto cuotaDto);
 
 	@Secured(value={"ROLE_ADMIN"})
