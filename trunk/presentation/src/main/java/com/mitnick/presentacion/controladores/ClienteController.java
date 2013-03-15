@@ -114,6 +114,10 @@ public class ClienteController extends BaseController {
 	}
 	
 	public List<CiudadDto> obtenerCiudadesPorProvincia(ProvinciaDto provincia) {
+		
+		if (Validator.isNull(provincia))
+			return null;
+		
 		List<CiudadDto> ciudades = null;
 		
 		try {

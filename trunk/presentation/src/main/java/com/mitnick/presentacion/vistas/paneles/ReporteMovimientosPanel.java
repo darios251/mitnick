@@ -122,8 +122,8 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		add(getScrollPane());
 
 		add(getBtnBuscar());
-		add(getBtnCompra());
 		add(getBtnReporteVenta());
+		add(getBtnCompra());
 		add(getBtnDetalleMovimientos());
 		add(getBtnExportar());
 
@@ -182,9 +182,10 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 	public JButton getBtnBuscar() {
 		if (btnBuscar == null) {
-			btnBuscar = new JButton();
+			btnBuscar = new JButton(PropertiesManager
+					.getProperty("productoPanel.button.buscar.texto"));
 			btnBuscar.setToolTipText(PropertiesManager
-					.getProperty("productoPanel.tooltip.buscarProducto"));
+					.getProperty("productoPanel.button.buscar.tooltip"));
 
 			btnBuscar.setIcon(new ImageIcon(this.getClass().getResource(
 					"/img/buscar.png")));
@@ -233,7 +234,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 	public JLabel getLblFechaInicio() {
 		if (lblFechaInicio == null) {
-			lblFechaInicio = new JLabel("Inicio");
+			lblFechaInicio = new JLabel(PropertiesManager.getProperty("label.inicio"));
 			lblFechaInicio.setBounds(125, 95, 90, 20);
 		}
 		return lblFechaInicio;
@@ -241,7 +242,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 	public JLabel getLblFechaFin() {
 		if (lblFechaFin == null) {
-			lblFechaFin = new JLabel("Fin");
+			lblFechaFin = new JLabel(PropertiesManager.getProperty("label.fin"));
 			lblFechaFin.setBounds(330, 95, 60, 20);
 		}
 		return lblFechaFin;
@@ -255,52 +256,40 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		return scrollPane;
 	}
 
-	public JButton getBtnExportar() {
-		if (btnExportar == null) {
-			btnExportar = new JButton();
-			btnExportar.setToolTipText(PropertiesManager
-					.getProperty("productoPanel.tooltip.exportar"));
 
-			btnExportar.setIcon(new ImageIcon(this.getClass().getResource(
-					"/img/exportar.jpg")));
-			btnExportar.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnExportar.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnExportar.setMargin(new Insets(-1, -1, -1, -1));
 
-			btnExportar.addActionListener(new ActionListener() {
+	public JButton getBtnReporteVenta() {
+		if (btnReporteVenta == null) {
+			btnReporteVenta = new JButton(PropertiesManager
+					.getProperty("movmientosPanel.label.producto.reporteVenta"));
+			btnReporteVenta.setToolTipText(PropertiesManager
+					.getProperty("movmientosPanel.tooltip.producto.reporteVenta"));
+
+//			btnReporteVenta.setIcon(new ImageIcon(this.getClass()
+//					.getResource("/img/data_find.png")));
+			btnReporteVenta.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVenta.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVenta.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					controller.exportarMovimientosProducto(getModel().getMovimientoProducto());
+					ReporteMovimientosDto dto = new ReporteMovimientosDto();
+					dto.setCodigo(getTxtProductoCodigo().getText());
+					dto.setDescripcion(getTxtProductoDescripcion().getText());
+					dto.setFechaInicio(getFechaInicio());
+					dto.setFechaFin(getFechaFinal());
+					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
+					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
+										
+					controller.consultarVentaPorArticulo(dto);
 				}
 			});
 
-			btnExportar.setBounds(735, 370, 60, 60);
+			btnReporteVenta.setBounds(735, 160, 60, 60);
 		}
-		return btnExportar;
+		return btnReporteVenta;
 	}
-
-	public JButton getBtnDetalleMovimientos() {
-		if (btnDetalleMovimientos == null) {
-			btnDetalleMovimientos = new JButton();
-			btnDetalleMovimientos.setToolTipText(PropertiesManager
-					.getProperty("productoPanel.tooltip.detallesMovimientos"));
-
-			btnDetalleMovimientos.setIcon(new ImageIcon(this.getClass()
-					.getResource("/img/data_find.png")));
-			btnDetalleMovimientos.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnDetalleMovimientos.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnDetalleMovimientos.setMargin(new Insets(-1, -1, -1, -1));
-
-			btnDetalleMovimientos.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					controller.mostrarMovimientosPanel();
-				}
-			});
-
-			btnDetalleMovimientos.setBounds(735, 300, 60, 60);
-		}
-		return btnDetalleMovimientos;
-	}
-
+	
 	public JButton getBtnCompra() {
 		if (btnCompra == null) {
 			btnCompra = new JButton(PropertiesManager
@@ -334,36 +323,51 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		return btnCompra;
 	}
 	
-	public JButton getBtnReporteVenta() {
-		if (btnReporteVenta == null) {
-			btnReporteVenta = new JButton(PropertiesManager
-					.getProperty("movmientosPanel.label.producto.reporteVenta"));
-			btnReporteVenta.setToolTipText(PropertiesManager
-					.getProperty("movmientosPanel.tooltip.producto.reporteVenta"));
+	public JButton getBtnDetalleMovimientos() {
+		if (btnDetalleMovimientos == null) {
+			btnDetalleMovimientos = new JButton(PropertiesManager
+					.getProperty("productoPanel.label.detallesMovimientos"));
+			btnDetalleMovimientos.setToolTipText(PropertiesManager
+					.getProperty("productoPanel.tooltip.detallesMovimientos"));
 
-//			btnReporteVenta.setIcon(new ImageIcon(this.getClass()
-//					.getResource("/img/data_find.png")));
-			btnReporteVenta.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteVenta.setMargin(new Insets(-1, -1, -1, -1));
+			btnDetalleMovimientos.setIcon(new ImageIcon(this.getClass()
+					.getResource("/img/data_find.png")));
+			btnDetalleMovimientos.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnDetalleMovimientos.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnDetalleMovimientos.setMargin(new Insets(-1, -1, -1, -1));
 
-			btnReporteVenta.addActionListener(new ActionListener() {
+			btnDetalleMovimientos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ReporteMovimientosDto dto = new ReporteMovimientosDto();
-					dto.setCodigo(getTxtProductoCodigo().getText());
-					dto.setDescripcion(getTxtProductoDescripcion().getText());
-					dto.setFechaInicio(getFechaInicio());
-					dto.setFechaFin(getFechaFinal());
-					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
-					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
-										
-					controller.consultarVentaPorArticulo(dto);
+					controller.mostrarMovimientosPanel();
 				}
 			});
 
-			btnReporteVenta.setBounds(735, 169, 60, 60);
+			btnDetalleMovimientos.setBounds(735, 300, 60, 60);
 		}
-		return btnReporteVenta;
+		return btnDetalleMovimientos;
+	}
+	
+	public JButton getBtnExportar() {
+		if (btnExportar == null) {
+			btnExportar = new JButton(PropertiesManager
+					.getProperty("productoPanel.label.exportar"));
+			btnExportar.setToolTipText(PropertiesManager
+					.getProperty("productoPanel.tooltip.exportar"));
+
+//			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/exportar.jpg")));
+			btnExportar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnExportar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnExportar.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnExportar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					controller.exportarMovimientosProducto(getModel().getMovimientoProducto());
+				}
+			});
+
+			btnExportar.setBounds(735, 370, 60, 60);
+		}
+		return btnExportar;
 	}
 	
 	protected void setFocusTraversalPolicy() {

@@ -37,6 +37,12 @@ public interface IVentaServicio {
 	VentaDto agregarCliente(ClienteDto cliente, VentaDto venta);
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	void validarCliente(ClienteDto cliente);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	VentaDto desagregarCliente(VentaDto venta);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	VentaDto quitarCliente(VentaDto venta);
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
