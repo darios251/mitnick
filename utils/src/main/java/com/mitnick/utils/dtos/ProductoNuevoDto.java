@@ -7,7 +7,7 @@ public class ProductoNuevoDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 
-	@MitnickField(required=true, fieldType=FieldType.INTEGER)
+	@MitnickField(required=true)
 	private String codigo;
 	
 	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=255)

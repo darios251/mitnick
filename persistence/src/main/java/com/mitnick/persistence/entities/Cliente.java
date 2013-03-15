@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 
 import org.appfuse.model.BaseObject;
 
+import com.mitnick.utils.Validator;
+
 @Entity(name = "Cliente")
 public class Cliente extends BaseObject implements Serializable {
 	
@@ -100,9 +102,11 @@ public class Cliente extends BaseObject implements Serializable {
 	}
 
 	public void setCuit(String cuit) {
-		cuit = cuit.trim();
-		if (cuit.startsWith("-"))
-			cuit = null;
+		if (Validator.isNotNull(cuit)){
+			cuit = cuit.trim();
+			if (cuit.startsWith("-"))
+				cuit = null;
+		}
 		this.cuit = cuit;
 	}
 

@@ -27,7 +27,7 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
 
 		if(Validator.isNotNull(filtro.getFechaInicio())){
-			criteria.add(Restrictions.gt("fecha", filtro.getFechaInicio()));
+			criteria.add(Restrictions.ge("fecha", filtro.getFechaInicio()));
 		}
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
@@ -49,7 +49,7 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		DetachedCriteria criteria = DetachedCriteria.forClass(Movimiento.class);
 
 		if(Validator.isNotNull(filtro.getFechaInicio())){
-			criteria.add(Restrictions.gt("fecha", filtro.getFechaInicio()));
+			criteria.add(Restrictions.ge("fecha", filtro.getFechaInicio()));
 		}
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));

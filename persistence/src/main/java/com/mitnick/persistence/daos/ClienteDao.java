@@ -230,11 +230,13 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("fechaInicioActividadEmpresa", "01/12/1988");
 			parameters.put("tipoIva", "Consumidor Final");
 			parameters.put("nombreCliente", cliente.getNombre());
-			parameters.put("direccionCliente", cliente.getDireccion()
-					.getDomicilio()
-					+ " "
-					+ cliente.getDireccion().getCiudad().getDescripcion());
-
+			if (Validator.isNotNull(cliente.getDireccion()))
+				parameters.put("direccionCliente", cliente.getDireccion()
+						.getDomicilio()
+						+ " "
+						+ cliente.getDireccion().getCiudad().getDescripcion());
+			else
+				parameters.put("direccionCliente","");
 			BigDecimal saldoTotal = getSaldoDeudor(cliente);
 
 			BigDecimal saldoPendiente = saldoTotal.subtract(pagoComprobante);

@@ -62,7 +62,7 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cuota.class);
 
 		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
-			criteria.add(Restrictions.gt("fechaPago", filtro.getFechaInicio()));
+			criteria.add(Restrictions.ge("fechaPago", filtro.getFechaInicio()));
 		}
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fechaPago", filtro.getFechaFin()));
@@ -107,7 +107,7 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cuota.class);
 
 		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
-			criteria.add(Restrictions.gt("fecha_pagar", filtro.getFechaInicio()));
+			criteria.add(Restrictions.ge("fecha_pagar", filtro.getFechaInicio()));
 		}
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha_pagar", filtro.getFechaFin()));

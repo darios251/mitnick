@@ -50,7 +50,7 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		criteria.createAlias("venta", "v");
 		
 		if(Validator.isNotNull(dto.getFechaInicio())){
-			criteria.add(Restrictions.gt("v.fecha", dto.getFechaInicio()));
+			criteria.add(Restrictions.ge("v.fecha", dto.getFechaInicio()));
 		}
 		if(Validator.isNotNull(dto.getFechaFin())){
 			criteria.add(Restrictions.le("v.fecha", dto.getFechaFin()));
