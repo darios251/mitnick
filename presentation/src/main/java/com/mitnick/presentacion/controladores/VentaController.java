@@ -372,6 +372,8 @@ public class VentaController extends BaseController {
 	}
 
 	public BigDecimal obtenerSaldoDeudorCliente() {
+		if (Validator.isNull(VentaManager.getVentaActual().getCliente()))
+			return new BigDecimal(0);
 		return getVentaServicio().getSaldoDeudorCliente(
 				VentaManager.getVentaActual());
 	}
