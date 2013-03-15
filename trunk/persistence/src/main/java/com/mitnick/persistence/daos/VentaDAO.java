@@ -25,6 +25,7 @@ import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -41,7 +42,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 
 		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
-			criteria.add(Restrictions.gt("fecha", filtro.getFechaInicio()));
+			criteria.add(Restrictions.ge("fecha", filtro.getFechaInicio()));
 		}
 		if(Validator.isNotNull(filtro.getFechaFin())){
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
@@ -77,6 +78,15 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			while (creditosUsados.hasNext()){
 				PagoDto pago = creditosUsados.next();
 				usarCredito(pago.getNroNC(), pago.getMonto());
+			}
+		}
+	}
+	
+	public void actualizarCreditos(List<CuotaDto> cuotas) {
+		for (CuotaDto cuota : cuotas){
+			for (PagoDto pago : cuota.getPagos()){
+					if (!pago.isComprobante() && MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo())) 
+						usarCredito(pago.getNroNC(), pago.getMonto());					
 			}
 		}
 	}

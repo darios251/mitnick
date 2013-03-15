@@ -169,8 +169,7 @@ public class ClienteController extends BaseController {
 			throw new PresentationException(e);
 		}
 	}
-
-	@AuthorizationRequired
+	
 	public void guardarCliente(ClienteDto cliente, String actividad, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
 		

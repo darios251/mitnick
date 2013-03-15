@@ -8,6 +8,7 @@ import org.appfuse.dao.GenericDao;
 import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
+import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 public interface IVentaDAO extends GenericDao<Venta, Long>{
@@ -27,5 +28,7 @@ public interface IVentaDAO extends GenericDao<Venta, Long>{
 	public Credito getCredito(String nroCredito);
 	
 	public void actualizarCreditos(VentaDto venta);
+	
+	public void actualizarCreditos(List<CuotaDto> cuotas);
 	
 }

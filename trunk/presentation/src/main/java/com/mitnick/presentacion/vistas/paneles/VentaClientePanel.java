@@ -173,7 +173,16 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			if (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA)
 				controller.mostrarPagosPanel();
 			else {
-				BigDecimal deuda = controller.obtenerSaldoDeudorCliente();
+				BigDecimal deuda = new BigDecimal(0);
+				if (Validator.isNull(VentaManager.getVentaActual().getCliente())){
+					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.devolucion.agregarCliente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.YES_NO_OPTION);
+					if (option == JOptionPane.YES_OPTION)
+						 deuda = new BigDecimal(0);
+					else if (option == JOptionPane.NO_OPTION)
+						return;
+				} else
+					controller.obtenerSaldoDeudorCliente();
+				
 				BigDecimal devolucion = VentaManager.getVentaActual().getTotal();
 				
 				int option = JOptionPane.CANCEL_OPTION;
