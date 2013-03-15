@@ -27,6 +27,7 @@ import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -64,27 +65,28 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Transactional
 	@Override
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
-		@SuppressWarnings("unchecked")
-		Cliente cliente = (Cliente) entityDTOParser
-				.getEntityFromDto(clienteDto);
-		validateEntity(cliente);
-
 		try {
-			if (clienteDto.getId() == null) {
-				// si es un cliente nuevo
-				
-				Cliente c = clienteDao.findByDocumentoEq(clienteDto.getDocumento());
-				if (c != null)
+			Cliente c = null;
+			if (Validator.isNotBlankOrNull(clienteDto.getDocumento())){
+				c = clienteDao.findByDocumentoEq(clienteDto.getDocumento().trim());
+				if (Validator.isNotNull(c) && !c.getId().equals(clienteDto.getId()))
 					throw new BusinessException(
 							"error.cliente.documento.duplicado",
 							"Ya existe un cliente con el documento ingresado");
-				
-				c = clienteDao.findByCuitEq(clienteDto.getCuit());
-				if (c != null)
+			}
+			if (Validator.isNotBlankOrNull(clienteDto.getCuit())){
+				c = clienteDao.findByCuitEq(clienteDto.getCuit().trim());
+				if (Validator.isNotNull(c) && !c.getId().equals(clienteDto.getId()))
 					throw new BusinessException(
 							"error.cliente.cuit.duplicado",
 							"Ya existe un cliente con el cuit ingresado");
 			}
+			
+			@SuppressWarnings("unchecked")
+			Cliente cliente = (Cliente) entityDTOParser
+					.getEntityFromDto(clienteDto);
+
+			validateEntity(cliente);
 			
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());

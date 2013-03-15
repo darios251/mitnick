@@ -69,7 +69,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 	public List<Cliente> findByDocumento(String documento) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
 
-		if (!Validator.isBlankOrNull(documento)) {
+		if (Validator.isNotBlankOrNull(documento)) {
 			criteria.add(Restrictions.ilike("documento", documento));
 		}
 		criteria.add(Restrictions.eq("eliminado", false));
@@ -81,7 +81,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 	public Cliente findByDocumentoEq(String documento) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
 
-		if (!Validator.isBlankOrNull(documento)) {
+		if (Validator.isNotBlankOrNull(documento)) {
 			criteria.add(Restrictions.eq("documento", documento));
 		}
 		criteria.add(Restrictions.eq("eliminado", false));
@@ -96,7 +96,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 	public Cliente findByCuitEq(String cuit) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
 
-		if (!Validator.isBlankOrNull(cuit)) {
+		if (Validator.isNotBlankOrNull(cuit)) {
 			criteria.add(Restrictions.eq("cuit", cuit));
 		}
 		criteria.add(Restrictions.eq("eliminado", false));
@@ -142,12 +142,12 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 	public List<Cliente> findByFiltro(ConsultaClienteDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
 
-		if (!Validator.isBlankOrNull(filtro.getDocumento())) {
+		if (Validator.isNotBlankOrNull(filtro.getDocumento())) {
 			criteria.add(Restrictions.ilike("documento", filtro.getDocumento()
 					.trim()));
 		}
 
-		if (!Validator.isBlankOrNull(filtro.getNombre())) {
+		if (Validator.isNotBlankOrNull(filtro.getNombre())) {
 			criteria.add(Restrictions.ilike("nombre", "%"
 					+ filtro.getNombre().trim() + "%"));
 		}

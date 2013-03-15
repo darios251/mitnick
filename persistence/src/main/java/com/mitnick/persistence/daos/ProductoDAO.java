@@ -45,11 +45,11 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 	public List<Producto> findByFiltro(ConsultaProductoDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
 		
-		if(!Validator.isBlankOrNull(filtro.getCodigo())){
+		if(Validator.isNotBlankOrNull(filtro.getCodigo())){
 			criteria.add(Restrictions.ilike("codigo", filtro.getCodigo(), MatchMode.START));
 		}
 		
-		if(!Validator.isBlankOrNull(filtro.getDescripcion())){
+		if(Validator.isNotBlankOrNull(filtro.getDescripcion())){
 			criteria.add(Restrictions.ilike("descripcion", filtro.getDescripcion(), MatchMode.ANYWHERE));
 		}
 		

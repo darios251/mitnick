@@ -18,14 +18,17 @@ import org.springframework.stereotype.Service;
 
 import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
+import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IProvinciaDao;
+import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.entities.Ciudad;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Direccion;
+import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Provincia;
-import com.mitnick.utils.PropertiesManager;
+import com.mitnick.persistence.entities.Tipo;
 
 @Service("dbImport")
 public class DBImport {
@@ -44,6 +47,14 @@ public class DBImport {
 	@Autowired
 	protected IProductoDAO productoDao;
 	
+	@Autowired
+	protected IMarcaDao marcaDao;
+	
+	@Autowired
+	protected ITipoDao tipoDao;
+	
+	List<Marca> marcas = null;
+	List<Tipo> tipos = null;
 
 	//migracion de cliente
 	private static String RAZONSOC = "RAZONSOC";
@@ -67,6 +78,8 @@ public class DBImport {
 	
 	public void ejecutar(String path) {
 		try {			
+			marcas = marcaDao.getAll();
+			tipos = tipoDao.getAll();
 			migrarProductos(path);
 			migrarClientes(path);			
 
@@ -139,7 +152,7 @@ public class DBImport {
 					producto.setDescripcion(descripcion);
 					producto.setEliminado(false);
 					
-					String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
+					String ivaString = "21";
 					BigDecimal precioSinIva = getBigDecimal(precioVenta).setScale(2, BigDecimal.ROUND_HALF_UP);
 					BigDecimal ivaPerc =  getBigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP);
 					BigDecimal precioPerc = new BigDecimal(100).setScale(2, BigDecimal.ROUND_HALF_UP).subtract(ivaPerc);
@@ -155,6 +168,7 @@ public class DBImport {
 					producto.setStockMinimo(getInt(stockMinimo));
 					producto.setPrecioCompra(new BigDecimal(0));
 					
+					actualizarProductos(producto);
 					logger.info("IVA: ".concat(iva.toString()).concat(" PRECIO FINAL: ").concat(precioFinal.toString()));
 							
 					try {
@@ -176,6 +190,28 @@ public class DBImport {
 			logger.error(e);
 		}
 		logger.info("listo Productos!");
+	}
+	
+	private void actualizarProductos(Producto producto){
+		
+		String description = producto.getDescripcion();
+		description = description.toLowerCase();
+		for (Marca marca: marcas){
+			String marcaDesc = marca.getDescripcion();
+			marcaDesc = marcaDesc.toLowerCase();
+			if (description.contains(marcaDesc)){
+				producto.setMarca(marca);
+			}
+		}
+		
+		for (Tipo tipo: tipos){
+			String tipoDesc = tipo.getDescripcion();
+			tipoDesc = tipoDesc.toLowerCase();
+			if (description.contains(tipoDesc)){
+				producto.setTipo(tipo);
+			}
+		}
+		
 	}
 	
 	private void migrarClientes(String path) {
@@ -245,6 +281,17 @@ public class DBImport {
 				if (postal!=null && !postal.trim().isEmpty())
 					if (provincia != null) {
 						Provincia prov = provinciaDao.get(new Long(provincia.trim()));
+						if (postal.trim().equals("3015") 
+								||postal.trim().equals("3065")
+								||postal.trim().equals("3106")
+								||postal.trim().equals("2016")
+								||postal.trim().equals("2103"))
+							postal = "3016";
+						if (postal.trim().equals("2561")) 
+							postal = "5000";
+						if (postal.trim().equals("3300")) 
+							postal = "3100";
+						
 						List<Ciudad> ciudades = ciudadDao
 								.getByPostal(postal);
 						Ciudad ciudad = null;

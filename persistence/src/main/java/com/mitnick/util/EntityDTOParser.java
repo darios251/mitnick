@@ -178,12 +178,23 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 
 		cliente.setActividad(clienteDto.getActividad());
 		cliente.setNombre(clienteDto.getNombre());
-		if (Validator.isNotNull(clienteDto.getCuit()))
-			cliente.setCuit(clienteDto.getCuit());
-		cliente.setDocumento(clienteDto.getDocumento());
+		if (Validator.isNotBlankOrNull(clienteDto.getCuit().trim()))
+			cliente.setCuit(clienteDto.getCuit().trim());
+		else
+			cliente.setCuit(null);
+		
+		if (Validator.isNotBlankOrNull(clienteDto.getDocumento().trim()))
+			cliente.setDocumento(clienteDto.getDocumento().trim());
+		else
+			cliente.setDocumento(null);
+		
 		cliente.setEmail(clienteDto.getEmail());
+		
 		if (Validator.isNotNull(clienteDto.getFechaNacimiento()) && Validator.isDate(clienteDto.getFechaNacimiento(), MitnickConstants.DATE_FORMAT, true))
 			cliente.setFechaNacimiento(DateHelper.getFecha(clienteDto.getFechaNacimiento()));
+		else
+			cliente.setFechaNacimiento(null);
+		
 		cliente.setTelefono(clienteDto.getTelefono());
 		
 		//si se desea asignar una direccion para el cliente
@@ -357,15 +368,19 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		if (Validator.isNotNull(productoDto.getMarca())){
 			Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
 			producto.setMarca(marca);
-		}
+		} else
+			producto.setMarca(null);
 
 		if (Validator.isNotNull(productoDto.getTipo())){		
 			Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
 			producto.setTipo(tipo);
-		}
+		} else
+			producto.setTipo(null);
 
 		if (Validator.isNotNull(productoDto.getProveedor()))
 			producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
+		else
+			producto.setProveedor(null);
 		
 		return producto;
 	}
@@ -389,21 +404,31 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setIva(new BigDecimal(productoDto.getIva()));
 
 		producto.setStock(Integer.parseInt(productoDto.getStock()));
-		producto.setStockMinimo(Integer.parseInt(productoDto.getStockMinimo()));
-		producto.setStockCompra(Integer.parseInt(productoDto.getStockCompra()));
-
+		if (Validator.isNotBlankOrNull(productoDto.getStockMinimo()))
+			producto.setStockMinimo(Integer.parseInt(productoDto.getStockMinimo()));
+		else
+			producto.setStockMinimo(0);
+		if (Validator.isNotBlankOrNull(productoDto.getStockCompra()))
+			producto.setStockCompra(Integer.parseInt(productoDto.getStockCompra()));
+		else
+			producto.setStockCompra(0);
+		
 		if (Validator.isNotNull(productoDto.getMarca())){
 			Marca marca = marcaDao.get(new Long(productoDto.getMarca().getId()));
 			producto.setMarca(marca);
-		}
+		} else
+			producto.setMarca(null);
 
 		if (Validator.isNotNull(productoDto.getTipo())){
 			Tipo tipo = tipoDao.get(new Long(productoDto.getTipo().getId()));
 			producto.setTipo(tipo);
-		}
+		} else
+			producto.setTipo(null);
 		
 		if (Validator.isNotNull(productoDto.getProveedor()))
 			producto.setProveedor(getEntityFromDto(productoDto.getProveedor()));
+		else
+			producto.setProveedor(null);
 		
 		return producto;
 	}

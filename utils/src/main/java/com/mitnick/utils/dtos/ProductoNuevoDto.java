@@ -34,11 +34,11 @@ public class ProductoNuevoDto extends BaseDto {
 	@MitnickField(required=true, fieldType=FieldType.INTEGER)
 	private String stock;
 	
-	@MitnickField(required=true, fieldType=FieldType.INTEGER)
+	@MitnickField(fieldType=FieldType.INTEGER)
 	private String stockMinimo="-1";
 	
 	@MitnickField(fieldType=FieldType.INTEGER)
-	private String stockCompra;
+	private String stockCompra="-1";
 		
 	private ProveedorDto proveedor;
 	

@@ -252,19 +252,67 @@
 	  <column>descripcion</column>
 	  <row>
 	  	<value>1</value>
-	  	<value>Camisas</value>
+	  	<value>Camisa</value>
 	  </row>
 	  <row>
 	  	<value>2</value>
-	  	<value>Pantalones</value>
+	  	<value>Pantalon</value>
 	  </row>
 	  <row>
 	  	<value>3</value>
-	  	<value>Remeras</value>
+	  	<value>Remera</value>
 	  </row>
 	   <row>
 	  	<value>4</value>
-	  	<value>Zapatillas</value>
+	  	<value>Zapatilla</value>
+	  </row>
+	  <row>
+	  	<value>5</value>
+	  	<value>Camiseta</value>
+	  </row>
+	  <row>
+	  	<value>5</value>
+	  	<value>Media</value>
+	  </row>
+	  <row>
+	  	<value>6</value>
+	  	<value>Boxer</value>
+	  </row>
+	  <row>
+	  	<value>7</value>
+	  	<value>Slip</value>
+	  </row>
+	  <row>
+	  	<value>8</value>
+	  	<value>Campera</value>
+	  </row>
+	  <row>
+	  	<value>9</value>
+	  	<value>Pullover</value>
+	  </row>
+	  <row>
+	  	<value>10</value>
+	  	<value>Pijama</value>
+	  </row>
+	  <row>
+	  	<value>11</value>
+	  	<value>Jean</value>
+	  </row>
+	  <row>
+	  	<value>12</value>
+	  	<value>Cinto</value>
+	  </row>
+	  <row>
+	  	<value>13</value>
+	  	<value>Perfume</value>
+	  </row>
+	  <row>
+	  	<value>14</value>
+	  	<value>Zapato</value>
+	  </row>
+	  <row>
+	  	<value>15</value>
+	  	<value>Panuelo</value>
 	  </row>
 	</table>
 	<table name="Marca">
@@ -272,19 +320,19 @@
 	  <column>descripcion</column>
 	  <row>
 	  	<value>1</value>
-	  	<value>Inside</value>
+	  	<value>Tannery</value>
 	  </row>
 	  <row>
 	  	<value>2</value>
-	  	<value>Levi's</value>
+	  	<value>Indigo</value>
 	  </row>
 	  <row>
 	  	<value>3</value>
-	  	<value>Chanel</value>
+	  	<value>Western</value>
 	  </row>
 	  <row>
 	  	<value>4</value>
-	  	<value>Prada</value>
+	  	<value>Huapi</value>
 	  </row>
 	</table>
 	

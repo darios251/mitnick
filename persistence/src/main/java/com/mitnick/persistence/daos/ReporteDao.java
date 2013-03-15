@@ -34,10 +34,10 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 
 		criteria.createAlias("producto", "p");
 		
-		if(!Validator.isBlankOrNull(dto.getCodigo())){
+		if(Validator.isNotBlankOrNull(dto.getCodigo())){
 			criteria.add(Restrictions.ilike("p.codigo", dto.getCodigo(), MatchMode.START));
 		}
-		if(!Validator.isBlankOrNull(dto.getDescripcion())){
+		if(Validator.isNotBlankOrNull(dto.getDescripcion())){
 			criteria.add(Restrictions.ilike("p.descripcion", dto.getDescripcion(), MatchMode.ANYWHERE));
 		}
 		if(Validator.isNotNull(dto.getMarca()) && dto.getMarca().getId()>=0){
@@ -96,10 +96,10 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 	public List<ReporteCompraSugeridaDTO> consultarCompraSugerida(ReporteMovimientosDto dto) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
 
-		if(!Validator.isBlankOrNull(dto.getCodigo())){
+		if(Validator.isNotBlankOrNull(dto.getCodigo())){
 			criteria.add(Restrictions.eq("codigo", dto.getCodigo()));
 		}
-		if(!Validator.isBlankOrNull(dto.getDescripcion())){
+		if(Validator.isNotBlankOrNull(dto.getDescripcion())){
 			criteria.add(Restrictions.ilike("descripcion", "%" + dto.getDescripcion() + "%"));
 		}
 		if(Validator.isNotNull(dto.getMarca()) && dto.getMarca().getId()>=0){

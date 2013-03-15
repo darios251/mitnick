@@ -56,7 +56,9 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 	
 	private JTextField txtStock;
 	private JLabel lblErrorTxtStock;
-
+	private JButton btnIncrementar;
+	private JButton btnDecrementar;
+	
 	private JComboBox<TipoDto> cmbTipo;
 	private JLabel lblErrorCmbTipo;
 	
@@ -144,6 +146,8 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 		add(getTxtPrecioVenta());
 		add(getTxtPrecioCompra());
 		add(getTxtStock());
+		add(getBtnIncrementar());
+		add(getBtnDecrementar());
 
 		add(getCmbTipo());
 		add(getCmbMarca());
@@ -461,6 +465,66 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 		return txtStock;
 	}
 	
+	public JButton getBtnIncrementar() {
+		if (btnIncrementar == null) {
+			btnIncrementar = new JButton(PropertiesManager.getProperty("productoNuevoPanel.boton.+"));
+			btnIncrementar.setToolTipText(PropertiesManager.getProperty("productoNuevoPanel.tooltip.+"));
+			btnIncrementar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnIncrementar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnIncrementar.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnIncrementar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					incrementarStock();
+				}
+			});			
+			btnIncrementar.setBounds(526, 150, 20, 20);
+		}
+		return btnIncrementar;
+	}
+	
+	public JButton getBtnDecrementar() {
+		if (btnDecrementar == null) {
+			btnDecrementar = new JButton(PropertiesManager.getProperty("productoNuevoPanel.boton.-"));
+			btnDecrementar.setToolTipText(PropertiesManager.getProperty("productoNuevoPanel.tooltip.-"));
+			btnDecrementar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnDecrementar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnDecrementar.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnDecrementar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					decrementarStock();
+				}
+			});
+			btnDecrementar.setBounds(526, 171, 20, 20);
+		}
+		return btnDecrementar;
+	}
+	
+	private int getStock() {
+		int stock = 0;
+		if (txtStock == null) {
+			txtStock = new JTextField();
+			txtStock.setColumns(10);
+			txtStock.setBounds(412, 160, 102, 20);
+		} else {
+			if (Validator.isNumeric(txtStock.getText()))
+				stock = Integer.parseInt(txtStock.getText());			
+		}
+		return stock;
+	}
+	private void incrementarStock() {
+		int stock = getStock();
+		stock = stock+1;
+		txtStock.setText(String.valueOf(stock));
+	}
+
+	private void decrementarStock() {
+		int stock = getStock();
+		stock = stock-1;
+		txtStock.setText(String.valueOf(stock));
+	}
+
 	public JTextField getTxtStockMinimo() {
 		if (txtStockMinimo == null) {
 			txtStockMinimo = new JTextField();
@@ -560,11 +624,17 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 			getTxtStockCompra().setText(producto.getStockCompra());
 			getTxtTalle().setText(producto.getTalle());
 			if (getCmbMarca().getModel().getSize() > 0)
-				getCmbMarca().setSelectedItem(producto.getMarca());
+				getCmbMarca().getModel().setSelectedItem(producto.getMarca());
+			else
+				getCmbMarca().setSelectedItem(null);
 			if (getCmbTipo().getModel().getSize() > 0)
-				getCmbTipo().setSelectedItem(producto.getTipo());
+				getCmbTipo().getModel().setSelectedItem(producto.getTipo());
+			else
+				getCmbTipo().setSelectedItem(null);
 			if (getCmbProveedores().getModel().getSize() > 0)
-				getCmbProveedores().setSelectedItem(producto.getProveedor());
+				getCmbProveedores().getModel().setSelectedItem(producto.getProveedor());
+			else
+				getCmbProveedores().setSelectedItem(null);
 		}
 	}
 

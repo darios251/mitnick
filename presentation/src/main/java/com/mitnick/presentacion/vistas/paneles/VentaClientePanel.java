@@ -50,6 +50,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JButton btnNuevo;
+	private JButton btnModificar;
 	private JTextField txtNombre;
 	private JLabel lblNmeroCtaCte;
 	private JTextField txtNumeroCtaCte;
@@ -96,9 +97,11 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		add(getTxtNumeroDocumento());
 		add(getTxtNombre());
 		add(getTxtNumeroCtaCte());
-		add(getBtnContinuar());
 		add(getBtnBuscar());
+
 		add(getBtnNuevo());
+		add(getBtnModificar());
+		add(getBtnContinuar());
 		add(getBtnVolver());
 		
 		add(getLblTipoComprador());
@@ -135,26 +138,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		}
 		return btnBuscar;
 	}
-
-	public JButton getBtnContinuar() {
-		if (btnContinuar == null) {
-			btnContinuar = new JButton(PropertiesManager.getProperty("ventaPanel.button.continuar"));
-			btnContinuar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.continuar"));
-			
-			btnContinuar.setIcon(new ImageIcon(this.getClass().getResource("/img/continuar.png")));
-			btnContinuar.setHorizontalTextPosition( SwingConstants.CENTER );
-			btnContinuar.setVerticalTextPosition( SwingConstants.BOTTOM );
-			btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
-			
-			btnContinuar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					continuar();
-				}
-			});
-			btnContinuar.setBounds(735, 231, 60, 60);
-		}
-		return btnContinuar;
-	}
+	
 
 	protected void continuar() {
 		try {
@@ -170,11 +154,13 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			} else {
 				int index = getTable().getSelectedRow();
 				if (index>-1){
-					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.consulta.agregar"), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.YES_NO_OPTION);
+					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.consulta.agregar"), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.YES_NO_CANCEL_OPTION);
 					if (option == JOptionPane.YES_OPTION)
 						controller.agregarCliente();
-					else
+					else if (option == JOptionPane.NO_OPTION)
 						controller.desagregarCliente();
+					else
+						return;
 				} else {
 					controller.desagregarCliente();
 				}
@@ -252,7 +238,69 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		}
 		return btnNuevo;
 	}
+	
+	public JButton getBtnModificar() {
+		if (btnModificar == null) {
+			btnModificar = new JButton(PropertiesManager.getProperty("clientePanel.button.label.modificarCliente"));
+			btnModificar.setToolTipText(PropertiesManager.getProperty("clientePanel.button.tooltip.modificarCliente"));
+			btnModificar.setIcon(new ImageIcon(this.getClass().getResource("/img/modificar_cliente.png")));
+			btnModificar.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnModificar.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnModificar.setMargin(new Insets(-1, -1, -1, -1));
+			btnModificar.setBounds(735, 200, 60, 60);
+			btnModificar.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					controller.mostrarModificarClientePanel();
+				}
+			});
+		}
+		return btnModificar;
+	}
 
+	public JButton getBtnContinuar() {
+		if (btnContinuar == null) {
+			btnContinuar = new JButton(PropertiesManager.getProperty("ventaPanel.button.continuar"));
+			btnContinuar.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.continuar"));
+			
+			btnContinuar.setIcon(new ImageIcon(this.getClass().getResource("/img/continuar.png")));
+			btnContinuar.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnContinuar.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnContinuar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					continuar();
+				}
+			});
+			btnContinuar.setBounds(735, 270, 60, 60);
+		}
+		return btnContinuar;
+	}
+	
+	public JButton getBtnVolver() {
+		if(btnVolver == null) {
+			btnVolver = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.volver"));
+			btnVolver.setToolTipText(PropertiesManager.getProperty("ventaClientePanel.tooltip.volver"));
+			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnVolver.setMargin(new Insets(-1, -1, -1, -1));
+			btnVolver.setBounds(735, 340, 60, 60);
+			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
+			btnVolver.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						controller.mostrarVentasPanel();
+					}
+					catch(PresentationException ex) {
+						
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnVolver;
+	}
+	
 	public JTextField getTxtNombre() {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
@@ -279,30 +327,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		return txtNumeroCtaCte;
 	}
 
-	public JButton getBtnVolver() {
-		if(btnVolver == null) {
-			btnVolver = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.volver"));
-			btnVolver.setToolTipText(PropertiesManager.getProperty("ventaClientePanel.tooltip.volver"));
-			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnVolver.setMargin(new Insets(-1, -1, -1, -1));
-			btnVolver.setBounds(735, 333, 60, 60);
-			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
-			btnVolver.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						controller.mostrarVentasPanel();
-					}
-					catch(PresentationException ex) {
-						
-						mostrarMensaje(ex);
-					}
-				}
-			});
-		}
-		return btnVolver;
-	}
-	
 	public TableRowSorter<ClienteTableModel> getSorter() {
 		if (sorter == null) {
 			sorter = new TableRowSorter<ClienteTableModel>(getModel());
