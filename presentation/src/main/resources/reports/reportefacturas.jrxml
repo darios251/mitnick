@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ccf0a3b-9b1c-40f4-ae3b-d20c0d2f94d6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="corteZ" class="java.lang.Integer">
+		<fieldDescription><![CDATA[corteZ]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="facturas" class="java.util.List">
+		<fieldDescription><![CDATA[facturas]]></fieldDescription>
+	</field>
+	<field name="ivaA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[ivaA]]></fieldDescription>
+	</field>
+	<field name="netoA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[netoA]]></fieldDescription>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="totalA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalA]]></fieldDescription>
+	</field>
+	<field name="totalB" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalB]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="17" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="127" y="1" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[neto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a76fc191-00f0-4473-b149-954ffff978ab" x="227" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[iva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d27c951e-62f5-43f7-a45f-954c7ee8ba86" x="327" y="1" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="112" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="0bbb1114-2f34-42a9-bf75-eac3da0f2bd2" x="0" y="0" width="551" height="52"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{facturas})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detalleFactura.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="59" y="92" width="34" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{corteZ}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="0" y="92" width="59" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="110" y="52" width="17" height="20"/>
+				<textElement/>
+				<text><![CDATA[A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="110" y="72" width="17" height="20"/>
+				<textElement/>
+				<text><![CDATA[B]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="110" y="92" width="17" height="20"/>
+				<textElement/>
+				<text><![CDATA[Z]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9f556d93-5f88-48b3-a0a3-3d5983d936a7" x="127" y="52" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{netoA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e7511dc4-ac6c-4a1f-90b8-092bf925529b" x="227" y="52" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ivaA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="af66925c-5cf3-44e4-8f87-2a259c0e0941" x="327" y="52" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{totalA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e80cb671-6ece-413d-b58d-b4f2347b53ee" x="327" y="72" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{totalB}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e304b11f-1dc7-4a3f-8887-07d9adc71f1f" x="327" y="92" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="87">
+			<line>
+				<reportElement uuid="00f551ee-885d-4fcf-ac1c-5370d0559b68" x="0" y="0" width="550" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="18" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="14" splitType="Stretch"/>
+	</summary>
+</jasperReport>

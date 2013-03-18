@@ -47,6 +47,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	private JButton btnReporteDeEstado;
 	private JButton btnListadoDeControl;
 
+	private JButton btnReporteFacturas;
+	
 	@Autowired
 	public ReportesPanel(@Qualifier("reportesController") ReportesController reportesController) {
 		controller = reportesController;
@@ -94,6 +96,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 
 		add(getBtnListadoDeControl());
 		add(getBtnReporteDeEstado());
+		
+		add(getBtnReporteFacturas());
 		
 		setFocusTraversalPolicy();
 		this.actualizarPantalla();
@@ -215,6 +219,24 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		return btnReporteDeEstado;
 	}
 	
+	private JButton getBtnReporteFacturas() {
+		if (btnReporteFacturas == null) {
+			btnReporteFacturas = new JButton();
+			btnReporteFacturas.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteFacturas.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteFacturas"));
+			btnReporteFacturas.setText(PropertiesManager.getProperty("reportePanel.label.reporteFacturas"));
+			btnReporteFacturas.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteFacturas.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteFacturas.setBounds(200, 350, 330, 20);
+			btnReporteFacturas.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarReporteFacturas();
+				}
+			});
+		}
+		return btnReporteFacturas;
+	}
+	
 	public JLabel getLblFechaInicio() {
 		if (lblFechaInicio == null) {
 			lblFechaInicio = new JLabel(PropertiesManager.getProperty("label.inicio"));
@@ -320,6 +342,17 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
 			controller.consultarEstadoCuentas(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}	
+	
+	protected void consultarReporteFacturas() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			controller.consultarReporteFacturas(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
