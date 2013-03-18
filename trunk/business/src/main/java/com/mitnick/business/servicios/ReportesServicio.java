@@ -328,23 +328,22 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		return dto;
 	}
 	
-	
 	@Transactional(readOnly=true)
 	@Override
 	public void consultarListadoDeControl(ReportesDto filtro) {
-		List<Cuota> cuotas = cuotaDao.getCuotaPagas(filtro);
+		List<Pago> pagos = cuotaDao.getPagosCuotas(filtro);
 		List<ReporteVentasResultadoDTO> ingresos= new ArrayList<ReporteVentasResultadoDTO>();
 		BigDecimal totalEfectivo = new BigDecimal(0);
 		BigDecimal totalDebito = new BigDecimal(0);
 		BigDecimal totalCredito = new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
 		try{
-			for (Cuota cuota: cuotas){
-				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, cuota.getFechaPago());
-				BigDecimal totalRegistro = dto.getTotal().add(cuota.getTotal());
-				dto.setTotal(totalRegistro);
-				total = total.add(cuota.getTotal());
-				for (Pago pago: cuota.getPagos()){
+				for (Pago pago: pagos){
+					ReporteVentasResultadoDTO dto = getDTOFecha(ingresos, pago.getFecha());
+					BigDecimal totalRegistro = dto.getTotal().add(pago.getPago());
+					dto.setTotal(totalRegistro);
+					total = total.add(pago.getPago());
+					
 					BigDecimal parcialTotal = pago.getPago();
 					
 					if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())){
@@ -366,7 +365,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					}
 				}
 						
-			}
+			
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/listadoControl.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("totalEfectivo", totalEfectivo.toString());

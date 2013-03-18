@@ -5,5 +5,7 @@ import org.appfuse.dao.GenericDao;
 import com.mitnick.persistence.entities.Tipo;
 
 public interface ITipoDao extends GenericDao<Tipo, Long>{
+	
+	public Tipo findById(Long id);
 
 }
