@@ -91,6 +91,14 @@ public interface IReportesServicio {
 	@Secured(value={"ROLE_ADMIN"})
 	public void exportarCompraSugerida(ReporteMovimientosDto dto); 
 	
+	/**
+	 * Obtiene el detalle de compra sugerida para los productos seleccionados.
+	 * @param filtro
+	 * @return
+	 */
+	@Secured(value={"ROLE_ADMIN"})
+	public void reporteFacturas(ReportesDto filtro);
+	
 	
 
 }

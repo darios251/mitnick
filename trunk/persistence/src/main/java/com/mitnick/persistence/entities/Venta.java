@@ -66,6 +66,8 @@ public class Venta extends BaseObject implements Serializable {
 	@JoinColumn(name = "venta_id")
 	private List<Cuota> cuotas;
 	
+	@ManyToOne
+	@PrimaryKeyJoinColumn(name = "discriminacionIVA_id")
 	private DiscriminacionIVA discriminacionIVA; 
 	
 	@Column(name = "printed", nullable = false)
