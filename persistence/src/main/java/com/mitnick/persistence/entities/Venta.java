@@ -232,6 +232,10 @@ public class Venta extends BaseObject implements Serializable {
 		this.numeroTicketOriginal = numeroTicketOriginal;
 	}
 	
+	public BigDecimal getNeto(){
+		return getTotal().subtract(getImpuesto());
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

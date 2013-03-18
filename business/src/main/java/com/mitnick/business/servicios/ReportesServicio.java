@@ -214,77 +214,38 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	@Override
 	public void reporteFacturas(ReportesDto filtro) {
 		try {
-//			List<Venta> ventas = ventaDao.findByFiltro(filtro);
-			List<ReporteFacturasDto> reporte = new ArrayList<ReporteFacturasDto>();
+			List<Venta> ventas = ventaDao.findByFiltro(filtro);
+			List<ReporteFacturasDto> reportes = new ArrayList<ReporteFacturasDto>();
 
-//			for (Venta venta : ventas) {
-				ReporteFacturasDto diarioDto = new ReporteFacturasDto();
-				diarioDto.setCorteZ(1);
-				diarioDto.setFecha(new Date());
-				diarioDto.setIvaA(new BigDecimal(1));
-				diarioDto.setNetoA(new BigDecimal(2));
-				diarioDto.setTotalA(new BigDecimal(3));
-				diarioDto.setTotalB(new BigDecimal(4));
-				diarioDto.setTotal(new BigDecimal(5));
+			for (Venta venta : ventas) {
+				//TODO: GUARDAR EN VENTA EL CORTE, EL TIPO A Y B SIEMPRE, Y LA CONDICION
+				ReporteFacturasDto diarioDto = getCorte(1, reportes);
+				diarioDto.setFecha(venta.getFecha());
+				if ("A".equals(venta.getTipoTicket())){
+					diarioDto.setIvaA(diarioDto.getIvaA().add(venta.getImpuesto()));
+					diarioDto.setNetoA(diarioDto.getNetoA().add(venta.getNeto()));
+					diarioDto.setTotalA(diarioDto.getTotalA().add(venta.getTotal()));
+					
+					FacturaDto factura = new FacturaDto();
+					factura.setNroFactura(venta.getNumeroTicket());
+					factura.setCliente(venta.getCliente().getNombre());
+					factura.setCondicion(venta.getDiscriminacionIVA().getDescripcion());
+					factura.setCuit(venta.getCliente().getCuit());
+					factura.setNeto(venta.getNeto());
+					factura.setIva(venta.getImpuesto());
+					factura.setTotal(venta.getTotal());
+					diarioDto.addfactura(factura);
+					
+				} else {
+					diarioDto.setTotalB(diarioDto.getTotalB().add(venta.getTotal()));						
+				}
+				diarioDto.setTotal(diarioDto.getTotal().add(venta.getTotal()));
 				
-				FacturaDto factura = new FacturaDto();
-				factura.setNroFactura("123123");
-				factura.setCliente("Agus");
-				factura.setCondicion("R:I:");
-				factura.setCuit("123123213");
-				factura.setNeto(new BigDecimal(0));
-				factura.setIva(new BigDecimal(0));
-				factura.setTotal(new BigDecimal(0));
-				diarioDto.addfactura(factura);
-				
-				factura = new FacturaDto();
-				factura.setNroFactura("123123");
-				factura.setCliente("Agus2");
-				factura.setCondicion("R:I:A");
-				factura.setCuit("123123213");
-				factura.setNeto(new BigDecimal(0));
-				factura.setIva(new BigDecimal(0));
-				factura.setTotal(new BigDecimal(0));
-				diarioDto.addfactura(factura);
-				
-				reporte.add(diarioDto);
-				
-				diarioDto = new ReporteFacturasDto();
-				diarioDto.setCorteZ(2);
-				diarioDto.setFecha(new Date());
-				diarioDto.setIvaA(new BigDecimal(1));
-				diarioDto.setNetoA(new BigDecimal(2));
-				diarioDto.setTotalA(new BigDecimal(3));
-				diarioDto.setTotalB(new BigDecimal(4));
-				diarioDto.setTotal(new BigDecimal(5));
-
-				
-				factura = new FacturaDto();
-				factura.setNroFactura("123123");
-				factura.setCliente("Agus");
-				factura.setCondicion("R:I:");
-				factura.setCuit("123123213");
-				factura.setNeto(new BigDecimal(0));
-				factura.setIva(new BigDecimal(0));
-				factura.setTotal(new BigDecimal(0));
-				diarioDto.addfactura(factura);
-				
-				factura = new FacturaDto();
-				factura.setNroFactura("123123");
-				factura.setCliente("Agus2");
-				factura.setCondicion("R:I:A");
-				factura.setCuit("123123213");
-				factura.setNeto(new BigDecimal(0));
-				factura.setIva(new BigDecimal(0));
-				factura.setTotal(new BigDecimal(0));
-				diarioDto.addfactura(factura);
-				
-				reporte.add(diarioDto);
-//			}
+			}
 			JasperReport reporteJR = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream("/reports/reportefacturas.jasper"));
 
-			JRDataSource dr = new JRBeanCollectionDataSource(reporte);
+			JRDataSource dr = new JRBeanCollectionDataSource(reportes);
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJR,
 					parameters, dr);
@@ -300,6 +261,24 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 	}
 
+	private ReporteFacturasDto getCorte(int corte, List<ReporteFacturasDto> reportes){
+		ReporteFacturasDto dto = null;
+		for (ReporteFacturasDto reporte : reportes) {
+			if (reporte.getCorteZ()==corte)
+				return reporte;
+		}
+		dto = new ReporteFacturasDto();
+		dto.setCorteZ(corte);
+		dto.setIvaA(new BigDecimal(0));
+		dto.setNetoA(new BigDecimal(0));
+		dto.setTotalA(new BigDecimal(0));
+		dto.setTotalB(new BigDecimal(0));
+		dto.setTotal(new BigDecimal(0));
+		reportes.add(dto);
+		return dto;
+		
+	}
+	
 	@Transactional(readOnly = true)
 	@Override
 	public void reporteIngresos(ReportesDto filtro, int tipo) {
