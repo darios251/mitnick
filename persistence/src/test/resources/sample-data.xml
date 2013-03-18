@@ -252,51 +252,47 @@
 	  <column>descripcion</column>
 	  <row>
 	  	<value>1</value>
-	  	<value>Camisa</value>
-	  </row>
-	  <row>
-	  	<value>2</value>
 	  	<value>Pantalon</value>
 	  </row>
 	  <row>
+	  	<value>2</value>
+	  	<value>Saco</value>
+	  </row>
+	  <row>
 	  	<value>3</value>
-	  	<value>Remera</value>
+	  	<value>Ambo</value>
 	  </row>
 	   <row>
 	  	<value>4</value>
-	  	<value>Zapatilla</value>
+	  	<value>Gaban</value>
 	  </row>
 	  <row>
 	  	<value>5</value>
-	  	<value>Camiseta</value>
-	  </row>
-	  <row>
-	  	<value>5</value>
-	  	<value>Media</value>
-	  </row>
-	  <row>
-	  	<value>6</value>
-	  	<value>Boxer</value>
-	  </row>
-	  <row>
-	  	<value>7</value>
-	  	<value>Slip</value>
-	  </row>
-	  <row>
-	  	<value>8</value>
 	  	<value>Campera</value>
 	  </row>
 	  <row>
-	  	<value>9</value>
+	  	<value>6</value>
+	  	<value>Camisa</value>
+	  </row>
+	  <row>
+	  	<value>7</value>
 	  	<value>Pullover</value>
 	  </row>
 	  <row>
+	  	<value>8</value>
+	  	<value>Remera Polo</value>
+	  </row>
+	  <row>
+	  	<value>9</value>
+	  	<value>Remera</value>
+	  </row>
+	  <row>
 	  	<value>10</value>
-	  	<value>Pijama</value>
+	  	<value>Corbata</value>
 	  </row>
 	  <row>
 	  	<value>11</value>
-	  	<value>Jean</value>
+	  	<value>Pantalon (Corte Jean)</value>
 	  </row>
 	  <row>
 	  	<value>12</value>
@@ -304,15 +300,43 @@
 	  </row>
 	  <row>
 	  	<value>13</value>
-	  	<value>Perfume</value>
+	  	<value>Buzo</value>
 	  </row>
 	  <row>
 	  	<value>14</value>
-	  	<value>Zapato</value>
+	  	<value>Medias</value>
 	  </row>
 	  <row>
 	  	<value>15</value>
-	  	<value>Panuelo</value>
+	  	<value>Boxer</value>
+	  </row>
+	  <row>
+	  	<value>16</value>
+	  	<value>Camiseta</value>
+	  </row>
+	  <row>
+	  	<value>17</value>
+	  	<value>Perfume</value>
+	  </row>
+	  <row>
+	  	<value>18</value>
+	  	<value>Short</value>
+	  </row>
+	  <row>
+	  	<value>19</value>
+	  	<value>Pijama</value>
+	  </row>
+	  <row>
+	  	<value>20</value>
+	  	<value>Panuelo/Chalina/Bufanda</value>
+	  </row>
+	  <row>
+	  	<value>21</value>
+	  	<value>Calzado</value>
+	  </row>
+	  <row>
+	  	<value>22</value>
+	  	<value>Bermuda</value>
 	  </row>
 	</table>
 	<table name="Marca">
@@ -324,19 +348,49 @@
 	  </row>
 	  <row>
 	  	<value>2</value>
-	  	<value>Indigo</value>
+	  	<value>Levis</value>
 	  </row>
 	  <row>
 	  	<value>3</value>
-	  	<value>Western</value>
+	  	<value>Huapi</value>
 	  </row>
 	  <row>
 	  	<value>4</value>
-	  	<value>Huapi</value>
+	  	<value>Wrangler</value>
+	  </row>
+	  <row>
+	  	<value>5</value>
+	  	<value>Christian Dior</value>
+	  </row>
+	  <row>
+	  	<value>6</value>
+	  	<value>Cacharel</value>
+	  </row>
+	  <row>
+	  	<value>7</value>
+	  	<value>Perramus</value>
+	  </row>
+	  <row>
+	  	<value>8</value>
+	  	<value>Roland Cotton</value>
+	  </row>
+	  <row>
+	  	<value>9</value>
+	  	<value>Stylo</value>
+	  </row>
+	  <row>
+	  	<value>10</value>
+	  	<value>Rochas</value>
+	  </row>
+	  <row>
+	  	<value>11</value>
+	  	<value>Walter House (WR)</value>
+	  </row>
+	  <row>
+	  	<value>12</value>
+	  	<value>Ocio</value>
 	  </row>
 	</table>
-	
-	
 	<table name="Medio_Pago">
 	  <column>id</column>
 	  <column>descripcion</column>

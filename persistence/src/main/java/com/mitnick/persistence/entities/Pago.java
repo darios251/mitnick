@@ -40,6 +40,18 @@ public class Pago extends BaseObject implements Serializable {
 	@Column(name = "fecha", nullable = true)
 	private Date fecha;
 	
+	@ManyToOne
+	@PrimaryKeyJoinColumn(name = "cuota_id")
+	private Cuota cuota;
+	
+	public Cuota getCuota() {
+		return cuota;
+	}
+
+	public void setCuota(Cuota cuota) {
+		this.cuota = cuota;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -85,6 +97,7 @@ public class Pago extends BaseObject implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (comprobante ? 1231 : 1237);
+		result = prime * result + ((cuota == null) ? 0 : cuota.hashCode());
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
@@ -106,6 +119,13 @@ public class Pago extends BaseObject implements Serializable {
 		}
 		Pago other = (Pago) obj;
 		if (comprobante != other.comprobante) {
+			return false;
+		}
+		if (cuota == null) {
+			if (other.cuota != null) {
+				return false;
+			}
+		} else if (!cuota.equals(other.cuota)) {
 			return false;
 		}
 		if (fecha == null) {
@@ -142,7 +162,8 @@ public class Pago extends BaseObject implements Serializable {
 	@Override
 	public String toString() {
 		return "Pago [id=" + id + ", medioPago=" + medioPago + ", pago=" + pago
-				+ ", comprobante=" + comprobante + ", fecha=" + fecha + "]";
+				+ ", comprobante=" + comprobante + ", fecha=" + fecha
+				+ ", cuota=" + cuota + "]";
 	}
 
 	public boolean isNC(){

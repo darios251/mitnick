@@ -28,13 +28,12 @@ import com.mitnick.persistence.entities.Direccion;
 import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Provincia;
-import com.mitnick.persistence.entities.Tipo;
 
 @Service("dbImport")
 public class DBImport {
 
 	private static Logger logger = Logger.getLogger(DBImport.class);
-	
+
 	@Autowired
 	protected IClienteDao clienteDao;
 
@@ -43,20 +42,19 @@ public class DBImport {
 
 	@Autowired
 	protected ICiudadDao ciudadDao;
-	
+
 	@Autowired
 	protected IProductoDAO productoDao;
-	
+
 	@Autowired
 	protected IMarcaDao marcaDao;
-	
+
 	@Autowired
 	protected ITipoDao tipoDao;
-	
-	List<Marca> marcas = null;
-	List<Tipo> tipos = null;
 
-	//migracion de cliente
+	List<Marca> marcas = null;
+
+	// migracion de cliente
 	private static String RAZONSOC = "RAZONSOC";
 	private static String DOMICILIO = "DOMICILIO";
 	private static String POSTAL = "POSTAL";
@@ -67,21 +65,20 @@ public class DBImport {
 	private static String ACTIVIDAD = "ACTIVIDAD";
 	private static String nullCuit = "-00000000-";
 
-	//migracion de producto
+	// migracion de producto
 	private static String ARTICULO = "ARTICULO";
-	//private static String MARCA ="MARCA";    
-	private static String DESCRIPCIO ="DESCRIPCIO";
-	private static String STOCK ="STOCK";
-	private static String STOCKMIN ="STOCKMIN";
-	private static String STOCKMAX ="STOCKMAX";          
-	private static String PRECIOVTA ="PRECIOVTA";	
-	
+	// private static String MARCA ="MARCA";
+	private static String DESCRIPCIO = "DESCRIPCIO";
+	private static String STOCK = "STOCK";
+	private static String STOCKMIN = "STOCKMIN";
+	private static String STOCKMAX = "STOCKMAX";
+	private static String PRECIOVTA = "PRECIOVTA";
+
 	public void ejecutar(String path) {
-		try {			
+		try {
 			marcas = marcaDao.getAll();
-			tipos = tipoDao.getAll();
 			migrarProductos(path);
-			migrarClientes(path);			
+			migrarClientes(path);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -106,8 +103,8 @@ public class DBImport {
 
 				producto = new Producto();
 
-				//marca, tipo, precioCompra, proveedor
-				
+				// marca, tipo, precioCompra, proveedor
+
 				String descripcion = "";
 				String codigo = "";
 				String stock = "";
@@ -123,11 +120,11 @@ public class DBImport {
 								+ (rawValue == null ? "<NULL>" : new String(
 										rawValue)));
 						if (DESCRIPCIO.equals(field.getName()))
-							descripcion = (rawValue == null ? "<NULL>" : new String(
-									rawValue));
-						if (ARTICULO.equals(field.getName()))
-							codigo= (rawValue == null ? "<NULL>"
+							descripcion = (rawValue == null ? "<NULL>"
 									: new String(rawValue));
+						if (ARTICULO.equals(field.getName()))
+							codigo = (rawValue == null ? "<NULL>" : new String(
+									rawValue));
 						if (STOCK.equals(field.getName()))
 							stock = (rawValue == null ? "<NULL>" : new String(
 									rawValue));
@@ -138,8 +135,8 @@ public class DBImport {
 							stockCompra = (rawValue == null ? "<NULL>"
 									: new String(rawValue));
 						if (PRECIOVTA.equals(field.getName()))
-							precioVenta = (rawValue == null ? "<NULL>" : new String(
-									rawValue));						
+							precioVenta = (rawValue == null ? "<NULL>"
+									: new String(rawValue));
 
 					} catch (ValueTooLargeException vtle) {
 						// Cannot happen :)
@@ -147,43 +144,52 @@ public class DBImport {
 				}
 
 				codigo = codigo.trim();
-				if (!codigo.equals("")) {
+				if (!codigo.equals("") && codigo.length()>=2) {
 					producto.setCodigo(codigo.trim());
 					producto.setDescripcion(descripcion);
 					producto.setEliminado(false);
-					
+
 					String ivaString = "21";
-					BigDecimal precioSinIva = getBigDecimal(precioVenta).setScale(2, BigDecimal.ROUND_HALF_UP);
-					BigDecimal ivaPerc =  getBigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP);
-					BigDecimal precioPerc = new BigDecimal(100).setScale(2, BigDecimal.ROUND_HALF_UP).subtract(ivaPerc);
-					BigDecimal iva = ivaPerc.multiply(precioSinIva).setScale(2, BigDecimal.ROUND_HALF_UP);
-					iva = iva.divide(BigDecimal.ONE.add(precioPerc),2, RoundingMode.HALF_UP);
-					BigDecimal precioFinal = precioSinIva.add(iva.setScale(2, BigDecimal.ROUND_HALF_UP));
-					
+					BigDecimal precioSinIva = getBigDecimal(precioVenta)
+							.setScale(2, BigDecimal.ROUND_HALF_UP);
+					BigDecimal ivaPerc = getBigDecimal(ivaString).setScale(2,
+							BigDecimal.ROUND_HALF_UP);
+					BigDecimal precioPerc = new BigDecimal(100).setScale(2,
+							BigDecimal.ROUND_HALF_UP).subtract(ivaPerc);
+					BigDecimal iva = ivaPerc.multiply(precioSinIva).setScale(2,
+							BigDecimal.ROUND_HALF_UP);
+					iva = iva.divide(BigDecimal.ONE.add(precioPerc), 2,
+							RoundingMode.HALF_UP);
+					BigDecimal precioFinal = precioSinIva.add(iva.setScale(2,
+							BigDecimal.ROUND_HALF_UP));
+
 					producto.setIva(iva);
 					producto.setPrecioVenta(precioSinIva);
-					
+
 					producto.setStock(getInt(stock));
 					producto.setStockCompra(getInt(stockCompra));
 					producto.setStockMinimo(getInt(stockMinimo));
 					producto.setPrecioCompra(new BigDecimal(0));
-					
+
 					actualizarProductos(producto);
-					logger.info("IVA: ".concat(iva.toString()).concat(" PRECIO FINAL: ").concat(precioFinal.toString()));
-							
+					logger.info("IVA: ".concat(iva.toString())
+							.concat(" PRECIO FINAL: ")
+							.concat(precioFinal.toString()));
+
 					try {
 						logger.info(producto.toString());
-						productoDao.saveOrUpdate(producto);								
-						
-					} catch (Exception e) {	
-						logger.error("PRODUCTO NO GUARDADO: ".concat(producto.toString()));
+						productoDao.saveOrUpdate(producto);
+
+					} catch (Exception e) {
+						logger.error("PRODUCTO NO GUARDADO: ".concat(producto
+								.toString()));
 						logger.error(e);
 					}
 
 				} else
-					logger.error("PRODUCTO NO GUARDADO POR CODIGO VACIO: ".concat(descripcion));
-					
-								
+					logger.error("PRODUCTO NO GUARDADO POR CODIGO VACIO: "
+							.concat(descripcion));
+
 			}
 
 		} catch (Exception e) {
@@ -191,29 +197,44 @@ public class DBImport {
 		}
 		logger.info("listo Productos!");
 	}
-	
-	private void actualizarProductos(Producto producto){
-		
-		String description = producto.getDescripcion();
-		description = description.toLowerCase();
-		for (Marca marca: marcas){
-			String marcaDesc = marca.getDescripcion();
-			marcaDesc = marcaDesc.toLowerCase();
-			if (description.contains(marcaDesc)){
-				producto.setMarca(marca);
+
+	private void actualizarProductos(Producto producto) {
+		try {
+			String prodCod = producto.getCodigo().substring(0, 2);
+			try{
+				Long prodTipo = Long.parseLong(prodCod);
+
+				producto.setTipo(tipoDao.findById(prodTipo));
+			} catch (Exception e){
+				logger.error("No se encuentra tipo para el producto: " + e);
 			}
-		}
-		
-		for (Tipo tipo: tipos){
-			String tipoDesc = tipo.getDescripcion();
-			tipoDesc = tipoDesc.toLowerCase();
-			if (description.contains(tipoDesc)){
-				producto.setTipo(tipo);
+
+			String description = producto.getDescripcion();
+
+			description = description.toLowerCase();
+
+			for (Marca marca : marcas) {
+				String marcaDesc = marca.getDescripcion();
+				marcaDesc = marcaDesc.toLowerCase();
+				if (description.contains(marcaDesc)) {
+					producto.setMarca(marca);
+				} else {
+					if (description.contains("wr"))
+						producto.setMarca(marcaDao.findById(new Long(11)));
+					else if (description.contains("dior"))
+						producto.setMarca(marcaDao.findById(new Long(5)));
+					else if (description.contains("cotton"))
+						producto.setMarca(marcaDao.findById(new Long(8)));
+					else if (description.contains(" rc"))
+						producto.setMarca(marcaDao.findById(new Long(8)));
+				}
 			}
+		} catch (Exception e) {
+			logger.error("Error al actualizar tipo y marca del producto - ", e);
 		}
-		
+
 	}
-	
+
 	private void migrarClientes(String path) {
 
 		String file = path + "DEUDORES.DBF";
@@ -277,49 +298,54 @@ public class DBImport {
 						//
 					}
 				}
-				
-				if (postal!=null && !postal.trim().isEmpty())
+
+				if (postal != null && !postal.trim().isEmpty())
 					if (provincia != null) {
-						Provincia prov = provinciaDao.get(new Long(provincia.trim()));
-						if (postal.trim().equals("3015") 
-								||postal.trim().equals("3065")
-								||postal.trim().equals("3106")
-								||postal.trim().equals("2016")
-								||postal.trim().equals("2103"))
+						Provincia prov = provinciaDao.get(new Long(provincia
+								.trim()));
+						if (postal.trim().equals("3015")
+								|| postal.trim().equals("3065")
+								|| postal.trim().equals("3106")
+								|| postal.trim().equals("2016")
+								|| postal.trim().equals("2103"))
 							postal = "3016";
-						if (postal.trim().equals("2561")) 
+						if (postal.trim().equals("2561"))
 							postal = "5000";
-						if (postal.trim().equals("3300")) 
+						if (postal.trim().equals("3300"))
 							postal = "3100";
-						
-						List<Ciudad> ciudades = ciudadDao
-								.getByPostal(postal);
+
+						List<Ciudad> ciudades = ciudadDao.getByPostal(postal);
 						Ciudad ciudad = null;
 						if (ciudades == null || ciudades.isEmpty()) {
 							ciudad = new Ciudad();
 							ciudad.setCodigoPostal(postal);
-							ciudad.setDescripcion(new String(localidad.toString().getBytes("ISO-8859-1")));
+							ciudad.setDescripcion(new String(localidad
+									.toString().getBytes("ISO-8859-1")));
 							ciudad.setProvincia(prov);
 							Direccion direccion = new Direccion();
-							direccion.setDomicilio(new String(domicilio.toString().getBytes("ISO-8859-1")));
+							direccion.setDomicilio(new String(domicilio
+									.toString().getBytes("ISO-8859-1")));
 							direccion.setCodigoPostal(postal);
 							direccion.setCiudad(ciudad);
 							cliente.setDireccion(direccion);
 						} else
 							ciudad = ciudades.get(0);
 					}
-				cliente.setActividad(new String(actividad.toString().getBytes("ISO-8859-1")));				
+				cliente.setActividad(new String(actividad.toString().getBytes(
+						"ISO-8859-1")));
 				if (!nullCuit.equals(cuit.trim()))
 					cliente.setCuit(cuit.trim());
-				cliente.setNombre(new String(nombre.toString().getBytes("ISO-8859-1")));
-				cliente.setTelefono(telefono);				
+				cliente.setNombre(new String(nombre.toString().getBytes(
+						"ISO-8859-1")));
+				cliente.setTelefono(telefono);
 				try {
 					logger.info(cliente.toString());
 					clienteDao.saveOrUpdate(cliente);
-				} catch (Exception e) {	
-					logger.error("CLIENTE NO GUARDADO: ".concat(cliente.toString()));
+				} catch (Exception e) {
+					logger.error("CLIENTE NO GUARDADO: ".concat(cliente
+							.toString()));
 					e.printStackTrace();
-				}				
+				}
 			}
 
 		} catch (Exception e) {
@@ -328,23 +354,21 @@ public class DBImport {
 		logger.info("listo Cliente!");
 	}
 
-	
-	private int getInt(String valor){
+	private int getInt(String valor) {
 		int retorno = -1;
-		if (valor!=null && !valor.isEmpty()) {
+		if (valor != null && !valor.isEmpty()) {
 			Double d = new Double(valor.trim());
 			retorno = d.intValue();
 		}
-			return retorno;
+		return retorno;
 	}
-		
-	
-	private BigDecimal getBigDecimal(String valor){
+
+	private BigDecimal getBigDecimal(String valor) {
 		BigDecimal retorno = new BigDecimal(0);
-		if (valor!=null && !valor.isEmpty()) {
+		if (valor != null && !valor.isEmpty()) {
 			retorno = new BigDecimal(valor.trim());
 		}
-			return retorno;
+		return retorno;
 	}
-	
+
 }

@@ -307,9 +307,10 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 				while (pagosIt.hasNext()){
 					Pago pago = pagosIt.next();
 					if (!pago.isComprobante()) {
-						comprobante.addPago(pago);						
+						comprobante.addPago(pago);
+						pago.setFecha(new Date());
 					}
-					pago.setFecha(new Date());
+					
 					pago.setComprobante(true);
 				}
 			}
