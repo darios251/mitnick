@@ -265,8 +265,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			btnReporteVenta.setToolTipText(PropertiesManager
 					.getProperty("movmientosPanel.tooltip.producto.reporteVenta"));
 
-//			btnReporteVenta.setIcon(new ImageIcon(this.getClass()
-//					.getResource("/img/data_find.png")));
+			btnReporteVenta.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
 			btnReporteVenta.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReporteVenta.setMargin(new Insets(-1, -1, -1, -1));
@@ -298,8 +297,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 					.getProperty("productoPanel.tooltip.compraProductos"));
 
 
-//			btnCompra.setIcon(new ImageIcon(this.getClass()
-//					.getResource("/img/data_find.png")));
+			btnCompra.setIcon(new ImageIcon(this.getClass().getResource("/img/camion.png")));
 			btnCompra.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnCompra.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCompra.setMargin(new Insets(-1, -1, -1, -1));
@@ -354,7 +352,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			btnExportar.setToolTipText(PropertiesManager
 					.getProperty("productoPanel.tooltip.exportar"));
 
-//			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/exportar.jpg")));
+			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/pdfIcon.png")));
 			btnExportar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnExportar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnExportar.setMargin(new Insets(-1, -1, -1, -1));

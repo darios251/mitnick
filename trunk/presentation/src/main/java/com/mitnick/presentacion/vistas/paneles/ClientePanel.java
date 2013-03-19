@@ -287,7 +287,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		if (btnEstadoCuenta == null) {
 			btnEstadoCuenta = new JButton(PropertiesManager.getProperty("clientePanel.button.listadoClientes"));
 			btnEstadoCuenta.setToolTipText(PropertiesManager.getProperty("clientePanel.button.listadoClientes.tooltip"));
-//			btnEstadoCuenta.setIcon(new ImageIcon(this.getClass().getResource("/img/estado_cuenta.png")));
+			btnEstadoCuenta.setIcon(new ImageIcon(this.getClass().getResource("/img/pdfIcon.png")));
 
 			btnEstadoCuenta.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnEstadoCuenta.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -307,7 +307,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 
 			btnCuentaCorriente = new JButton(PropertiesManager.getProperty("clientePanel.button.cuentaCorriente"));
 			btnCuentaCorriente.setToolTipText(PropertiesManager.getProperty("clientePanel.button.cuentaCorriente.tooltip"));
-//			btnCuentaCorriente.setIcon(new ImageIcon(this.getClass().getResource("/img/icono-cuenta-corriente.jpg")));
+			btnCuentaCorriente.setIcon(new ImageIcon(this.getClass().getResource("/img/calculadora.png")));
 			btnCuentaCorriente.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnCuentaCorriente.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCuentaCorriente.setMargin(new Insets(-1, -1, -1, -1));

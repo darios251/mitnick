@@ -140,7 +140,7 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 			btnExportar = new JButton(PropertiesManager.getProperty("productoPanel.label.exportar"));
 			btnExportar.setToolTipText(PropertiesManager.getProperty("productoPanel.tooltip.exportar"));
 			
-//			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/exportar.jpg")));
+			btnExportar.setIcon(new ImageIcon(this.getClass().getResource("/img/pdfIcon.png")));
 			btnExportar.setHorizontalTextPosition( SwingConstants.CENTER );
 			btnExportar.setVerticalTextPosition( SwingConstants.BOTTOM );
 			btnExportar.setMargin(new Insets(-1, -1, -1, -1));
