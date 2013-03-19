@@ -261,7 +261,7 @@ public class PrinterService {
 				output.println(producto.getCantidad());
 				
 				output.println(ITEM_PRECIO);
-				output.println(producto.getProducto().getPrecioVenta().setScale(2, RoundingMode.HALF_UP));
+					output.println(producto.getProducto().getPrecioVenta().setScale(2, RoundingMode.HALF_UP));
 				
 				output.println(ITEM_IVA);
 				output.println("21");
