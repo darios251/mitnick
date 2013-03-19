@@ -218,8 +218,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			List<ReporteFacturasDto> reportes = new ArrayList<ReporteFacturasDto>();
 
 			for (Venta venta : ventas) {
-				//TODO: GUARDAR EN VENTA EL CORTE, EL TIPO A Y B SIEMPRE, Y LA CONDICION
-				ReporteFacturasDto diarioDto = getCorte(1, reportes);
+				ReporteFacturasDto diarioDto = getCorte(venta.getCorteZ(), reportes);
 				diarioDto.setFecha(venta.getFecha());
 				if ("A".equals(venta.getTipoTicket())){
 					diarioDto.setIvaA(diarioDto.getIvaA().add(venta.getImpuesto()));
