@@ -88,6 +88,17 @@ public class Venta extends BaseObject implements Serializable {
 	@Column(name = "numeroTicketOriginal")
 	private String numeroTicketOriginal;
 	
+	@Column(name = "corteZ")
+	private int corteZ;
+	
+	public int getCorteZ() {
+		return corteZ;
+	}
+
+	public void setCorteZ(int corteZ) {
+		this.corteZ = corteZ;
+	}
+
 	public int getTipo() {
 		return tipo;
 	}
@@ -244,6 +255,7 @@ public class Venta extends BaseObject implements Serializable {
 				+ ((ajusteRedondeo == null) ? 0 : ajusteRedondeo.hashCode());
 		result = prime * result + (canceled ? 1231 : 1237);
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + corteZ;
 		result = prime * result + ((cuotas == null) ? 0 : cuotas.hashCode());
 		result = prime * result
 				+ ((descuento == null) ? 0 : descuento.hashCode());
@@ -301,6 +313,9 @@ public class Venta extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
+		if (corteZ != other.corteZ) {
 			return false;
 		}
 		if (cuotas == null) {
@@ -413,7 +428,8 @@ public class Venta extends BaseObject implements Serializable {
 				+ ", discriminacionIVA=" + discriminacionIVA + ", printed="
 				+ printed + ", numeroTicket=" + numeroTicket + ", tipoTicket="
 				+ tipoTicket + ", canceled=" + canceled + ", tipo=" + tipo
-				+ ", numeroTicketOriginal=" + numeroTicketOriginal + "]";
+				+ ", numeroTicketOriginal=" + numeroTicketOriginal
+				+ ", corteZ=" + corteZ + "]";
 	}
 	
 	public BigDecimal getPagoContado(){
