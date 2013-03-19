@@ -237,7 +237,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		if (btnPagar == null) {
 			btnPagar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.pagar.texto"));
 			btnPagar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.pagar.tooltip"));
-//			btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/icono-pagos.jpg")));
+			btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/payment-icon.png")));
 
 			btnPagar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnPagar.setVerticalTextPosition(SwingConstants.BOTTOM);

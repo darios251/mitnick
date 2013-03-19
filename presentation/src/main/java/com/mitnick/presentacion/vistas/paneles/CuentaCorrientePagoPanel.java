@@ -334,7 +334,7 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 			btnFinalizar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnFinalizar.setMargin(new Insets(-1, -1, -1, -1));
 			btnFinalizar.setBounds(680, 364, 60, 60);
-			btnFinalizar.setIcon(new ImageIcon(this.getClass().getResource("/img/printer.jpg")));
+			btnFinalizar.setIcon(new ImageIcon(this.getClass().getResource("/img/print.png")));
 			btnFinalizar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {

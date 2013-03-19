@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -91,13 +92,12 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getBtnReporteVentasMensual());
 		add(getBtnReporteVentasAnual());
 		
-//		add(getBtnReporteDeVentasProducto());
-//		add(getBtnReporteDeVentasZapatillas());	
-
 		add(getBtnListadoDeControl());
 		add(getBtnReporteDeEstado());
 		
 		add(getBtnReporteFacturas());
+		
+		add(getImagenFondo());
 		
 		setFocusTraversalPolicy();
 		this.actualizarPantalla();
@@ -235,6 +235,17 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			});
 		}
 		return btnReporteFacturas;
+	}
+	
+	private JLabel getImagenFondo() {
+		JLabel img = new JLabel(" ");
+
+		img.setIcon(new ImageIcon(this.getClass().getResource("/img/estadisticas.png")));
+		img.setSize(256,256);
+		img.setLocation(500,300);
+		img.setVisible(true); 
+		
+		return img;
 	}
 	
 	public JLabel getLblFechaInicio() {
