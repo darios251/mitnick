@@ -143,8 +143,6 @@ public class PrincipalView extends JFrame
 		{
 			menuProductos = new JMenu();
 			menuProductos.setText(PropertiesManager.getProperty("principalView.menu.productos"));
-			menuProductos.add(PropertiesManager.getProperty("principalView.menu.productos.nuevo"));
-			menuProductos.add(PropertiesManager.getProperty("principalView.menu.productos.consultar"));
 			menuProductos.add(getMenuResetearStock());
 		}
 		return menuProductos;
