@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.vistas.paneles;
 
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ClienteController;
@@ -93,8 +95,11 @@ public class NuevaCuotaDialog extends BaseDialog {
 		if(btnAceptar == null) {
 			btnAceptar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.aceptar"));;
 			btnAceptar.setIcon(new ImageIcon(this.getClass().getResource("/img/aceptar.png")));
-
-			btnAceptar.setBounds(84, 134, 100, 45);
+			btnAceptar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnAceptar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
+			btnAceptar.setBounds(95, 134, 60, 60);
+			
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
@@ -118,7 +123,11 @@ public class NuevaCuotaDialog extends BaseDialog {
 		if(btnCancelar == null) {
 			btnCancelar = new JButton(PropertiesManager.getProperty("cuentaCorrienteDialog.cancelar"));
 			btnCancelar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
-			btnCancelar.setBounds(232, 134, 100, 45);
+			btnCancelar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnCancelar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnCancelar.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnCancelar.setBounds(250, 134, 60, 60);
 			btnCancelar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					setVisible(false);
