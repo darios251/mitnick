@@ -115,28 +115,19 @@ public class DBImport {
 				for (final Field field : fields) {
 					try {
 						byte[] rawValue = record.getRawValue(field);
-						logger.info(field.getName()
-								+ " : "
-								+ (rawValue == null ? "<NULL>" : new String(
-										rawValue)));
+						logger.info(field.getName()	+ " : "	+ (rawValue == null ? "<NULL>" : new String(rawValue)));
 						if (DESCRIPCIO.equals(field.getName()))
-							descripcion = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							descripcion = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (ARTICULO.equals(field.getName()))
-							codigo = (rawValue == null ? "<NULL>" : new String(
-									rawValue));
+							codigo = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (STOCK.equals(field.getName()))
-							stock = (rawValue == null ? "<NULL>" : new String(
-									rawValue));
+							stock = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (STOCKMIN.equals(field.getName()))
-							stockMinimo = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							stockMinimo = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (STOCKMAX.equals(field.getName()))
-							stockCompra = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							stockCompra = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (PRECIOVTA.equals(field.getName()))
-							precioVenta = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							precioVenta = (rawValue == null ? "<NULL>" : new String(rawValue));
 
 					} catch (ValueTooLargeException vtle) {
 						// Cannot happen :)
@@ -146,22 +137,12 @@ public class DBImport {
 				codigo = codigo.trim();
 				if (!codigo.equals("") && codigo.length()>=2) {
 					producto.setCodigo(codigo.trim());
-					producto.setDescripcion(descripcion.trim());
+					producto.setDescripcion(descripcion);
 					producto.setEliminado(false);
 
-					String ivaString = "21";
-					BigDecimal precioSinIva = getBigDecimal(precioVenta)
-							.setScale(2, BigDecimal.ROUND_HALF_UP);
-					BigDecimal ivaPerc = getBigDecimal(ivaString).setScale(2,
-							BigDecimal.ROUND_HALF_UP);
-					BigDecimal precioPerc = new BigDecimal(100).setScale(2,
-							BigDecimal.ROUND_HALF_UP).subtract(ivaPerc);
-					BigDecimal iva = ivaPerc.multiply(precioSinIva).setScale(2,
-							BigDecimal.ROUND_HALF_UP);
-					iva = iva.divide(BigDecimal.ONE.add(precioPerc), 2,
-							RoundingMode.HALF_UP);
-					BigDecimal precioFinal = precioSinIva.add(iva.setScale(2,
-							BigDecimal.ROUND_HALF_UP));
+					BigDecimal precioSinIva = getBigDecimal(precioVenta).setScale(2, BigDecimal.ROUND_HALF_UP);
+					BigDecimal iva = precioSinIva.multiply(new BigDecimal(0.21)).setScale(2, BigDecimal.ROUND_HALF_UP);
+					BigDecimal precioFinal = precioSinIva.add(iva.setScale(2, BigDecimal.ROUND_HALF_UP));
 
 					producto.setIva(iva);
 					producto.setPrecioVenta(precioSinIva);
@@ -172,23 +153,19 @@ public class DBImport {
 					producto.setPrecioCompra(new BigDecimal(0));
 
 					actualizarProductos(producto);
-					logger.info("IVA: ".concat(iva.toString())
-							.concat(" PRECIO FINAL: ")
-							.concat(precioFinal.toString()));
+					logger.info("IVA: ".concat(iva.toString()).concat(" PRECIO FINAL: ").concat(precioFinal.toString()));
 
 					try {
 						logger.info(producto.toString());
 						productoDao.saveOrUpdate(producto);
 
 					} catch (Exception e) {
-						logger.error("PRODUCTO NO GUARDADO: ".concat(producto
-								.toString()));
+						logger.error("PRODUCTO NO GUARDADO: ".concat(producto.toString()));
 						logger.error(e);
 					}
 
 				} else
-					logger.error("PRODUCTO NO GUARDADO POR CODIGO VACIO: "
-							.concat(descripcion));
+					logger.error("PRODUCTO NO GUARDADO POR CODIGO VACIO: ".concat(descripcion));
 
 			}
 
@@ -267,34 +244,23 @@ public class DBImport {
 				for (final Field field : fields) {
 					try {
 						byte[] rawValue = record.getRawValue(field);
-						logger.info(field.getName()
-								+ " : "
-								+ (rawValue == null ? "<NULL>" : new String(
-										rawValue)));
+						logger.info(field.getName()	+ " : "	+ (rawValue == null ? "<NULL>" : new String(rawValue)));
 						if (RAZONSOC.equals(field.getName()))
-							nombre = (rawValue == null ? "<NULL>" : new String(
-									rawValue));
+							nombre = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (DOMICILIO.equals(field.getName()))
-							domicilio = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							domicilio = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (POSTAL.equals(field.getName()))
-							postal = (rawValue == null ? "<NULL>" : new String(
-									rawValue));
+							postal = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (LOCALIDAD.equals(field.getName()))
-							localidad = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							localidad = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (PROVINCIA.equals(field.getName()))
-							provincia = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							provincia = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (CUIT.equals(field.getName()))
-							cuit = (rawValue == null ? "<NULL>" : new String(
-									rawValue));
+							cuit = (rawValue == null ? "<NULL>" : new String(rawValue));
 						if (TELEFONO.equals(field.getName()))
-							telefono = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							telefono = (rawValue == null ? "<NULL>"	: new String(rawValue));
 						if (ACTIVIDAD.equals(field.getName()))
-							actividad = (rawValue == null ? "<NULL>"
-									: new String(rawValue));
+							actividad = (rawValue == null ? "<NULL>" : new String(rawValue));
 
 					} catch (ValueTooLargeException vtle) {
 						//
@@ -305,11 +271,7 @@ public class DBImport {
 					if (provincia != null) {
 						Provincia prov = provinciaDao.get(new Long(provincia
 								.trim()));
-						if (postal.trim().equals("3015")
-								|| postal.trim().equals("3065")
-								|| postal.trim().equals("3106")
-								|| postal.trim().equals("2016")
-								|| postal.trim().equals("2103"))
+						if (postal.trim().equals("3015") || postal.trim().equals("3065") || postal.trim().equals("3106") || postal.trim().equals("2016") || postal.trim().equals("2103"))
 							postal = "3016";
 						if (postal.trim().equals("2561"))
 							postal = "5000";
@@ -321,32 +283,27 @@ public class DBImport {
 						if (ciudades == null || ciudades.isEmpty()) {
 							ciudad = new Ciudad();
 							ciudad.setCodigoPostal(postal);
-							ciudad.setDescripcion(new String(localidad
-									.toString().getBytes("ISO-8859-1")));
-							ciudad.setProvincia(prov);							
+							ciudad.setDescripcion(new String(localidad.toString().getBytes("ISO-8859-1")));
+							ciudad.setProvincia(prov);
 						} else
 							ciudad = ciudades.get(0);
 						
 						Direccion direccion = new Direccion();
-						direccion.setDomicilio(new String(domicilio
-								.toString().getBytes("ISO-8859-1")).trim());
+						direccion.setDomicilio(new String(domicilio.toString().getBytes("ISO-8859-1")));
 						direccion.setCodigoPostal(postal);
 						direccion.setCiudad(ciudad);
 						cliente.setDireccion(direccion);
 					}
-				cliente.setActividad(new String(actividad.toString().getBytes(
-						"ISO-8859-1")).trim());
+				cliente.setActividad(new String(actividad.toString().getBytes("ISO-8859-1")));
 				if (!nullCuit.equals(cuit.trim()))
 					cliente.setCuit(cuit.trim());
-				cliente.setNombre(new String(nombre.toString().getBytes(
-						"ISO-8859-1")).trim());
+				cliente.setNombre(new String(nombre.toString().getBytes("ISO-8859-1")));
 				cliente.setTelefono(telefono);
 				try {
 					logger.info(cliente.toString());
 					clienteDao.saveOrUpdate(cliente);
 				} catch (Exception e) {
-					logger.error("CLIENTE NO GUARDADO: ".concat(cliente
-							.toString()));
+					logger.error("CLIENTE NO GUARDADO: ".concat(cliente.toString()));
 					e.printStackTrace();
 				}
 			}
