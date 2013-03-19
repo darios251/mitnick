@@ -146,7 +146,7 @@ public class DBImport {
 				codigo = codigo.trim();
 				if (!codigo.equals("") && codigo.length()>=2) {
 					producto.setCodigo(codigo.trim());
-					producto.setDescripcion(descripcion);
+					producto.setDescripcion(descripcion.trim());
 					producto.setEliminado(false);
 
 					String ivaString = "21";
@@ -227,6 +227,8 @@ public class DBImport {
 						producto.setMarca(marcaDao.findById(new Long(8)));
 					else if (description.contains(" rc"))
 						producto.setMarca(marcaDao.findById(new Long(8)));
+					else if (description.contains(" tnn"))
+						producto.setMarca(marcaDao.findById(new Long(1)));
 				}
 			}
 		} catch (Exception e) {
@@ -321,22 +323,23 @@ public class DBImport {
 							ciudad.setCodigoPostal(postal);
 							ciudad.setDescripcion(new String(localidad
 									.toString().getBytes("ISO-8859-1")));
-							ciudad.setProvincia(prov);
-							Direccion direccion = new Direccion();
-							direccion.setDomicilio(new String(domicilio
-									.toString().getBytes("ISO-8859-1")));
-							direccion.setCodigoPostal(postal);
-							direccion.setCiudad(ciudad);
-							cliente.setDireccion(direccion);
+							ciudad.setProvincia(prov);							
 						} else
 							ciudad = ciudades.get(0);
+						
+						Direccion direccion = new Direccion();
+						direccion.setDomicilio(new String(domicilio
+								.toString().getBytes("ISO-8859-1")).trim());
+						direccion.setCodigoPostal(postal);
+						direccion.setCiudad(ciudad);
+						cliente.setDireccion(direccion);
 					}
 				cliente.setActividad(new String(actividad.toString().getBytes(
-						"ISO-8859-1")));
+						"ISO-8859-1")).trim());
 				if (!nullCuit.equals(cuit.trim()))
 					cliente.setCuit(cuit.trim());
 				cliente.setNombre(new String(nombre.toString().getBytes(
-						"ISO-8859-1")));
+						"ISO-8859-1")).trim());
 				cliente.setTelefono(telefono);
 				try {
 					logger.info(cliente.toString());
