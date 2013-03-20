@@ -374,11 +374,10 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("saldoDeudor", getSaldoDeudor(cliente).toString());
 			parameters.put("saldoAFavor", getSaldoFavor(cliente).toString());
 			parameters.put("nombreCliente", cliente.getNombre());
-			parameters.put("direccionCliente", cliente.getDireccion()
-					.getDomicilio()
-					+ " "
-					+ cliente.getDireccion().getCiudad().getDescripcion());
-
+			if (Validator.isNotNull(cliente.getDireccion()))
+				parameters.put("direccionCliente", cliente.getDireccion().getDomicilio() + " "+ cliente.getDireccion().getCiudad().getDescripcion());
+			else
+				parameters.put("direccionCliente", "");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
 

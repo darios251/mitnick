@@ -24,6 +24,7 @@ public class MedioPagoDAO extends GenericDaoHibernate<MedioPago, Long>  implemen
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public MedioPago getByCode(String code) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(MedioPago.class);
 		criteria.add(Restrictions.ilike("codigo", code));
