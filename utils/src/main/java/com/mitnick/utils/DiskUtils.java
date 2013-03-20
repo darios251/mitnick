@@ -5,12 +5,15 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.apache.log4j.Logger;
+
 public class DiskUtils {
 
 	private DiskUtils() {
 	}
 
 	public static String getSerialNumber(String drive) {
+		final Logger logger = Logger.getLogger(DiskUtils.class);
 		String result = "";
 		try {
 			File file = File.createTempFile("realhowto", ".vbs");
@@ -35,7 +38,7 @@ public class DiskUtils {
 			}
 			input.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return result.trim();
 	}

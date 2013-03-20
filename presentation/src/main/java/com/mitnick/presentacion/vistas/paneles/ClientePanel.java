@@ -295,7 +295,12 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnEstadoCuenta.setBounds(735, 265, 60, 60);
 			btnEstadoCuenta.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					controller.cargarReporte();
+					try {
+						controller.cargarReporte();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
 				}
 			});
 		}

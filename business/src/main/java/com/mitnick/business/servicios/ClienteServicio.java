@@ -148,7 +148,11 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	@Override
 	public void cargarReporte() {
-		clienteDao.cargarReporte();
+		try {
+			clienteDao.cargarReporte();
+		} catch (PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar generar el listado de clientes.");
+		}
 	}
 
 	public List<CuotaDto> obtenerCuotasPendientes(ClienteDto cliente) {

@@ -114,7 +114,7 @@ public class ReporteMovimientosController extends BaseController {
 			getReporteServicio().consultarVentaPorArticulo(dto);
 		}
 		catch(BusinessException e) {
-			e.printStackTrace();
+			throw new PresentationException(e);
 		}
 	}
 	
@@ -124,7 +124,7 @@ public class ReporteMovimientosController extends BaseController {
 			return productoServicio.obtenerMarcas();
 		}
 		catch (BusinessException e) {
-			throw new PresentationException(e.getMessage(),	"Hubo un error al intentar obtener las marcas");
+			throw new PresentationException(e);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class ReporteMovimientosController extends BaseController {
 			return productoServicio.obtenerTipos();
 		} 
 		catch (BusinessException e) {
-			throw new PresentationException(e.getMessage(),	"Hubo un error al intentar obtener los tipos");
+			throw new PresentationException(e);
 		}
 	}
 	

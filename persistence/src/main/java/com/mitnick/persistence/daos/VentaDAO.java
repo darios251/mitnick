@@ -19,6 +19,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
@@ -177,7 +178,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			JasperViewer.viewReport(jasperPrint,false);
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
+		}	
 	}
 }

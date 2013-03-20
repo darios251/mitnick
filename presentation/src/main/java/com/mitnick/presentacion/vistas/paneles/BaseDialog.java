@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.validation.ConstraintViolation;
 
+import org.apache.log4j.Logger;
+
 import com.mitnick.exceptions.BaseException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.utils.PropertiesManager;
@@ -27,6 +29,8 @@ public class BaseDialog extends JDialog  implements KeyEventDispatcher {
 	private static final long serialVersionUID = 1L;
 	
 	private static BaseDialog currentDialog = null;
+	
+	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	public static void setCurrentDialog(BaseDialog currentDial) {
 		currentDialog = currentDial;
@@ -117,7 +121,7 @@ public class BaseDialog extends JDialog  implements KeyEventDispatcher {
 					field.requestFocus();
 					field.selectAll();
 				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 	    	 }
 	     }
