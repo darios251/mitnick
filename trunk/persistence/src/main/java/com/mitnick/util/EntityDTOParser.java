@@ -396,7 +396,11 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setCodigo(productoDto.getCodigo());
 		producto.setDescripcion(productoDto.getDescripcion());
 		producto.setPrecioVenta(new BigDecimal(productoDto.getPrecioVenta()));
-		producto.setPrecioCompra(new BigDecimal(productoDto.getPrecioCompra()));
+		
+		if (Validator.isNotBlankOrNull(productoDto.getPrecioCompra()))
+			producto.setPrecioCompra(new BigDecimal(productoDto.getPrecioCompra()));
+		else
+			producto.setPrecioCompra(new BigDecimal(0));
 		
 		producto.setTalle(productoDto.getTalle());
 
