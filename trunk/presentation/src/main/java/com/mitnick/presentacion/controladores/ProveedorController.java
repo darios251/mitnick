@@ -61,15 +61,6 @@ public class ProveedorController extends BaseController {
 		proveedorProductoPanel.actualizarPantalla();
 	}
 	
-	public List<ProveedorDto> getAllProveedores() {
-		try {
-			return proveedorServicio.obtenerProveedores();
-		}
-		catch(BusinessException e) {
-			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los proveedores");
-		}
-	}
-	
 	public List<ProveedorDto> getProveedorsByFilter(ConsultaProveedorDto dto) {
 		logger.debug("Entrando al método getProveedorByFilter con: " + dto);
 		
