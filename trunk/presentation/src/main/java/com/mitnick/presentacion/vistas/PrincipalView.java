@@ -662,7 +662,7 @@ public class PrincipalView extends JFrame
 			menuItemCierreZ = new JMenuItem("Cierre Z");
 			menuItemCierreZ.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(printerService.imprimirCierreZ())
+					if(!printerService.imprimirCierreZ())
 						throw new PresentationException("error.printer.cierreZ");
 				}
 			});
