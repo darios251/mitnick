@@ -623,19 +623,24 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 			getTxtStockMinimo().setText(producto.getStockMinimo());
 			getTxtStockCompra().setText(producto.getStockCompra());
 			getTxtTalle().setText(producto.getTalle());
-			if (getCmbMarca().getModel().getSize() > 0)
+			if (getCmbMarca().getModel().getSize() > 0 && Validator.isNotNull(producto.getMarca()))
 				getCmbMarca().getModel().setSelectedItem(producto.getMarca());
 			else
 				getCmbMarca().setSelectedItem(null);
-			if (getCmbTipo().getModel().getSize() > 0)
+			if (getCmbTipo().getModel().getSize() > 0 && Validator.isNotNull(producto.getTipo()))
 				getCmbTipo().getModel().setSelectedItem(producto.getTipo());
 			else
 				getCmbTipo().setSelectedItem(null);
-			if (getCmbProveedores().getModel().getSize() > 0)
+			if (getCmbProveedores().getModel().getSize() > 0 && Validator.isNotNull(producto.getProveedor()))
 				getCmbProveedores().getModel().setSelectedItem(producto.getProveedor());
 			else
 				getCmbProveedores().setSelectedItem(null);
+		} else {
+				getCmbMarca().setSelectedItem(null);
+				getCmbTipo().setSelectedItem(null);
+				getCmbProveedores().setSelectedItem(null);
 		}
+			
 	}
 
 	@Override

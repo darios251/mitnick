@@ -8,13 +8,12 @@ public class ProveedorDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 	
-	@MitnickField(required=true, fieldType=FieldType.APHANUMERIC, min=3, max=30)
+	@MitnickField(required=true)
 	private String codigo;
 	
-	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
+	@MitnickField(required=true, fieldType=FieldType.NAME)
 	private String nombre;
-	
-	@MitnickField(required=true, fieldType=FieldType.PHONE_NUMBER, min=3, max=30)
+		
 	private String telefono;
 
 	public String getCodigo() {
