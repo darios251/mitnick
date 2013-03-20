@@ -1,6 +1,11 @@
 package com.mitnick.persistence.daos;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.mitnick.persistence.entities.CierreZ;
@@ -10,6 +15,16 @@ public class CierreZDao extends GenericDaoHibernate<CierreZ, Long>  implements I
 
 	public CierreZDao() {
 		super(CierreZ.class);
+	}
+	
+	public CierreZ findByFecha(Date fecha){
+		DetachedCriteria criteria = DetachedCriteria.forClass(CierreZ.class);
+		criteria.add(Restrictions.eq("fecha", fecha));
+		@SuppressWarnings("unchecked")
+		List<CierreZ> cierres = getHibernateTemplate().findByCriteria(criteria);
+		if (cierres!=null && !cierres.isEmpty())
+			return cierres.get(0);
+		return null; 
 	}
 	
 }

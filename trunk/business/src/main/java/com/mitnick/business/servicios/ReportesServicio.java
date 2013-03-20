@@ -23,10 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
+import com.mitnick.persistence.daos.ICierreZDao;
 import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IReporteDao;
 import com.mitnick.persistence.daos.IVentaDAO;
+import com.mitnick.persistence.entities.CierreZ;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Venta;
@@ -41,6 +43,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
@@ -61,7 +64,10 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 	@Autowired
 	protected ICuotaDao cuotaDao;
-
+	
+	@Autowired
+	protected ICierreZDao cierreDao;
+	
 	@Transactional(readOnly = true)
 	@Override
 	public List<MovimientoProductoDto> reporteMovimientosAgrupadosPorProducto(
@@ -125,7 +131,10 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 			parameters.put("codigo", producto.getCodigo());
 			parameters.put("descripcion", producto.getDescripcion());
-			parameters.put("marca", producto.getMarca().getDescripcion());
+			if (Validator.isNotNull(producto.getMarca()))
+				parameters.put("marca", producto.getMarca().getDescripcion());
+			else
+				parameters.put("marca", "");
 			parameters.put("stockOriginal", stockOriginal);
 			parameters.put("stockFinal", stockFinal);
 
@@ -218,8 +227,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			List<ReporteFacturasDto> reportes = new ArrayList<ReporteFacturasDto>();
 
 			for (Venta venta : ventas) {
-				ReporteFacturasDto diarioDto = getCorte(venta.getCorteZ(), reportes);
-				diarioDto.setFecha(venta.getFecha());
+				ReporteFacturasDto diarioDto = getCorte(venta.getFecha(), reportes);				
 				if ("A".equals(venta.getTipoTicket())){
 					diarioDto.setIvaA(diarioDto.getIvaA().add(venta.getImpuesto()));
 					diarioDto.setNetoA(diarioDto.getNetoA().add(venta.getNeto()));
@@ -260,13 +268,19 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 	}
 
-	private ReporteFacturasDto getCorte(int corte, List<ReporteFacturasDto> reportes){
+	private ReporteFacturasDto getCorte(Date fecha, List<ReporteFacturasDto> reportes){
+		CierreZ cierre = cierreDao.findByFecha(fecha);
+		int corte = -1;
+		if (Validator.isNotNull(cierre))
+			corte = cierre.getNumero().intValue();
+			
 		ReporteFacturasDto dto = null;
 		for (ReporteFacturasDto reporte : reportes) {
 			if (reporte.getCorteZ()==corte)
 				return reporte;
 		}
 		dto = new ReporteFacturasDto();
+		dto.setFecha(fecha);
 		dto.setCorteZ(corte);
 		dto.setIvaA(new BigDecimal(0));
 		dto.setNetoA(new BigDecimal(0));

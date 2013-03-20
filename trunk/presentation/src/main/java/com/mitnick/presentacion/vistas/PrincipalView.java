@@ -109,6 +109,7 @@ public class PrincipalView extends JFrame
 	private JMenuItem menuInformeJornada;
 	private JMenuItem menuConfiguracion;
 	private JMenuItem menuResetearStock;
+	private JMenuItem menuAcercade;	
 	
 	public PrincipalView()
 	{
@@ -132,8 +133,8 @@ public class PrincipalView extends JFrame
 			menuBar = new JMenuBar();
 			menuBar.add(getMenuArchivo());
 			menuBar.add(getMenuArticulo());
-			menuBar.add(getMenuAyuda());
 			menuBar.add(getMenuImpresora());
+			menuBar.add(getMenuAyuda());
 		}
 		return menuBar;
 	}
@@ -153,11 +154,23 @@ public class PrincipalView extends JFrame
 		{
 			menuAyuda = new JMenu();
 			menuAyuda.setText(PropertiesManager.getProperty("principalView.menu.ayuda"));
-			menuAyuda.add(PropertiesManager.getProperty("principalView.menu.ayuda.manual"));
+			menuAyuda.add(getMenuAcercaDe());
 		}
 		return menuAyuda;
 	}
 
+	private JMenuItem getMenuAcercaDe() {
+		if (menuAcercade == null) {
+			menuAcercade = new JMenuItem(PropertiesManager.getProperty("principalView.menu.acercade"));
+			menuAcercade.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mostrarMensajeInformativo("Mitnick Version 1.0.0");
+				}
+			});
+		}
+		return menuAcercade;
+	}
+	
 	private JMenu getMenuArchivo() {
 		if (menuArchivo == null)
 		{
@@ -662,8 +675,12 @@ public class PrincipalView extends JFrame
 			menuItemCierreZ = new JMenuItem("Cierre Z");
 			menuItemCierreZ.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(!printerService.imprimirCierreZ())
-						throw new PresentationException("error.printer.cierreZ");
+					int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("principalView.dialog.confirm.cierreZ"));
+					if (opcion == JOptionPane.YES_OPTION) {
+						if(!printerService.imprimirCierreZ())
+							throw new PresentationException("error.printer.cierreZ");
+					}
+					
 				}
 			});
 		}
