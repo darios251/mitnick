@@ -124,6 +124,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 		try {
 			cmbMarca.setSelectedIndex(0);
 			cmbTipo.setSelectedIndex(0);
+			cmbProveedor.setSelectedIndex(0);
 		} catch (Exception e) {
 		}
 	}
@@ -363,9 +364,10 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 	
 	public MitnickComboBoxModel<ProveedorDto> getModelCmbProveedores() {
 		if (modelCmbProveedor == null) {
-			modelCmbProveedor = new MitnickComboBoxModel<ProveedorDto>();
-			modelCmbProveedor.addItems(proveedorController.obtenerProveedores());
+			modelCmbProveedor = new MitnickComboBoxModel<ProveedorDto>();			
 		}
+		modelCmbProveedor.removeAllElements();
+		modelCmbProveedor.addItems(proveedorController.obtenerProveedores());		
 		return modelCmbProveedor;
 	}
 
@@ -568,6 +570,12 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 		return cmbMarca;
 	}
 	
+	public JComboBox<ProveedorDto> createCmbProveedores() {
+		cmbProveedor = new JComboBox<ProveedorDto>(getModelCmbProveedores());
+		cmbProveedor.setBounds(162, 250, 102, 20);
+		return cmbProveedor;
+	}
+	
 	public JComboBox<ProveedorDto> getCmbProveedores() {
 		if (cmbProveedor == null) {
 			cmbProveedor = new JComboBox<ProveedorDto>(getModelCmbProveedores());
@@ -575,7 +583,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 		}
 		return cmbProveedor;
 	}
-
+	
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtCodigo, txtDescripcion, cmbTipo, cmbMarca,	txtPrecioVenta, txtPrecioCompra, cmbProveedor,
 				txtStock, txtStockMinimo, txtStockCompra, txtTalle, btnAceptar, btnCancelar }));
@@ -609,7 +617,9 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 	@Override
 	public void actualizarPantalla() {
 		getTxtCodigo().requestFocus();
-
+		getCmbProveedores();
+		remove(getCmbProveedores());
+		add(createCmbProveedores());
 		if (Validator.isNotNull(producto)) {
 			getTxtCodigo().setText(producto.getCodigo());
 			getTxtDescripcion().setText(producto.getDescripcion());
