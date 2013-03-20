@@ -56,6 +56,8 @@ public class ClienteController extends BaseController {
 	public void mostrarCuentaCorrientePagoPanel() {
 		ultimoPanelMostrado = cuentaCorrientePagoPanel;
 		int[] indexs = getCuentaCorrientePanel().getTable().getSelectedRows();
+		if (indexs.length<1)
+			throw new PresentationException("error.cuentaPanel.cuota.noSeleccionado");
 		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
 		for (int i = 0; i < indexs.length; i++) {
 			cuotas.add(getCuentaCorrientePanel().getModel().getCuota(indexs[i]));

@@ -290,7 +290,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	
 	public JLabel getLblTelefono() {
 		if(lblTelefono == null) {
-			if (Validator.isNotNull(cliente.getTelefono()))
+			if (Validator.isNotBlankOrNull(cliente.getTelefono()))
 				lblTelefono = new JLabel("("+cliente.getTelefono()+")");
 			else
 				lblTelefono = new JLabel("");
@@ -347,7 +347,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		else
 			lblDomicilio.setText("");
 		
-		if (Validator.isNotNull(cliente.getTelefono()))
+		if (Validator.isNotBlankOrNull(cliente.getTelefono()))
 			lblTelefono.setText("("+cliente.getTelefono()+")");		
 		else
 			lblTelefono.setText("");		

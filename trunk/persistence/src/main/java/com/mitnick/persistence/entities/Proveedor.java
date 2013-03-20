@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.appfuse.model.BaseObject;
 
@@ -21,18 +19,14 @@ public class Proveedor extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@NotNull(message="{error.entity.proveedor.codigo.null}")
-	@Size(min=1, max=20, message="{error.entity.proveedor.codigo.size}")
-	@Column(name = "codigo", length = 20, nullable = false)
+	@NotNull(message="{error.entity.proveedor.codigo.null}")	
+	@Column(name = "codigo", length = 255, nullable = false)
 	private String codigo;
 	
 	@NotNull(message="{error.entity.proveedor.nombre.null}")
-	@Size(min=3, max=50, message="{error.entity.proveedor.nombre.size}")
-	@Pattern(regexp="^[a-zA-Záéíóúñ1234567890 ]*$", message="{error.entity.proveedor.nombre.regexp}")
 	@Column(name = "nombre", length = 255, nullable = false)
 	private String nombre;
 	
-	@Size(min=10, max=40, message="{error.entity.proveedor.telefono.size}")
 	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono;
 	
