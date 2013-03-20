@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.mitnick.exceptions.BusinessException;
+import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ReportesView;
 import com.mitnick.presentacion.vistas.paneles.ReportesPanel;
 import com.mitnick.servicio.servicios.IReportesServicio;
@@ -26,7 +27,7 @@ public class ReportesController extends BaseController {
 			getReportesServicio().reporteIngresos(dto, tipo);
 		}
 		catch(BusinessException e) {
-			e.printStackTrace();
+			throw new PresentationException(e);
 		}
 	}
 
@@ -35,7 +36,7 @@ public class ReportesController extends BaseController {
 			getReportesServicio().consultarEstadoCuentas(dto);
 		}
 		catch(BusinessException e) {
-			e.printStackTrace();
+			throw new PresentationException(e);
 		}
 	}
 	
@@ -44,7 +45,7 @@ public class ReportesController extends BaseController {
 			getReportesServicio().reporteFacturas(dto);
 		}
 		catch(BusinessException e) {
-			e.printStackTrace();
+			throw new PresentationException(e);
 		}
 	}
 	
@@ -54,7 +55,7 @@ public class ReportesController extends BaseController {
 			getReportesServicio().consultarListadoDeControl(dto);
 		}
 		catch(BusinessException e) {
-			e.printStackTrace();
+			throw new PresentationException(e);
 		}
 	}
 	

@@ -162,8 +162,7 @@ public class BaseException extends RuntimeException {
 	private void logException(String message, Throwable cause){
 		switch (this.type) {
 		case ERROR:
-			logger.error(message, cause);
-			this.printStackTrace();
+			logger.error(message, cause);			
 			break;
 		case WARNING:
 			logger.warn(message, cause);

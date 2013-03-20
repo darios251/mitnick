@@ -134,7 +134,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 					field.requestFocus();
 					field.selectAll();
 				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 	    	 }
 	     }

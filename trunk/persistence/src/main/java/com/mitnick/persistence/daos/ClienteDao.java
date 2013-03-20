@@ -187,7 +187,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			JasperViewer.viewReport(jasperPrint,false);
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			throw new PersistenceException("error.reporte.listadoClientes","Error al cargar el reporte de cliente",e1);
 		}
 	}
 
@@ -264,9 +264,8 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			return comprobante;
 			
 		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		return null;
+			throw new PersistenceException("error.comprobante.Cliente","Error al generar el comprobante de pago del cliente.",e1);
+		}		
 	}
 
 	public Comprobante saveOrUpdate(Comprobante comprobante){
@@ -386,8 +385,8 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			JasperViewer.viewReport(jasperPrint,false);
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+			throw new PersistenceException("error.reporte.movimientos.Cliente","Error al generar el reporte de movimientos del cliente.",e1);
+		}	
 	}
 
 	private List<ReporteMovimientoClienteDto> orderByDate(
