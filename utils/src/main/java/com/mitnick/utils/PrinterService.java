@@ -9,11 +9,15 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mitnick.exceptions.PrinterException;
+import com.mitnick.servicio.servicios.ICierreZServicio;
+import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
 import com.mitnick.utils.dtos.PagoDto;
@@ -24,6 +28,9 @@ import com.mitnick.utils.dtos.VentaDto;
 public class PrinterService {
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
+	
+	@Autowired
+	private ICierreZServicio cierreZServicio;
 	
 	protected Socket currentConnection;
 	protected PrintStream output = null;
@@ -495,6 +502,17 @@ public class PrinterService {
 			output.println(FIN_TICKET_TAG);
 			
 			checkStatus();
+			
+			String cierreNro = "";
+			while(!(cierreNro = input.readLine()).startsWith("[CIERRE-NUMERO]:"));
+			logger.info("cirre Nro: " + cierreNro);
+			
+			cierreNro = cierreNro.split(":")[1];
+			
+			CierreZDto cierreZ = new CierreZDto();
+			cierreZ.setNumero(cierreNro);
+			cierreZ.setFecha(new Date());
+			cierreZServicio.guardarCierre(cierreZ);
 			
 			String line = "";
 			    
