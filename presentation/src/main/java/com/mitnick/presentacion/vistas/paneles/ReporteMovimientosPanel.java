@@ -279,8 +279,12 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 					dto.setFechaFin(getFechaFinal());
 					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
 					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
-										
-					controller.consultarVentaPorArticulo(dto);
+					try{
+						controller.consultarVentaPorArticulo(dto);	
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+					
 				}
 			});
 
@@ -311,8 +315,13 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 					dto.setFechaFin(getFechaFinal());
 					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
 					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
-										
-					controller.mostrarCompraSugerida(dto);
+					
+					try {
+						controller.mostrarCompraSugerida(dto);
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+					
 				}
 			});
 
@@ -359,7 +368,11 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 			btnExportar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					controller.exportarMovimientosProducto(getModel().getMovimientoProducto());
+					try {
+						controller.exportarMovimientosProducto(getModel().getMovimientoProducto());
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
 				}
 			});
 

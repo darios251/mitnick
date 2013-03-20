@@ -49,11 +49,21 @@ public class ReporteMovimientosController extends BaseController {
 	}
 	
 	public void exportarMovimientosProducto(List<MovimientoProductoDto> movimientos) {
-		reporteServicio.exportarMovimientosAgrupadosPorProducto(movimientos);
+		try {
+			reporteServicio.exportarMovimientosAgrupadosPorProducto(movimientos);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException("error.exportar.producto.movimientosStock",e);
+		}
 	}
 	
 	public void exportarDetalleMovimientoProducto(List<MovimientoDto> movimientos, ProductoDto producto, String stockOriginal, String stockFinal) {
-		reporteServicio.exportarMovimientosDeProducto(movimientos, producto, stockOriginal, stockFinal);
+		try {
+			reporteServicio.exportarMovimientosDeProducto(movimientos, producto, stockOriginal, stockFinal);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException("error.exportar.producto.movimientosStock",e);
+		}		
 	}
 
 	public void mostrarMovimientosPanel() {
@@ -70,7 +80,12 @@ public class ReporteMovimientosController extends BaseController {
 
 	public void mostrarCompraSugerida(ReporteMovimientosDto dto) {
 		logger.info("Mostrando el reporte de compra sugerida");
-		reporteServicio.exportarCompraSugerida(dto);
+		try {
+			reporteServicio.exportarCompraSugerida(dto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException("error.exportar.producto.comprasSugeridas",e);
+		}		
 	}	
 	
 	public List<MovimientoProductoDto> reporteMovimientosAgrupadosPorProducto(
@@ -81,7 +96,7 @@ public class ReporteMovimientosController extends BaseController {
 		try {
 			resultado = getReporteServicio().reporteMovimientosAgrupadosPorProducto(filtro);
 		} catch (BusinessException e) {
-			throw new PresentationException(e);
+			throw new PresentationException("error.exportar.producto.movimientosStock",e);
 		}
 
 		// chequeo si se encontro o no algo en la busqueda
@@ -98,7 +113,7 @@ public class ReporteMovimientosController extends BaseController {
 		try {
 			resultado = getReporteServicio().reporteMovimientosDeProducto(filtro);
 		} catch (BusinessException e) {
-			throw new PresentationException(e);
+			throw new PresentationException("error.exportar.producto.movimientosStock",e);
 		}
 
 		// chequeo si se encontro o no algo en la busqueda
