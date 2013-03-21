@@ -3,8 +3,18 @@ package com.mitnick.business.servicios;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -146,15 +156,31 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 						.getEntityFromDto(provincia)));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void cargarReporte() {
-		try {
-			clienteDao.cargarReporte();
-		} catch (PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar generar el listado de clientes.");
-		}
-	}
+	public void cargarReporte(ConsultaClienteDto filtro) {
+			try {
+				List<ClienteDto> clientes = entityDTOParser.getDtosFromEntities(clienteDao.findByFiltro(filtro));
+				JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+						.getClass().getResourceAsStream(
+								"/reports/reporteClientes.jasper"));
+				HashMap<String, Object> parameters = new HashMap<String, Object>();
 
+				JRDataSource dr = new JRBeanCollectionDataSource(clientes);
+
+				JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
+						parameters, dr);
+				JasperViewer.viewReport(jasperPrint, false);
+
+			} catch (PersistenceException e) {
+				throw new BusinessException("error.reporte.listadoClientes",
+						"Error al intentar obtener el reporte de movimientos agrupados por producto", e);
+			} catch (JRException e) {
+				throw new BusinessException("error.reporte.listadoClientes",
+						"Error al intentar obtener el reporte de ventas", e);
+			}
+	}
+	
 	public List<CuotaDto> obtenerCuotasPendientes(ClienteDto cliente) {
 		@SuppressWarnings("unchecked")
 		List<CuotaDto> cuotas = entityDTOParser.getDtosFromEntities(cuotaDao.getCuotaByClienteId(cliente.getId()));

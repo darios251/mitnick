@@ -169,28 +169,6 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		return cliente;
 	}
 
-	@Override
-	public void cargarReporte() {
-		try {
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
-					.getClass().getResourceAsStream(
-							"/reports/listaClientes.jasper"));
-
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-
-			@SuppressWarnings("deprecation")
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
-					parameters, super.getHibernateTemplate()
-							.getSessionFactory().getCurrentSession()
-							.connection());
-
-			JasperViewer.viewReport(jasperPrint,false);
-
-		} catch (Exception e1) {
-			throw new PersistenceException("error.reporte.listadoClientes","Error al cargar el reporte de cliente",e1);
-		}
-	}
-
 	public Comprobante generarComprobante(List<CuotaDto> cuotas) {
 		try {
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this

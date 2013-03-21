@@ -15,9 +15,9 @@ public class Migracion {
 			DBInitialization dbInitialization = (DBInitialization) BeanLocator.getBean("dbInitialization");
 			dbInitialization.initializeDB();
 			DBImport dbimport = (DBImport) BeanLocator.getBean("dbImport");
-			String path = "C:/project/mitnick/instalador/datos/";
-			dbimport.ejecutar(path);
-//			dbimport.ejecutar(args[0]);
+//			String path = "C:/project/mitnick/instalador/datos/";
+//			dbimport.ejecutar(path);
+			dbimport.ejecutar(args[0]);
 		} catch (Exception e) {
 			logger.error(e);
 		}
@@ -25,9 +25,9 @@ public class Migracion {
 	}
 	
 	public static void main(String[] args) {
-//		if (args.length!=1)
-//			logger.error("El argumento PATH donde se encuentran los archivos de base de datos es obligatorio!");
-//		else
+		if (args.length!=1)
+			logger.error("El argumento PATH donde se encuentran los archivos de base de datos es obligatorio!");
+		else
 			migracionDatos(args);
 	}
 	

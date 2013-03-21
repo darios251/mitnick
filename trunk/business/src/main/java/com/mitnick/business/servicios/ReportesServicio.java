@@ -101,7 +101,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de movimientos agrupados por producto");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de movimientos agrupados por producto");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 	}
 
@@ -236,7 +236,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					FacturaDto factura = new FacturaDto();
 					factura.setNroFactura(venta.getNumeroTicket());
 					factura.setCliente(venta.getCliente().getNombre());
-					factura.setCondicion(venta.getDiscriminacionIVA().getDescripcion());
+					factura.setCondicion(venta.getDiscriminacionIVA().getDescripcionCorta());
 					factura.setCuit(venta.getCliente().getCuit());
 					factura.setNeto(venta.getNeto());
 					factura.setIva(venta.getImpuesto());
@@ -263,7 +263,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 
 	}
@@ -390,7 +390,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 
 	}
@@ -514,7 +514,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 
 	}
@@ -545,7 +545,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 	}
 	
@@ -574,7 +574,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 	}
 
@@ -600,7 +600,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de ventas", e);
 		}
 	}
 

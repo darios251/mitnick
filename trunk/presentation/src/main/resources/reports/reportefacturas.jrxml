@@ -84,32 +84,32 @@
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="71" y="0" width="65" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="71" y="0" width="42" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Nro. Factura]]></text>
+				<text><![CDATA[N°Fact.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="136" y="0" width="65" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="113" y="0" width="88" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="265" y="0" width="65" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="274" y="0" width="56" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cuit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="330" y="0" width="65" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="361" y="0" width="34" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Condición]]></text>
+				<text><![CDATA[Cond.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="0" y="1" width="65" height="20"/>
@@ -128,32 +128,38 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detalleFactura.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="35" y="92" width="19" height="20"/>
+				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="96" y="92" width="19" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{corteZ}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="0" y="92" width="35" height="20"/>
+				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="0" y="92" width="71" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="54" y="52" width="17" height="20"/>
-				<textElement/>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="75" y="52" width="17" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[A]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="54" y="72" width="17" height="20"/>
-				<textElement/>
+				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="75" y="72" width="17" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="54" y="92" width="17" height="20"/>
-				<textElement/>
+				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="75" y="92" width="17" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Z]]></text>
 			</staticText>
 			<textField>
