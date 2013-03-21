@@ -441,8 +441,8 @@ public class ClienteController extends BaseController {
 		return pagos;
 	}
 	
-	public void cargarReporte() {
-		clienteServicio.cargarReporte();		
+	public void cargarReporte(ConsultaClienteDto dto) {
+		clienteServicio.cargarReporte(dto);		
 	}
 	
 	protected IClienteServicio getClienteServicio() {

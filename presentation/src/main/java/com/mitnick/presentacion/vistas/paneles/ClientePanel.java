@@ -46,8 +46,6 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	private JButton btnEliminar;
 	private JLabel lblClientes;
 	private JTextField txtNombre;
-	private JLabel lblNmeroCtaCte;
-	private JTextField txtNumeroCtaCte;
 	private JButton btnEstadoCuenta;
 	private JButton btnCuentaCorriente;
 	private JButton btnMovimientos;
@@ -86,11 +84,9 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		add(getLblNumeroDocumento());
 		add(getLblClientes());
 		add(getLblNombre());
-		add(getLblNmeroCtaCte());
 		
 		add(getTxtNumeroDocumento());
 		add(getTxtNombre());
-		add(getTxtNumeroCtaCte());
 		
 		add(getBtnBuscar());
 		add(getBtnNuevo());
@@ -104,7 +100,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNumeroCtaCte, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente, btnMovimientos }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente, btnMovimientos }));
 	}
 
 	protected void consultarClientes() {
@@ -149,14 +145,6 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			});
 		}
 		return btnBuscar;
-	}
-
-	public JLabel getLblNombre() {
-		if (lblNombre == null) {
-			lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
-			lblNombre.setBounds(330, 55, 60, 20);
-		}
-		return lblNombre;
 	}
 
 	public JLabel getLblNumeroDocumento() {
@@ -257,30 +245,21 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		return lblClientes;
 	}
 
+	public JLabel getLblNombre() {
+		if (lblNombre == null) {
+			lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
+			lblNombre.setBounds(330, 15, 80, 20);
+		}
+		return lblNombre;
+	}
+
 	public JTextField getTxtNombre() {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
 			txtNombre.setColumns(10);
-			txtNombre.setBounds(420, 55, 110, 20);
+			txtNombre.setBounds(420, 15, 110, 20);
 		}
 		return txtNombre;
-	}
-
-	public JLabel getLblNmeroCtaCte() {
-		if (lblNmeroCtaCte == null) {
-			lblNmeroCtaCte = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.cuentaCte"));
-			lblNmeroCtaCte.setBounds(330, 15, 80, 20);
-		}
-		return lblNmeroCtaCte;
-	}
-
-	public JTextField getTxtNumeroCtaCte() {
-		if (txtNumeroCtaCte == null) {
-			txtNumeroCtaCte = new JTextField();
-			txtNumeroCtaCte.setColumns(10);
-			txtNumeroCtaCte.setBounds(420, 15, 110, 20);
-		}
-		return txtNumeroCtaCte;
 	}
 
 	public JButton getBtnEstadoCuenta() {
@@ -296,7 +275,10 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnEstadoCuenta.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
-						controller.cargarReporte();
+						ConsultaClienteDto filtroDto = new ConsultaClienteDto();
+						filtroDto.setDocumento(txtNumeroDocumento.getText());
+						filtroDto.setNombre(txtNombre.getText());
+						controller.cargarReporte(filtroDto);
 					}
 					catch(PresentationException ex) {
 						mostrarMensaje(ex);

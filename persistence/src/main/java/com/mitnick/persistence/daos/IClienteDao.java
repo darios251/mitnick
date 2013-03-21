@@ -18,8 +18,6 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	
 	Cliente saveOrUpdate(Cliente cliente);
 
-	void cargarReporte();
-	
 	Comprobante generarComprobante(List<CuotaDto> cuotas);
 	
 	void reporteMovimientosCliente(ClienteDto cliente);

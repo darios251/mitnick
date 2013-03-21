@@ -30,7 +30,7 @@ public interface IClienteServicio {
 	List<ProvinciaDto> obtenerProvincias();
 
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
-	void cargarReporte();
+	void cargarReporte(ConsultaClienteDto filtro);
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	List<CuotaDto> obtenerCuotasPendientes(ClienteDto cliente);
