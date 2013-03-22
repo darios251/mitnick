@@ -2,7 +2,6 @@ package com.mitnick.persistence.dbimport;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,6 +51,8 @@ public class DBImport {
 	@Autowired
 	protected ITipoDao tipoDao;
 
+	private Ciudad santoTome;
+	
 	List<Marca> marcas = null;
 
 	// migracion de cliente
@@ -77,6 +78,7 @@ public class DBImport {
 	public void ejecutar(String path) {
 		try {
 			marcas = marcaDao.getAll();
+			santoTome = ciudadDao.getById(new Long(1864));
 			migrarProductos(path);
 			migrarClientes(path);
 
@@ -137,7 +139,7 @@ public class DBImport {
 				codigo = codigo.trim();
 				if (!codigo.equals("") && codigo.length()>=2) {
 					producto.setCodigo(codigo.trim());
-					producto.setDescripcion(descripcion);
+					producto.setDescripcion(descripcion.trim());
 					producto.setEliminado(false);
 
 					BigDecimal precioSinIva = getBigDecimal(precioVenta).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -271,22 +273,22 @@ public class DBImport {
 					if (provincia != null) {
 						Provincia prov = provinciaDao.get(new Long(provincia
 								.trim()));
-						if (postal.trim().equals("3015") || postal.trim().equals("3065") || postal.trim().equals("3106") || postal.trim().equals("2016") || postal.trim().equals("2103"))
-							postal = "3016";
-						if (postal.trim().equals("2561"))
-							postal = "5000";
-						if (postal.trim().equals("3300"))
-							postal = "3100";
-
-						List<Ciudad> ciudades = ciudadDao.getByPostal(postal);
 						Ciudad ciudad = null;
-						if (ciudades == null || ciudades.isEmpty()) {
-							ciudad = new Ciudad();
-							ciudad.setCodigoPostal(postal);
-							ciudad.setDescripcion(new String(localidad.toString().getBytes("ISO-8859-1")));
-							ciudad.setProvincia(prov);
-						} else
-							ciudad = ciudades.get(0);
+						if (postal.trim().equals("3016"))
+							ciudad = santoTome;
+						else {
+							List<Ciudad> ciudades = ciudadDao.getByProvinciaPostalCode(prov, postal);
+							
+							if (ciudades == null || ciudades.isEmpty()) {
+								if (localidad!=null)
+									ciudades = ciudadDao.getByProvinciaDescription(prov, localidad.trim().toUpperCase());
+							} 
+							if (ciudades != null && !ciudades.isEmpty()){
+								ciudad = ciudades.get(0);
+								postal = ciudad.getCodigoPostal();
+							}
+						}
+							
 						
 						Direccion direccion = new Direccion();
 						direccion.setDomicilio(new String(domicilio.toString().getBytes("ISO-8859-1")));
