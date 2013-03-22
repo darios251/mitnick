@@ -361,7 +361,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 
 	@Override
 	public void actualizarPantalla() {
-		consultarClientes();
+//		consultarClientes();
 	}
 	
 	@Override

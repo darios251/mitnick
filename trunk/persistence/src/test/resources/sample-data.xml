@@ -167,41 +167,10 @@
 	  <column>id</column>
 	  <column>descripcion</column>
 	  <column>codigoPostal</column>
-	  <column>provincia_id</column>
-	  
-	  <row>
-	  	<value>1</value>
-	  	<value>Santa Fe</value>
-	  	<value>3000</value>
-	  	<value>21</value>
-	  </row>
-	  <row>
-	  	<value>2</value>
-	  	<value>Rafaela</value>
-	  	<value>2300</value>
-	  	<value>21</value>
-	  </row>
-	  <row>
-	  	<value>3</value>
-	  	<value>Rosario</value>
-	  	<value>2000</value>
-	  	<value>21</value>
-	  </row>
-	  <row>
-	  	<value>4</value>
-	  	<value>San Justo</value>
-	  	<value>3040</value>
-	  	<value>21</value>
-	  </row>
-	  <row>
-	  	<value>5</value>
-	  	<value>Paraná</value>
-	  	<value>3100</value>
-	  	<value>7</value>
-	  </row>
+	  <column>provincia_id</column>	  	 
 	   <row>
-	  	<value>6</value>
-	  	<value>Santo Tomé</value>
+	  	<value>1864</value>
+	  	<value>SANTO TOME</value>
 	  	<value>3016</value>
 	  	<value>21</value>
 	  </row>
@@ -215,7 +184,7 @@
 		    <value>1</value>
 		    <value>Av. 7 de Marzo 1808</value>
 		    <value>3016</value>
-		    <value>6</value>
+		    <value>1864</value>
 		</row>
 	</table>
 	<table name="Empresa">
