@@ -38,7 +38,8 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		}
 		criteria.add(Restrictions.eq("p.eliminado", false));
 		criteria.add(Restrictions.eq("eliminado", false));
-		criteria.addOrder(Order.desc("fecha"));
+//		criteria.addOrder(Order.desc("fecha"));
+		criteria.addOrder(Order.asc("p.codigo"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
@@ -70,7 +71,8 @@ public class MovimientoDao extends GenericDaoHibernate<Movimiento, Long> impleme
 		criteria.add(Restrictions.eq("p.eliminado", false));
 		criteria.add(Restrictions.eq("eliminado", false));
 		
-		criteria.addOrder(Order.desc("fecha"));
+//		criteria.addOrder(Order.desc("fecha"));
+		criteria.addOrder(Order.asc("p.codigo"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
