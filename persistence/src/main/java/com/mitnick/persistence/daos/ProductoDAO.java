@@ -66,7 +66,7 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 		}
 		
 		criteria.add(Restrictions.eq("eliminado", false));
-		criteria.addOrder(Order.desc("codigo"));
+		criteria.addOrder(Order.asc("codigo"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	

@@ -97,7 +97,7 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
 
 		if(Validator.isNotBlankOrNull(dto.getCodigo())){
-			criteria.add(Restrictions.ilike("p.codigo", dto.getCodigo(), MatchMode.START));
+			criteria.add(Restrictions.ilike("codigo", dto.getCodigo(), MatchMode.START));
 		}
 		if(Validator.isNotBlankOrNull(dto.getDescripcion())){
 			criteria.add(Restrictions.ilike("descripcion", "%" + dto.getDescripcion() + "%"));
