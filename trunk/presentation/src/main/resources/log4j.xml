@@ -13,7 +13,7 @@
 	<appender name="File"
 		class="org.apache.log4j.RollingFileAppender">
 		<param name="Threshold" value="DEBUG" />
-		<param name="File" value="./log/susmann.log" />
+		<param name="File" value="./log/mitnick.log" />
 		<param name="Append" value="true" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd-HH" />
 		<param name="MaxFileSize" value="5000KB" />
