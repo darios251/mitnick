@@ -1,17 +1,17 @@
 -- ----------------------------
 -- Records of parametro
 -- ----------------------------
-INSERT INTO pais(id, descripcion, nombre, valor, tipo) VALUES ('1', 'Máximo de cantidad permitido modificar sin advertencia', 'producto.cantidad.warning', '-3', '2');
+INSERT INTO parametro(id, descripcion, nombre, valor, tipo) VALUES ('1', 'Máximo de cantidad permitido modificar sin advertencia', 'producto.cantidad.warning', '-3', '2');
 -- ----------------------------
 -- Records of direccion
 -- ----------------------------
-INSERT INTO pais(id, domicilio, codigopostal, ciudad_id) VALUES ('1', 'Av. 7 de Marzo 1808', '3016', '1864');
+INSERT INTO direccion(id, domicilio, codigopostal, ciudad_id) VALUES ('1', 'Av. 7 de Marzo 1808', '3016', '1864');
 
 -- ----------------------------
 -- Records of empresa cliente
 -- ----------------------------
 INSERT INTO empresa(id, nombre, cuit, nmIngresosBrutos, telefono, email, tipoResponsable, prefijoFactura, numeroFacturaActual, direccion_id) 
-VALUES ('1', 'SUSMANN LIVIO VICTOR JUAN', '20-10338232-8', '12312312312', '3424743704' 'susmannlivio@hotmail.com', 'Responsable Inscripto', '0001', '00000001', '1');
+VALUES ('1', 'SUSMANN LIVIO VICTOR JUAN', '20-10338232-8', '12312312312', '3424743704', 'susmannlivio@hotmail.com', 'Responsable Inscripto', '0001', '00000001', '1');
 
 -- ----------------------------
 -- Records of tipo de productos
@@ -59,5 +59,5 @@ INSERT INTO marca(id, descripcion) values('12','Ocio');
 -- Records of medios de pago
 -- ----------------------------
 INSERT INTO producto(id, codigo,descripcion, stock, stockminimo, stockcompra, precioventa, iva, eliminado) 
-VALUES ('0', '*', 'Comodín', '0', '0', '0', '0', '0', '0', 'false');	
+VALUES ('0', '*', 'Comodín', '0', '0', '0', '0', '0', 'false');	
 	
