@@ -30,7 +30,7 @@
 			</staticText>
 			<image>
 				<reportElement uuid="fc81937d-438a-4c0e-adff-c998141c956a" x="14" y="0" width="128" height="50"/>
-				<imageExpression><![CDATA[".\\img\\logoSusmannReportes.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[".\\img\\logoReporte.png"]]></imageExpression>
 			</image>
 			<textField pattern="dd/MM/yyyy h:mm a">
 				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="445" y="50" width="100" height="20"/>

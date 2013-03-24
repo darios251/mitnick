@@ -32,7 +32,7 @@ public class Runner {
 		
 		Thread.currentThread().setName(PropertiesManager.getProperty("application.name"));
 		
-//		checkForRun();
+		checkForRun();
 
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");

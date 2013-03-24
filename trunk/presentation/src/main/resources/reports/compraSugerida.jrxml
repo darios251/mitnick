@@ -44,7 +44,7 @@
 			</textField>
 			<image>
 				<reportElement uuid="146047e8-757f-4f40-a3fc-31eeabc090b9" x="0" y="0" width="128" height="50"/>
-				<imageExpression><![CDATA[".\\img\\logoSusmannReportes.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[".\\img\\logoReporte.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

@@ -1,9 +1,9 @@
-package com.mitnick.presentacion.runner;
+package com.mitnick.susmann.presentacion.runner;
 
 import org.apache.log4j.Logger;
 
-import com.mitnick.persistence.dbimport.DBImport;
 import com.mitnick.presentacion.utils.DBInitialization;
+import com.mitnick.susmann.persistence.dbimport.DBImport;
 import com.mitnick.utils.locator.BeanLocator;
 
 public class Migracion {

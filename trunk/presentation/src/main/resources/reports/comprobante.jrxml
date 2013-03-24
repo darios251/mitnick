@@ -185,7 +185,7 @@ WHERE
 			</textField>
 			<image>
 				<reportElement uuid="2a417fd5-b4ae-4411-a728-9faffb99a73f" x="480" y="0" width="64" height="25"/>
-				<imageExpression><![CDATA[".\\img\\logoSusmannComprobantes.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[".\\img\\logoComprobante.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
