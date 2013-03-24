@@ -1,4 +1,4 @@
-package com.mitnick.persistence.dbimport;
+package com.mitnick.susmann.persistence.dbimport;
 
 import java.io.File;
 import java.math.BigDecimal;

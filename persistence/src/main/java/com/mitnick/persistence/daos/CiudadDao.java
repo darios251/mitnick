@@ -9,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.mitnick.persistence.entities.Ciudad;
-import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Provincia;
 
 @Repository("ciudadDao")
