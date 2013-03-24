@@ -209,13 +209,8 @@
 	</columnFooter>
 	<pageFooter>
 		<band height="43" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="e7957658-e574-4c4f-ae0d-a6a45ce8f2f1" x="0" y="0" width="552" height="20"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Información Confidencial. Susmann Av. 7 de Marzo 1808, Santo Tomé - Santa Fe. susmannlivio@hotmail.com]]></text>
-			</staticText>
 			<textField evaluationTime="Report">
-				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="498" y="20" width="40" height="20"/>
+				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="500" y="20" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -224,6 +219,9 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="53" y="15" width="488" height="1"/>
+			</line>
 		</band>
 	</pageFooter>
 	<summary>
