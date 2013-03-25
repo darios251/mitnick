@@ -1,4 +1,4 @@
-package com.mitnick.utils;
+package com.mitnick.business.servicios;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 
 import com.mitnick.exceptions.PrinterException;
 import com.mitnick.servicio.servicios.ICierreZServicio;
+import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;

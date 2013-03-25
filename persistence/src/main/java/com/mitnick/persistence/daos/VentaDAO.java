@@ -145,7 +145,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		return ventas.get(0);
 	}
 	
-	public void generarFactura(Venta venta) {
+	public void generarFactura(VentaDto venta) {
 		try {
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/factura.jasper"));
 			DetachedCriteria criteria = DetachedCriteria.forClass(Empresa.class);
@@ -153,20 +153,38 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			
 			Empresa empresa = (Empresa) getHibernateTemplate().findByCriteria(criteria).get(0);
 			
+			int nroFactActual = empresa.getNumeroFacturaActual();
+			nroFactActual = nroFactActual + 1;
+			empresa.setNumeroFacturaActual(nroFactActual);
+			venta.setNumeroTicket(String.valueOf(nroFactActual));
+			
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("nombreEmpresa", empresa.getNombre());
 			parameters.put("empresaDireccion", empresa.getDireccion().getDomicilio() + "(" + empresa.getDireccion().getCodigoPostal() + ")" 
 					+ empresa.getDireccion().getCiudad().getDescripcion() + "\n Tel" + empresa.getTelefono());
 			parameters.put("tipoResponsable", empresa.getTipoResponsable());
 			parameters.put("facturaNumero1", StringUtils.leftPad(empresa.getNumeroPrefijoFacturaActual() + "", 4, "0") );
-			parameters.put("facturaNumero2", StringUtils.leftPad(empresa.getNumeroFacturaActual() + "", 8, "0"));
+			parameters.put("facturaNumero2", StringUtils.leftPad(nroFactActual + "", 8, "0"));
 			parameters.put("cuitEmpresa", empresa.getCuit());
 			parameters.put("iibbEmpresa", empresa.getNmIngresosBrutos());
 			parameters.put("fechaInicioActividadEmpresa", "01/12/1988");
-			parameters.put("tipoIva", "Consumidor Final");
-			parameters.put("nombreCliente", venta.getCliente().getNombre());
-			parameters.put("direccionCliente", venta.getCliente().getDireccion().getDomicilio() + " " + venta.getCliente().getDireccion().getCiudad().getDescripcion());
-			parameters.put("cuitCliente", venta.getCliente().getCuit());
+			
+			parameters.put("tipoIva", venta.getTipoResponsabilidad().getDescripcion());
+			
+			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador() == MitnickConstants.TipoComprador.CONSUMIDOR_FINAL;
+			if (consumidorFinal){
+				venta.setTipoTicket("B");
+				parameters.put("nombreCliente", "");
+				parameters.put("direccionCliente", "");
+				parameters.put("cuitCliente", "");
+			} else {
+				venta.setTipoTicket("A");
+				parameters.put("nombreCliente", venta.getCliente().getNombre());
+				parameters.put("direccionCliente", venta.getCliente().getDireccion().getDomicilio() + " " + venta.getCliente().getDireccion().getCiudad().getDescripcion());
+				parameters.put("cuitCliente", venta.getCliente().getCuit());
+				
+			}
+			
 			parameters.put("ventaId", venta.getId());
 			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			

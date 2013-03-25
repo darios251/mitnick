@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mitnick.business.servicios.PrinterService;
 import com.mitnick.exceptions.PrinterException;
-import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.anotaciones.View;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;

@@ -1,10 +1,16 @@
-package com.mitnick.utils;
+package com.mitnick.business.servicios;
+
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mitnick.exceptions.PersistenceException;
+import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.servicio.servicios.ICierreZServicio;
+import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -16,6 +22,9 @@ public class PrinterService {
 	@Autowired
 	private ICierreZServicio cierreZServicio;
 	
+	@Autowired
+	protected IVentaDAO ventaDao;
+	
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicket(VentaDto venta) {
 		return true;
@@ -23,8 +32,11 @@ public class PrinterService {
 	
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicketFactura(VentaDto venta) {
-		venta.setNumeroTicket(String.valueOf(System.currentTimeMillis()));
-		venta.setTipoTicket("A");
+		try{
+			ventaDao.generarFactura(venta);
+		} catch (Exception e1) {
+			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
+		}	
 		return true;
 	}
 	
@@ -35,6 +47,13 @@ public class PrinterService {
 	
 	@SuppressWarnings("deprecation")
 	public boolean imprimirCierreZ() {
+		String cierreNro = "";
+		cierreNro = cierreNro.split(":")[1];
+		
+		CierreZDto cierreZ = new CierreZDto();
+		cierreZ.setNumero(cierreNro);
+		cierreZ.setFecha(new Date());
+		cierreZServicio.guardarCierre(cierreZ);
 		return true;
 	}
 	
