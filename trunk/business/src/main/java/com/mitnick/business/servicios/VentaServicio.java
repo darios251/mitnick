@@ -26,7 +26,6 @@ import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
-import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;

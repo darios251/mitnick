@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.mitnick.business.servicios.PrinterService;
 import com.mitnick.exceptions.BaseException;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.exceptions.PrinterException;
@@ -44,7 +45,6 @@ import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
 import com.mitnick.presentacion.vistas.paneles.ConfiguracionImpresoraDialog;
 import com.mitnick.utils.MitnickConstants;
-import com.mitnick.utils.PrinterService;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
