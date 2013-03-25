@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -154,8 +156,15 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			Empresa empresa = (Empresa) getHibernateTemplate().findByCriteria(criteria).get(0);
 			
 			int nroFactActual = empresa.getNumeroFacturaActual();
+			String nroFactura = StringUtils.leftPad(empresa.getNumeroPrefijo() + "", 4, "0"); 
+			nroFactura = nroFactura.concat("-");
+			nroFactura = nroFactura.concat(StringUtils.leftPad(nroFactActual + "", 8, "0"));
+
 			nroFactActual = nroFactActual + 1;
 			empresa.setNumeroFacturaActual(nroFactActual);
+			getHibernateTemplate().save(empresa);
+			
+					
 			venta.setNumeroTicket(String.valueOf(nroFactActual));
 			
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
@@ -163,11 +172,10 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			parameters.put("empresaDireccion", empresa.getDireccion().getDomicilio() + "(" + empresa.getDireccion().getCodigoPostal() + ")" 
 					+ empresa.getDireccion().getCiudad().getDescripcion() + "\n Tel" + empresa.getTelefono());
 			parameters.put("tipoResponsable", empresa.getTipoResponsable());
-			parameters.put("facturaNumero1", StringUtils.leftPad(empresa.getNumeroPrefijoFacturaActual() + "", 4, "0") );
-			parameters.put("facturaNumero2", StringUtils.leftPad(nroFactActual + "", 8, "0"));
+			parameters.put("nroFactura", nroFactura);
 			parameters.put("cuitEmpresa", empresa.getCuit());
-			parameters.put("iibbEmpresa", empresa.getNmIngresosBrutos());
-			parameters.put("fechaInicioActividadEmpresa", "01/12/1988");
+			parameters.put("ingBrutos", empresa.getIngBrutos());
+			parameters.put("fechaInicioActividadEmpresa", empresa.getFechaInicioActividad());
 			
 			parameters.put("tipoIva", venta.getTipoResponsabilidad().getDescripcion());
 			
@@ -185,14 +193,12 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 				
 			}
 			
-			parameters.put("ventaId", venta.getId());
 			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			
-			super.getHibernateTemplate().flush();
+			JRDataSource dr = new JRBeanCollectionDataSource(venta.getProductos());
+						
 			
 			@SuppressWarnings("deprecation")
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, super.getHibernateTemplate().getSessionFactory().getCurrentSession().connection());
-			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,parameters, dr);
 			JasperViewer.viewReport(jasperPrint,false);
 
 		} catch (Exception e1) {

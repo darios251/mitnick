@@ -585,7 +585,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 	}
 	
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtCodigo, txtDescripcion, cmbTipo, cmbMarca,	txtPrecioVenta, txtPrecioCompra, cmbProveedor,
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtCodigo, txtDescripcion, cmbTipo, cmbMarca,	txtPrecioVenta, txtPrecioCompra,
 				txtStock, txtStockMinimo, txtStockCompra, txtTalle, btnAceptar, btnCancelar }));
 	}
 

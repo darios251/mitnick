@@ -1,7 +1,6 @@
 package com.mitnick.persistence.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.appfuse.model.BaseObject;
@@ -35,10 +32,6 @@ public class Empresa extends BaseObject implements Serializable {
 	@Column(name = "cuit", length = 13, nullable = false, unique = true)
 	private String cuit;
 	
-	@MitnickField(required=true, min=8, max=12, fieldType=FieldType.INTEGER)
-	@Column(name = "nmIngresosBrutos", length = 12, nullable = false, unique = true)
-	private String nmIngresosBrutos;
-
 	@MitnickField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
 	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono;
@@ -47,17 +40,20 @@ public class Empresa extends BaseObject implements Serializable {
 	@Column(name = "email", length = 40, nullable = true)
 	private String email;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "fechaInicioActividad", nullable = true)
-	private Date fechaInicioActividad;
+	private String fechaInicioActividad;
 	
-	@MitnickField(required=true, min=12, max=50, fieldType=FieldType.ALPHABETIC)
+	@MitnickField(required=true, min=12, max=50)
 	@Column(name = "tipoResponsable", length = 50, nullable = false)
 	private String tipoResponsable;
+	
+	@MitnickField(required=true, min=12, max=50)
+	@Column(name = "ingBrutos", length = 50, nullable = false)
+	private String ingBrutos;
 
 	@NotNull
 	@Column(name = "prefijoFactura", length = 4, nullable = false)
-	private int numeroPrefijoFacturaActual;
+	private int numeroPrefijo;
 	
 	@NotNull
 	@Column(name = "numeroFacturaActual", length = 8, nullable = false)
@@ -73,6 +69,14 @@ public class Empresa extends BaseObject implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getIngBrutos() {
+		return ingBrutos;
+	}
+
+	public void setIngBrutos(String ingBrutos) {
+		this.ingBrutos = ingBrutos;
 	}
 
 	public String getNombre() {
@@ -91,14 +95,6 @@ public class Empresa extends BaseObject implements Serializable {
 		this.cuit = cuit;
 	}
 
-	public String getNmIngresosBrutos() {
-		return nmIngresosBrutos;
-	}
-
-	public void setNmIngresosBrutos(String nmIngresosBrutos) {
-		this.nmIngresosBrutos = nmIngresosBrutos;
-	}
-
 	public String getTelefono() {
 		return telefono;
 	}
@@ -114,12 +110,12 @@ public class Empresa extends BaseObject implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public Date getFechaInicioActividad() {
+	
+	public String getFechaInicioActividad() {
 		return fechaInicioActividad;
 	}
 
-	public void setFechaInicioActividad(Date fechaInicioActividad) {
+	public void setFechaInicioActividad(String fechaInicioActividad) {
 		this.fechaInicioActividad = fechaInicioActividad;
 	}
 
@@ -131,12 +127,12 @@ public class Empresa extends BaseObject implements Serializable {
 		this.tipoResponsable = tipoResponsable;
 	}
 
-	public int getNumeroPrefijoFacturaActual() {
-		return numeroPrefijoFacturaActual;
+	public int getNumeroPrefijo() {
+		return numeroPrefijo;
 	}
 
-	public void setNumeroPrefijoFacturaActual(int numeroPrefijoFacturaActual) {
-		this.numeroPrefijoFacturaActual = numeroPrefijoFacturaActual;
+	public void setNumeroPrefijo(int numeroPrefijo) {
+		this.numeroPrefijo = numeroPrefijo;
 	}
 
 	public int getNumeroFacturaActual() {
@@ -168,12 +164,11 @@ public class Empresa extends BaseObject implements Serializable {
 				+ ((fechaInicioActividad == null) ? 0 : fechaInicioActividad
 						.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime
-				* result
-				+ ((nmIngresosBrutos == null) ? 0 : nmIngresosBrutos.hashCode());
+		result = prime * result
+				+ ((ingBrutos == null) ? 0 : ingBrutos.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + numeroFacturaActual;
-		result = prime * result + numeroPrefijoFacturaActual;
+		result = prime * result + numeroPrefijo;
 		result = prime * result
 				+ ((telefono == null) ? 0 : telefono.hashCode());
 		result = prime * result
@@ -183,72 +178,95 @@ public class Empresa extends BaseObject implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (!(obj instanceof Empresa)) {
 			return false;
+		}
 		Empresa other = (Empresa) obj;
 		if (cuit == null) {
-			if (other.cuit != null)
+			if (other.cuit != null) {
 				return false;
-		} else if (!cuit.equals(other.cuit))
+			}
+		} else if (!cuit.equals(other.cuit)) {
 			return false;
+		}
 		if (direccion == null) {
-			if (other.direccion != null)
+			if (other.direccion != null) {
 				return false;
-		} else if (!direccion.equals(other.direccion))
+			}
+		} else if (!direccion.equals(other.direccion)) {
 			return false;
+		}
 		if (email == null) {
-			if (other.email != null)
+			if (other.email != null) {
 				return false;
-		} else if (!email.equals(other.email))
+			}
+		} else if (!email.equals(other.email)) {
 			return false;
+		}
 		if (fechaInicioActividad == null) {
-			if (other.fechaInicioActividad != null)
+			if (other.fechaInicioActividad != null) {
 				return false;
-		} else if (!fechaInicioActividad.equals(other.fechaInicioActividad))
+			}
+		} else if (!fechaInicioActividad.equals(other.fechaInicioActividad)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
-		if (nmIngresosBrutos == null) {
-			if (other.nmIngresosBrutos != null)
+		}
+		if (ingBrutos == null) {
+			if (other.ingBrutos != null) {
 				return false;
-		} else if (!nmIngresosBrutos.equals(other.nmIngresosBrutos))
+			}
+		} else if (!ingBrutos.equals(other.ingBrutos)) {
 			return false;
+		}
 		if (nombre == null) {
-			if (other.nombre != null)
+			if (other.nombre != null) {
 				return false;
-		} else if (!nombre.equals(other.nombre))
+			}
+		} else if (!nombre.equals(other.nombre)) {
 			return false;
-		if (numeroFacturaActual != other.numeroFacturaActual)
+		}
+		if (numeroFacturaActual != other.numeroFacturaActual) {
 			return false;
-		if (numeroPrefijoFacturaActual != other.numeroPrefijoFacturaActual)
+		}
+		if (numeroPrefijo != other.numeroPrefijo) {
 			return false;
+		}
 		if (telefono == null) {
-			if (other.telefono != null)
+			if (other.telefono != null) {
 				return false;
-		} else if (!telefono.equals(other.telefono))
+			}
+		} else if (!telefono.equals(other.telefono)) {
 			return false;
+		}
 		if (tipoResponsable == null) {
-			if (other.tipoResponsable != null)
+			if (other.tipoResponsable != null) {
 				return false;
-		} else if (!tipoResponsable.equals(other.tipoResponsable))
+			}
+		} else if (!tipoResponsable.equals(other.tipoResponsable)) {
 			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "Empresa [id=" + id + ", nombre=" + nombre + ", cuit=" + cuit
-				+ ", nmIngresosBrutos=" + nmIngresosBrutos + ", telefono="
-				+ telefono + ", email=" + email + ", fechaInicioActividad="
-				+ fechaInicioActividad + ", tipoResponsable=" + tipoResponsable
-				+ ", numeroPrefijoFacturaActual=" + numeroPrefijoFacturaActual
+				+ ", telefono=" + telefono + ", email=" + email
+				+ ", fechaInicioActividad=" + fechaInicioActividad
+				+ ", tipoResponsable=" + tipoResponsable + ", ingBrutos="
+				+ ingBrutos + ", numeroPrefijo=" + numeroPrefijo
 				+ ", numeroFacturaActual=" + numeroFacturaActual
 				+ ", direccion=" + direccion + "]";
 	}

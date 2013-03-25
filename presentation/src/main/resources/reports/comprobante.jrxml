@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="2.1435888100000025"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="336"/>
+	<property name="ireport.x" value="308"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -88,7 +88,7 @@ WHERE
 	<parameter name="empresaDireccion" class="java.lang.String"/>
 	<parameter name="tipoResponsable" class="java.lang.String"/>
 	<parameter name="cuitEmpresa" class="java.lang.String"/>
-	<parameter name="iibbEmpresa" class="java.lang.String"/>
+	<parameter name="ingBrutos" class="java.lang.String"/>
 	<parameter name="fechaInicioActividadEmpresa" class="java.lang.String"/>
 	<parameter name="tipoIva" class="java.lang.String"/>
 	<parameter name="nombreCliente" class="java.lang.String"/>
@@ -181,12 +181,22 @@ WHERE
 			<textField>
 				<reportElement uuid="99435f4f-b6fa-4dbf-8c16-377c5d4e6f1e" x="472" y="78" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$P{iibbEmpresa}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{ingBrutos}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement uuid="2a417fd5-b4ae-4411-a728-9faffb99a73f" x="480" y="0" width="64" height="25"/>
 				<imageExpression><![CDATA[".\\img\\logoComprobante.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="391" y="45" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="18c9bd72-e01a-47a1-a947-710054b40e60" x="443" y="45" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
