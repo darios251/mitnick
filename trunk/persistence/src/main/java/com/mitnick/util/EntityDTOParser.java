@@ -491,7 +491,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setDescuento(descuento);
 		
 		ventaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) venta.getPagos()));
-		ventaDto.setCliente(getDtoFromEntity(venta.getCliente()));
+		if (Validator.isNotNull(venta.getCliente()))
+			ventaDto.setCliente(getDtoFromEntity(venta.getCliente()));
 
 		//estos valores se setean por defecto porq representan el total de dinero ingresado, no es real
 		ventaDto.setPagado(true);

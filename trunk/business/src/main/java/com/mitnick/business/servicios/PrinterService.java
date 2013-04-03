@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.servicio.servicios.ICierreZServicio;
-import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
 import com.mitnick.utils.dtos.VentaDto;
