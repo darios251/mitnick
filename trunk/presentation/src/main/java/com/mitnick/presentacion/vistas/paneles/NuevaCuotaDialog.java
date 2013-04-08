@@ -39,6 +39,9 @@ public class NuevaCuotaDialog extends BaseDialog {
 	private JFormattedTextField txtFecha;
 	private JLabel lblErrorTxtFecha;
 
+	private JTextField txtDescripcion;
+	
+	private JLabel lblDescripcion;
 	private JLabel lblMontoCuota;
 	private JLabel lblFecha;
 	
@@ -54,8 +57,10 @@ public class NuevaCuotaDialog extends BaseDialog {
 				
 		getContentPane().add(getTxtFecha());
 		getContentPane().add(getTxtMontoCuota());
+		getContentPane().add(getTxtDescripcion());
 		getContentPane().add(getLblFecha());
 		getContentPane().add(getLblMontoCuota());
+		getContentPane().add(getLblDescripcion());
 		getContentPane().add(getBtnAceptar());
 		getContentPane().add(getBtnCancelar());
 		
@@ -70,8 +75,13 @@ public class NuevaCuotaDialog extends BaseDialog {
 		if (cuotaDto.getTotal()!=null)
 			monto = cuotaDto.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 		
+		String descripcion = "";
+		if (cuotaDto.getDescripcion()!=null)
+			descripcion = cuotaDto.getDescripcion();
+		
 		getTxtFecha().setText(fecha);
 		getTxtMontoCuota().setText(monto);
+		getTxtDescripcion().setText(descripcion);
 		
 		setCuotaDto(cuotaDto);
 		setCliente(cliente);
@@ -98,12 +108,12 @@ public class NuevaCuotaDialog extends BaseDialog {
 			btnAceptar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnAceptar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
-			btnAceptar.setBounds(95, 134, 60, 60);
+			btnAceptar.setBounds(95, 140, 60, 60);
 			
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
-						clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText());
+						clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText(), getTxtDescripcion().getText());
 						setVisible(false);
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
@@ -127,7 +137,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 			btnCancelar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCancelar.setMargin(new Insets(-1, -1, -1, -1));
 
-			btnCancelar.setBounds(250, 134, 60, 60);
+			btnCancelar.setBounds(250, 140, 60, 60);
 			btnCancelar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					setVisible(false);
@@ -140,7 +150,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 	
 	public JLabel getLblMontoCuota() {
 		if (lblMontoCuota == null) {
-			lblMontoCuota = new JLabel("Monto: ");
+			lblMontoCuota = new JLabel(PropertiesManager.getProperty("nuevaCuotaDialog.label.monto"));
 			lblMontoCuota.setBounds(110, 86, 70, 20);
 		}
 		return lblMontoCuota;
@@ -148,12 +158,20 @@ public class NuevaCuotaDialog extends BaseDialog {
 	
 	public JLabel getLblFecha() {
 		if (lblFecha == null) {
-			lblFecha = new JLabel("Fecha: ");
+			lblFecha = new JLabel(PropertiesManager.getProperty("nuevaCuotaDialog.label.fecha"));
 			lblFecha.setBounds(110, 55, 70, 20);
 		}
 		return lblFecha;
 	}
 
+	public JLabel getLblDescripcion() {
+		if (lblDescripcion == null) {
+			lblDescripcion = new JLabel(PropertiesManager.getProperty("nuevaCuotaDialog.label.descripcion"));
+			lblDescripcion.setBounds(110, 117, 70, 20);
+		}
+		return lblDescripcion;
+	}
+	
 	public JTextField getTxtMontoCuota() {
 		if (txtMontoCuota == null) {
 			txtMontoCuota = new JTextField();
@@ -162,6 +180,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 		}
 		return txtMontoCuota;
 	}
+	
 	public JTextField getTxtFecha() {
 		if (txtFecha == null) {
 			try{
@@ -173,7 +192,15 @@ public class NuevaCuotaDialog extends BaseDialog {
 		return txtFecha;
 	}
 	
-	
+	public JTextField getTxtDescripcion() {
+		if (txtDescripcion == null) {
+			txtDescripcion = new JTextField();
+			txtDescripcion.setColumns(10);
+			txtDescripcion.setBounds(190, 117, 250, 20);
+		}
+		return txtDescripcion;
+	}
+		
 	public void setBtnCancelar(JButton btnCancelar) {
 		this.btnCancelar = btnCancelar;
 	}

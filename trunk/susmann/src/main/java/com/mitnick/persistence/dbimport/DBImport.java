@@ -77,9 +77,9 @@ public class DBImport {
 
 	public void ejecutar(String path) {
 		try {
-			marcas = marcaDao.getAll();
+//			marcas = marcaDao.getAll();
+//			migrarProductos(path);
 			santoTome = ciudadDao.getById(new Long(1864));
-			migrarProductos(path);
 			migrarClientes(path);
 
 		} catch (Exception e) {

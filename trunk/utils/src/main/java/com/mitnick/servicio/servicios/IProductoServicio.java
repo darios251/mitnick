@@ -35,4 +35,10 @@ public interface IProductoServicio {
 	
 	@Secured(value={"ROLE_ADMIN"})
 	void resetearMovimiento();
+	
+	@Secured(value={"ROLE_ADMIN"})
+	void agregarNuevoTipo(String tipo) ;
+	
+	@Secured(value={"ROLE_ADMIN"})
+	void agregarNuevaMarca(String marca) ;
 }

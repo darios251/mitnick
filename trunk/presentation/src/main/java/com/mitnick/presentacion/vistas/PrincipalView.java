@@ -109,6 +109,8 @@ public class PrincipalView extends JFrame
 	private JMenuItem menuInformeJornada;
 	private JMenuItem menuConfiguracion;
 	private JMenuItem menuResetearStock;
+	private JMenuItem menuNuevaMarca;
+	private JMenuItem menuNuevoTipo;
 	private JMenuItem menuAcercade;	
 	
 	public PrincipalView()
@@ -145,6 +147,8 @@ public class PrincipalView extends JFrame
 			menuProductos = new JMenu();
 			menuProductos.setText(PropertiesManager.getProperty("principalView.menu.productos"));
 			menuProductos.add(getMenuResetearStock());
+			menuProductos.add(getMenuNuevaMarca());
+			menuProductos.add(getMenuNuevoTipo());			
 		}
 		return menuProductos;
 	}
@@ -728,6 +732,36 @@ public class PrincipalView extends JFrame
 			});
 		}
 		return menuResetearStock;
+	}
+	
+	private JMenuItem getMenuNuevaMarca() {
+		if (menuNuevaMarca == null) {
+			menuNuevaMarca = new JMenuItem(PropertiesManager.getProperty("principalView.menu.productos.nuevo.marca"));
+			menuNuevaMarca.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String descripcion = JOptionPane.showInputDialog(PropertiesManager.getProperty("principalView.dialog.nuevaCuota.descripcion"));
+					if (Validator.isNotBlankOrNull(descripcion)) {
+						productoController.agregarNuevaMarca(descripcion);
+					}
+				}
+			});
+		}
+		return menuNuevaMarca;
+	}
+	
+	private JMenuItem getMenuNuevoTipo() {
+		if (menuNuevoTipo == null) {
+			menuNuevoTipo = new JMenuItem(PropertiesManager.getProperty("principalView.menu.productos.nuevo.tipo"));
+			menuNuevoTipo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String descripcion = JOptionPane.showInputDialog(PropertiesManager.getProperty("principalView.dialog.nuevoTipo.descripcion"));
+					if (Validator.isNotBlankOrNull(descripcion)) {
+						productoController.agregarNuevoTipo(descripcion);
+					}
+				}
+			});
+		}
+		return menuNuevoTipo;
 	}
 	
 	protected int mostrarMensaje(PrinterException ex) {

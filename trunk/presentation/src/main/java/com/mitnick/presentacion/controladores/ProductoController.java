@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.persistence.entities.Marca;
+import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.presentacion.vistas.ProductoView;
 import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
@@ -193,6 +196,14 @@ public class ProductoController extends BaseController {
 		catch (BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener el producto");
 		}
+	}
+	
+	public void agregarNuevoTipo(String descripcion) {
+		productoServicio.agregarNuevoTipo(descripcion);
+	}
+	
+	public void agregarNuevaMarca(String descripcion) {
+		productoServicio.agregarNuevaMarca(descripcion);
 	}
 	
 	public ProductoView getProductoView() {

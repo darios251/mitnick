@@ -324,6 +324,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cuotaDto.setClienteDto(getDtoFromEntity(cuota.getCliente()));
 		cuotaDto.setPagado(cuota.isPagado());
 		cuotaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) cuota.getPagos()));
+		cuotaDto.setDescripcion(cuota.getDescripcion());
 		VentaHelper.calcularTotales(cuotaDto);
 		return cuotaDto;
 	}
@@ -603,6 +604,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		}
 
 		cuota.setPagos(pagos);
+		cuota.setDescripcion(cuotaDto.getDescripcion());
 		cuota.setPagado(cuotaDto.isPagado());
 		return cuota;
 	}

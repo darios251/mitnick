@@ -60,6 +60,9 @@ public class Cuota extends BaseObject implements Serializable {
 	@Column(name = "pagado", nullable = false)
 	private boolean pagado = false;
 	
+	@Column(name = "descripcion", length = 250)
+	private String descripcion = "";
+	
 	public Long getId() {
 		return id;
 	}
@@ -86,6 +89,14 @@ public class Cuota extends BaseObject implements Serializable {
 
 	public Venta getVenta() {
 		return venta;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public void setVenta(Venta venta) {
@@ -146,6 +157,8 @@ public class Cuota extends BaseObject implements Serializable {
 		int result = 1;
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result
+				+ ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result
 				+ ((faltaPagar == null) ? 0 : faltaPagar.hashCode());
 		result = prime * result
 				+ ((fechaPago == null) ? 0 : fechaPago.hashCode());
@@ -177,6 +190,13 @@ public class Cuota extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
+		if (descripcion == null) {
+			if (other.descripcion != null) {
+				return false;
+			}
+		} else if (!descripcion.equals(other.descripcion)) {
 			return false;
 		}
 		if (faltaPagar == null) {
@@ -243,7 +263,7 @@ public class Cuota extends BaseObject implements Serializable {
 				+ total + ", venta=" + venta + ", pagos=" + pagos
 				+ ", nroCuota=" + nroCuota + ", cliente=" + cliente
 				+ ", fechaPago=" + fechaPago + ", faltaPagar=" + faltaPagar
-				+ ", pagado=" + pagado + "]";
+				+ ", pagado=" + pagado + ", descripcion=" + descripcion + "]";
 	}
 
 	

@@ -201,6 +201,22 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 	@Transactional(readOnly = true)
 	@Override
+	public void agregarNuevoTipo(String descripcion) {
+		Tipo tipo = new Tipo();
+		tipo.setDescripcion(descripcion);
+		tipoDao.save(tipo);
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public void agregarNuevaMarca(String descripcion) {
+		Marca marca = new Marca();
+		marca.setDescripcion(descripcion);
+		marcaDao.save(marca);
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
 	public List<MarcaDto> obtenerMarcas() {
 		List<MarcaDto> resultado = new ArrayList<MarcaDto>();
 		try {
