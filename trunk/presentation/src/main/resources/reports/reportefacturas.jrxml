@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ccf0a3b-9b1c-40f4-ae3b-d20c0d2f94d6">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -84,14 +84,14 @@
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="71" y="0" width="42" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="23" y="0" width="42" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[N°Fact.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="113" y="0" width="88" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="136" y="0" width="88" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -111,19 +111,12 @@
 				</textElement>
 				<text><![CDATA[Cond.]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="0" y="1" width="65" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="112" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="0bbb1114-2f34-42a9-bf75-eac3da0f2bd2" x="71" y="0" width="484" height="52"/>
+				<reportElement uuid="0bbb1114-2f34-42a9-bf75-eac3da0f2bd2" x="20" y="0" width="535" height="42"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{facturas})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detalleFactura.jasper"]]></subreportExpression>
 			</subreport>
@@ -197,6 +190,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="10" y="52" width="65" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales]]></text>
+			</staticText>
 		</band>
 		<band height="3">
 			<line>

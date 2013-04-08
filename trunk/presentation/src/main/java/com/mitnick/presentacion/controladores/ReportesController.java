@@ -68,6 +68,15 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	public void consultarListadoDeRecibo(ReportesDto dto) {
+		try {
+			getReportesServicio().consultarListadoDeRecibos(dto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+	}
+	
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		reportesPanel.setVisible(true);

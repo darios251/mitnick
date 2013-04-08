@@ -195,9 +195,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			
 			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			JRDataSource dr = new JRBeanCollectionDataSource(venta.getProductos());
-						
-			
-			@SuppressWarnings("deprecation")
+										
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,parameters, dr);
 			JasperViewer.viewReport(jasperPrint,false);
 
