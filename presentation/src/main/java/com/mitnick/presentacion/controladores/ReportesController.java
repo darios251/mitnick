@@ -40,6 +40,15 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	public void consultarEstadoCuentasCliente(ReportesDto dto) {
+		try {
+			getReportesServicio().consultarEstadoCuentasPorCliente(dto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+	}
+	
 	public void consultarReporteFacturas(ReportesDto dto) {
 		try {
 			getReportesServicio().reporteFacturas(dto);

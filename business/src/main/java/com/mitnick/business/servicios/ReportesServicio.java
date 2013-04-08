@@ -362,10 +362,9 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						}
 					}
 				} else {
-					// si es una devolucion no se usan medios de pago - se resta
-					// del total
-					total = total.subtract(venta.getTotal());
-					dto.setTotal(dto.getTotal().subtract(venta.getTotal()));
+					// si es una devolucion no se usan medios de pago - no afecta los totales ya que no se devuelve dinero efectivo
+//					total = total.subtract(venta.getTotal());
+//					dto.setTotal(dto.getTotal().subtract(venta.getTotal()));
 				}
 
 			}
@@ -553,6 +552,70 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			throw new BusinessException(
 					"Error al intentar obtener el reporte de ventas", e);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
+	@Override
+	public void consultarEstadoCuentasPorCliente(ReportesDto filtro) {
+		List<CuotaDto> cuotas = new ArrayList<CuotaDto>();
+		try {
+			cuotas.addAll(entityDTOParser.getDtosFromEntities(cuotaDao
+					.findByFiltro(filtro)));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			BigDecimal total = new BigDecimal(0);
+			
+			for (CuotaDto cuota: cuotas){
+				total = total.add(cuota.getFaltaPagar());
+			}
+			
+			parameters.put("total", total.toString());
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+					.getClass().getResourceAsStream(
+							"/reports/estadoCuenta.jasper"));
+
+			JRDataSource dr = new JRBeanCollectionDataSource(agruparPorCliente(cuotas));
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
+					parameters, dr);
+
+			JasperViewer.viewReport(jasperPrint, false);
+
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException(
+					"Error al intentar obtener el reporte de ventas", e);
+		}
+	}
+	
+	
+	private List<CuotaDto> agruparPorCliente(List<CuotaDto> cuotas){
+		List<CuotaDto> cuotasAgrupadas = new ArrayList<CuotaDto>();
+		for (CuotaDto cuota: cuotas){
+			CuotaDto cuotaCliente = getCuotaCliente(cuota, cuotasAgrupadas);
+			if (cuotaCliente!=null) {
+				BigDecimal apagar = cuotaCliente.getFaltaPagar();
+				apagar = apagar.add(cuota.getFaltaPagar());
+				cuotaCliente.setFaltaPagar(apagar);
+			}
+		}
+		return cuotasAgrupadas;
+	}
+	
+	private CuotaDto getCuotaCliente(CuotaDto cuota, List<CuotaDto> cuotas){
+		CuotaDto retorno = null;
+		for (CuotaDto cuotaIn: cuotas){
+			if (cuotaIn.getClienteDto().getId().equals(cuota.getClienteDto().getId())){
+				retorno = cuotaIn;
+			} 
+		}
+		if (retorno == null){
+			cuotas.add(cuota);						
+		}			
+		return retorno;
 	}
 	
 	@Transactional(readOnly = true)
