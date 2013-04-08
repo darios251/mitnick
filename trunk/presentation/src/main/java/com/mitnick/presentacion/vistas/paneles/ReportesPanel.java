@@ -46,6 +46,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	
 
 	private JButton btnReporteDeEstado;
+	private JButton btnReporteDeEstadoPorCliente;
 	private JButton btnListadoDeControl;
 
 	private JButton btnReporteFacturas;
@@ -94,6 +95,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		
 		add(getBtnListadoDeControl());
 		add(getBtnReporteDeEstado());
+		add(getBtnReporteDeEstadoPorCliente());
 		
 		add(getBtnReporteFacturas());
 		
@@ -205,8 +207,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		if (btnReporteDeEstado == null) {
 			btnReporteDeEstado = new JButton();
 			btnReporteDeEstado.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteDeEstado.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.estadoCuentas"));
-			btnReporteDeEstado.setText(PropertiesManager.getProperty("reportePanel.label.estadoCuentas"));
+			btnReporteDeEstado.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.estadoCuotas"));
+			btnReporteDeEstado.setText(PropertiesManager.getProperty("reportePanel.label.estadoCuotas"));
 			btnReporteDeEstado.setMargin(new Insets(-1, -1, -1, -1));
 			btnReporteDeEstado.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteDeEstado.setBounds(200, 310, 330, 20);
@@ -219,6 +221,24 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		return btnReporteDeEstado;
 	}
 	
+	private JButton getBtnReporteDeEstadoPorCliente() {
+		if (btnReporteDeEstadoPorCliente == null) {
+			btnReporteDeEstadoPorCliente = new JButton();
+			btnReporteDeEstadoPorCliente.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteDeEstadoPorCliente.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.estadoCuentas"));
+			btnReporteDeEstadoPorCliente.setText(PropertiesManager.getProperty("reportePanel.label.estadoCuentas"));
+			btnReporteDeEstadoPorCliente.setMargin(new Insets(-1, -1, -1, -1));
+			btnReporteDeEstadoPorCliente.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteDeEstadoPorCliente.setBounds(200, 340, 330, 20);
+			btnReporteDeEstadoPorCliente.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarEstadoCuentasClientes();
+				}
+			});
+		}
+		return btnReporteDeEstadoPorCliente;
+	}
+	
 	private JButton getBtnReporteFacturas() {
 		if (btnReporteFacturas == null) {
 			btnReporteFacturas = new JButton();
@@ -227,7 +247,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			btnReporteFacturas.setText(PropertiesManager.getProperty("reportePanel.label.reporteFacturas"));
 			btnReporteFacturas.setMargin(new Insets(-1, -1, -1, -1));
 			btnReporteFacturas.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteFacturas.setBounds(200, 350, 330, 20);
+			btnReporteFacturas.setBounds(200, 380, 330, 20);
 			btnReporteFacturas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evento) {
 					consultarReporteFacturas();
@@ -353,6 +373,17 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
 			controller.consultarEstadoCuentas(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}	
+	
+	protected void consultarEstadoCuentasClientes() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			controller.consultarEstadoCuentasCliente(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}

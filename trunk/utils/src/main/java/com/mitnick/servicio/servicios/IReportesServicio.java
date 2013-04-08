@@ -92,13 +92,20 @@ public interface IReportesServicio {
 	public void exportarCompraSugerida(ReporteMovimientosDto dto); 
 	
 	/**
-	 * Obtiene el detalle de compra sugerida para los productos seleccionados.
+	 * Obtiene el detalle de facturacion A y B - corte Z.
 	 * @param filtro
 	 * @return
 	 */
 	@Secured(value={"ROLE_ADMIN"})
 	public void reporteFacturas(ReportesDto filtro);
-	
+
+	/**
+	 * Obtiene el estado de cuenta de todos los clientes.
+	 * @param filtro
+	 * @return
+	 */
+	@Secured(value={"ROLE_ADMIN"})
+	public void consultarEstadoCuentasPorCliente(ReportesDto filtro);
 	
 
 }
