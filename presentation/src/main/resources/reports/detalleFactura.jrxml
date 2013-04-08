@@ -42,39 +42,39 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement uuid="ade7d851-e995-4caa-8003-2f60467515fe" x="0" y="0" width="35" height="20"/>
+				<reportElement uuid="ade7d851-e995-4caa-8003-2f60467515fe" x="0" y="0" width="87" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{nroFactura}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8a7e479b-3d9b-4551-8ed3-efdc5ce39d99" x="35" y="0" width="148" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="e45ae887-6ee1-4796-994c-37d682a1323c" x="183" y="0" width="101" height="20"/>
+				<reportElement uuid="e45ae887-6ee1-4796-994c-37d682a1323c" x="250" y="0" width="101" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{cuit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="27c5fed2-098f-4f1a-b212-b959b54c92b9" x="376" y="0" width="49" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="869f37fc-dfa3-436b-b569-19a72f04ae4d" x="425" y="0" width="44" height="20"/>
+				<reportElement uuid="869f37fc-dfa3-436b-b569-19a72f04ae4d" x="477" y="0" width="44" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="70184399-157e-4197-bf6a-9e6032e47bf2" x="323" y="0" width="53" height="20"/>
+				<reportElement uuid="70184399-157e-4197-bf6a-9e6032e47bf2" x="375" y="0" width="53" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{neto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e4506325-9aeb-4c54-b99e-0edc9e0f2024" x="299" y="0" width="24" height="20"/>
+				<reportElement uuid="e4506325-9aeb-4c54-b99e-0edc9e0f2024" x="351" y="0" width="24" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{condicion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8a7e479b-3d9b-4551-8ed3-efdc5ce39d99" x="102" y="0" width="148" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="27c5fed2-098f-4f1a-b212-b959b54c92b9" x="428" y="0" width="49" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

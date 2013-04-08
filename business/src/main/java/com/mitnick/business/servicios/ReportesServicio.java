@@ -227,26 +227,39 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			List<ReporteFacturasDto> reportes = new ArrayList<ReporteFacturasDto>();
 
 			for (Venta venta : ventas) {
+				BigDecimal totalVenta = venta.getTotal();
+				BigDecimal impuestoVenta = venta.getImpuesto();
+				BigDecimal netoVenta = venta.getNeto();
+				
 				ReporteFacturasDto diarioDto = getCorte(venta.getFecha(), reportes);				
 				if ("A".equals(venta.getTipoTicket())){
-					diarioDto.setIvaA(diarioDto.getIvaA().add(venta.getImpuesto()));
-					diarioDto.setNetoA(diarioDto.getNetoA().add(venta.getNeto()));
-					diarioDto.setTotalA(diarioDto.getTotalA().add(venta.getTotal()));
-					
+					String nroFactura = venta.getNumeroTicket();
 					FacturaDto factura = new FacturaDto();
-					factura.setNroFactura(venta.getNumeroTicket());
 					factura.setCliente(venta.getCliente().getNombre());
 					factura.setCondicion(venta.getDiscriminacionIVA().getDescripcionCorta());
 					factura.setCuit(venta.getCliente().getCuit());
 					factura.setNeto(venta.getNeto());
 					factura.setIva(venta.getImpuesto());
-					factura.setTotal(venta.getTotal());
+					if (MitnickConstants.DEVOLUCION == venta.getTipo()){
+						totalVenta = totalVenta.negate();	
+						impuestoVenta = impuestoVenta.negate();
+						netoVenta = netoVenta.negate();
+						nroFactura = "NC-".concat(nroFactura);
+					} else
+						nroFactura = "F-".concat(nroFactura);
+					
+					factura.setNroFactura(nroFactura);
+					factura.setTotal(totalVenta);
+					
+					diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
+					diarioDto.setNetoA(diarioDto.getNetoA().add(netoVenta));
+					diarioDto.setTotalA(diarioDto.getTotalA().add(totalVenta));
 					diarioDto.addfactura(factura);
 					
 				} else {
-					diarioDto.setTotalB(diarioDto.getTotalB().add(venta.getTotal()));						
+					diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));						
 				}
-				diarioDto.setTotal(diarioDto.getTotal().add(venta.getTotal()));
+				diarioDto.setTotal(diarioDto.getTotal().add(totalVenta));
 				
 			}
 			JasperReport reporteJR = (JasperReport) JRLoader.loadObject(this
@@ -518,6 +531,73 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 	}
 
+	@Transactional(readOnly = true)
+	@Override
+	public void consultarListadoDeRecibos(ReportesDto filtro) {
+		List<Pago> pagos = cuotaDao.getPagosCuotas(filtro);
+		List<ReporteVentasResultadoDTO> ingresos = new ArrayList<ReporteVentasResultadoDTO>();
+		BigDecimal totalEfectivo = new BigDecimal(0);
+		BigDecimal totalDebito = new BigDecimal(0);
+		BigDecimal totalCredito = new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		try {
+			for (Pago pago : pagos) {
+				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos,
+						pago.getFecha());
+				BigDecimal totalRegistro = dto.getTotal().add(pago.getPago());
+				dto.setTotal(totalRegistro);
+				total = total.add(pago.getPago());
+
+				BigDecimal parcialTotal = pago.getPago();
+
+				if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago
+						.getMedioPago().getCodigo())) {
+					parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
+					dto.setTotalEfectivo(parcialTotal);
+					totalEfectivo = totalEfectivo.add(pago.getPago());
+				}
+
+				if (MitnickConstants.Medio_Pago.DEBITO.equals(pago
+						.getMedioPago().getCodigo())) {
+					parcialTotal = parcialTotal.add(dto.getTotalDebito());
+					dto.setTotalDebito(parcialTotal);
+					totalDebito = totalDebito.add(pago.getPago());
+				}
+
+				if (MitnickConstants.Medio_Pago.CREDITO.equals(pago
+						.getMedioPago().getCodigo())) {
+					parcialTotal = parcialTotal.add(dto.getTotalCredito());
+					dto.setTotalCredito(parcialTotal);
+					totalCredito = totalCredito.add(pago.getPago());
+				}
+			}
+
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+					.getClass().getResourceAsStream(
+							"/reports/listadoRecibo.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("totalEfectivo", totalEfectivo.toString());
+			parameters.put("totalDebito", totalDebito.toString());
+			parameters.put("totalCredito", totalCredito.toString());
+			parameters.put("total", total.toString());
+
+			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
+					parameters, dr);
+
+			JasperViewer.viewReport(jasperPrint, false);
+
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException(
+					"Error al intentar obtener el reporte de ventas", e);
+		}
+
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	@Override
