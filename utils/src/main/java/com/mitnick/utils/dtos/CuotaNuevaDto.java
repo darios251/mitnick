@@ -14,6 +14,8 @@ public class CuotaNuevaDto extends BaseDto {
 		
 	@MitnickField(fieldType=FieldType.BIGDECIMAL, required=true, requiredMessage=MONTO_REQUIRED)
 	private String montoCuota;
+	
+	private String descripcion="";
 
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
@@ -29,6 +31,14 @@ public class CuotaNuevaDto extends BaseDto {
 	
 	public String getMontoCuota() {
 		return montoCuota;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
 }

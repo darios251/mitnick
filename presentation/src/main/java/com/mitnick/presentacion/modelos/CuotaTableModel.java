@@ -22,6 +22,7 @@ public class CuotaTableModel extends AbstractTableModel implements TableModel{
 		columnNames.add(PropertiesManager.getProperty("cuotaTableModel.fecha"));
 		columnNames.add(PropertiesManager.getProperty("cuotaTableModel.monto"));
 		columnNames.add(PropertiesManager.getProperty("cuotaTableModel.aPagar"));
+		columnNames.add(PropertiesManager.getProperty("cuotaCorrienteModel.descripcion"));
 		data = new ArrayList<CuotaDto>();
 	}
 	
@@ -98,7 +99,9 @@ public class CuotaTableModel extends AbstractTableModel implements TableModel{
 			case 1: 
 				return fila.getTotal();
 			case 2: 
-				return fila.getFaltaPagar();			
+				return fila.getFaltaPagar();		
+			case 3: 
+				return fila.getDescripcion();		
 		}
 		return data.get(-1);
 	}
@@ -113,7 +116,9 @@ public class CuotaTableModel extends AbstractTableModel implements TableModel{
 			case 1: 
 				fila.setTotal(new BigDecimal((String)aValue)); break;	
 			case 2: 
-				fila.setFaltaPagar(new BigDecimal((String)aValue)); break;			
+				fila.setFaltaPagar(new BigDecimal((String)aValue)); break;	
+			case 3: 
+				fila.setDescripcion((String)aValue); break;	
 						
 		}
 		data.set(rowIndex, fila);

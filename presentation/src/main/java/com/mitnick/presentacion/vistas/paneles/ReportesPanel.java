@@ -187,8 +187,8 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		if (btnListadoDeControl == null) {
 			btnListadoDeControl = new JButton();
 			btnListadoDeControl.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnListadoDeControl.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.listadoControl"));
-			btnListadoDeControl.setText(PropertiesManager.getProperty("reportePanel.label.listadoControl"));
+			btnListadoDeControl.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.listadoRecibo"));
+			btnListadoDeControl.setText(PropertiesManager.getProperty("reportePanel.label.listadoRecibo"));
 			btnListadoDeControl.setMargin(new Insets(-1, -1, -1, -1));
 			btnListadoDeControl.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnListadoDeControl.setBounds(200, 280, 330, 20);

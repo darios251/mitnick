@@ -100,7 +100,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	}
 
 	protected void setFocusTraversalPolicy() {
-		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNumeroDocumento, txtNombre, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente, btnMovimientos }));
+		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtNombre, txtNumeroDocumento, btnBuscar, btnNuevo, btnModificar, btnEliminar, btnEstadoCuenta, btnCuentaCorriente, btnMovimientos }));
 	}
 
 	protected void consultarClientes() {
@@ -116,16 +116,6 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		}
 	}
 
-	public JTextField getTxtNumeroDocumento() {
-		if (txtNumeroDocumento == null) {
-			txtNumeroDocumento = new JTextField();
-			txtNumeroDocumento.setColumns(10);
-			txtNumeroDocumento.setBounds(200, 15, 110, 20);
-		}
-		return txtNumeroDocumento;
-	}
-
-	
 	public JButton getBtnBuscar() {
 		if (btnBuscar == null) {
 			btnBuscar = new JButton(PropertiesManager.getProperty("clientePanel.button.buscar.texto"));
@@ -145,14 +135,6 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			});
 		}
 		return btnBuscar;
-	}
-
-	public JLabel getLblNumeroDocumento() {
-		if (lblNumeroDocumento == null) {
-			lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
-			lblNumeroDocumento.setBounds(125, 15, 70, 20);
-		}
-		return lblNumeroDocumento;
 	}
 
 	public JScrollPane getScrollPane() {
@@ -245,10 +227,18 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		return lblClientes;
 	}
 
+	public JLabel getLblNumeroDocumento() {
+		if (lblNumeroDocumento == null) {
+			lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
+			lblNumeroDocumento.setBounds(330, 15, 80, 20);
+		}
+		return lblNumeroDocumento;
+	}
+	
 	public JLabel getLblNombre() {
 		if (lblNombre == null) {
 			lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
-			lblNombre.setBounds(330, 15, 80, 20);
+			lblNombre.setBounds(125, 15, 70, 20);
 		}
 		return lblNombre;
 	}
@@ -257,11 +247,20 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
 			txtNombre.setColumns(10);
-			txtNombre.setBounds(420, 15, 110, 20);
+			txtNombre.setBounds(200, 15, 110, 20);
 		}
 		return txtNombre;
 	}
 
+	public JTextField getTxtNumeroDocumento() {
+		if (txtNumeroDocumento == null) {
+			txtNumeroDocumento = new JTextField();
+			txtNumeroDocumento.setColumns(10);
+			txtNumeroDocumento.setBounds(420, 15, 110, 20);
+		}
+		return txtNumeroDocumento;
+	}
+	
 	public JButton getBtnEstadoCuenta() {
 		if (btnEstadoCuenta == null) {
 			btnEstadoCuenta = new JButton(PropertiesManager.getProperty("clientePanel.button.listadoClientes"));
@@ -400,7 +399,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 
 	@Override
 	public void setDefaultFocusField() {
-		this.defaultFocusField = txtNumeroDocumento;
+		this.defaultFocusField = txtNombre;
 	}
 
 	protected void setDefaultButton() {

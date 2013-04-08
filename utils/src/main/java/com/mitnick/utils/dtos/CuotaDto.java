@@ -18,6 +18,8 @@ public class CuotaDto extends BaseDto {
 	private BigDecimal total;
 	
 	private int nroCuota;
+
+	private String descripcion = "";
 	
 	private ClienteDto clienteDto;
 
@@ -115,6 +117,14 @@ public class CuotaDto extends BaseDto {
 
 	public void setPagado(boolean pagado) {
 		this.pagado = pagado;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	

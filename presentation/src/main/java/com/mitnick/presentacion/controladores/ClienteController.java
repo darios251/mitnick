@@ -305,17 +305,18 @@ public class ClienteController extends BaseController {
 		cuentaCorrientePanel.setCuotas(cuotas);
 	}
 	
-	public void guardarCuota(CuotaDto cuotaDto, String monto, String fecha){
+	public void guardarCuota(CuotaDto cuotaDto, String monto, String fecha, String descripcion){
 		CuotaNuevaDto cuotaNuevaDto = new CuotaNuevaDto();
 		cuotaNuevaDto.setFecha(fecha);
 		cuotaNuevaDto.setMontoCuota(monto);
+		cuotaNuevaDto.setDescripcion(descripcion);
 		
 		validateDto(cuotaNuevaDto);
 		
 		cuotaDto.setFecha_pagar(fecha);
 		cuotaDto.setTotal(new BigDecimal(monto));
 		cuotaDto.setFaltaPagar(new BigDecimal(monto));
-		
+		cuotaDto.setDescripcion(descripcion);
 		clienteServicio.guardarCuota(cuotaDto);
 	}
 		

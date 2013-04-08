@@ -36,10 +36,10 @@ public class Cliente extends BaseObject implements Serializable {
 	@Column(name = "actividad", length = 30)
 	private String actividad="";
 	
-	@Column(name = "documento", length = 10, nullable = true, unique = true)
+	@Column(name = "documento", length = 10, nullable = true)
 	private String documento;
 	
-	@Column(name = "cuit", length = 13, nullable = true, unique = true)
+	@Column(name = "cuit", length = 13, nullable = true)
 	private String cuit;
 
 	@Column(name = "telefono", length = 40, nullable = true)

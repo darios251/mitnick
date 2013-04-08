@@ -21,6 +21,7 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 		columnNames.add(PropertiesManager.getProperty("cuentaCorrienteModel.numeroCuota"));
 		columnNames.add(PropertiesManager.getProperty("cuentaCorrienteModel.fecha"));
 		columnNames.add(PropertiesManager.getProperty("cuotaCorrienteModel.monto"));
+		columnNames.add(PropertiesManager.getProperty("cuotaCorrienteModel.descripcion"));
 		data = new ArrayList<CuotaDto>();
 	}
 	
@@ -109,6 +110,8 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 			return fila.getFecha_pagar();
 		case 2:
 			return fila.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP);
+		case 3:
+			return fila.getDescripcion() + "";
 		}
 		
 		return data.get(-1);
@@ -127,6 +130,9 @@ public class CuentaCorrienteTableModel extends AbstractTableModel {
 			break;
 		case 2: 
 			fila.setTotal(new BigDecimal((String) aValue));
+			break;
+		case 3: 
+			fila.setDescripcion((String)aValue);
 			break;
 		}
 		

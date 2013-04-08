@@ -528,7 +528,13 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			cuotas.addAll(entityDTOParser.getDtosFromEntities(cuotaDao
 					.findByFiltro(filtro)));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
-
+			BigDecimal total = new BigDecimal(0);
+			
+			for (CuotaDto cuota: cuotas){
+				total = total.add(cuota.getFaltaPagar());
+			}
+			parameters.put("total", total.toString());
+			
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream(
 							"/reports/estadoCuenta.jasper"));

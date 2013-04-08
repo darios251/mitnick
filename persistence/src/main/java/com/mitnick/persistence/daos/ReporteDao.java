@@ -68,7 +68,10 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 			repdto.setCantidad(cantidad + producto.getCantidad());
 			BigDecimal total = repdto .getTotal();
 			repdto.setTotal(total.add(producto.getPrecio()));
-			repdto.setProductoMarca(producto.getProducto().getMarca().getDescripcion());
+			if (Validator.isNotNull(producto.getProducto().getMarca()))
+				repdto.setProductoMarca(producto.getProducto().getMarca().getDescripcion());
+			else
+				repdto.setProductoMarca("");		
 			if (producto.getProducto().getTalle()==null)
 				repdto.setTalle("");
 			else
