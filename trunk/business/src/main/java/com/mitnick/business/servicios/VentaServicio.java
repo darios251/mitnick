@@ -136,10 +136,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 
 	@Override
 	public void validarCliente(ClienteDto cliente) {
-		if (Validator.isBlankOrNull(cliente.getCuit()))
-			throw new BusinessException("error.venta.cliente.cuit.null", "El cuit del cliente es nulo.");
-		if (Validator.isBlankOrNull(cliente.getDocumento()))
-			throw new BusinessException("error.venta.cliente.documento.null", "El documento del cliente es nulo.");
+		if (Validator.isBlankOrNull(cliente.getCuit()) && Validator.isBlankOrNull(cliente.getDocumento()))
+			throw new BusinessException("error.venta.cliente.cuit.document.null", "El cuit y el documento del cliente es nulo.");					
 		if (Validator.isNull(cliente.getDireccion())||Validator.isBlankOrNull(cliente.getDireccion().getDomicilio()))
 			throw new BusinessException("error.venta.cliente.domicilio.null", "El domicilio del cliente es nulo.");
 	}

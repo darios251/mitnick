@@ -52,8 +52,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	private JButton btnNuevo;
 	private JButton btnModificar;
 	private JTextField txtNombre;
-	private JLabel lblNmeroCtaCte;
-	private JTextField txtNumeroCtaCte;
 	private ClienteTableModel model;
 	private TableRowSorter<ClienteTableModel> sorter;
 	private JLabel lblTipoComprador;
@@ -70,7 +68,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	public VentaClientePanel(boolean modoDisenio) {
 		initializeComponents();
 		
-		throw new PresentationException("error.unknow", "este constructor es solo parar el plugin de diseÃ±o");
+		throw new PresentationException("error.unknow", "este constructor es solo parar el plugin de diseño");
 	}
 
 	@Override
@@ -96,11 +94,9 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		
 		add(getLblNumeroDocumento());
 		add(getLblNombre());
-		add(getLblNmeroCtaCte());
 		
 		add(getTxtNumeroDocumento());
 		add(getTxtNombre());
-		add(getTxtNumeroCtaCte());
 		add(getBtnBuscar());
 
 		add(getBtnNuevo());
@@ -116,15 +112,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	}
 	
 	
-	public JTextField getTxtNumeroDocumento() {
-		if (txtNumeroDocumento == null) {
-			txtNumeroDocumento = new JTextField();
-			txtNumeroDocumento.setColumns(10);
-			txtNumeroDocumento.setBounds(170, 55, 110, 20);
-		}
-		return txtNumeroDocumento;
-	}
-
 	public JButton getBtnBuscar() {
 		if(btnBuscar == null) {
 			btnBuscar = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.buscar"));
@@ -206,7 +193,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	public JLabel getLblNombre() {
 		if (lblNombre == null) {
 			lblNombre = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.nombre"));
-			lblNombre.setBounds(403, 55, 118, 20);
+			lblNombre.setBounds(25, 55, 85, 20);
 		}
 		return lblNombre;
 	}
@@ -214,7 +201,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	public JLabel getLblNumeroDocumento() {
 		if (lblNumeroDocumento == null) {
 			lblNumeroDocumento = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.documento"));
-			lblNumeroDocumento.setBounds(25, 55, 85, 20);
+			lblNumeroDocumento.setBounds(403, 55, 118, 20);
 		}
 		return lblNumeroDocumento;
 	}
@@ -316,30 +303,22 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		return btnVolver;
 	}
 	
+	public JTextField getTxtNumeroDocumento() {
+		if (txtNumeroDocumento == null) {
+			txtNumeroDocumento = new JTextField();
+			txtNumeroDocumento.setColumns(10);
+			txtNumeroDocumento.setBounds(533, 55, 110, 20);
+		}
+		return txtNumeroDocumento;
+	}
+	
 	public JTextField getTxtNombre() {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
 			txtNombre.setColumns(10);
-			txtNombre.setBounds(533, 55, 110, 20);
+			txtNombre.setBounds(170, 55, 110, 20);
 		}
 		return txtNombre;
-	}
-
-	public JLabel getLblNmeroCtaCte() {
-		if (lblNmeroCtaCte == null) {
-			lblNmeroCtaCte = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.cuentaCorriente"));
-			lblNmeroCtaCte.setBounds(403, 15, 118, 20);
-		}
-		return lblNmeroCtaCte;
-	}
-
-	public JTextField getTxtNumeroCtaCte() {
-		if (txtNumeroCtaCte == null) {
-			txtNumeroCtaCte = new JTextField();
-			txtNumeroCtaCte.setColumns(10);
-			txtNumeroCtaCte.setBounds(533, 15, 110, 20);
-		}
-		return txtNumeroCtaCte;
 	}
 
 	public TableRowSorter<ClienteTableModel> getSorter() {
@@ -388,14 +367,13 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{cmbTipoComprador, txtNumeroDocumento, txtNumeroCtaCte, txtNombre, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
+				new Component[]{cmbTipoComprador, txtNombre, txtNumeroDocumento, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
 	}
 	
 	protected void deshabilitarComponentes() {
 		boolean enabled = true;//!getCmbTipoComprador().isSelected();
 				
 		getTxtNombre().setEnabled(enabled);
-		getTxtNumeroCtaCte().setEnabled(enabled);
 		getTxtNumeroDocumento().setEnabled(enabled);
 		getTable().setVisible(enabled);
 		getBtnBuscar().setEnabled(enabled);
@@ -435,7 +413,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 
 	@Override
 	public void actualizarPantalla() {
-		consultarClientes();
+//		consultarClientes();
 		getCmbTipoComprador().requestFocus();
 	}
 		

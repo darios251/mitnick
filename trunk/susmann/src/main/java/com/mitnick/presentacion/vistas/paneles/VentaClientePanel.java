@@ -68,7 +68,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	public VentaClientePanel(boolean modoDisenio) {
 		initializeComponents();
 		
-		throw new PresentationException("error.unknow", "este constructor es solo parar el plugin de diseño");
+		throw new PresentationException("error.unknow", "este constructor es solo parar el plugin de dise�o");
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			
 			TipoCompradorDto tipoComprador = (TipoCompradorDto) cmbTipoComprador.getSelectedItem();
 			
-			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL || VentaManager.getVentaActual().getTipo()==MitnickConstants.DEVOLUCION) {
+			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
 				controller.validarCliente();
 				controller.agregarCliente();
 				
@@ -163,7 +163,14 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 				controller.mostrarPagosPanel();
 			else {
 				BigDecimal deuda = new BigDecimal(0);
-				controller.obtenerSaldoDeudorCliente();
+				if (Validator.isNull(VentaManager.getVentaActual().getCliente())){
+					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.devolucion.agregarCliente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.YES_NO_OPTION);
+					if (option == JOptionPane.YES_OPTION)
+						 deuda = new BigDecimal(0);
+					else if (option == JOptionPane.NO_OPTION)
+						return;
+				} else
+					controller.obtenerSaldoDeudorCliente();
 				
 				BigDecimal devolucion = VentaManager.getVentaActual().getTotal();
 				
@@ -335,13 +342,6 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 			cmbTipoComprador.setBounds(170, 15, 200, 23);
 			
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC));
-			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_DESC));
-			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL_DESC));
-			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.EXENTO, MitnickConstants.TipoComprador.EXENTO_DESC));
-			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.MONOTRIBUTISTA, MitnickConstants.TipoComprador.MONOTRIBUTISTA_DESC));
-			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.MONOTRIBUTISTA_SOCIAL, MitnickConstants.TipoComprador.MONOTRIBUTISTA_SOCIAL_DESC));
-			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.NO_CATEGORIZADO, MitnickConstants.TipoComprador.NO_CATEGORIZADO_DESC));
-			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.NO_RESPONSABLE, MitnickConstants.TipoComprador.NO_RESPONSABLE_DESC));
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO, MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO_DESC));
 			
 			cmbTipoComprador.addActionListener(new ActionListener() {
