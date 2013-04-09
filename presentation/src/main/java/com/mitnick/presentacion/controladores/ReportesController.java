@@ -9,6 +9,8 @@ import com.mitnick.presentacion.vistas.ReportesView;
 import com.mitnick.presentacion.vistas.paneles.ReportesPanel;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
+import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.anotaciones.AuthorizationRequired;
 
 @Controller("reportesController")
 public class ReportesController extends BaseController {
@@ -77,6 +79,7 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		reportesPanel.setVisible(true);

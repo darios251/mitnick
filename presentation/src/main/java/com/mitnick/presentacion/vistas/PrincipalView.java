@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.business.servicios.PrinterService;
 import com.mitnick.exceptions.BaseException;
@@ -348,21 +349,26 @@ public class PrincipalView extends JFrame
 			
 			btnReporte.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e)	{
-					if (getJTabbedPane().indexOfComponent(reportesController.getReportesPanel()) == -1) {
-						logger.info("Agregando el panel de movimiento de productos al tabbedPane");
-						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reportesController.getReportesView());
-					}
-					logger.info("Mostrando el panel de Movimientos de productos");
-					
-					reportesController.mostrarReportesPanel();
-					getJTabbedPane().setSelectedComponent(reportesController.getReportesView());
-					getJTabbedPane().setVisible(true);
-					reportesController.getUltimoPanelMostrado().setVisible(true);
+					panelReportes();
 				}
 			});
 		}
 
 		return btnReporte;
+	}
+	
+	@Transactional
+	private void panelReportes(){
+		if (getJTabbedPane().indexOfComponent(reportesController.getReportesPanel()) == -1) {
+			logger.info("Agregando el panel de movimiento de productos al tabbedPane");
+			jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("reportePanel.label.reportes"), reportesController.getReportesView());
+		}
+		logger.info("Mostrando el panel de Movimientos de productos");
+		
+		reportesController.mostrarReportesPanel();
+		getJTabbedPane().setSelectedComponent(reportesController.getReportesView());
+		getJTabbedPane().setVisible(true);
+		reportesController.getUltimoPanelMostrado().setVisible(true);
 	}
 	
 	private JButton getBtnMovimientos()

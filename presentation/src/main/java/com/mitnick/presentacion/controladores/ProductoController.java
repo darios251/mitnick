@@ -4,12 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
-import com.mitnick.persistence.entities.Marca;
-import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.presentacion.vistas.ProductoView;
 import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;

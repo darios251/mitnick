@@ -513,7 +513,9 @@ public class PagoPanel extends BasePanel<VentaController> {
 		try {
 			int tipo = VentaManager.getVentaActual().getTipo();
 			if (tipo == MitnickConstants.VENTA){
-				mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
+				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.vuelto");
+				if (mostrarMsg)
+					mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
 				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
 				((VentaController) controller).limpiarVenta();
 				((VentaController) controller).mostrarVentasPanel();
