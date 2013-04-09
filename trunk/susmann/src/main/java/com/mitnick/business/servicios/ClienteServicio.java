@@ -37,6 +37,7 @@ import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
@@ -374,4 +375,30 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		}
 	}
 		
+	@Transactional
+	public void cancelarComprobante(String nroComprobante) {
+		
+		Comprobante comprobante = clienteDao.findComprobanteByNumero(nroComprobante);
+		if (Validator.isNull(comprobante))
+			throw new BusinessException(
+					"error.clienteServicio.comprobante.cancelar.noExiste", "No se encuentra el comprobante que desea eliminar");
+		List<Pago> pagos = comprobante.getPagos();
+		for (Pago pago: pagos){
+			//se actualiza la cuota
+			Cuota cuota = pago.getCuota();
+			BigDecimal cuotafaltaPagar = cuota.getFaltaPagar();
+			cuotafaltaPagar = cuotafaltaPagar.add(pago.getPago());
+			cuota.setFaltaPagar(cuotafaltaPagar);
+			cuota.setPagado(false);
+			cuota.getPagos().remove(pago);
+			
+		}
+		//se elimina el comprobante
+		try{
+			clienteDao.eliminarComprobante(comprobante);
+		} catch (PersistenceException e) {
+			throw new BusinessException(e, "Error al intentar eliminar el comprobante");
+		}
+		
+	}
 }

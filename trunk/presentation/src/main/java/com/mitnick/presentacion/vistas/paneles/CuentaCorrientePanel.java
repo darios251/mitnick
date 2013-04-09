@@ -54,6 +54,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	private JButton btnEditar;
 	private JButton btnEliminar;
 	private JButton btnPagar;
+	private JButton btnCancelarComprobante;
 	private JButton btnVolver;
 	private CuotaTableModel model;
 	private TableRowSorter<CuotaTableModel> sorter;
@@ -84,14 +85,15 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	@Override
 	protected void initializeComponents() {
 		setLayout(null);
-		setSize(new Dimension(815, 470));
+		setSize(new Dimension(850, 550));
 
 		add(getScrollPane());
 		
 		add(getBtnNuevo());
-		add(getBtnModificar());
 		add(getBtnEliminar());
+		add(getBtnModificar());
 		add(getBtnPagar());
+		add(getBtnCancelarComprobante());
 		add(getBtnVolver());
 		
 		add(getPnlCliente());		
@@ -134,6 +136,112 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		return btnNuevo;
 	}
 	
+	public JButton getBtnEliminar() {
+		if (btnEliminar == null) {
+			btnEliminar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.eliminar.texto"));
+			btnEliminar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.eliminar.tooltip"));
+			btnEliminar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+
+			btnEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
+			btnEliminar.setBounds(735, 157, 60, 60);
+
+			btnEliminar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("cuentaPanel.dialog.confirm.eliminar"));
+
+					if (opcion == JOptionPane.YES_OPTION) {
+						try {
+							controller.eliminarCuota();
+							actualizarPantalla();
+						} catch (PresentationException ex) {
+							mostrarMensaje(ex);
+						}
+					}
+				}
+			});
+		}
+		return btnEliminar;
+	}
+	
+	public JButton getBtnModificar() {
+		if (btnEditar == null) {
+			btnEditar = new JButton("Modificar");
+			btnEditar.setToolTipText("Modificar");
+			btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/editar.png")));
+
+			btnEditar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnEditar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnEditar.setMargin(new Insets(-1, -1, -1, -1));
+			btnEditar.setBounds(735, 228, 60, 60);
+
+			btnEditar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						editarCuota();
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnEditar;
+	}
+	
+	public JButton getBtnPagar() {
+		if (btnPagar == null) {
+			btnPagar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.pagar.texto"));
+			btnPagar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.pagar.tooltip"));
+			btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/payment-icon.png")));
+
+			btnPagar.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnPagar.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnPagar.setMargin(new Insets(-1, -1, -1, -1));
+			btnPagar.setBounds(735, 299, 60, 60);
+
+			btnPagar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						controller.mostrarCuentaCorrientePagoPanel();
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+					
+				}
+			});
+		}
+		return btnPagar;
+	}
+	
+	public JButton getBtnCancelarComprobante() {
+		if(btnCancelarComprobante == null) {
+			btnCancelarComprobante = new JButton(PropertiesManager.getProperty("pagoPanel.boton.cancelarComprobante"));
+			btnCancelarComprobante.setToolTipText(PropertiesManager.getProperty("pagoPanel.tooltip.cancelarComprobante"));
+			btnCancelarComprobante.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnCancelarComprobante.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnCancelarComprobante.setMargin(new Insets(-1, -1, -1, -1));
+			btnCancelarComprobante.setBounds(735, 370, 60, 60);
+			btnCancelarComprobante.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+			btnCancelarComprobante.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						String nroComprobante = JOptionPane.showInputDialog(PropertiesManager.getProperty("clientePanel.cuentaCorriente.messageQuery.cancelar.nroComprobante"));
+						controller.cancelarComprobante(nroComprobante);
+						mostrarMensajeInformativo(PropertiesManager.getProperty("clientePanel.cuentaCorriente.messageQuery.cancelar.nroComprobante.ok"));
+						actualizarPantalla();
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnCancelarComprobante;
+	}
+	
 	public JButton getBtnVolver() {
 		if(btnVolver == null) {
 			btnVolver = new JButton("Volver");
@@ -141,7 +249,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 			btnVolver.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnVolver.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnVolver.setMargin(new Insets(-1, -1, -1, -1));
-			btnVolver.setBounds(735, 370, 60, 60);
+			btnVolver.setBounds(735, 441, 60, 60);
 			btnVolver.setIcon(new ImageIcon(this.getClass().getResource("/img/volver.png")));
 			btnVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -177,86 +285,6 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 				throw new PresentationException("error.cuentaPanel.cuota.noSeleccionado");	
 		}
 			
-	}
-	
-	public JButton getBtnModificar() {
-		if (btnEditar == null) {
-			btnEditar = new JButton("Modificar");
-			btnEditar.setToolTipText("Modificar");
-			btnEditar.setIcon(new ImageIcon(this.getClass().getResource("/img/editar.png")));
-
-			btnEditar.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnEditar.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnEditar.setMargin(new Insets(-1, -1, -1, -1));
-			btnEditar.setBounds(735, 228, 60, 60);
-
-			btnEditar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						editarCuota();
-					} catch (PresentationException ex) {
-						mostrarMensaje(ex);
-					}
-				}
-			});
-		}
-		return btnEditar;
-	}
-
-	public JButton getBtnEliminar() {
-		if (btnEliminar == null) {
-			btnEliminar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.eliminar.texto"));
-			btnEliminar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.eliminar.tooltip"));
-			btnEliminar.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
-
-			btnEliminar.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnEliminar.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnEliminar.setMargin(new Insets(-1, -1, -1, -1));
-			btnEliminar.setBounds(735, 157, 60, 60);
-
-			btnEliminar.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("cuentaPanel.dialog.confirm.eliminar"));
-
-					if (opcion == JOptionPane.YES_OPTION) {
-						try {
-							controller.eliminarCuota();
-							actualizarPantalla();
-						} catch (PresentationException ex) {
-							mostrarMensaje(ex);
-						}
-					}
-				}
-			});
-		}
-		return btnEliminar;
-	}
-	
-	public JButton getBtnPagar() {
-		if (btnPagar == null) {
-			btnPagar = new JButton(PropertiesManager.getProperty("cuentaPanel.button.pagar.texto"));
-			btnPagar.setToolTipText(PropertiesManager.getProperty("cuentaPanel.button.pagar.tooltip"));
-			btnPagar.setIcon(new ImageIcon(this.getClass().getResource("/img/payment-icon.png")));
-
-			btnPagar.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnPagar.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnPagar.setMargin(new Insets(-1, -1, -1, -1));
-			btnPagar.setBounds(735, 299, 60, 60);
-
-			btnPagar.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					try {
-						controller.mostrarCuentaCorrientePagoPanel();
-					} catch (PresentationException ex) {
-						mostrarMensaje(ex);
-					}
-					
-				}
-			});
-		}
-		return btnPagar;
 	}
 	
 	public JPanel getPnlCliente() {

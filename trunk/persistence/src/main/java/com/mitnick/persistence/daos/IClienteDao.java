@@ -28,4 +28,8 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	
 	Cliente findByCuitEq(String cuit);
 	
+	Comprobante findComprobanteByNumero(String nroComprobante);
+	
+	void eliminarComprobante(Comprobante comprobante);
+	
 }

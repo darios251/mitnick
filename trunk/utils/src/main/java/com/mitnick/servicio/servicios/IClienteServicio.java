@@ -56,4 +56,7 @@ public interface IClienteServicio {
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	public void pagarCuotasNC(VentaDto venta);
 	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public void cancelarComprobante(String comprobante);
+	
 }

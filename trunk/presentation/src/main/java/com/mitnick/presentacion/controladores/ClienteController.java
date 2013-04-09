@@ -147,6 +147,15 @@ public class ClienteController extends BaseController {
 		clientePanel.actualizarPantalla();
 	}
 	
+	@AuthorizationRequired
+	public void cancelarComprobante(String nroComprobante) {
+		try{
+			clienteServicio.cancelarComprobante(nroComprobante);
+		} catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+	}
+	
 	public void mostrarClienteNuevoPanel() {
 		ultimoPanelMostrado = clienteNuevoPanel;
 		clientePanel.setVisible(false);
