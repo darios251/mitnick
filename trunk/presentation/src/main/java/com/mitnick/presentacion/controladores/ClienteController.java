@@ -231,8 +231,9 @@ public class ClienteController extends BaseController {
 	@AuthorizationRequired
 	public void eliminarCliente() {
 		ClienteDto clienteDto = null;
+		int index = -1;
 		try {
-			int index = getClientePanel().getTable().getSelectedRow();
+			index = getClientePanel().getTable().getSelectedRow();
 			index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
@@ -247,6 +248,8 @@ public class ClienteController extends BaseController {
 		
 		try {
 			getClienteServicio().eliminarCliente(clienteDto);
+			if (index>-1)
+				getClientePanel().getModel().remove(index);
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el cliente");
