@@ -224,7 +224,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 			btnCancelarComprobante.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnCancelarComprobante.setMargin(new Insets(-1, -1, -1, -1));
 			btnCancelarComprobante.setBounds(735, 370, 60, 60);
-			btnCancelarComprobante.setIcon(new ImageIcon(this.getClass().getResource("/img/cancelar.png")));
+			btnCancelarComprobante.setIcon(new ImageIcon(this.getClass().getResource("/img/remove-ticket.png")));
 			btnCancelarComprobante.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
