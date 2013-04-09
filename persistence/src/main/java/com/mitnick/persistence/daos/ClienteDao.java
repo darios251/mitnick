@@ -138,6 +138,21 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
+	public Comprobante findComprobanteByNumero(String nroComprobante) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Comprobante.class);
+
+		if (Validator.isNotBlankOrNull(nroComprobante)) {
+			criteria.add(Restrictions.eq("id", nroComprobante));
+		}
+		List<Comprobante> comprobantes = getHibernateTemplate()
+				.findByCriteria(criteria);
+		if (comprobantes != null && !comprobantes.isEmpty())
+			return comprobantes.get(0);
+		return null;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cliente> findByFiltro(ConsultaClienteDto filtro) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
@@ -168,7 +183,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		getHibernateTemplate().saveOrUpdate(cliente);
 		return cliente;
 	}
-
+	
 	public Comprobante generarComprobante(List<CuotaDto> cuotas) {
 		try {
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
@@ -244,6 +259,14 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		} catch (Exception e1) {
 			throw new PersistenceException("error.comprobante.Cliente","Error al generar el comprobante de pago del cliente.",e1);
 		}		
+	}
+	
+	public void eliminarComprobante(Comprobante comprobante){
+		try {
+			getHibernateTemplate().delete(comprobante);
+		} catch (Exception e1) {
+			throw new PersistenceException("error.cancelar.comprobante.Cliente","Error al eliminar el comprobante de pago del cliente.",e1);
+		}	
 	}
 
 	public Comprobante saveOrUpdate(Comprobante comprobante){
