@@ -235,6 +235,7 @@ public class VentaController extends BaseController {
 		limpiarPanelClienteVenta();
 		buscarProductoPanel.limpiarCamposPantalla();
 		pagoPanel.limpiarCamposPantalla();
+		ventaClientePanel.limpiarClientes();
 	}
 
 	public void actualizarDevolucion() {

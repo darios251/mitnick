@@ -417,6 +417,10 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 		getCmbTipoComprador().requestFocus();
 	}
 		
+	public void limpiarClientes(){
+		getModel().setClientes(new ArrayList<ClienteDto>());
+	}
+	
 	public void actualizarPantallaDevolucion() {
 		try {
 			List<ClienteDto> clientes = new ArrayList<ClienteDto>();
