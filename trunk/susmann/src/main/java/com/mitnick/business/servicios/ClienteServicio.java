@@ -213,7 +213,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Override
 	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas) {
 		if (pago.isComprobante())
-			throw new BusinessException("El pago ya gener� comprobante de pago");
+			throw new BusinessException("El pago ya generó comprobante de pago");
 		for (int i = 0; i < cuotas.size(); i++) {
 			CuotaDto cuota = cuotas.get(i);
 			cuota.getPagos().remove(pago);
