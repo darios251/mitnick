@@ -44,6 +44,7 @@ import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
+import com.mitnick.presentacion.vistas.paneles.ActualizarStockDialog;
 import com.mitnick.presentacion.vistas.paneles.ConfiguracionImpresoraDialog;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
@@ -110,6 +111,7 @@ public class PrincipalView extends JFrame
 	private JMenuItem menuInformeJornada;
 	private JMenuItem menuConfiguracion;
 	private JMenuItem menuResetearStock;
+	private JMenuItem menuActualizarStock;
 	private JMenuItem menuNuevaMarca;
 	private JMenuItem menuNuevoTipo;
 	private JMenuItem menuAcercade;	
@@ -147,6 +149,7 @@ public class PrincipalView extends JFrame
 		{
 			menuProductos = new JMenu();
 			menuProductos.setText(PropertiesManager.getProperty("principalView.menu.productos"));
+			menuProductos.add(getMenuActualizarStock());
 			menuProductos.add(getMenuResetearStock());
 			menuProductos.add(getMenuNuevaMarca());
 			menuProductos.add(getMenuNuevoTipo());			
@@ -723,6 +726,22 @@ public class PrincipalView extends JFrame
 			});
 		}
 		return menuConfiguracion;
+	}
+	
+	private JMenuItem getMenuActualizarStock() {
+		if (menuActualizarStock == null) {
+			menuActualizarStock = new JMenuItem(PropertiesManager.getProperty("principalView.menu.productos.update.stock"));
+			menuActualizarStock.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					productoController.actualizarStock();					
+				}
+			});
+		}
+		return menuActualizarStock;
+	}
+	
+	public void actualizarStock(){
+		new ActualizarStockDialog((JFrame) this, productoController);
 	}
 	
 	private JMenuItem getMenuResetearStock() {

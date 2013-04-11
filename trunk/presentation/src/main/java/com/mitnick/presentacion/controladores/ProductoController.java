@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.presentacion.vistas.PrincipalView;
 import com.mitnick.presentacion.vistas.ProductoView;
 import com.mitnick.presentacion.vistas.paneles.ProductoNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.ProductoPanel;
@@ -32,13 +33,21 @@ public class ProductoController extends BaseController {
 	private ProductoNuevoPanel productoNuevoPanel;
 	@Autowired
 	private IProductoServicio productoServicio;
+	@Autowired
+	private PrincipalView principalView;
 	
 	public ProductoController() {
 		
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void resetearStock() {
 		productoServicio.resetearMovimiento();
+	}
+	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
+	public void actualizarStock() {
+		principalView.actualizarStock();
 	}
 	
 	public void mostrarProductoNuevoPanel() {
@@ -105,6 +114,7 @@ public class ProductoController extends BaseController {
 	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void guardarProducto(ProductoNuevoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
 			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor, boolean confirmado, String talle) {
+		
 		if(Validator.isNull(producto))
 			producto = new ProductoNuevoDto();
 		
@@ -120,6 +130,25 @@ public class ProductoController extends BaseController {
 		producto.setStockCompra(stockCompra);
 		producto.setProveedor(proveedor);
 		producto.setConfirmado(confirmado);
+		
+		validateDto(producto);
+		
+		try {
+			getProductoServicio().guardarProducto(producto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar dar del alta el producto: " + producto);
+		}
+	}
+	
+	public void guardarProducto(ProductoNuevoDto producto, String stock) {
+		if(Validator.isNull(producto))
+			producto = new ProductoNuevoDto();
+		
+		if (Validator.isBlankOrNull(stock) || !Validator.isNumeric(stock))
+			throw new PresentationException("error.actualizarStock.stock.invalido");
+		
+		producto.setStock(stock);
 		
 		validateDto(producto);
 		
@@ -189,6 +218,15 @@ public class ProductoController extends BaseController {
 	protected ProductoNuevoDto getProductoNuevo(ProductoDto productoDto) {
 		try {
 			return productoServicio.getProductoNuevo(productoDto);
+		}
+		catch (BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener el producto");
+		}
+	}
+	
+	public ProductoNuevoDto getProductoByCode(String code){
+		try {
+			return productoServicio.getProductoByCode(code);
 		}
 		catch (BusinessException e) {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener el producto");

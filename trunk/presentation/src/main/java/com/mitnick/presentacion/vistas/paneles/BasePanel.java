@@ -201,6 +201,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_SUBTRACT: keySubstract(); break;
 					case KeyEvent.VK_MULTIPLY: keyMultiply(); break;
+					case KeyEvent.VK_ENTER: keyIntro(); break;
 					case KeyEvent.VK_ADD: keyAdd();	break;
 					case KeyEvent.VK_F1: keyF1(); break;
 					case KeyEvent.VK_F2: keyF2(); break;
@@ -241,7 +242,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 		if(controller != null)
 			controller.mostrarUltimoPanelMostrado();
 	}
-	
+	protected void keyIntro() {}	
 	protected void keyAdd() {}	
 	protected void keyMultiply() {}	
 	protected void keySubstract() {}	
