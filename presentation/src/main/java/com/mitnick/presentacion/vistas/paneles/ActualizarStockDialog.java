@@ -33,6 +33,7 @@ public class ActualizarStockDialog extends BaseDialog {
 	private JLabel lblProductoStock; //etiqueta para pedir ingreso de codigo y de stock
 	private JLabel lblCodigo;//etiqueta para mostrar codigo producto
 	private JLabel lblProducto; //etiqueta para mostrar producto
+	private JLabel lblPrecio; //etiqueta para mostrar el precio del producto
 	private JLabel lblStock; //etiqueta para mostrar stock del producto
 	
 	private JLabel lblEstadoProceso; //etiqueta para mostrar el estado del proceso
@@ -52,6 +53,7 @@ public class ActualizarStockDialog extends BaseDialog {
 		getContentPane().add(getTxtProductoStock());
 		getContentPane().add(getLblCodigo());
 		getContentPane().add(getLblProducto());
+		getContentPane().add(getLblPrecio());
 		getContentPane().add(getLblStock());
 		getContentPane().add(getBtnAceptar());
 		getContentPane().add(getBtnCancelar());
@@ -166,6 +168,18 @@ public class ActualizarStockDialog extends BaseDialog {
 	}
 
 	/**
+	 * Etiqueta para mostrar el precio del producto seleccioado para modificar stock. 
+	 * @return
+	 */
+	public JLabel getLblPrecio() {
+		if (lblPrecio == null) {
+			lblPrecio = new JLabel("");
+			lblPrecio.setBounds(110, 100, 70, 20);
+		}
+		return lblPrecio;
+	}
+	
+	/**
 	 * Etiqueta para mostrar el stock del producto. 
 	 * @return
 	 */
@@ -199,6 +213,7 @@ public class ActualizarStockDialog extends BaseDialog {
 			producto = productoController.getProductoByCode(txtProductoStock.getText().trim());
 			lblProducto.setText(producto.getDescripcion());
 			lblCodigo.setText(producto.getCodigo());
+			lblPrecio.setText("$".concat(producto.getPrecioVenta()));
 			lblStock.setText(String.valueOf(producto.getStock()));
 			lblProductoStock.setText(PropertiesManager.getProperty("actualizarStock.dialog.label.stock"));
 			txtProductoStock.setText("");
@@ -237,6 +252,7 @@ public class ActualizarStockDialog extends BaseDialog {
 		lblEstadoProceso.setText(INGRESE_CODIGO);
 		lblProductoStock.setText(PropertiesManager.getProperty("actualizarStock.dialog.label.producto"));
 		lblProducto.setText("");
+		lblPrecio.setText("");
 		lblCodigo.setText("");
 		lblStock.setText("");
 		txtProductoStock.setText("");
