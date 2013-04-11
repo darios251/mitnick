@@ -112,12 +112,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 			
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					try {
-						clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText(), getTxtDescripcion().getText());
-						setVisible(false);
-					} catch (PresentationException ex) {
-						mostrarMensaje(ex);
-					}
+					keyIntro();
 				}
 			});
 		}
@@ -125,6 +120,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 		return btnAceptar;
 	}
 
+	
 	public void setBtnAceptar(JButton btnAceptar) {
 		this.btnAceptar = btnAceptar;
 	}
@@ -140,7 +136,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 			btnCancelar.setBounds(250, 140, 60, 60);
 			btnCancelar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
-					setVisible(false);
+					keyEscape();
 				}
 			});
 		}
@@ -229,6 +225,17 @@ public class NuevaCuotaDialog extends BaseDialog {
 		return lblErrorTxtFecha;
 	}
 
+	protected void keyEscape() {
+		setVisible(false);
+	}
 	
+	protected void keyIntro() {
+		try {
+			clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText(), getTxtDescripcion().getText());
+			setVisible(false);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
 	
 }

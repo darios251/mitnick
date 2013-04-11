@@ -41,4 +41,10 @@ public interface IProductoServicio {
 	
 	@Secured(value={"ROLE_ADMIN"})
 	void agregarNuevaMarca(String marca) ;
+	
+	@Secured(value={"ROLE_ADMIN"})
+	ProductoNuevoDto getProductoByCode(String code);
+	
+	@Secured(value={"ROLE_ADMIN"})
+	public void updateCantidadMaximaWarning(String cantidad);
 }

@@ -165,6 +165,14 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		return productoDto;
 	}
 
+	public ProductoNuevoDto getProductoByCode(String code){
+		Producto producto = productoDao.findByStartCode(code);
+		if (Validator.isNull(producto))
+			throw new BusinessException("error.producto.buscarProducto.productoNoEncontrado", "El producto no se encuentra");
+		ProductoNuevoDto productoDTO = (ProductoNuevoDto)entityDTOParser.getProductoNuevoDtoFromProducto(producto);
+		return productoDTO;
+	}
+	
 	@Transactional
 	@Override
 	public void bajaProducto(ProductoDto productoDto) {
@@ -252,4 +260,18 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		return entityDTOParser.getProductoNuevoDtoFromProducto(producto);
 	}
 
+	@Transactional(readOnly = true)
+	@Override
+	public void updateCantidadMaximaWarning(String cantidad){
+		try {
+			if (Validator.isBlankOrNull(cantidad) || !Validator.isNumeric(cantidad))
+				throw new BusinessException("error.parametro.cantidad.validation", "El parámetro cantidad no es valido");
+			Parametro parConfigurable = parametroDao.getByName("producto.cantidad.warning");
+			parConfigurable.setValor(cantidad);
+			parametroDao.save(parConfigurable);
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar modificar la cantidad máxima sin alertas");
+		}		
+	}
 }

@@ -17,4 +17,6 @@ public interface IProductoDAO extends GenericDao<Producto, Long>{
 
 	public Producto findByCode(String codigo);
 	
+	public Producto findByStartCode(String codigo);
+	
 }
