@@ -208,6 +208,62 @@ public class PrinterService {
 		return true;
 	}
 	
+	
+	private void datosComprador(VentaDto venta){
+		ClienteDto cliente = venta.getCliente();
+		String direccionClienteL1 = "";
+		String direccionClienteL2 = "";
+		String clienteNombre = "";
+		String cuitDni = "";
+		String tipoDT = "";
+		if (Validator.isNotNull(cliente)){
+			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getNombre()))
+				clienteNombre = cliente.getNombre();
+			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getDomicilio()))
+				direccionClienteL1 = cliente.getDireccion().getDomicilio();
+			
+			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion())){
+				if (Validator.isNotNull(cliente.getDireccion().getCodigoPostal()))
+					direccionClienteL2 = direccionClienteL2.concat(cliente.getDireccion().getCodigoPostal());
+
+				if (Validator.isNotNull(cliente.getDireccion().getCiudad()) 
+						&&  Validator.isNotNull(cliente.getDireccion().getCiudad().getDescripcion()))
+					direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getDescripcion() );
+				if (Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia())
+						&& Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion()))
+					direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion() );
+			}
+			String cuit = "";
+			if (Validator.isNotNull(cliente.getCuit())){
+				cuit =  cliente.getCuit().replaceAll("-", "").trim();	
+			}
+			
+			if (Validator.isNotBlankOrNull(cuit)) {
+				cuitDni = cuit;
+				tipoDT = "T";
+			} else if (Validator.isNotBlankOrNull(cliente.getDocumento())) {
+				cuitDni = cliente.getDocumento();
+				tipoDT = "D";
+			}
+		}
+		
+		output.println(NOMBRE_COMPRADOR);
+		output.println(clienteNombre);
+		output.println(NOMBRE_COMPRADOR);
+		output.println("");
+		output.println(DIRECCION_COMPRADOR);
+		output.println(direccionClienteL1);
+		output.println(DIRECCION_COMPRADOR);
+		output.println(direccionClienteL2);
+		output.println(DIRECCION_COMPRADOR);
+		output.println("");
+		output.println(TIPO_DOCUMENTO_COMPRADOR);
+		output.println(tipoDT);
+		output.println(NUMERO_DOCUMENTO_COMPRADOR);
+		output.println(cuitDni);
+		
+	}
+	
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicketFactura(VentaDto venta) {
 		try {
@@ -220,47 +276,8 @@ public class PrinterService {
 			
 			output.println(DATOS_COMPRADOR);
 			
-			ClienteDto cliente = venta.getCliente();
-			boolean clienteNombre = Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getNombre());
-			boolean clienteDireccion = Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getDomicilio());
-			String direccionCliente = "";
-			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion())){
-				if (Validator.isNotNull(cliente.getDireccion().getCodigoPostal()))
-					direccionCliente = direccionCliente.concat(cliente.getDireccion().getCodigoPostal());
-
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad()) 
-						&&  Validator.isNotNull(cliente.getDireccion().getCiudad().getDescripcion()))
-					direccionCliente = direccionCliente.concat(" - ").concat(cliente.getDireccion().getCiudad().getDescripcion() );
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia())
-						&& Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion()))
-					direccionCliente = direccionCliente.concat(" - ").concat(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion() );
-			}
+			datosComprador(venta);
 			
-			String cuitDni = "";
-			String tipoDT = "";
-			if (Validator.isNotBlankOrNull(cliente.getCuit())) {
-				cuitDni = cliente.getCuit().replaceAll("-", "");
-				tipoDT = "T";
-			} else if (Validator.isNotBlankOrNull(cliente.getDocumento())) {
-				cuitDni = cliente.getDocumento();
-				tipoDT = "D";
-			}
-				
-			
-			output.println(NOMBRE_COMPRADOR);
-			output.println(clienteNombre ? cliente.getNombre() : "");
-			output.println(NOMBRE_COMPRADOR);
-			output.println("");
-			output.println(DIRECCION_COMPRADOR);
-			output.println(clienteDireccion ? cliente.getDireccion().getDomicilio() : "");
-			output.println(DIRECCION_COMPRADOR);
-			output.println(direccionCliente);
-			output.println(DIRECCION_COMPRADOR);
-			output.println("");
-			output.println(TIPO_DOCUMENTO_COMPRADOR);
-			output.println(tipoDT);
-			output.println(NUMERO_DOCUMENTO_COMPRADOR);
-			output.println(cuitDni);
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println(venta.getTipoResponsabilidad().getTipoComprador());
 			output.println(LINEA_REMITOS_ASOCIADOS);
@@ -387,46 +404,7 @@ public class PrinterService {
 			
 			output.println(DATOS_COMPRADOR);
 			
-			ClienteDto cliente = venta.getCliente();
-			boolean clienteNombre = Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getNombre());
-			boolean clienteDireccion = Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getDomicilio());
-			String direccionCliente = "";
-			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion())){
-				if (Validator.isNotNull(cliente.getDireccion().getCodigoPostal()))
-					direccionCliente = direccionCliente.concat(cliente.getDireccion().getCodigoPostal());
-
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad()) 
-						&&  Validator.isNotNull(cliente.getDireccion().getCiudad().getDescripcion()))
-					direccionCliente = direccionCliente.concat(" - ").concat(cliente.getDireccion().getCiudad().getDescripcion() );
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia())
-						&& Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion()))
-					direccionCliente = direccionCliente.concat(" - ").concat(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion() );
-			}
-			
-			String cuitDni = "";
-			String tipoDT = "";
-			if (Validator.isNotBlankOrNull(cliente.getCuit())) {
-				cuitDni = cliente.getCuit().replaceAll("-", "");
-				tipoDT = "T";
-			} else if (Validator.isNotBlankOrNull(cliente.getDocumento())) {
-				cuitDni = cliente.getDocumento();
-				tipoDT = "D";
-			}
-			output.println(NOMBRE_COMPRADOR);
-			output.println(clienteNombre ? cliente.getNombre() : "");
-			output.println(NOMBRE_COMPRADOR);
-			output.println("");
-			output.println(DIRECCION_COMPRADOR);
-			output.println(clienteDireccion ? cliente.getDireccion().getDomicilio() : "");
-			output.println(DIRECCION_COMPRADOR);
-			output.println(direccionCliente);
-			output.println(DIRECCION_COMPRADOR);
-			output.println("");
-			output.println(TIPO_DOCUMENTO_COMPRADOR);
-			output.println(tipoDT);
-			output.println(NUMERO_DOCUMENTO_COMPRADOR);
-			output.println(cuitDni);
-
+			datosComprador(venta);
 			
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println(venta.getTipoResponsabilidad().getTipoComprador());
@@ -436,6 +414,7 @@ public class PrinterService {
 			output.println("............");
 			output.println(NUMERO_FACTURA_ORIGINAL);
 			output.println(venta.getNumeroTicketOriginal());
+			
 			output.println(FIN_DATOS_COMPRADOR);
 			
 			checkStatus();
