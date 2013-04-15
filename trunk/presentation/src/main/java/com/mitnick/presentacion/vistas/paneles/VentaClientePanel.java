@@ -3,6 +3,8 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -37,7 +39,7 @@ import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.TipoCompradorDto;
 
 @Panel("ventaClientePanel")
-public class VentaClientePanel extends BasePanel<VentaController> {
+public class VentaClientePanel extends BasePanel<VentaController> implements KeyEventDispatcher {
 	
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNumeroDocumento;
@@ -87,6 +89,7 @@ public class VentaClientePanel extends BasePanel<VentaController> {
 	
 	@Override
 	protected void initializeComponents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		setLayout(null);
 		setSize(new Dimension(815, 570));
 		

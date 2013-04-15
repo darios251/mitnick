@@ -2,8 +2,6 @@ package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ import com.mitnick.presentacion.controladores.BaseController;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 
-public abstract class BasePanel<T extends BaseController> extends JPanel implements KeyEventDispatcher {
+public abstract class BasePanel<T extends BaseController> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,8 +51,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 	}
 	
 	protected void initializePanel () {
-		setFocusCycleRoot(true);
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
+		setFocusCycleRoot(true);		
 		setVisible(false);
 	}
 	
@@ -191,7 +188,6 @@ public abstract class BasePanel<T extends BaseController> extends JPanel impleme
 	
 	private static List<Integer> objectIds = new ArrayList<Integer>();
 	
-	@Override
 	public synchronized boolean dispatchKeyEvent(KeyEvent e) {
 		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED
 			&& (BaseDialog.getCurrentDialog() == null || (BaseDialog.getCurrentDialog() != null && !BaseDialog.getCurrentDialog().isVisible()))) {

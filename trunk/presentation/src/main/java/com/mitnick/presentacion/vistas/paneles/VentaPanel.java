@@ -3,6 +3,8 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -34,7 +36,7 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 
 @Panel("ventaPanel")
-public class VentaPanel extends BasePanel<VentaController> {
+public class VentaPanel extends BasePanel<VentaController> implements KeyEventDispatcher {
 
 	private static final long serialVersionUID = 1L;
 
@@ -71,14 +73,19 @@ public class VentaPanel extends BasePanel<VentaController> {
 		controller = ventaController;
 	}
 
-	@Override
-	public void limpiarCamposPantalla() {
+	public void nuevaVenta() {
 		getTxtCodigo().setText("");
 		getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
 	}
 
+	public void limpiarCamposPantalla() {
+		getTxtCodigo().setText("");
+	}
+	
 	@Override
 	protected void initializeComponents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
+		
 		setLayout(null);
 		setSize(new Dimension(815, 570));
 
@@ -136,6 +143,7 @@ public class VentaPanel extends BasePanel<VentaController> {
 	public JTable getTable() {
 		if(table == null) {
 			table = new JTable(getModel());
+			table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			//se comenta porque no hace falta ya que la tabla es editable
 //			table.addMouseListener(new MouseAdapter() {
 //				public void mouseClicked(MouseEvent evento) {
@@ -259,6 +267,8 @@ public class VentaPanel extends BasePanel<VentaController> {
 
 	protected void keyF5() {
 		try {
+			if (table.isEditing())
+			    table.getCellEditor().stopCellEditing();
 			controller.mostrarClienteVenta();			
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);

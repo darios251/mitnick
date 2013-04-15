@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import com.mitnick.presentacion.modelos.CuentaCorrienteTableModel;
 import com.mitnick.utils.PropertiesManager;
@@ -25,6 +26,8 @@ public class CuotasCuentaCorrienteDialog extends BaseDialog {
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 	private String montoTotal;
+	private JTextField txtFocoNoVisible;
+	
 	public boolean aceptar = true;
 	
 	public CuotasCuentaCorrienteDialog(JFrame frame, List<CuotaDto> cuotasDto, String montoTotal) {
@@ -33,6 +36,10 @@ public class CuotasCuentaCorrienteDialog extends BaseDialog {
 		setSize(576, 271);
 		this.montoTotal = montoTotal;
 		setLocationRelativeTo(null);
+		
+		txtFocoNoVisible = new JTextField();
+		txtFocoNoVisible.setVisible(true);
+		getContentPane().add(txtFocoNoVisible);
 		
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getBtnAceptar());
@@ -64,17 +71,27 @@ public class CuotasCuentaCorrienteDialog extends BaseDialog {
 	}
 	
 	private int validarCuotas(){
+		if (table.isEditing())
+		    table.getCellEditor().stopCellEditing();
 		BigDecimal total = new BigDecimal(montoTotal);
+		BigDecimal nuevoTotal = new BigDecimal(0);
 		List<CuotaDto> cuotas = model.getCuotas();
 		for (int i = 0; i < cuotas.size(); i++) {
 			total = total.subtract(cuotas.get(i).getTotal());
+			cuotas.get(i).setFaltaPagar(cuotas.get(i).getTotal());
+			nuevoTotal = nuevoTotal.add(cuotas.get(i).getTotal());
 		}
 		int cubre = new BigDecimal("0").compareTo(total); 
 		if (cubre < 0) {
 			Object[] options = { PropertiesManager.getProperty( "dialog.error.okbutton" ) };
 			return JOptionPane.showOptionDialog( this, "Las cuotas no cubren el monto total a pagar: " + montoTotal, PropertiesManager.getProperty( "dialog.error.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[ 0 ] );
 		}
+		montoTotal = nuevoTotal.toString();
 		return 10;
+	}
+	
+	public String getMonto(){
+		return montoTotal;
 	}
 	
 	public JButton getBtnCancelar() {
@@ -95,6 +112,7 @@ public class CuotasCuentaCorrienteDialog extends BaseDialog {
 	public JTable getTable() {
 		if(table == null) {
 			table = new JTable(getModel());
+			table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			table.setBounds(200, 400, 200, 28);
 		}
 		return table;

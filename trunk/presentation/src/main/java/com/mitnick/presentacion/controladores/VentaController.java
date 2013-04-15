@@ -231,7 +231,7 @@ public class VentaController extends BaseController {
 	}
 
 	public void limpiarVenta() {
-		ventaPanel.limpiarCamposPantalla();
+		ventaPanel.nuevaVenta();
 		limpiarPanelClienteVenta();
 		buscarProductoPanel.limpiarCamposPantalla();
 		pagoPanel.limpiarCamposPantalla();
@@ -357,11 +357,9 @@ public class VentaController extends BaseController {
 					if (tipo == MitnickConstants.VENTA) {
 						getVentaServicio().cancelar(
 								VentaManager.getVentaActual());
-						this.limpiarVenta();
 						VentaManager.crearNuevaVenta(tipo);
 						mostrarVentasPanel();
 					} else {
-						this.limpiarVenta();
 						JTabbedPaneConBoton jTabbedPaneConBoton = this
 								.getPrincipalView().jTabbedPaneConBoton;
 						jTabbedPaneConBoton.remove(jTabbedPaneConBoton
