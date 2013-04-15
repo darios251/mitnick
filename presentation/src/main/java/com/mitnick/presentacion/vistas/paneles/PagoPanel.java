@@ -3,6 +3,8 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -43,7 +45,7 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
 @Panel("pagoPanel")
-public class PagoPanel extends BasePanel<VentaController> {
+public class PagoPanel extends BasePanel<VentaController> implements KeyEventDispatcher {
 
 	private static final long serialVersionUID = 1L;
 
@@ -100,6 +102,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 
 	@Override
 	protected void initializeComponents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		setLayout(null);
 		setSize(new Dimension(815, 570));
 
@@ -419,7 +422,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 					CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto, txtMonto.getText());
 					if (cuotasDialog.aceptar) {
 						((VentaController) controller).guardarCuotas(cuotasDialog.getModel().getCuotas());
-						((VentaController) controller).agregarPago(pago, txtMonto.getText(), null);
+						((VentaController) controller).agregarPago(pago, cuotasDialog.getMonto(), null);
 					} 
 				}
 			}
@@ -516,8 +519,7 @@ public class PagoPanel extends BasePanel<VentaController> {
 				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.vuelto");
 				if (mostrarMsg)
 					mostrarMensajeInformativo(PropertiesManager.getProperty("pagoPanel.finalizarVenta.exito", new Object[] { VentaManager.getVentaActual().getVuelto().toString() }));
-				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
-				((VentaController) controller).limpiarVenta();
+				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);				
 				((VentaController) controller).mostrarVentasPanel();
 			} else {
 				BigDecimal deuda = controller.obtenerSaldoDeudorCliente();
@@ -540,7 +542,6 @@ public class PagoPanel extends BasePanel<VentaController> {
 				}
 				
 				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
-				((VentaController) controller).limpiarVenta();
 				((VentaController) controller).mostrarVentasPanel();
 					
 				JTabbedPaneConBoton jTabbedPaneConBoton = ((VentaController) controller).getPrincipalView().jTabbedPaneConBoton;
