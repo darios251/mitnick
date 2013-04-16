@@ -160,7 +160,7 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
-	@AuthorizationRequired
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void eliminarProducto() {
 		ProductoDto productoDto = null;
 		try {
@@ -185,11 +185,13 @@ public class ProductoController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void altaProducto() {
 		productoNuevoPanel.setProducto(null);
 		mostrarProductoNuevoPanel();
 	}
-		
+	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void editarProducto() {
 		ProductoDto productoDto = null;
 		try {

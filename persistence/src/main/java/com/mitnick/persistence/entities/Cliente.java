@@ -62,6 +62,9 @@ public class Cliente extends BaseObject implements Serializable {
 	@OneToMany (cascade = {CascadeType.ALL})
 	@JoinColumn(name = "comprobante_id")
 	private List<Comprobante> comprobantes;
+		
+	@Column(name = "tipoComprador", length = 50, nullable = true)
+	private String tipoComprador; 
 	
 	public List<Comprobante> getComprobantes() {
 		if (comprobantes==null)
@@ -158,6 +161,19 @@ public class Cliente extends BaseObject implements Serializable {
 		this.actividad = actividad;
 	}
 
+	public void addComprobante(Comprobante comprobante){
+		getComprobantes().add(comprobante);
+		
+	}
+
+	public String getTipoComprador() {
+		return tipoComprador;
+	}
+
+	public void setTipoComprador(String tipoComprador) {
+		this.tipoComprador = tipoComprador;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -179,6 +195,8 @@ public class Cliente extends BaseObject implements Serializable {
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result
 				+ ((telefono == null) ? 0 : telefono.hashCode());
+		result = prime * result
+				+ ((tipoComprador == null) ? 0 : tipoComprador.hashCode());
 		return result;
 	}
 
@@ -267,6 +285,13 @@ public class Cliente extends BaseObject implements Serializable {
 		} else if (!telefono.equals(other.telefono)) {
 			return false;
 		}
+		if (tipoComprador == null) {
+			if (other.tipoComprador != null) {
+				return false;
+			}
+		} else if (!tipoComprador.equals(other.tipoComprador)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -277,12 +302,8 @@ public class Cliente extends BaseObject implements Serializable {
 				+ ", telefono=" + telefono + ", email=" + email
 				+ ", eliminado=" + eliminado + ", fechaNacimiento="
 				+ fechaNacimiento + ", direccion=" + direccion
-				+ ", comprobantes=" + comprobantes + "]";
-	}
-
-	public void addComprobante(Comprobante comprobante){
-		getComprobantes().add(comprobante);
-		
+				+ ", comprobantes=" + comprobantes + ", tipoComprador="
+				+ tipoComprador + "]";
 	}
 	
 }

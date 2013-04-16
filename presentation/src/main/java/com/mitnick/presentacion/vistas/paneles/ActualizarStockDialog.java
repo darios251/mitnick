@@ -1,6 +1,7 @@
 package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -186,6 +187,7 @@ public class ActualizarStockDialog extends BaseDialog {
 	public JLabel getLblStock() {
 		if (lblStock == null) {
 			lblStock = new JLabel("");
+			lblStock.setFont(new java.awt.Font("Tahoma", Font.BOLD, 24));
 			lblStock.setBounds(190, 100, 70, 20);
 		}
 		return lblStock;
@@ -213,7 +215,7 @@ public class ActualizarStockDialog extends BaseDialog {
 			producto = productoController.getProductoByCode(txtProductoStock.getText().trim());
 			lblProducto.setText(producto.getDescripcion());
 			lblCodigo.setText(producto.getCodigo());
-			lblPrecio.setText("$".concat(producto.getPrecioVenta()));
+			lblPrecio.setText("$".concat(producto.getPrecioVentaConIva().toString()));
 			lblStock.setText(String.valueOf(producto.getStock()));
 			lblProductoStock.setText(PropertiesManager.getProperty("actualizarStock.dialog.label.stock"));
 			txtProductoStock.setText("");

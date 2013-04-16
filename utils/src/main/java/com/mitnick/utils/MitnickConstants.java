@@ -65,6 +65,10 @@ public class MitnickConstants {
 		public static final String MONOTRIBUTISTA_SOCIAL_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.monotributistaSocial");
 		public static final String CONTRIBUYENTE_EVENTUAL_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.contribuyenteEventual");
 		public static final String CONTRIBUYENTE_EVENTUAL_SOCIAL_DESC = PropertiesManager.getProperty("application.tipoComprador.descripcion.contribuyenteEventualSocial");
+		
+		public static TipoComprador getTipoComprador(String tipoComprador){
+			return null;
+		}
 	}
 }
 

@@ -1,5 +1,7 @@
 package com.mitnick.utils.dtos;
 
+import java.math.BigDecimal;
+
 import org.hibernate.validator.constraints.MitnickField;
 import org.hibernate.validator.constraints.MitnickField.FieldType;
 
@@ -156,6 +158,10 @@ public class ProductoNuevoDto extends BaseDto {
 		return proveedor;
 	}
 
+	public BigDecimal getPrecioVentaConIva() {
+		return new BigDecimal(precioVenta).add(new BigDecimal(iva)).setScale (2, BigDecimal.ROUND_HALF_UP);
+	}
+	
 	@Override
 	public String toString() {
 		return "ProductoDto [codigo=" + codigo + ", descripcion=" + descripcion

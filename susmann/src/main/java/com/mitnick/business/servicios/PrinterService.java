@@ -111,7 +111,7 @@ public class PrinterService {
 				output.println(ITEM_TAG);
 				
 				output.println(ITEM_DESCRIPCION); //extra 1
-				output.println(producto.getProducto().getDescripcion());
+				output.println(producto.getDescripcion());
 				output.println(ITEM_DESCRIPCION); //extra 2
 				output.println("");
 				output.println(ITEM_DESCRIPCION); //extra 3
@@ -298,7 +298,7 @@ public class PrinterService {
 				output.println(ITEM_TAG);
 				
 				output.println(ITEM_DESCRIPCION); //extra 1
-				output.println(producto.getProducto().getDescripcion());
+				output.println(producto.getDescripcion());
 				output.println(ITEM_DESCRIPCION); //extra 2
 				output.println("");
 				output.println(ITEM_DESCRIPCION); //extra 3
@@ -427,7 +427,7 @@ public class PrinterService {
 				output.println(ITEM_TAG);
 				
 				output.println(ITEM_DESCRIPCION); //extra 1
-				output.println(producto.getProducto().getDescripcion());
+				output.println(producto.getDescripcion());
 				output.println(ITEM_DESCRIPCION); //extra 2
 				output.println("");
 				output.println(ITEM_DESCRIPCION); //extra 3

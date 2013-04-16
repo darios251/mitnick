@@ -30,6 +30,8 @@ public class ClienteDto extends BaseDto {
 		
 	private DireccionDto direccion;
 	
+	private String tipoComprador;
+	
 	private int cantidadComprobantes=0;
 
 	public String getNombre() {
@@ -54,6 +56,14 @@ public class ClienteDto extends BaseDto {
 
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
+	}
+
+	public String getTipoComprador() {
+		return tipoComprador;
+	}
+
+	public void setTipoComprador(String tipoComprador) {
+		this.tipoComprador = tipoComprador;
 	}
 
 	public String getTelefono() {
