@@ -238,7 +238,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	
 	public JLabel getLblTeclasAccesoRapido() {
 		if (lblTeclasAccesoRapido == null) {
-			lblTeclasAccesoRapido = new JLabel("F3: Buscar | F5: Siguiente | F6: Cambiar Precio | F7: Cambia Cantidad | +: Agregar Producto | -: Eliminar Producto");
+			lblTeclasAccesoRapido = new JLabel("F3: Buscar | F5: Siguiente | F6: Cambiar Precio | F7: Cambia Cantidad | F8: Cambiar Descripcion | +: Agregar Producto | -: Eliminar Producto");
 			lblTeclasAccesoRapido.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblTeclasAccesoRapido.setBounds(40, 550, 550, 20);
 		}
@@ -272,6 +272,18 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 			controller.mostrarClienteVenta();			
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
+		}
+	}
+	
+	@Override
+	protected void keyF8() {
+		if(table.getRowCount() > 0) {
+			int row = table.getRowCount() - 1;
+			int column = 1;
+			table.changeSelection(row, column, false, false);
+			table.editCellAt(row, column);
+			table.requestFocus();
+			((JTextField)table.getCellEditor(row, column).getTableCellEditorComponent(table, table.getValueAt(row, column), true, row, column)).selectAll();
 		}
 	}
 

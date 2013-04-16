@@ -36,6 +36,7 @@ import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.CiudadDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
+import com.mitnick.utils.dtos.TipoCompradorDto;
 
 @Panel("clienteNuevoPanel")
 @Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
@@ -46,6 +47,9 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 
+	private JLabel lblTipoComprador;
+	private JComboBox<TipoCompradorDto> cmbTipoComprador;
+	
 	private JTextField txtActividad;
 	private JLabel lblErrorTxtActividad;
 	
@@ -128,6 +132,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		try {
 			cmbCiudad.setSelectedIndex(0);
 			cmbProvincia.setSelectedIndex(0);
+			cmbTipoComprador.setSelectedIndex(0);
 		} catch (Exception e) {
 		}
 		
@@ -164,6 +169,9 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		add(getCmbProvincia());
 		add(getCmbCiudad());
 
+		add(getLblTipoComprador());
+		add(getCmbTipoComprador());
+		
 		add(getBtnAceptar());
 		add(getBtnCancelar());
 		
@@ -270,6 +278,44 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		return lblActividad;
 	}
 
+	public JLabel getLblTipoComprador() {
+		if (lblTipoComprador == null) {
+			lblTipoComprador = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.tipoComprador"));
+			lblTipoComprador.setBounds(392, 237, 94, 20);
+		}
+		return lblTipoComprador;
+	}
+
+	public JComboBox<TipoCompradorDto> getCmbTipoComprador() {
+		if (cmbTipoComprador == null) {
+			cmbTipoComprador = new JComboBox<TipoCompradorDto>();
+			cmbTipoComprador.setBounds(496, 237, 200, 23);
+			
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.EXENTO, MitnickConstants.TipoComprador.EXENTO_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.MONOTRIBUTISTA, MitnickConstants.TipoComprador.MONOTRIBUTISTA_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.MONOTRIBUTISTA_SOCIAL, MitnickConstants.TipoComprador.MONOTRIBUTISTA_SOCIAL_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.NO_CATEGORIZADO, MitnickConstants.TipoComprador.NO_CATEGORIZADO_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.NO_RESPONSABLE, MitnickConstants.TipoComprador.NO_RESPONSABLE_DESC));
+			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO, MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO_DESC));
+			
+			cmbTipoComprador.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					try {
+						if (Validator.isNotNull(cliente) && Validator.isNotNull(cmbTipoComprador) && Validator.isNotNull(cmbTipoComprador.getSelectedItem()))
+							cliente.setTipoComprador(((TipoCompradorDto) cmbTipoComprador.getSelectedItem()).getTipoComprador());
+					}
+					catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return cmbTipoComprador;
+	}
+	
 	public JButton getBtnAceptar() {
 		if (btnAceptar == null) {
 			btnAceptar = new JButton(PropertiesManager.getProperty("clienteNuevoPanel.boton.aceptar"));
@@ -537,7 +583,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		try {
 			controller.guardarCliente(cliente, txtActividad.getText(), txtNombre.getText(), txtDocumento.getText(),
 					txtCuit.getText(), txtTelefono.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
-					txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto) cmbCiudad.getSelectedItem());
+					txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto) cmbCiudad.getSelectedItem(), ((TipoCompradorDto)cmbTipoComprador.getSelectedItem()).getTipoComprador());
 			limpiarCamposPantalla();
 			retornarLLamador();
 		} catch (PresentationException ex) {
@@ -591,7 +637,13 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 				cmbCiudad.getModel().setSelectedItem(cliente.getDireccion().getCiudad());
 			else
 				cmbCiudad.setSelectedItem(null);
+			if (Validator.isNotNull(cmbTipoComprador) && Validator.isNotNull(cliente.getTipoComprador())){				
+				cmbTipoComprador.getModel().setSelectedItem(TipoCompradorDto.getTipoCompradorDto(cliente.getTipoComprador()));
+			}				
+			else
+				cmbTipoComprador.setSelectedItem(null);
 		} else {
+			cmbTipoComprador.setSelectedItem(null);
 			cmbProvincia.setSelectedItem(null);
 			cmbCiudad.setSelectedItem(null);
 		}

@@ -24,6 +24,7 @@ import com.mitnick.persistence.entities.Tipo;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.util.EntityDTOParser;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.MarcaDto;
@@ -124,13 +125,19 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 			producto.setIva(iva);
 			int cantidad = producto.getStock() - stockOriginal;
-
-			Parametro parConfigurable = parametroDao
-					.getByName("producto.cantidad.warning");
-			if (parConfigurable != null) {
-				if (!productoDto.isConfirmado()
-						&& cantidad < parConfigurable.getIntValor())
-					throw new BusinessException("producto.edit.max.cantidad");
+			int cantidadValidar = Math.abs(cantidad);
+			boolean validarCantidad = PropertiesManager.getPropertyAsBoolean("application.producto.edit.max.cantidad").booleanValue();
+			
+			if (validarCantidad){
+				Parametro parConfigurable = parametroDao
+						.getByName("producto.cantidad.warning");
+				if (parConfigurable != null) {
+					if (!productoDto.isConfirmado()
+							&& cantidadValidar > parConfigurable.getIntValor())
+						throw new BusinessException("producto.edit.max.cantidad");
+				}
+			} else {
+				productoDto.setConfirmado(true);	
 			}
 
 			// se calcula el precio del producto sumandole el iva

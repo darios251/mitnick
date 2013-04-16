@@ -19,7 +19,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -343,7 +346,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		if (cmbTipoComprador == null) {
 			cmbTipoComprador = new JComboBox<TipoCompradorDto>();// PropertiesManager.getProperty("ventaClientePanel.etiqueta.responsableInscripto")
 			cmbTipoComprador.setBounds(170, 15, 200, 23);
-			
+
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC));
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_DESC));
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL, MitnickConstants.TipoComprador.CONTRIBUYENTE_EVENTUAL_SOCIAL_DESC));
@@ -364,10 +367,28 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 					}
 				}
 			});
+
 		}
 		return cmbTipoComprador;
 	}
 
+	private void setTipoComprador(ClienteDto cliente){
+		TipoCompradorDto tipo = null;
+		if (Validator.isNotNull(cliente) && Validator.isNotBlankOrNull(cliente.getTipoComprador())){
+			tipo = TipoCompradorDto.getTipoCompradorDto(cliente.getTipoComprador());
+			cmbTipoComprador.getModel().setSelectedItem(tipo);
+		}
+		if (Validator.isNotNull(tipo)
+				&& PropertiesManager.getPropertyAsBoolean("application.tipoComprador.cliente.noVenta").booleanValue()){
+			cmbTipoComprador.setEnabled(false);
+			controller.setTipoResponsable(tipo);
+		} else{
+			cmbTipoComprador.setSelectedIndex(0);
+			cmbTipoComprador.setEnabled(true);
+		}
+			
+	}
+	
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
 				new Component[]{cmbTipoComprador, txtNombre, txtNumeroDocumento, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
@@ -403,6 +424,24 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			table = new JTable(getModel());
 	        table.setRowSorter(getSorter());
 			table.setBounds(0, 0, 1, 1);
+			
+			ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+		        public void valueChanged(ListSelectionEvent e) {
+		        	int index = table.getSelectedRow();
+					index = table.convertRowIndexToModel(index);
+					if (index>-1){
+						index = table.convertRowIndexToModel(index);
+						ClienteDto cliente = getModel().getCliente(index);
+						if (Validator.isNotNull(cliente))
+							setTipoComprador(cliente);
+		        	} else
+		        		setTipoComprador(null);
+		        }
+
+		      });
 		}
 		return table;
 	}
@@ -421,6 +460,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 		
 	public void limpiarClientes(){
+		setTipoComprador(null);
 		getModel().setClientes(new ArrayList<ClienteDto>());
 	}
 	

@@ -13,6 +13,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.appfuse.model.BaseObject;
 
+import com.mitnick.utils.Validator;
+
 @Entity(name = "Producto_Venta")
 public class ProductoVenta extends BaseObject implements Serializable {
 
@@ -20,6 +22,9 @@ public class ProductoVenta extends BaseObject implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
+	
+	@Column(name = "descripcion", length = 255)
+	private String descripcion = "";
 	
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "producto_id")
@@ -86,11 +91,25 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		this.venta = venta;
 	}
 
+	public String getDescripcion() {
+		if (Validator.isBlankOrNull(descripcion))
+			if (Validator.isNotNull(producto))
+				descripcion = producto.getDescripcion();
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + cantidad;
+		getDescripcion();
+		result = prime * result
+				+ ((descripcion == null) ? 0 : descripcion.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((iva == null) ? 0 : iva.hashCode());
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
@@ -111,8 +130,19 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		if (!(obj instanceof ProductoVenta)) {
 			return false;
 		}
+		
 		ProductoVenta other = (ProductoVenta) obj;
+		
+		getDescripcion();
+		other.getDescripcion();
 		if (cantidad != other.cantidad) {
+			return false;
+		}
+		if (descripcion == null) {
+			if (other.descripcion != null) {
+				return false;
+			}
+		} else if (!descripcion.equals(other.descripcion)) {
 			return false;
 		}
 		if (id == null) {
@@ -155,9 +185,9 @@ public class ProductoVenta extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProductoVenta [id=" + id + ", producto=" + producto
-				+ ", precio=" + precio + ", iva=" + iva + ", cantidad="
-				+ cantidad + ", venta=" + venta + "]";
+		return "ProductoVenta [id=" + id + ", descripcion=" + descripcion
+				+ ", producto=" + producto + ", precio=" + precio + ", iva="
+				+ iva + ", cantidad=" + cantidad + ", venta=" + venta + "]";
 	}
 
 	

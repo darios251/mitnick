@@ -10,6 +10,8 @@ public class ProductoVentaDto extends BaseDto {
 	
 	private int cantidad;
 
+	private String descripcion;
+	
 	private BigDecimal precioTotal;
 
 	private BigDecimal iva;
@@ -44,6 +46,14 @@ public class ProductoVentaDto extends BaseDto {
 
 	public void setIva(BigDecimal iva) {
 		this.iva = iva;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
 	

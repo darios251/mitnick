@@ -100,7 +100,7 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return columnIndex == 2 || columnIndex == 3;
+		return columnIndex == 1 || columnIndex == 2 || columnIndex == 3;
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		case 0: 
 			return fila.getProducto().getCodigo();
 		case 1:
-			return fila.getProducto().getDescripcion();
+			return fila.getDescripcion();
 		case 2:
 			return fila.getProducto().getPrecioVentaConIva().setScale (2, BigDecimal.ROUND_HALF_UP);
 		case 3:
@@ -133,7 +133,7 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 				fila.getProducto().setCodigo(nuevoValor);
 				break;
 			case 1:
-				fila.getProducto().setDescripcion(nuevoValor);
+				fila.setDescripcion(nuevoValor);
 				break;
 			case 2:
 				ventaController.modificarPrecioUnitario(fila, nuevoValor);

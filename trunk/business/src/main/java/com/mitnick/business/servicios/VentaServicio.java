@@ -58,7 +58,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		ProductoVentaDto productoVenta = getProductoVentaDto(producto, venta);
 		if (productoVenta == null) {
 			productoVenta = new ProductoVentaDto();
-			
+			productoVenta.setDescripcion(producto.getDescripcion());
 			productoVenta.setProducto(producto);
 			productoVenta.setCantidad(1);
 			productoVenta.setPrecioTotal(producto.getPrecioVentaConIva());
@@ -136,7 +136,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 
 	@Override
 	public void validarCliente(ClienteDto cliente) {
-		if (Validator.isBlankOrNull(cliente.getCuit()) && Validator.isBlankOrNull(cliente.getDocumento()))
+		if (Validator.isBlankOrNullCuit(cliente.getCuit()) && Validator.isBlankOrNull(cliente.getDocumento()))
 			throw new BusinessException("error.venta.cliente.cuit.document.null", "El cuit y el documento del cliente es nulo.");					
 		if (Validator.isNull(cliente.getDireccion())||Validator.isBlankOrNull(cliente.getDireccion().getDomicilio()))
 			throw new BusinessException("error.venta.cliente.domicilio.null", "El domicilio del cliente es nulo.");

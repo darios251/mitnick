@@ -75,6 +75,23 @@ public class Validator extends GenericValidator{
 			return false;
 		}
 	}
+	
+	public static boolean isBlankOrNullCuit(String cuit) {
+		try {
+			if (cuit==null)
+				return true;
+			cuit = cuit.trim();
+			if (cuit.startsWith("-"))
+				return true;
+			if ("".equals(cuit))
+				return true;
+			else
+			return false;
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
 
 	public static boolean isPhoneNumber(String telefono) {
 		return true;

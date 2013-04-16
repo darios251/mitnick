@@ -176,6 +176,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		else
 			cliente = new Cliente();
 
+		cliente.setTipoComprador(clienteDto.getTipoComprador());
 		cliente.setActividad(clienteDto.getActividad());
 		cliente.setNombre(clienteDto.getNombre());
 		if (Validator.isNotBlankOrNull(clienteDto.getCuit()))
@@ -225,6 +226,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		clienteDto.setId(cliente.getId());
 		clienteDto.setActividad(cliente.getActividad());
 		clienteDto.setNombre(cliente.getNombre());
+		clienteDto.setTipoComprador(cliente.getTipoComprador());
 		if (Validator.isNotNull(cliente.getCuit()))
 			clienteDto.setCuit(cliente.getCuit().toString());
 		if (Validator.isNotNull(cliente.getDocumento()))
@@ -237,7 +239,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			clienteDto.setCantidadComprobantes(cliente.getComprobantes().size());
 		if(Validator.isNotNull(cliente.getDireccion()))
 			clienteDto.setDireccion(getDtoFromEntity(cliente.getDireccion()));
-
+		
 		return clienteDto;
 	}
 
@@ -571,6 +573,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoVenta.setProducto(productoDao.get(productoVentaDto.getProducto().getId()));
 		productoVenta.setCantidad(productoVentaDto.getCantidad());
 		productoVenta.setIva(productoVentaDto.getIva());
+		productoVenta.setDescripcion(productoVentaDto.getDescripcion());
 		productoVenta.setPrecio(productoVentaDto.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP));
 		return productoVenta;
 	}
@@ -581,6 +584,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoVentaDto.setCantidad(productoVenta.getCantidad());
 		productoVentaDto.setIva(productoVenta.getIva());
 		productoVentaDto.setPrecioTotal(productoVenta.getPrecio());
+		productoVentaDto.setDescripcion(productoVenta.getDescripcion());
 		return productoVentaDto;
 	}
 	

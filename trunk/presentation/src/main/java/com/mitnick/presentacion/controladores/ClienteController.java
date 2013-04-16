@@ -182,7 +182,7 @@ public class ClienteController extends BaseController {
 	}
 	
 	public void guardarCliente(ClienteDto cliente, String actividad, String nombre, String documento,
-			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad) {
+			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad, String tipoComprador) {
 		
 		if(Validator.isNull(cliente))
 			cliente = new ClienteDto();
@@ -199,6 +199,7 @@ public class ClienteController extends BaseController {
 		cliente.getDireccion().setDomicilio(domicilio);
 		cliente.getDireccion().setCodigoPostal(codigoPostal);
 		cliente.getDireccion().setCiudad(ciudad);
+		cliente.setTipoComprador(tipoComprador);
 		
 		//valido el dto
 		validateDto(cliente);

@@ -1,7 +1,7 @@
 -- ----------------------------
 -- Records of parametro
 -- ----------------------------
-INSERT INTO parametro(id, descripcion, nombre, valor, tipo) VALUES ('1', 'Máximo de cantidad permitido modificar sin advertencia', 'producto.cantidad.warning', '-3', '2');
+INSERT INTO parametro(id, descripcion, nombre, valor, tipo) VALUES ('1', 'Máximo de cantidad permitido modificar sin advertencia', 'producto.cantidad.warning', '3', '2');
 -- ----------------------------
 -- Records of direccion
 -- ----------------------------
