@@ -67,7 +67,7 @@ public class VentaHelper {
 
 		ventaDto.setTotal(total);
 
-		if (ventaDto.getTipo() == MitnickConstants.VENTA){
+		if (ventaDto.isVenta()){
 			// suma de todos los pagos
 			BigDecimal montoPagado = BigDecimal.ZERO;
 			Iterator<PagoDto> pagos = ventaDto.getPagos().iterator();

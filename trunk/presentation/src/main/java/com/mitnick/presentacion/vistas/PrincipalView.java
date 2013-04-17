@@ -223,20 +223,22 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
-					if (Validator.isNotNull(VentaManager.getVentaActual()) && Validator.isNotEmptyOrNull(VentaManager.getVentaActual().getProductos())) {
-						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION);
-						if (option == JOptionPane.CANCEL_OPTION)
+					if (VentaManager.isVentaIniciada()) {
+						if (JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"),
+							PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.CANCEL_OPTION)
 							return;	
 					}
+					VentaManager.eliminarVenta();
+					
 					logger.info("Agregando el panel de ventas al tabbedPane");
 					getJTabbedPane().addTab(PropertiesManager.getProperty("venta.titulo"), ventaController.getVentaView());
 					ventaController.crearNuevaVenta(MitnickConstants.VENTA);
+					ventaController.limpiarVentanasVenta();
 					logger.info("Mostrando el panel de ventas");
 					
 					ventaController.mostrarUltimoPanelMostrado();
 					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
 					getJTabbedPane().setVisible(true);
-					ventaController.limpiarPanelClienteVenta();
 					ventaController.getUltimoPanelMostrado().setVisible(true);
 				}
 			});
@@ -261,17 +263,20 @@ public class PrincipalView extends JFrame
 			{
 				public void mouseClicked(MouseEvent e)
 				{
-					if (Validator.isNotNull(VentaManager.getVentaActual()) && Validator.isNotEmptyOrNull(VentaManager.getVentaActual().getProductos())) {
-						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION);
-						if (option == JOptionPane.CANCEL_OPTION)
+					if (VentaManager.isVentaIniciada()) {
+						if (JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"),
+							PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.CANCEL_OPTION)
 							return;	
 					}
+					VentaManager.eliminarVenta();
+					
 					String nroTicket = JOptionPane.showInputDialog(PropertiesManager.getProperty("ventaPanel.devolucion.nroTicket"));
 					if (nroTicket == null)
 						return;
 					VentaDto venta = ventaController.getVentaByNroFactura(nroTicket);
 					ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
-
+					ventaController.limpiarVentanasVenta();
+					
 					ClienteDto cliente = null;
 					List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
 					if (venta==null){

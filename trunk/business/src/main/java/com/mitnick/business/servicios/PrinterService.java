@@ -24,12 +24,10 @@ public class PrinterService {
 	@Autowired
 	protected IVentaDAO ventaDao;
 	
-	@SuppressWarnings("deprecation")
 	public boolean imprimirTicket(VentaDto venta) {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean imprimirTicketFactura(VentaDto venta) {
 		try{
 			ventaDao.generarFactura(venta);
@@ -39,12 +37,10 @@ public class PrinterService {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean imprimirNotaCredito(VentaDto venta) {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean imprimirCierreZ() {
 		String cierreNro = "";
 		cierreNro = cierreNro.split(":")[1];
@@ -56,53 +52,43 @@ public class PrinterService {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean imprimirCierreX() {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean imprimirInformeJornada() {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean configurarImpresora(ConfiguracionImpresoraDto configuracion) {		
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public ConfiguracionImpresoraDto getInfoConfiguracion() {
 		ConfiguracionImpresoraDto configuracion = new ConfiguracionImpresoraDto();
 		return configuracion;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean getInfoTicketFactura(VentaDto venta, boolean useCurrentConnection) {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean getInfoNotaCredito(VentaDto venta, boolean useCurrentConnection) {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean getInfoTicket(VentaDto venta, boolean useCurrentConnection) {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean cancelarTicketFactura(VentaDto venta, boolean useCurrentConnection) {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean cancelarNotaCredito(VentaDto venta, boolean useCurrentConnection) {
 		return true;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean cancelarTicket(VentaDto venta, boolean useCurrentConnection) {
 		return true;
 	}

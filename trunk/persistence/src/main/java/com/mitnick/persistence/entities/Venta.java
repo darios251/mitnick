@@ -236,6 +236,14 @@ public class Venta extends BaseObject implements Serializable {
 		return getTotal().subtract(getImpuesto());
 	}
 	
+	public boolean isVenta(){
+		return tipo == MitnickConstants.VENTA;	
+	}
+	
+	public boolean isDevolucion(){
+		return tipo == MitnickConstants.DEVOLUCION;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

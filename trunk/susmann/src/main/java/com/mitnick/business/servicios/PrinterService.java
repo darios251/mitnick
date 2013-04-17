@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mitnick.exceptions.PrinterException;
+import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.servicio.servicios.ICierreZServicio;
-import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CierreZDto;
@@ -267,7 +267,7 @@ public class PrinterService {
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicketFactura(VentaDto venta) {
 		try {
-			if(venta.getTipo() == MitnickConstants.DEVOLUCION)
+			if(VentaManager.getVentaActual().isDevolucion())
 				return imprimirNotaCredito(venta);
 			
 			connect();

@@ -165,7 +165,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 				}
 			}
 			
-			if (VentaManager.getVentaActual().getTipo()==MitnickConstants.VENTA)
+			if (VentaManager.getVentaActual().isVenta())
 				controller.mostrarPagosPanel();
 			else {
 				BigDecimal deuda = new BigDecimal(0);
@@ -373,6 +373,8 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 
 	private void setTipoComprador(ClienteDto cliente){
+		getCmbTipoComprador();
+		
 		TipoCompradorDto tipo = null;
 		if (Validator.isNotNull(cliente) && Validator.isNotBlankOrNull(cliente.getTipoComprador())){
 			tipo = TipoCompradorDto.getTipoCompradorDto(cliente.getTipoComprador());

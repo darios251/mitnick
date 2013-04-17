@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.dtos.MovimientoDto;
 
@@ -89,7 +90,7 @@ private static final long serialVersionUID = 1L;
 
 		switch(columnIndex) {
 			case 0:
-				return fila.getFecha().toString(); 
+				return DateHelper.getFecha(fila.getFecha()); 
 			case 1: 
 				return fila.getTipo();
 			case 2: 

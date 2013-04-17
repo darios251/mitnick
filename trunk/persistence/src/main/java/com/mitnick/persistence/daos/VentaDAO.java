@@ -59,7 +59,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 
 	public Venta saveOrUpdate(Venta venta){
 		
-		if (!venta.isCanceled() && venta.getTipo()==MitnickConstants.DEVOLUCION){
+		if (!venta.isCanceled() && venta.isDevolucion()){
 			//SE CREA LA NOTA DE CREDITO
 			Credito credito = new Credito();
 			credito.setFecha(new Date());

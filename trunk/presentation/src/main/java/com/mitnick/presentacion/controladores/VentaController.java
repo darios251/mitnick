@@ -23,7 +23,6 @@ import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
-import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
@@ -71,6 +70,19 @@ public class VentaController extends BaseController {
 
 	}
 
+	/**
+	 * Este metodo es invocado cuando el cliente cancela la venta actual antes de finalizarla.
+	 * Se limpian todas las pantallas de la venta, y se anula la venta actual.
+	 * 
+	 */
+	public void limpiarVentanasVenta() {
+		ventaPanel.limpiarVenta();		
+		pagoPanel.limpiarCamposPantalla();
+		ventaClientePanel.limpiarClientes();
+		ventaClientePanel.limpiarComboPantalla();
+		buscarProductoPanel.limpiarCamposPantalla();
+	}
+	
 	public List<CuotaDto> getCuotas(String cuotas, String total) {
 		if (Validator.isInt(cuotas))
 			return ventaServicio.generarCuotas(Integer.parseInt(cuotas),
@@ -84,10 +96,7 @@ public class VentaController extends BaseController {
 		ventaServicio.guardarCuotas(VentaManager.getVentaActual(), cuotas);
 	}
 	
-	public void limpiarPanelClienteVenta(){
-		if (Validator.isNotNull(ventaClientePanel))
-			ventaClientePanel.limpiarComboPantalla();
-	}
+
 
 	public void mostrarBuscarArticuloPanel() {
 		ultimoPanelMostrado = buscarProductoPanel;
@@ -128,7 +137,7 @@ public class VentaController extends BaseController {
 
 	public void mostrarClienteVenta() {
 		// valido si puede ir o no a la pantalla de pagos
-		if (VentaManager.getVentaActual().getProductos().isEmpty())
+		if (Validator.isEmptyOrNull(VentaManager.getVentaActual().getProductos()))
 			throw new PresentationException(
 					"error.venta.pagos.productos.vacios");
 		else if (!Validator.isMoreThanZero(VentaManager.getVentaActual()
@@ -141,8 +150,8 @@ public class VentaController extends BaseController {
 		pagoPanel.setVisible(false);
 		clienteNuevoPanel.setVisible(false);
 		ventaClientePanel.setVisible(true);
-		if (VentaManager.getVentaActual().getTipo() == MitnickConstants.DEVOLUCION
-				&& VentaManager.getVentaActual().getCliente() != null)
+		if (VentaManager.getVentaActual().isDevolucion()
+				&& Validator.isNotNull(VentaManager.getVentaActual().getCliente()))
 			ventaClientePanel.actualizarPantallaDevolucion();
 		else
 			ventaClientePanel.actualizarPantalla();
@@ -224,18 +233,10 @@ public class VentaController extends BaseController {
 		if (getDetalleProductoPanel().equals(ultimoPanelMostrado))
 			mostrarBuscarArticuloPanel();
 		else if (pagoPanel.equals(ultimoPanelMostrado)
-				&& !VentaManager.getVentaActual().getProductos().isEmpty())
+				&& Validator.isNotEmptyOrNull(VentaManager.getVentaActual().getProductos()))
 			mostrarPagosPanel();
 		else
 			mostrarVentasPanel();
-	}
-
-	public void limpiarVenta() {
-		ventaPanel.nuevaVenta();
-		limpiarPanelClienteVenta();
-		buscarProductoPanel.limpiarCamposPantalla();
-		pagoPanel.limpiarCamposPantalla();
-		ventaClientePanel.limpiarClientes();
 	}
 
 	public void actualizarDevolucion() {
@@ -290,21 +291,15 @@ public class VentaController extends BaseController {
 	}
 
 	public void crearNuevaVenta(int tipo) {
+		VentaManager.eliminarVenta();
 		VentaManager.crearNuevaVenta(tipo);
-		limpiarVenta();
+		limpiarVentanasVenta();
 	}
 
 	public boolean checkFinalizarVenta() {
-		if (VentaManager.getVentaActual() != null
-				&& (VentaManager.getVentaActual().getTipo() == MitnickConstants.VENTA && (VentaManager
-						.getVentaActual().getPagos() == null || VentaManager
-						.getVentaActual().getPagos().isEmpty())))
-			return false;
-		if (VentaManager.getVentaActual().getTipo() == MitnickConstants.VENTA
-				&& !VentaManager.getVentaActual().isPagado())
-			return false;
-
-		return true;
+		if (Validator.isNull(VentaManager.getVentaActual()))
+				return false;
+		return VentaManager.getVentaActual().isPagado() || VentaManager.getVentaActual().isDevolucion();
 	}
 
 	public List<MedioPagoDto> getAllMedioPago() {
@@ -353,13 +348,12 @@ public class VentaController extends BaseController {
 					finalizarVenta();
 					return;
 				} else {
-					int tipo = VentaManager.getVentaActual().getTipo();
-					if (tipo == MitnickConstants.VENTA) {
-						getVentaServicio().cancelar(
-								VentaManager.getVentaActual());
-						VentaManager.crearNuevaVenta(tipo);
+					getVentaServicio().cancelar(VentaManager.getVentaActual());
+					if (VentaManager.getVentaActual().isVenta()) {
+						VentaManager.crearNuevaVenta(VentaManager.getVentaActual().getTipo());
+						limpiarVentanasVenta();
 						mostrarVentasPanel();
-					} else {
+					} else {						
 						JTabbedPaneConBoton jTabbedPaneConBoton = this
 								.getPrincipalView().jTabbedPaneConBoton;
 						jTabbedPaneConBoton.remove(jTabbedPaneConBoton
