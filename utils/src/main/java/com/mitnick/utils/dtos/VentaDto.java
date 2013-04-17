@@ -231,6 +231,14 @@ public class VentaDto extends BaseDto {
 		return nCreditos;
 	}
 	
+	public boolean isVenta(){
+		return tipo == MitnickConstants.VENTA;	
+	}
+	
+	public boolean isDevolucion(){
+		return tipo == MitnickConstants.DEVOLUCION;
+	}
+	
 	@Override
 	public String toString() {
 		return "VentaDto [productos=" + productos + ", subTotal=" + subTotal
@@ -246,4 +254,5 @@ public class VentaDto extends BaseDto {
 				+ tipoResponsabilidad + ", tipo=" + tipo + "]";
 	}
 
+	
 }

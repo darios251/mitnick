@@ -240,7 +240,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					factura.setCuit(venta.getCliente().getCuit());
 					factura.setNeto(venta.getNeto());
 					factura.setIva(venta.getImpuesto());
-					if (MitnickConstants.DEVOLUCION == venta.getTipo()){
+					if (venta.isDevolucion()){
 						totalVenta = totalVenta.negate();	
 						impuestoVenta = impuestoVenta.negate();
 						netoVenta = netoVenta.negate();
@@ -330,7 +330,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					dto = getDTOAnio(ingresos, venta.getFecha());
 
 				dto.setFecha(venta.getFecha());
-				if (MitnickConstants.VENTA == venta.getTipo()) {
+				if (venta.isVenta()) {
 					dto.setTotal(dto.getTotal().add(venta.getTotal()));
 					total = total.add(venta.getTotal());
 					for (Pago pago : venta.getPagos()) {

@@ -201,7 +201,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Override
 	public VentaDto facturar(VentaDto ventaDto) {
 		
-		if (ventaDto.getTipo()==MitnickConstants.VENTA && !ventaDto.isPagado()){
+		if (ventaDto.isVenta() && !ventaDto.isPagado()){
 			throw new BusinessException("error.ventaServicio.facturar", "No se puede facturar la venta ya que no se pago el total");
 		}
 		
@@ -221,7 +221,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		venta.setTipoTicket(ventaDto.getTipoTicket());
 		
 		//este metodo se invoca solo si es una venta - la devolucion nunca puede tener pagos realizados con notas de credito.
-		if (MitnickConstants.DEVOLUCION != venta.getTipo())
+		if (venta.isVenta())
 			ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
 		ventaDto.setId(venta.getId());

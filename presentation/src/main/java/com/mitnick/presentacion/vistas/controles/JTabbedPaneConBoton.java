@@ -15,7 +15,6 @@ import javax.swing.JTabbedPane;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.VentaView;
 import com.mitnick.utils.PropertiesManager;
-import com.mitnick.utils.Validator;
 
 //A JTabbedPane which has a close ('X') icon on each tab.
 //
@@ -59,19 +58,18 @@ public class JTabbedPaneConBoton extends JTabbedPane implements MouseListener {
 	@Override
 	public void removeTabAt(int index) {
 		Component component = getComponentAt(index);
-		if (component instanceof VentaView
-				&& (Validator.isNotNull(VentaManager.getVentaActual()) && Validator
-						.isNotEmptyOrNull(VentaManager.getVentaActual()
-								.getProductos()))) {
+		if (component instanceof VentaView && (VentaManager.isVentaIniciada()))
 			if (JOptionPane.showConfirmDialog(this,
 					PropertiesManager.getProperty("error.venta.pendiente"),
 					PropertiesManager.getProperty("dialog.warning.titulo"),
-					JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
+					JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+				VentaManager.eliminarVenta();
 				super.removeTabAt(index);
-		} else
-			super.removeTabAt(index);
-
+				return;				
+			} else
+				return;
 		
+		super.removeTabAt(index);
 	}
 
 	public void mouseClicked(MouseEvent e) {

@@ -73,7 +73,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		controller = ventaController;
 	}
 
-	public void nuevaVenta() {
+	public void limpiarVenta() {
 		getTxtCodigo().setText("");
 		getModel().setProductosVenta(new ArrayList<ProductoVentaDto>());
 	}
@@ -129,10 +129,11 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	}
 
 	public void actualizarPantalla() {
-		if(VentaManager.getVentaActual() != null){
+		if(Validator.isNotNull(VentaManager.getVentaActual())){
 			getModel().setProductosVenta(VentaManager.getVentaActual().getProductos());
 			actualizarTotales();
 		}
+		txtCodigo.requestFocus();
 	}
 	
 	private void actualizarTotales() {

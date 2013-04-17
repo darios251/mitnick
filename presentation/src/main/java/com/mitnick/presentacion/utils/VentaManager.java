@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.utils;
 
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.VentaDto;
 
 public class VentaManager {
@@ -22,5 +23,9 @@ public class VentaManager {
 	
 	public static VentaDto getVentaActual() {
 		return ventaActual;
+	}
+	
+	public static boolean isVentaIniciada(){
+		return (Validator.isNotNull(ventaActual) && Validator.isNotEmptyOrNull(ventaActual.getProductos()) && !ventaActual.isCancelada());
 	}
 }
