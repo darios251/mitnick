@@ -111,11 +111,6 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodigo, btnAgregar, btnBuscar, btnQuitar, btnContinuar}));
 	}
 	
-	@Override
-	protected void keyAdd() {
-		agregarProducto();
-	}
-
 	public void agregarProducto() {
 		logger.debug("entrado a agregarProducto");
 		try {
@@ -240,9 +235,9 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	
 	public JLabel getLblTeclasAccesoRapido() {
 		if (lblTeclasAccesoRapido == null) {
-			lblTeclasAccesoRapido = new JLabel("F3: Buscar | F5: Siguiente | F6: Cambiar Precio | F7: Cambia Cantidad | F8: Cambiar Descripcion | +: Agregar Producto | -: Eliminar Producto");
-			lblTeclasAccesoRapido.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTeclasAccesoRapido.setBounds(40, 550, 550, 20);
+			lblTeclasAccesoRapido = new JLabel("F3: Buscar | F5: Siguiente | F6: Cambiar Precio | F7: Cambia Cantidad | F8: Cambiar Descripcion ");
+			lblTeclasAccesoRapido.setHorizontalAlignment(SwingConstants.CENTER);
+			lblTeclasAccesoRapido.setBounds(40, 550, 700, 20);
 		}
 		return lblTeclasAccesoRapido;
 	}
@@ -309,11 +304,6 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		return btnQuitar;
 	}
 	
-	@Override
-	protected void keySubstract() {
-		quitarProducto();
-	}
-
 	protected void quitarProducto() {
 		try {
 			int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.quitar"));

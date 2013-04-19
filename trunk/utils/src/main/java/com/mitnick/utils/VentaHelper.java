@@ -34,9 +34,18 @@ public class VentaHelper {
 
 	public static List<ProductoVentaDto> getProductosDevolucion(VentaDto ventaDto) {
 		List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
-		for(ProductoVentaDto producto : ventaDto.getProductos()) {
-			producto.setId(null);
-			productos.add(producto);
+		for(ProductoVentaDto productoVenta : ventaDto.getProductos()) {
+			productoVenta.setId(null);
+			BigDecimal precioTotal = productoVenta.getProducto().getPrecioVentaConIva();
+			precioTotal = precioTotal.multiply(new BigDecimal(productoVenta.getCantidad()));
+			//si se modificó el precio del producto en la venta original
+			if (!productoVenta.getPrecioTotal().equals(precioTotal)){
+				BigDecimal precioUnitario = productoVenta.getPrecioTotal().divide(new BigDecimal(productoVenta.getCantidad()));
+				BigDecimal ivaProducto = VentaHelper.calcularImpuesto(precioUnitario);
+				productoVenta.getProducto().setPrecioVenta(precioUnitario.subtract(ivaProducto));
+				productoVenta.getProducto().setIva(ivaProducto);
+			}
+			productos.add(productoVenta);
 		}
 		return productos;
 	}

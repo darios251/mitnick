@@ -3,6 +3,8 @@ package com.mitnick.persistence.daos;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -77,6 +79,16 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 			else
 				repdto.setTalle(producto.getProducto().getTalle());
 		}
+		 //ordenamos la lista por nombre de empleado  
+        Collections.sort(resultado, new Comparator() {  
+  
+            public int compare(Object o1, Object o2) {  
+            	ReporteVentaArticuloDTO e1 = (ReporteVentaArticuloDTO) o1;  
+            	ReporteVentaArticuloDTO e2 = (ReporteVentaArticuloDTO) o2;  
+                return e1.getFecha().compareTo(e2.getFecha());  
+            }  
+        }); 
+        
 		return resultado;
 	}	
 	
