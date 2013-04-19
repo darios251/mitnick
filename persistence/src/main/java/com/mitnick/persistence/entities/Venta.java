@@ -31,7 +31,7 @@ public class Venta extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@OneToMany (cascade = {CascadeType.ALL})
+	@OneToMany(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "venta_id")
 	private List<ProductoVenta> productos;
 	
