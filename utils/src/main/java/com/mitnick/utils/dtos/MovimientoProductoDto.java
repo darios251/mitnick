@@ -7,8 +7,6 @@ private static final long serialVersionUID = 1L;
 	
 	private int stockOriginal;
 	
-	private int stockFinal;
-	
 	private int ventas;
 	
 	private int ajustes;
@@ -48,11 +46,7 @@ private static final long serialVersionUID = 1L;
 	}
 
 	public int getStockFinal() {
-		return stockFinal;
-	}
-
-	public void setStockFinal(int stockFinal) {
-		this.stockFinal = stockFinal;
+		return stockOriginal+ajustes+ventas;
 	}
 
 	@Override
@@ -62,7 +56,6 @@ private static final long serialVersionUID = 1L;
 		result = prime * result + ajustes;
 		result = prime * result
 				+ ((producto == null) ? 0 : producto.hashCode());
-		result = prime * result + stockFinal;
 		result = prime * result + stockOriginal;
 		result = prime * result + ventas;
 		return result;
@@ -90,9 +83,6 @@ private static final long serialVersionUID = 1L;
 		} else if (!producto.equals(other.producto)) {
 			return false;
 		}
-		if (stockFinal != other.stockFinal) {
-			return false;
-		}
 		if (stockOriginal != other.stockOriginal) {
 			return false;
 		}
@@ -105,8 +95,8 @@ private static final long serialVersionUID = 1L;
 	@Override
 	public String toString() {
 		return "MovimientoProductoDto [stockOriginal=" + stockOriginal
-				+ ", stockFinal=" + stockFinal + ", ventas=" + ventas
-				+ ", ajustes=" + ajustes + ", producto=" + producto + "]";
+				+ ", ventas=" + ventas + ", ajustes=" + ajustes + ", producto="
+				+ producto + "]";
 	}
 
 	

@@ -129,7 +129,7 @@ private static final long serialVersionUID = 1L;
 			case 5: 
 				fila.setAjustes(valor); break; 	
 			case 6: 
-				fila.setStockFinal(valor); break; 				
+				break; 				
 						
 		}
 		data.set(rowIndex, fila);

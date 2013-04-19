@@ -30,7 +30,7 @@ public class Cliente extends BaseObject implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private Long id;
 	
-	@Column(name = "nombre", length = 30, nullable = false)
+	@Column(name = "nombre", length = 250, nullable = false)
 	private String nombre="";
 	
 	@Column(name = "actividad", length = 30)

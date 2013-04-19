@@ -181,7 +181,7 @@ public class ClienteController extends BaseController {
 		}
 	}
 	
-	public void guardarCliente(ClienteDto cliente, String actividad, String nombre, String documento,
+	public ClienteDto guardarCliente(ClienteDto cliente, String actividad, String nombre, String documento,
 			String cuit, String telefono, String email, String fechaNacimiento, String domicilio, String codigoPostal, CiudadDto ciudad, String tipoComprador) {
 		
 		if(Validator.isNull(cliente))
@@ -205,6 +205,8 @@ public class ClienteController extends BaseController {
 		validateDto(cliente);
 		
 		guardarClienteAut(cliente);
+		
+		return cliente;
 		
 	}
 	

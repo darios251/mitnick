@@ -372,7 +372,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		return cmbTipoComprador;
 	}
 
-	private void setTipoComprador(ClienteDto cliente){
+	public void setTipoComprador(ClienteDto cliente){
 		getCmbTipoComprador();
 		
 		TipoCompradorDto tipo = null;

@@ -174,7 +174,7 @@ public class VentaController extends BaseController {
 		try {
 			int index = getVentaClientePanel().getTable().getSelectedRow();
 			index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
-			cliente = getVentaClientePanel().getModel().getCliente(index);
+			cliente = getVentaClientePanel().getModel().getCliente(index);			
 		} catch (IndexOutOfBoundsException exception) {
 			if (getVentaClientePanel().getModel().getRowCount() == 0) {
 				throw new PresentationException(
@@ -563,7 +563,8 @@ public class VentaController extends BaseController {
 	}
 
 	public void setTipoResponsable(TipoCompradorDto tipoComprador) {
-		VentaManager.getVentaActual().setTipoResponsabilidad(tipoComprador);
+		if (Validator.isNotNull(VentaManager.getVentaActual()))
+			VentaManager.getVentaActual().setTipoResponsabilidad(tipoComprador);
 	}
 
 	public VentaView getVentaView() {

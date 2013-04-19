@@ -166,20 +166,16 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		for (Movimiento movimiento : movimientos) {
 			MovimientoProductoDto movimientoDto = getDetallePorProducto(
 					movimiento, productos);
-			if (movimiento.getTipo() == Movimiento.AJUSTE) {
+			if (movimiento.getTipo() == Movimiento.CREACION) {
+				movimientoDto.setStockOriginal(movimiento.getCantidad());
+			}else if (movimiento.getTipo() == Movimiento.AJUSTE) {
 				movimientoDto.setAjustes(movimientoDto.getAjustes()
-						+ movimiento.getCantidad());
-				movimientoDto.setStockFinal(movimientoDto.getStockFinal()
 						+ movimiento.getCantidad());
 			} else if (movimiento.getTipo() == Movimiento.VENTA) {
 				movimientoDto.setVentas(movimientoDto.getVentas()
 						- movimiento.getCantidad());
-				movimientoDto.setStockFinal(movimientoDto.getStockFinal()
-						- movimiento.getCantidad());
 			} else if (movimiento.getTipo() == Movimiento.DEVOLUCION) {
 				movimientoDto.setVentas(movimientoDto.getVentas()
-						+ movimiento.getCantidad());
-				movimientoDto.setStockFinal(movimientoDto.getStockFinal()
 						+ movimiento.getCantidad());
 			}
 		}
@@ -209,8 +205,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			movimientoDto = new MovimientoProductoDto();
 			movimientoDto.setAjustes(0);
 			movimientoDto.setVentas(0);
-			movimientoDto.setStockFinal(movimiento.getStockAlaFecha());
-			movimientoDto.setStockOriginal(movimiento.getStockAlaFecha());
 			movimientoDto.setProducto((ProductoDto) entityDTOParser
 					.getDtoFromEntity(movimiento.getProducto()));
 			productos.add(movimientoDto);

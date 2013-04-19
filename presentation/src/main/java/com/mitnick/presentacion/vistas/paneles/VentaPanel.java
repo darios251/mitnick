@@ -171,7 +171,8 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 				
 				@Override
 				public void tableChanged(TableModelEvent e) {
-					actualizarTotales();
+					if (VentaManager.isVentaIniciada())
+						actualizarTotales();
 				}
 			});
 		}

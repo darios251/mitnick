@@ -106,7 +106,6 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		ProductoVentaDto fila = VentaManager.getVentaActual().getProductos().get(rowIndex);//data.get(rowIndex);
-		
 		switch(columnIndex) {
 		case 0: 
 			return fila.getProducto().getCodigo();
@@ -119,7 +118,6 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		case 4:
 			return fila.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP);
 		}
-		
 		return data.get(-1);
 	}
 	
