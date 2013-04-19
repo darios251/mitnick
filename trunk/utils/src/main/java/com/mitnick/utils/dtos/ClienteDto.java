@@ -7,7 +7,7 @@ public class ClienteDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
 
-	@MitnickField(required=true, fieldType=FieldType.NAME, min=3, max=30)
+	@MitnickField(required=true, fieldType=FieldType.NAME, min=1, max=250)
 	private String nombre;
 	
 	@MitnickField(fieldType=FieldType.NAME, min=3, max=30)

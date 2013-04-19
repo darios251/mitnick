@@ -210,11 +210,11 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		@SuppressWarnings("unchecked")
 		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 				
-		if(!venta.isPrinted()) {
-			if(!printerService.imprimirTicketFactura(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-		}
-		else
+//		if(!venta.isPrinted()) {
+//			if(!printerService.imprimirTicketFactura(ventaDto))
+//				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
+//		}
+//		else
 			venta.setPrinted(true);		
 		actualizarStock(venta);
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());

@@ -61,7 +61,7 @@
 		<band height="17" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="21" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="395" y="1" width="50" height="20"/>
 				<textElement>
@@ -114,99 +114,105 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="50" splitType="Stretch">
+		<band height="61" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="0bbb1114-2f34-42a9-bf75-eac3da0f2bd2" x="20" y="0" width="535" height="42"/>
+				<reportElement uuid="0bbb1114-2f34-42a9-bf75-eac3da0f2bd2" x="16" y="12" width="535" height="42"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{facturas})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detalleFactura.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="72">
-			<line>
-				<reportElement uuid="00f551ee-885d-4fcf-ac1c-5370d0559b68" x="0" y="0" width="550" height="1"/>
-			</line>
+		<band height="82">
 			<textField>
-				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="97" y="41" width="19" height="20"/>
+				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="97" y="54" width="19" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{corteZ}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="1" y="41" width="71" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="76" y="1" width="17" height="20"/>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="76" y="14" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[A]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="76" y="21" width="17" height="20"/>
+				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="76" y="34" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="76" y="41" width="17" height="20"/>
+				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="76" y="54" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Z]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="9f556d93-5f88-48b3-a0a3-3d5983d936a7" x="396" y="1" width="50" height="20"/>
+				<reportElement uuid="9f556d93-5f88-48b3-a0a3-3d5983d936a7" x="396" y="14" width="50" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{netoA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e7511dc4-ac6c-4a1f-90b8-092bf925529b" x="446" y="1" width="52" height="20"/>
+				<reportElement uuid="e7511dc4-ac6c-4a1f-90b8-092bf925529b" x="446" y="14" width="52" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ivaA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="af66925c-5cf3-44e4-8f87-2a259c0e0941" x="498" y="1" width="48" height="20"/>
+				<reportElement uuid="af66925c-5cf3-44e4-8f87-2a259c0e0941" x="498" y="14" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e80cb671-6ece-413d-b58d-b4f2347b53ee" x="498" y="21" width="48" height="20"/>
+				<reportElement uuid="e80cb671-6ece-413d-b58d-b4f2347b53ee" x="498" y="34" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalB}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e304b11f-1dc7-4a3f-8887-07d9adc71f1f" x="498" y="41" width="48" height="20"/>
+				<reportElement uuid="e304b11f-1dc7-4a3f-8887-07d9adc71f1f" x="498" y="54" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="11" y="1" width="65" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="11" y="14" width="65" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Totales]]></text>
 			</staticText>
+			<line>
+				<reportElement uuid="00f551ee-885d-4fcf-ac1c-5370d0559b68" x="21" y="10" width="520" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="5" y="54" width="71" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="0" y="78" width="555" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="15" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="43" splitType="Stretch">
 			<textField evaluationTime="Report">
@@ -224,7 +230,4 @@
 			</line>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="14" splitType="Stretch"/>
-	</summary>
 </jasperReport>
