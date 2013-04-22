@@ -110,8 +110,7 @@ public class ProductoController extends BaseController {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar obtener los productos");
 		}
 	}
-	
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
+		
 	public void guardarProducto(ProductoNuevoDto producto, String codigo, String descripcion, TipoDto tipo, MarcaDto marca, 
 			String stock, String stockMinimo, String stockCompra, String precioVenta, String precioCompra, ProveedorDto proveedor, boolean confirmado, String talle) {
 		
@@ -147,7 +146,7 @@ public class ProductoController extends BaseController {
 		
 		if (Validator.isBlankOrNull(stock) || !Validator.isNumeric(stock))
 			throw new PresentationException("error.actualizarStock.stock.invalido");
-		
+		producto.setPrecioVenta(producto.getPrecioVentaConIva().toString());
 		producto.setStock(stock);
 		
 		validateDto(producto);

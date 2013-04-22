@@ -238,10 +238,11 @@ public class ActualizarStockDialog extends BaseDialog {
 						PropertiesManager.getProperty("productoPanel.dialog.confirm.edit"));
 				if (opcion == JOptionPane.YES_OPTION) {
 					producto.setConfirmado(true);
-					estadoError = true;
 					productoController.guardarProducto(producto, txtProductoStock.getText());
 					keyEscape();
-				}
+				} 
+				estadoError = true;
+					
 			}  else {
 				txtProductoStock.requestFocus();
 				mostrarMensaje(ex);
@@ -264,6 +265,7 @@ public class ActualizarStockDialog extends BaseDialog {
 	}
 	
 	int step = 0;
+	
 	protected void keyIntro() {
 		if (estadoError)
 			estadoError = false;

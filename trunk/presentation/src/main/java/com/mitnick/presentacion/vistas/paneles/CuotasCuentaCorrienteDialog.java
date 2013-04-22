@@ -30,6 +30,8 @@ public class CuotasCuentaCorrienteDialog extends BaseDialog {
 	
 	public boolean aceptar = true;
 	
+	public boolean intro = false;
+	
 	public CuotasCuentaCorrienteDialog(JFrame frame, List<CuotaDto> cuotasDto, String montoTotal) {
 		super(frame, true);
 		getContentPane().setLayout(null);
@@ -136,6 +138,13 @@ public class CuotasCuentaCorrienteDialog extends BaseDialog {
 	@Override
 	protected void keyF5() {
 		getBtnAceptar().doClick();
+	}
+	
+	@Override
+	protected void keyIntro() {
+		if (intro)
+			getBtnAceptar().doClick();
+		intro = true;
 	}
 	
 	@Override

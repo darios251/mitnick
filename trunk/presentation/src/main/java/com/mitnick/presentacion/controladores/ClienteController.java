@@ -18,6 +18,7 @@ import com.mitnick.servicio.servicios.IClienteServicio;
 import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.AuthorizationRequired;
 import com.mitnick.utils.dtos.CiudadDto;
@@ -210,11 +211,13 @@ public class ClienteController extends BaseController {
 		
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void nuevoCliente() {
 		clienteNuevoPanel.setCliente(null);
 		mostrarClienteNuevoPanel();
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void editarCliente() {
 		ClienteDto clienteDto = null;
 		try {
@@ -240,7 +243,33 @@ public class ClienteController extends BaseController {
 		}
 	}
 
-	@AuthorizationRequired
+	public void mostrarCliente() {
+		ClienteDto clienteDto = null;
+		try {
+			int index = getClientePanel().getTable().getSelectedRow();
+			index = getClientePanel().getTable().convertRowIndexToModel(index);
+			clienteDto = getClientePanel().getModel().getCliente(index);
+		}
+		catch (IndexOutOfBoundsException exception) {
+			if(getClientePanel().getModel().getRowCount() == 0) {
+				throw new PresentationException("error.clientePanel.clientes.preview.vacio");
+			}
+			else {
+				throw new PresentationException("error.clientePanel.cliente.preview.noSeleccionado");
+			}
+		}
+		
+		try {
+			clienteNuevoPanel.setCliente(clienteDto);
+			mostrarClienteNuevoPanel();
+			clienteNuevoPanel.setEditable(false);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e.getMessage(), "Hubo un error al intentar editar el cliente");
+		}
+	}
+	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void eliminarCliente() {
 		ClienteDto clienteDto = null;
 		int index = -1;

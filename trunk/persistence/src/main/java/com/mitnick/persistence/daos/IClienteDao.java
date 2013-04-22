@@ -1,5 +1,6 @@
 package com.mitnick.persistence.daos;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -31,5 +32,10 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	Comprobante findComprobanteByNumero(String nroComprobante);
 	
 	void eliminarComprobante(Comprobante comprobante);
+	
+	BigDecimal getSaldoDeudor(ClienteDto cliente);
+	
+	BigDecimal getSaldoFavor(ClienteDto cliente);
+	
 	
 }

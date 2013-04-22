@@ -44,6 +44,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	private JButton btnNuevo;
 	private JButton btnModificar;
 	private JButton btnEliminar;
+	private JButton btnVer;
 	private JLabel lblClientes;
 	private JTextField txtNombre;
 	private JButton btnEstadoCuenta;
@@ -77,7 +78,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	@Override
 	protected void initializeComponents() {
 		setLayout(null);
-		setSize(new Dimension(815, 470));
+		setSize(new Dimension(815, 550));
 
 		add(getScrollPane());
 		
@@ -92,6 +93,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		add(getBtnNuevo());
 		add(getBtnModificar());
 		add(getBtnEliminar());
+		add(getBtnVer());
 		add(getBtnEstadoCuenta());
 		add(getBtnMovimientos());
 		add(getBtnCuentaCorriente());
@@ -219,6 +221,31 @@ public class ClientePanel extends BasePanel<ClienteController> {
 		return btnEliminar;
 	}
 
+	public JButton getBtnVer() {
+		if (btnVer == null) {
+			btnVer = new JButton(PropertiesManager.getProperty("clientePanel.button.ver.texto"));
+			btnVer.setToolTipText(PropertiesManager.getProperty("clientePanel.button.ver.tooltip"));
+			btnVer.setIcon(new ImageIcon(this.getClass().getResource("/img/buscar_cliente.png")));
+
+			btnVer.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnVer.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnVer.setMargin(new Insets(-1, -1, -1, -1));
+			btnVer.setBounds(735, 265, 60, 60);
+
+			btnVer.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						controller.mostrarCliente();
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return btnVer;
+	}
+	
 	public JLabel getLblClientes() {
 		if (lblClientes == null) {
 			lblClientes = new JLabel(PropertiesManager.getProperty("clientePanel.etiqueta.clientes"));
@@ -270,7 +297,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnEstadoCuenta.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnEstadoCuenta.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnEstadoCuenta.setMargin(new Insets(-1, -1, -1, -1));
-			btnEstadoCuenta.setBounds(735, 265, 60, 60);
+			btnEstadoCuenta.setBounds(735, 335, 60, 60);
 			btnEstadoCuenta.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
@@ -297,7 +324,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnCuentaCorriente.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnCuentaCorriente.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCuentaCorriente.setMargin(new Insets(-1, -1, -1, -1));
-			btnCuentaCorriente.setBounds(735, 336, 60, 60);
+			btnCuentaCorriente.setBounds(735, 405, 60, 60);
 			btnCuentaCorriente.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
@@ -319,7 +346,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 			btnMovimientos.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnMovimientos.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnMovimientos.setMargin(new Insets(-1, -1, -1, -1));
-			btnMovimientos.setBounds(735, 407, 60, 60);
+			btnMovimientos.setBounds(735, 475, 60, 60);
 			btnMovimientos.setIcon(new ImageIcon(this.getClass().getResource("/img/movimientos.png")));
 			btnMovimientos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

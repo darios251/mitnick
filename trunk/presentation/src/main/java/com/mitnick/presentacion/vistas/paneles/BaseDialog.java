@@ -1,6 +1,7 @@
 package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.validation.ConstraintViolation;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jdt.core.dom.ThisExpression;
 
 import com.mitnick.exceptions.BaseException;
 import com.mitnick.exceptions.PresentationException;
@@ -163,7 +165,7 @@ public class BaseDialog extends JDialog  implements KeyEventDispatcher {
 	
 	@Override
 	public synchronized boolean dispatchKeyEvent(KeyEvent e) {
-		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED && currentDialog != null && currentDialog.isVisible()) {
+		if(this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED) {
 			int identityHashCode = System.identityHashCode(e);
 			if(!objectIds.contains(identityHashCode)) {
 				objectIds.add(identityHashCode);
@@ -224,4 +226,17 @@ public class BaseDialog extends JDialog  implements KeyEventDispatcher {
 	protected void keyF11() {}	
 	protected void keyF12() {}
 
+	private boolean isFocus(){
+		System.out.println(this.getTitle());
+		System.out.println("DIALOOOOOG - " +this);
+		for (Component component : getComponents()) {
+			if (component.hasFocus()){
+				System.out.println("dialoooog has focus: " + component);
+				return true;
+			}
+				
+		}	
+		return false;
+	}
+	
 }
