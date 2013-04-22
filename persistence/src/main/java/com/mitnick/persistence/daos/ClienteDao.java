@@ -299,13 +299,13 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		return null;
 	}
 
-	private BigDecimal getSaldoDeudor(ClienteDto cliente) {
+	public BigDecimal getSaldoDeudor(ClienteDto cliente) {
 
 		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
 	
 	@SuppressWarnings("unchecked")
-	private BigDecimal getSaldoFavor(ClienteDto cliente) {
+	public BigDecimal getSaldoFavor(ClienteDto cliente) {
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
 		BigDecimal aFavor = new BigDecimal(0); 

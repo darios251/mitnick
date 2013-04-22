@@ -189,7 +189,7 @@ public class VentaController extends BaseController {
 		ventaPanel.setVisible(false);
 		detalleProductoPanel.setVisible(false);
 		pagoPanel.setVisible(false);
-		ventaClientePanel.setVisible(false);
+		ventaClientePanel.setVisible(false);		
 		clienteNuevoPanel.setPanelRetorno(ventaClientePanel);
 		clienteNuevoPanel.setCliente(cliente);
 		clienteNuevoPanel.setVisible(true);

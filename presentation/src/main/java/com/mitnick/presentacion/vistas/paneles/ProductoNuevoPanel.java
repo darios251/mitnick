@@ -3,6 +3,8 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -32,7 +34,7 @@ import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("productoNuevoPanel")
-public class ProductoNuevoPanel extends BasePanel<ProductoController> {
+public class ProductoNuevoPanel extends BasePanel<ProductoController> implements KeyEventDispatcher {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,27 +46,21 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 	private JButton btnCancelar;
 
 	private JTextField txtCodigo;
-	private JLabel lblErrorTxtCodigo;
 	
 	private JTextField txtTalle;
 	
 	private JTextField txtDescripcion;
-	private JLabel lblErrorTxtDescripcion;
 	
 	private JTextField txtPrecioVenta;
-	private JLabel lblErrorTxtPrecioVenta;
 	
 	private JTextField txtStock;
-	private JLabel lblErrorTxtStock;
 	private JButton btnIncrementar;
 	private JButton btnDecrementar;
 	
 	private JComboBox<TipoDto> cmbTipo;
-	private JLabel lblErrorCmbTipo;
 	
 	private MitnickComboBoxModel<TipoDto> modelCmbTipo;
 	private JComboBox<MarcaDto> cmbMarca;
-	private JLabel lblErrorCmbMarca;
 	
 	private MitnickComboBoxModel<MarcaDto> modelCmbMarca;
 
@@ -78,20 +74,29 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 	private JLabel lblTalle;
 	
 	private JTextField txtPrecioCompra;
-	private JLabel lblErrorTxtPrecioCompra;
 	
 	private JLabel lblStockMinimo;
 	
 	private JTextField txtStockMinimo;
-	private JLabel lblErrorTxtStockMinimo;
+	
 	
 	private JLabel lblStockCompra;
 	private JTextField txtStockCompra;
-	private JLabel lblErrorTxtStockCompra;
+	
 	
 	private JLabel lblProveedores;
 	private JComboBox<ProveedorDto> cmbProveedor;
+	
 	private JLabel lblErrorCmbProveedor;
+	private JLabel lblErrorTxtCodigo;
+	private JLabel lblErrorTxtDescripcion;
+	private JLabel lblErrorTxtPrecioVenta;
+	private JLabel lblErrorTxtStock;
+	private JLabel lblErrorCmbTipo;
+	private JLabel lblErrorCmbMarca;
+	private JLabel lblErrorTxtPrecioCompra;
+	private JLabel lblErrorTxtStockMinimo;
+	private JLabel lblErrorTxtStockCompra;
 	
 	private MitnickComboBoxModel<ProveedorDto> modelCmbProveedor;
 	
@@ -121,6 +126,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
 		}
+		cleanErrors();
 		try {
 			cmbMarca.setSelectedIndex(0);
 			cmbTipo.setSelectedIndex(0);
@@ -131,6 +137,8 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 
 	@Override
 	protected void initializeComponents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
+		
 		setSize(new Dimension(815, 470));
 		setLayout(null);
 
@@ -586,7 +594,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 	
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtCodigo, txtDescripcion, cmbTipo, cmbMarca,	txtPrecioVenta, txtPrecioCompra,
-				txtStock, txtStockMinimo, txtStockCompra, txtTalle, btnAceptar, btnCancelar }));
+				txtStock, txtStockMinimo, txtStockCompra, txtTalle, btnAceptar, btnCancelar }));		
 	}
 
 	protected void agregarProducto() {
@@ -669,5 +677,41 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> {
 
 	public void setConfirmado(boolean confirmado) {
 		this.confirmado = confirmado;
+	}
+	
+	@Override
+	protected void keyDownArrow() {
+		if (txtCodigo.hasFocus()) 
+			txtDescripcion.requestFocus();
+		else if (txtDescripcion.hasFocus())
+	        txtPrecioVenta.requestFocus();
+		else if (txtPrecioVenta.hasFocus())
+		    txtPrecioCompra.requestFocus();
+		else if (txtPrecioCompra.hasFocus())
+		    txtStock.requestFocus();
+		else if (txtStock.hasFocus())
+	        txtStockMinimo.requestFocus();
+		else if (txtStockMinimo.hasFocus())
+	        txtStockCompra.requestFocus();
+		else if (txtStockCompra.hasFocus())
+	        txtTalle.requestFocus();
+	}
+	
+	@Override
+	protected void keyUpArrow() {
+		if (txtDescripcion.hasFocus())
+			txtCodigo.requestFocus();
+		else if (txtPrecioVenta.hasFocus())
+			txtDescripcion.requestFocus();
+		else if (txtPrecioCompra.hasFocus())
+			txtPrecioVenta.requestFocus();
+		else if (txtStock.hasFocus())
+			txtPrecioCompra.requestFocus();
+		else if (txtStockMinimo.hasFocus())
+			txtStock.requestFocus();
+		else if (txtStockCompra.hasFocus())
+			txtStockMinimo.requestFocus();
+		else if (txtTalle.hasFocus())
+			txtStockCompra.requestFocus();
 	}
 }

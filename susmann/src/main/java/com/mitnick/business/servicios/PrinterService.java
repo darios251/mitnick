@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mitnick.exceptions.PrinterException;
+import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.servicio.servicios.ICierreZServicio;
 import com.mitnick.utils.PropertiesManager;
@@ -23,6 +24,7 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
+import com.mitnick.utils.dtos.DireccionDto;
 import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
@@ -34,6 +36,9 @@ public class PrinterService {
 	
 	@Autowired
 	private ICierreZServicio cierreZServicio;
+	
+	@Autowired
+	protected IClienteDao clienteDao;
 	
 	protected Socket currentConnection;
 	protected PrintStream output = null;
@@ -226,12 +231,13 @@ public class PrinterService {
 				if (Validator.isNotNull(cliente.getDireccion().getCodigoPostal()))
 					direccionClienteL2 = direccionClienteL2.concat(cliente.getDireccion().getCodigoPostal());
 
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad()) 
-						&&  Validator.isNotNull(cliente.getDireccion().getCiudad().getDescripcion()))
-					direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getDescripcion() );
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia())
+				if (Validator.isNotNull(cliente.getDireccion().getCiudad())) {
+					if (Validator.isNotNull(cliente.getDireccion().getCiudad().getDescripcion()))
+						direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getDescripcion() );
+					if (Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia())
 						&& Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion()))
-					direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion() );
+							direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion() );
+				}
 			}
 			String cuit = "";
 			if (Validator.isNotNull(cliente.getCuit())){
@@ -281,9 +287,9 @@ public class PrinterService {
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println(venta.getTipoResponsabilidad().getTipoComprador());
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println("............");
+			output.println(getSaldoAFavor(venta.getCliente()));
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println("............");
+			output.println(getSaldoDeudor(venta.getCliente()));
 			output.println(NUMERO_DOCUMENTO_COMPRADOR);
 			output.println("");
 			output.println(FIN_DATOS_COMPRADOR);
@@ -395,26 +401,47 @@ public class PrinterService {
 		return true;
 	}
 	
+	private String getSaldoDeudor(ClienteDto cliente){
+		if (Validator.isNotNull(cliente)){
+			BigDecimal deuda = clienteDao.getSaldoDeudor(cliente);
+			if (Validator.isNotNull(deuda) && Validator.isMoreThanZero(deuda))
+				return "Tiene un saldo deudor de: ".concat(deuda.toString());
+		}
+		return "............";
+	}
+	
+	private String getSaldoAFavor(ClienteDto cliente){
+		if (Validator.isNotNull(cliente)){
+			BigDecimal favor = clienteDao.getSaldoFavor(cliente);
+			if (Validator.isNotNull(favor) && Validator.isMoreThanZero(favor))
+				return "Tiene un saldo a favor de: ".concat(favor.toString());
+		}
+		return "............";
+		
+	}
+
 	@SuppressWarnings("deprecation")
 	public boolean imprimirNotaCredito(VentaDto venta) {
 		try {
+			
 			connect();
 			output.println(NOTA_CREDITO);
 			checkStatus();
 			
 			output.println(DATOS_COMPRADOR);
 			
+			completarDatosClienteCredito(venta);
 			datosComprador(venta);
+			limpiarDatosClienteCredito(venta);
 			
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println(venta.getTipoResponsabilidad().getTipoComprador());
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println("............");
+			output.println(getSaldoAFavor(venta.getCliente()));
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println("............");
+			output.println(getSaldoDeudor(venta.getCliente()));
 			output.println(NUMERO_FACTURA_ORIGINAL);
 			output.println(venta.getNumeroTicketOriginal());
-			
 			output.println(FIN_DATOS_COMPRADOR);
 			
 			checkStatus();
@@ -520,6 +547,39 @@ public class PrinterService {
 		}
 		
 		return true;
+	}
+	
+	private void completarDatosClienteCredito(VentaDto venta){
+		ClienteDto cliente = venta.getCliente();
+		if (Validator.isNull(cliente)){
+			cliente = new ClienteDto();
+			cliente.setNombre("....");
+			venta.setCliente(cliente);
+		}
+						
+		if (Validator.isBlankOrNull(cliente.getDocumento()))
+			cliente.setDocumento("00000000");
+		if (Validator.isNull(cliente.getDireccion()) || Validator.isBlankOrNull(cliente.getDireccion().getDomicilio())){
+			DireccionDto domicilio = new DireccionDto();
+			domicilio.setDomicilio("....");
+			cliente.setDireccion(domicilio);
+		}
+			
+	}
+	
+	private void limpiarDatosClienteCredito(VentaDto venta){
+		ClienteDto cliente = venta.getCliente();
+		if (Validator.isNull(cliente.getId())){
+			venta.setCliente(null);
+		} else {
+			if ("00000000".equals(cliente.getDocumento()))
+				cliente.setDocumento("");
+			if (Validator.isNotNull(cliente.getDireccion()) && "....".equals(cliente.getDireccion().getDomicilio())){
+				cliente.setDireccion(null);
+			}
+		}
+			
+			
 	}
 	
 	@SuppressWarnings("deprecation")

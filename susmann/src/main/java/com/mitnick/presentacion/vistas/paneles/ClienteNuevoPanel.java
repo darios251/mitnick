@@ -3,6 +3,8 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -40,7 +42,7 @@ import com.mitnick.utils.dtos.TipoCompradorDto;
 
 @Panel("clienteNuevoPanel")
 @Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
-public class ClienteNuevoPanel extends BasePanel<ClienteController> {
+public class ClienteNuevoPanel extends BasePanel<ClienteController> implements KeyEventDispatcher {
 
 	private static final long serialVersionUID = 1L;
 
@@ -107,7 +109,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	private JLabel lblNombre;
 
 	private JLabel lblActividad;
-
+	
 	/**
 	 * @throws Exception
 	 * @wbp.parser.constructor
@@ -129,6 +131,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
 		}
+		cleanErrors();
 		try {
 			cmbCiudad.setSelectedIndex(0);
 			cmbProvincia.setSelectedIndex(0);
@@ -138,9 +141,10 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		
 		controller.cleanFields();
 	}
-
+	
 	@Override
 	protected void initializeComponents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		setSize(new Dimension(815, 470));
 		setLayout(null);
 
@@ -317,7 +321,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			btnAceptar.setBounds(465, 293, 60, 60);
 			btnAceptar.setFocusable(false);
 
-		}
+		}	
 		return btnAceptar;
 	}
 
@@ -365,7 +369,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		if (txtNombre == null) {
 			txtNombre = new JTextField();
 			txtNombre.setColumns(10);
-			txtNombre.setBounds(161, 122, 105, 20);
+			txtNombre.setBounds(161, 122, 220, 20);
 		}
 		return txtNombre;
 	}
@@ -458,7 +462,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			DefaultFormatterFactory dff = new DefaultFormatterFactory(emailFormatter);
 			txtEmail.setFormatterFactory(dff);
 			txtEmail.setColumns(10);
-			txtEmail.setBounds(161, 306, 105, 20);
+			txtEmail.setBounds(161, 306, 175, 20);
 		}
 		return txtEmail;
 	}
@@ -531,7 +535,6 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			provinciaModel.addItems(controller.obtenerProvincias());
 			cmbProvincia.setModel(provinciaModel);
 			cmbProvincia.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					cmbCiudad.removeAllItems();
@@ -593,6 +596,22 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 		this.cliente = clienteDto;
 	}
 
+	public void setEditable(boolean editable){
+		txtActividad.setEnabled(editable);
+		txtNombre.setEnabled(editable);
+		txtDocumento.setEnabled(editable);
+		txtCuit.setEnabled(editable);
+		txtTelefono.setEnabled(editable);
+		txtEmail.setEnabled(editable);
+		txtFechaNacimiento.setEnabled(editable);
+		txtDomicilio.setEnabled(editable);
+		txtCodigoPostal.setEnabled(editable);
+		cmbProvincia.setEnabled(editable);
+		cmbCiudad.setEnabled(editable);
+		cmbTipoComprador.setEnabled(editable);
+		btnAceptar.setEnabled(editable);
+	}
+	
 	@Override
 	public void actualizarPantalla() {
 		if (Validator.isNotNull(txtActividad)) {
@@ -603,7 +622,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			if (Validator.isNotNull(txtActividad) && Validator.isNotBlankOrNull(cliente.getActividad()))
 				txtActividad.setText(cliente.getActividad());
 			if (Validator.isNotNull(txtNombre) && Validator.isNotBlankOrNull(cliente.getNombre()))
-				txtNombre.setText(cliente.getNombre());
+				txtNombre.setText(cliente.getNombre().trim());
 			if (Validator.isNotNull(txtDocumento) && Validator.isNotBlankOrNull(cliente.getDocumento()))
 				txtDocumento.setText(cliente.getDocumento());
 			if (Validator.isNotNull(txtCuit) && Validator.isNotBlankOrNull(cliente.getCuit()))
@@ -615,7 +634,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			if (Validator.isNotNull(txtFechaNacimiento)	&& Validator.isNotNull(cliente.getFechaNacimiento()))
 				txtFechaNacimiento.setText(cliente.getFechaNacimiento());
 			if (Validator.isNotNull(txtDomicilio) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotBlankOrNull(cliente.getDireccion().getDomicilio()))
-				txtDomicilio.setText(cliente.getDireccion().getDomicilio());
+				txtDomicilio.setText(cliente.getDireccion().getDomicilio().trim());
 			if (Validator.isNotNull(txtCodigoPostal) && Validator.isNotNull(cliente.getDireccion())	&& Validator.isNotBlankOrNull(cliente.getDireccion().getCodigoPostal()))
 				txtCodigoPostal.setText(cliente.getDireccion().getCodigoPostal());
 			if (Validator.isNotNull(cmbProvincia) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getCiudad()))
@@ -636,6 +655,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 			cmbProvincia.setSelectedItem(null);
 			cmbCiudad.setSelectedItem(null);
 		}
+		this.setEditable(true);
 			
 	}
 
@@ -643,15 +663,47 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> {
 	public void setDefaultFocusField() {
 		this.defaultFocusField = txtActividad;
 	}
-	
+
 	@Override
-	protected void keyAdd() {
-		btnAceptar.doClick();
+	protected void keyDownArrow() {
+		if (txtActividad.hasFocus()) 
+			txtNombre.requestFocus();
+		else if (txtNombre.hasFocus())
+	        txtDocumento.requestFocus();
+		else if (txtDocumento.hasFocus())
+		    txtCuit.requestFocus();
+		else if (txtCuit.hasFocus())
+		    txtTelefono.requestFocus();
+		else if (txtTelefono.hasFocus())
+	        txtEmail.requestFocus();
+		else if (txtEmail.hasFocus())
+	        txtFechaNacimiento.requestFocus();
+		else if (txtFechaNacimiento.hasFocus())
+	        txtDomicilio.requestFocus();
+		else if (txtDomicilio.hasFocus())
+	        txtCodigoPostal.requestFocus();
+		else if (txtCodigoPostal.hasFocus())
+	        cmbProvincia.requestFocus();
 	}
 	
 	@Override
-	protected void keyPageDown() {
-		btnAceptar.doClick();
+	protected void keyUpArrow() {
+		if (txtNombre.hasFocus())
+			txtActividad.requestFocus();
+		else if (txtDocumento.hasFocus())
+			txtNombre.requestFocus();
+		else if (txtCuit.hasFocus())
+			txtDocumento.requestFocus();
+		else if (txtTelefono.hasFocus())
+			txtCuit.requestFocus();
+		else if (txtEmail.hasFocus())
+			txtTelefono.requestFocus();
+		else if (txtFechaNacimiento.hasFocus())
+			txtEmail.requestFocus();
+		else if (txtDomicilio.hasFocus())
+			txtFechaNacimiento.requestFocus();
+		else if (txtCodigoPostal.hasFocus())
+			txtDomicilio.requestFocus();		
 	}
 	
 	@Override

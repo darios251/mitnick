@@ -65,6 +65,7 @@ public class ProveedorNuevoPanel extends BasePanel<ProveedorController> {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
 		}
+		cleanErrors();
 	}
 
 	@Override

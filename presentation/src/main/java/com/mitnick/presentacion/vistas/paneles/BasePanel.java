@@ -175,8 +175,6 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 		super.setVisible(aFlag);
 		
 		if(aFlag) {
-			this.limpiarCamposPantalla();
-//			this.actualizarPantalla();
 			setFocusTraversalPolicy();
 			if(Validator.isNotNull(defaultFocusField))
 				defaultFocusField.requestFocus();
@@ -189,8 +187,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 	private static List<Integer> objectIds = new ArrayList<Integer>();
 	
 	public synchronized boolean dispatchKeyEvent(KeyEvent e) {
-		if(this.isFocusable() && this.isVisible() && e.getID() == KeyEvent.KEY_RELEASED
-			&& (BaseDialog.getCurrentDialog() == null || (BaseDialog.getCurrentDialog() != null && !BaseDialog.getCurrentDialog().isVisible()))) {
+		if(this.isFocus() && e.getID() == KeyEvent.KEY_RELEASED) {
 			int identityHashCode = System.identityHashCode(e);
 			if(!objectIds.contains(identityHashCode)) {
 				objectIds.add(identityHashCode);
@@ -218,6 +215,8 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 					case KeyEvent.VK_END: keyEnd();	break;
 					case KeyEvent.VK_INSERT: keyInsert(); break;
 					case KeyEvent.VK_DELETE: keySupr(); break;
+					case 40: keyDownArrow(); break;
+					case 38: keyUpArrow(); break;
 					default: break;
 				}
 			}
@@ -225,6 +224,8 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 		return false;
 	}
 	
+	protected void keyDownArrow() {}	
+	protected void keyUpArrow() {}
 	protected void keyPageDown() {}	
 	protected void keyPageUp() {}
 	protected void keyHome() {}
@@ -268,6 +269,26 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 		return defaultFocusField;
 	}
 
+	protected void cleanErrors(){
+		for (Component component : getComponents()) {
+			if (component instanceof JTextField){
+				((JTextField) component).setBorder(new JComboBox().getBorder());
+			}				
+			if (component instanceof JLabel && ((JLabel) component).getForeground().equals(Color.RED))
+				((JLabel) component).setText("");
+		}	
+		
+	}
+	
+	private boolean isFocus(){
+		for (Component component : getComponents()) {
+			if (component.hasFocus())
+				return true;
+		}	
+		return false;
+	}
+	
+	
 	public abstract void setDefaultFocusField();
 	
 	protected abstract void setFocusTraversalPolicy();

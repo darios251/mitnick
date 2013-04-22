@@ -136,6 +136,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		getLblSubtotalValor().setText(VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	}
 
+	
 	public JTable getTable() {
 		if(table == null) {
 			table = new JTable(getModel());

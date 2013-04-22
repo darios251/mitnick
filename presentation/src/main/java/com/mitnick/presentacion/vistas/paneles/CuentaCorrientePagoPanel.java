@@ -3,6 +3,8 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -39,7 +41,7 @@ import com.mitnick.utils.dtos.MedioPagoDto;
 import com.mitnick.utils.dtos.PagoDto;
 
 @Panel("cuentaCorrientePagoPanel")
-public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
+public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> implements KeyEventDispatcher {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -98,6 +100,7 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 
 	@Override
 	protected void initializeComponents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
@@ -601,4 +604,8 @@ public class CuentaCorrientePagoPanel extends BasePanel<ClienteController> {
 		this.cuotas = cuotas;
 	}
 
+	@Override
+	protected void keyF5() {
+		controller.finalizarPagoCuotaParcial();
+	}
 }
