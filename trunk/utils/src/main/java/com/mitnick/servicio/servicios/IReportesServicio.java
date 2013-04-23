@@ -116,5 +116,12 @@ public interface IReportesServicio {
 	@Secured(value={"ROLE_ADMIN"})
 	public void consultarEstadoCuentasPorCliente(ReportesDto filtro);
 	
+	/**
+	 * Obtiene el estado de cuenta de todos los clientes.
+	 * @param filtro
+	 * @return
+	 */
+	@Secured(value={"ROLE_ADMIN"})
+	public void reporteCaja(ReportesDto filtro);
 
 }

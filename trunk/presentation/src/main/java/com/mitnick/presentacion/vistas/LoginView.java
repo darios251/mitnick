@@ -98,8 +98,8 @@ public class LoginView extends JDialog {
 			setVisible(true);
 //		}
 		if(!loginRequired) {
-			txtUser.setText("admin");
-			txtPassword.setText("admin");
+			txtUser.setText(PropertiesManager.getProperty("application.user"));
+			txtPassword.setText(PropertiesManager.getProperty("application.user.password"));
 		}
 	}
 

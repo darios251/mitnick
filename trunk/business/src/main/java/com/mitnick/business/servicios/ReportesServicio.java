@@ -29,10 +29,12 @@ import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IReporteDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.CierreZ;
+import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
+import com.mitnick.servicio.servicios.dtos.ComprobanteDto;
 import com.mitnick.servicio.servicios.dtos.FacturaDto;
 import com.mitnick.servicio.servicios.dtos.ReporteCompraSugeridaDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
@@ -308,6 +310,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		BigDecimal totaltarjeta = new BigDecimal(0);
 		BigDecimal totalNC = new BigDecimal(0);
 		BigDecimal totalCC = new BigDecimal(0);
+		BigDecimal totalDev = new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
 		try {
 			List<Venta> ventas = ventaDao.findByFiltro(filtro);
@@ -315,6 +318,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				ReporteVentasResultadoDTO dto = null;
 				if (TRANSACCIONAL == tipo) {
 					dto = new ReporteVentasResultadoDTO();
+					dto.setFecha(DateHelper.getFecha(venta.getFecha()));
 					ingresos.add(dto);
 				} else if (DIARIO == tipo)
 					dto = getDTOFecha(ingresos, venta.getFecha());
@@ -323,7 +327,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				else if (ANUAL == tipo)
 					dto = getDTOAnio(ingresos, venta.getFecha());
 
-				dto.setFecha(venta.getFecha());
+				
 				if (venta.isVenta()) {
 					dto.setTotal(dto.getTotal().add(venta.getTotal()));
 					total = total.add(venta.getTotal());
@@ -370,12 +374,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					}
 				} else {
 					// si es una devolucion no se usan medios de pago - no afecta los totales ya que no se devuelve dinero efectivo
-//					total = total.subtract(venta.getTotal());
-//					dto.setTotal(dto.getTotal().subtract(venta.getTotal()));
+					totalDev = totalDev.add(venta.getTotal());
+					dto.setTotalDev(dto.getTotalDev().add(venta.getTotal()));
+					dto.setTotal(dto.getTotal().subtract(venta.getTotal()));
 				}
 
 			}
 
+			total = total.subtract(totalDev);
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream("/reports/ventas.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
@@ -383,6 +389,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			parameters.put("totalTarjeta", totaltarjeta.toString());
 			parameters.put("totalNC", totalNC.toString());
 			parameters.put("totalCC", totalCC.toString());
+			parameters.put("totalDev", totalDev.toString());
 			parameters.put("total", total.toString());
 
 			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
@@ -400,39 +407,116 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}
 
 	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public void reporteCaja(ReportesDto filtro) {
+		if (filtro.getFechaInicio() == null)
+			filtro.setFechaInicio(new Date());
+		if (filtro.getFechaFin() == null)
+			filtro.setFechaFin(new Date());
+		
+		// reporte de transacciones realizadas sin agrupar
+		List<ComprobanteDto> comprobantes = new ArrayList<ComprobanteDto>();
+		BigDecimal totalContado = new BigDecimal(0);
+		BigDecimal totalRecibo = new BigDecimal(0);
+		try {
+			List<Venta> ventas = ventaDao.findByFiltro(filtro);
+			for (Venta venta : ventas) {
+				if (venta.isVenta()) {
+					for (Pago pago : venta.getPagos()) {
+						if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())
+								|| MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())
+								||MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo()))
+							totalContado = totalContado.add(pago.getPago());
+					}
+				}
+			}
+			
+			List<Pago> recibos = cuotaDao.getPagosCuotas(filtro);
+			for (Pago pago: recibos) {
+				if (Validator.isNotNull(pago.getCuota()) && Validator.isNotNull(pago.getCuota().getCliente()) ){
+					ComprobanteDto comprobante = getComprobanteCliente(comprobantes, pago.getCuota().getCliente());
+					BigDecimal monto = comprobante.getMonto();
+					monto = monto.add(pago.getPago());
+					comprobante.setMonto(monto);
+					totalRecibo = totalRecibo.add(monto);
+				}
+					
+			}
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+					.getClass().getResourceAsStream("/reports/caja.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("totalContado", totalContado.toString());
+			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
+			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));
+			parameters.put("totalRecibos", totalRecibo.toString());
+			
+			JRDataSource dr = new JRBeanCollectionDataSource(comprobantes);
 
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
+					parameters, dr);
+			JasperViewer.viewReport(jasperPrint, false);
+
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException(
+					"Error al intentar obtener el reporte de ventas", e);
+		}
+
+	}
+
+	private ComprobanteDto getComprobanteCliente(List<ComprobanteDto> comprobantes, Cliente cliente){
+		for (ComprobanteDto comprobante : comprobantes) {
+			if (comprobante.getIdCliente().equals(cliente))
+				return comprobante;
+		}
+		ComprobanteDto comprobante = new ComprobanteDto();
+		comprobante.setIdCliente(cliente.getId());
+		comprobante.setCliente(cliente.getNombre());
+		comprobantes.add(comprobante);
+		return comprobante;
+	}
+	
 	private ReporteVentasResultadoDTO getDTOFecha(
 			List<ReporteVentasResultadoDTO> ingresos, Date fecha) {
 		for (ReporteVentasResultadoDTO dto : ingresos) {
 			String fechaA = DateHelper.getFecha(fecha);
-			String fechaB = DateHelper.getFecha(dto.getFecha());
+			String fechaB =dto.getFecha();
 			if (fechaA.equals(fechaB))
 				return dto;
 		}
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
-		dto.setFecha(fecha);
+		dto.setFecha(DateHelper.getFecha(fecha));
 		dto.setTotal(new BigDecimal(0));
 		ingresos.add(dto);
 		return dto;
 	}
 
+	/**
+	 * dto.getFecha format: mes - año (Enero-2012)
+	 * @param ingresos
+	 * @param fecha
+	 * @return
+	 */
 	private ReporteVentasResultadoDTO getDTOMes(
 			List<ReporteVentasResultadoDTO> ingresos, Date fecha) {
+		Calendar calendario = Calendar.getInstance();
+		calendario.setTime(fecha);
+		int month = calendario.get(Calendar.MONTH);
+		int year = calendario.get(Calendar.YEAR);
+		String mes = DateHelper.getMes(month);
+		String año = String.valueOf(year);
 		for (ReporteVentasResultadoDTO dto : ingresos) {
-			Calendar calendario = Calendar.getInstance();
-			calendario.setTime(fecha);
-			int month = calendario.get(Calendar.MONTH);
-			int year = calendario.get(Calendar.YEAR);
-			Calendar calendario2 = Calendar.getInstance();
-			calendario2.setTime(dto.getFecha());
-			int month2 = calendario2.get(Calendar.MONTH);
-			int year2 = calendario2.get(Calendar.YEAR);
-
-			if (month == month2 && year == year2)
+			String[] fechaDto = dto.getFecha().split("-");
+			if (fechaDto[0].equals(mes) && fechaDto[1].equals(año))
 				return dto;
 		}
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
-		dto.setFecha(fecha);
+		dto.setFecha(mes.concat("-").concat(año));
 		dto.setTotal(new BigDecimal(0));
 		ingresos.add(dto);
 		return dto;
@@ -440,19 +524,17 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 	private ReporteVentasResultadoDTO getDTOAnio(
 			List<ReporteVentasResultadoDTO> ingresos, Date fecha) {
+		Calendar calendario = Calendar.getInstance();
+		calendario.setTime(fecha);
+		int year = calendario.get(Calendar.YEAR);
+		String año = String.valueOf(year);
 		for (ReporteVentasResultadoDTO dto : ingresos) {
-			Calendar calendario = Calendar.getInstance();
-			calendario.setTime(fecha);
-			int year = calendario.get(Calendar.YEAR);
-			Calendar calendario2 = Calendar.getInstance();
-			calendario2.setTime(dto.getFecha());
-			int year2 = calendario2.get(Calendar.YEAR);
-
-			if (year == year2)
+			String fechaDto = dto.getFecha();
+			if (fechaDto.equals(año))
 				return dto;
 		}
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
-		dto.setFecha(fecha);
+		dto.setFecha(año);
 		dto.setTotal(new BigDecimal(0));
 		ingresos.add(dto);
 		return dto;
