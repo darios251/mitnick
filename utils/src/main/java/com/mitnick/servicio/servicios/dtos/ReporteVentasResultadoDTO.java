@@ -1,22 +1,29 @@
 package com.mitnick.servicio.servicios.dtos;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 
 	private static final long serialVersionUID = 1L;
 
-	private Date fecha;
+	private String fecha;
 	private BigDecimal totalEfectivo= new BigDecimal(0);
 	private BigDecimal totalCC= new BigDecimal(0);
 	private BigDecimal totalTarjeta= new BigDecimal(0);
 	private BigDecimal totalDebito= new BigDecimal(0);
 	private BigDecimal totalCredito= new BigDecimal(0);
 	private BigDecimal totalNC= new BigDecimal(0);
+	private BigDecimal totalDev= new BigDecimal(0);
 	private BigDecimal total= new BigDecimal(0);
 	
+	public BigDecimal getTotalDev() {
+		return totalDev;
+	}
 
+	public void setTotalDev(BigDecimal totalDev) {
+		this.totalDev = totalDev;
+	}
+	
 	public BigDecimal getTotalDebito() {
 		return totalDebito;
 	}
@@ -33,11 +40,11 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 		this.totalCredito = totalCredito;
 	}
 
-	public Date getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 	
-	public void setFecha(Date fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 

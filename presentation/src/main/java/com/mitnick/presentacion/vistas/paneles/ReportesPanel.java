@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -39,6 +40,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	private JLabel lblFechaInicio;
 	private JLabel lblFechaFin;
 
+	private JButton btnReporteCaja;
 	private JButton btnReporteVentas;
 	private JButton btnReporteVentasDiario;
 	private JButton btnReporteVentasMensual;
@@ -89,6 +91,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getTxtFechaInicio());
 		add(getTxtFechaFinal());
 		
+		add(getBtnReporteCaja());
 		add(getBtnReporteVentas());
 		add(getBtnReporteVentasDiario());
 		add(getBtnReporteVentasMensual());
@@ -107,7 +110,25 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		this.actualizarPantalla();
 	}
 
+	public JButton getBtnReporteCaja() {
+		if (btnReporteCaja == null) {
+			btnReporteCaja = new JButton();
+			btnReporteCaja.setText(PropertiesManager.getProperty("reportePanel.label.reporteCaja"));
+			btnReporteCaja.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteCaja"));
 
+			btnReporteCaja.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteCaja.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteCaja.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteCaja.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarCaja();
+				}
+			});
+			btnReporteCaja.setBounds(200, 120, 330, 20);
+		}
+		return btnReporteCaja;
+	}
 
 	public JButton getBtnReporteVentas() {
 		if (btnReporteVentas == null) {
@@ -365,11 +386,32 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		
 	}
 	
-	protected void consultarIngresos(int tipo) {
+	protected void consultarCaja() {
 		try {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
+			controller.reporteCaja(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
+	protected void consultarIngresos(int tipo) {
+		try {
+			String año = JOptionPane.showInputDialog(PropertiesManager.getProperty("reportePanel.query.ingreseAno"));
+			ReportesDto dto = new ReportesDto();
+			if (año!=null && !año.equals("")){
+				if (Validator.isNumeric(año) && año.length()==4){
+					String inicio = "01/01/".concat(año);
+					String fin = "31/12/".concat(año);
+					dto.setFechaInicio(DateHelper.getFecha(inicio));
+					dto.setFechaFin(DateHelper.getFecha(fin));
+				}
+			} else {
+				dto.setFechaInicio(getFechaInicio());
+				dto.setFechaFin(getFechaFinal());
+			}
 			controller.reporteIngresos(dto, tipo);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);

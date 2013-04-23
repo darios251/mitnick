@@ -24,6 +24,15 @@ public class ReportesController extends BaseController {
 	private ReportesPanel reportesPanel;
 	
 
+	public void reporteCaja(ReportesDto dto) {
+		try {
+			getReportesServicio().reporteCaja(dto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+	}
+
 	public void reporteIngresos(ReportesDto dto, int tipo) {
 		try {
 			getReportesServicio().reporteIngresos(dto, tipo);
