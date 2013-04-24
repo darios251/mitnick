@@ -96,8 +96,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getBtnReporteVentasDiario());
 		add(getBtnReporteVentasMensual());
 		add(getBtnReporteVentasAnual());
-		
-		add(getBtnListadoDeControl());
+				
 		add(getBtnListadoDeRecibos());		
 		add(getBtnReporteDeEstado());
 		add(getBtnReporteDeEstadoPorCliente());

@@ -10,9 +10,6 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="fecha" class="java.util.Date">
-		<fieldDescription><![CDATA[fecha]]></fieldDescription>
-	</field>
 	<field name="totalCC" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalCC]]></fieldDescription>
 	</field>
@@ -27,6 +24,9 @@
 	</field>
 	<field name="total" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.lang.String">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -100,11 +100,6 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement uuid="43dc5d1b-fa5c-4e52-89f4-d8c3263458ea" x="0" y="0" width="92" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement uuid="457c2d8f-1c20-4db8-9a57-ed3995723b14" x="129" y="0" width="92" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{totalCredito}]]></textFieldExpression>
@@ -123,6 +118,11 @@
 				<reportElement uuid="cf5afd0c-a4b9-4676-a446-d0eb48878f85" x="444" y="0" width="92" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6621ede7-6436-4055-b9f7-8946e38ed4eb" x="3" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
