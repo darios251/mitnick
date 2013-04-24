@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.validation.ConstraintViolation;
 
@@ -284,6 +285,10 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 		for (Component component : getComponents()) {
 			if (component.hasFocus())
 				return true;
+			if (component instanceof JScrollPane){
+				if (Validator.isNotNull(((JScrollPane)component).getViewport()) && Validator.isNotNull(((JScrollPane)component).getViewport().getView()) && ((JScrollPane)component).getViewport().getView().hasFocus())
+					return true;
+			}
 		}	
 		return false;
 	}
