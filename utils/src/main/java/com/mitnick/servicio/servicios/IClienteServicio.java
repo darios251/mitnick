@@ -1,5 +1,6 @@
 package com.mitnick.servicio.servicios;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.security.access.annotation.Secured;
@@ -58,5 +59,8 @@ public interface IClienteServicio {
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	public void cancelarComprobante(String comprobante);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public BigDecimal getSaldoDeudor(ClienteDto cliente);
 	
 }
