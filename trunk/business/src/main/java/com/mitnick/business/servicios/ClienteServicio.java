@@ -417,4 +417,9 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		}
 		
 	}
+	
+	
+	public BigDecimal getSaldoDeudor(ClienteDto cliente) {
+		return clienteDao.getSaldoDeudor(cliente);
+	}
 }

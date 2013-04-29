@@ -88,6 +88,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		
 	public void limpiarComboPantalla() {
 		getCmbTipoComprador().setSelectedIndex(0);
+		getTxtNombre().setText("");
 	}
 	
 	@Override
@@ -136,7 +137,11 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		return btnBuscar;
 	}
 	
-
+	private void mensajeCuentaPendiente(BigDecimal cuentaPendiente){
+		if (Validator.isMoreThanZero(cuentaPendiente))			
+			mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.cuentaPendiente", new Object[]{ cuentaPendiente.toString() }));
+	}
+	
 	protected void continuar() {
 		try {
 			controller.validarTotalVenta();
@@ -145,7 +150,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			
 			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
 				controller.validarCliente();
-				controller.agregarCliente();
+				mensajeCuentaPendiente(controller.agregarCliente());
 				
 				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.clienteOK");
 				if (mostrarMsg)
@@ -155,7 +160,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 				if (index>-1){
 					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.consulta.agregar"), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.YES_NO_CANCEL_OPTION);
 					if (option == JOptionPane.YES_OPTION)
-						controller.agregarCliente();
+						mensajeCuentaPendiente(controller.agregarCliente());
 					else if (option == JOptionPane.NO_OPTION)
 						controller.desagregarCliente();
 					else
@@ -452,7 +457,9 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 	
 	public void limpiarClientes(){
+		getCmbTipoComprador().setSelectedIndex(0);
 		setTipoComprador(null);
+		getTxtNombre().setText("");
 		getModel().setClientes(new ArrayList<ClienteDto>());
 	}
 	

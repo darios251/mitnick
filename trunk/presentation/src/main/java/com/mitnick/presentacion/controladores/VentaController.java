@@ -486,7 +486,7 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método quitarCliente");
 	}
 
-	public void agregarCliente() {
+	public BigDecimal agregarCliente() {
 		logger.debug("Entrando al método agregarCliente");
 
 		ClienteDto cliente = null;
@@ -507,13 +507,17 @@ public class VentaController extends BaseController {
 		try {
 			ventaServicio
 					.agregarCliente(cliente, VentaManager.getVentaActual());
+			
+			logger.info("El cliente : " + cliente
+					+ " se agregó correctamente a la venta.");
+			logger.debug("Saliendo del método agregarCliente");
+			
+			return clienteServicio.getSaldoDeudor(cliente);
 		} catch (BusinessException e) {
 			throw new PresentationException(e);
 		}
 
-		logger.info("El cliente : " + cliente
-				+ " se agregó correctamente a la venta.");
-		logger.debug("Saliendo del método agregarCliente");
+		
 	}
 
 	public void validarCliente() {
