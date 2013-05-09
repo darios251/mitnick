@@ -2,9 +2,11 @@ package com.mitnick.presentacion.vistas.paneles;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.table.TableRowSorter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,6 +44,8 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	
 	private JLabel lblCliente;
 	
+	private JLabel lblTotal;
+	
 	private static final long serialVersionUID = 1L;
 	
 	private List<CuotaDto> cuotas;
@@ -57,7 +60,6 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	private JButton btnCancelarComprobante;
 	private JButton btnVolver;
 	private CuotaTableModel model;
-	private TableRowSorter<CuotaTableModel> sorter;
 	
 	@Autowired(required = true)
 	public CuentaCorrientePanel(@Qualifier("clienteController") ClienteController clienteController) {
@@ -97,6 +99,8 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		add(getBtnVolver());
 		
 		add(getPnlCliente());		
+		
+		add(getLblTotal());
 		
 		setFocusTraversalPolicy();
 	}
@@ -229,9 +233,12 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						String nroComprobante = JOptionPane.showInputDialog(PropertiesManager.getProperty("clientePanel.cuentaCorriente.messageQuery.cancelar.nroComprobante"));
-						controller.cancelarComprobante(nroComprobante);
-						mostrarMensajeInformativo(PropertiesManager.getProperty("clientePanel.cuentaCorriente.messageQuery.cancelar.nroComprobante.ok"));
-						actualizarPantalla();
+						if (Validator.isNotBlankOrNull(nroComprobante)){
+							if (controller.cancelarComprobante(nroComprobante)){
+								mostrarMensajeInformativo(PropertiesManager.getProperty("clientePanel.cuentaCorriente.messageQuery.cancelar.nroComprobante.ok"));
+								actualizarPantalla();
+							}
+						}
 					}
 					catch(PresentationException ex) {
 						mostrarMensaje(ex);
@@ -265,7 +272,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		return btnVolver;
 	}
 	
-	private void nuevaCuota(){
+	public void nuevaCuota(){
 		CuotaDto cuotaDto = new CuotaDto();
 		cuotaDto.setClienteDto(getCliente());
 		actualizarCuotas(cuotaDto);
@@ -338,20 +345,9 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		return lblDomicilio;
 	}
 
-	
-	
-
-	public TableRowSorter<CuotaTableModel> getSorter() {
-		if (sorter == null) {
-			sorter = new TableRowSorter<CuotaTableModel>(getModel());
-		}
-		return sorter;
-	}
-
 	public JTable getTable() {
 		if (table == null) {
 			table = new JTable(getModel());
-			table.setRowSorter(getSorter());
 			table.setBounds(0, 0, 1, 1);
 		}
 		return table;
@@ -364,6 +360,15 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		return model;
 	}
 
+	private JLabel getLblTotal() {
+		if(lblTotal == null) {
+			lblTotal = new JLabel(PropertiesManager.getProperty("cuentaCorrientePanel.total.cuotas", new Object[]{new BigDecimal(0)}));
+			lblTotal.setFont(new java.awt.Font("Tahoma", Font.BOLD, 14));
+			lblTotal.setBounds(580, 441, 130, 60);	
+		}
+		return lblTotal;
+	}
+	
 	@Override
 	public void actualizarPantalla() {	
 		controller.actualizarCuotas(getCliente());
@@ -381,7 +386,18 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 			lblTelefono.setText("");		
 		
 		model.setCuotas(getCuotas());
+		actualizarTotal();
 		
+	}
+	
+	private void actualizarTotal(){
+		BigDecimal total = new BigDecimal(0);
+		if(Validator.isNotNull(cuotas)){
+			for (CuotaDto cuota: cuotas){
+				total = total.add(cuota.getFaltaPagar());
+			}
+		}
+		lblTotal.setText(PropertiesManager.getProperty("cuentaCorrientePanel.total.cuotas", new Object[]{total}));
 	}
 
 	@Override

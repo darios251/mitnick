@@ -21,12 +21,14 @@ import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IProvinciaDao;
 import com.mitnick.persistence.daos.ITipoDao;
+import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Ciudad;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Direccion;
 import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Provincia;
+import com.mitnick.persistence.entities.Venta;
 
 @Service("dbImport")
 public class DBImport {
@@ -47,6 +49,9 @@ public class DBImport {
 
 	@Autowired
 	protected IMarcaDao marcaDao;
+	
+	@Autowired
+	protected IVentaDAO ventaDao;
 
 	@Autowired
 	protected ITipoDao tipoDao;
@@ -79,11 +84,26 @@ public class DBImport {
 		try {
 //			marcas = marcaDao.getAll();
 //			migrarProductos(path);
-			santoTome = ciudadDao.getById(new Long(1864));
-			migrarClientes(path);
-
+//			santoTome = ciudadDao.getById(new Long(1864));
+//			migrarClientes(path);
+			updateTicketNumber();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+		}
+	}
+	
+	private void updateTicketNumber(){
+		List<Venta> ventas = ventaDao.getAll();
+		for (Venta venta : ventas){
+			String nro = venta.getNumeroTicket();
+			String orig = venta.getNumeroTicketOriginal();
+			if (nro!=null)
+				venta.setNumeroTicket("OLD"+nro);
+			else
+				venta.setNumeroTicket("OLD");
+			if (orig!=null)
+				venta.setNumeroTicketOriginal("OLD"+orig);
+			ventaDao.save(venta);
 		}
 	}
 

@@ -23,7 +23,7 @@ public class Migracion {
 		}
 
 	}
-	
+		
 	public static void main(String[] args) {
 //		if (args.length!=1)
 //			logger.error("El argumento PATH donde se encuentran los archivos de base de datos es obligatorio!");

@@ -295,7 +295,7 @@ public class PrincipalView extends JFrame
 					getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
 					if (Validator.isNotNull(venta)){
 						cliente = venta.getCliente();
-						productos = VentaHelper.getProductosDevolucion(venta);						
+						productos = VentaHelper.getProductosPrecioVendido(venta);						
 						VentaManager.getVentaActual().setCliente(cliente);
 						VentaManager.getVentaActual().setProductos(productos);
 						VentaManager.getVentaActual().setNumeroTicketOriginal(nroTicket);

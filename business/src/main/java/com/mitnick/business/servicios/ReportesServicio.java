@@ -50,6 +50,7 @@ import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.VentaDto;
 
 @SuppressWarnings("rawtypes")
 @Service("reportesServicio")
@@ -420,15 +421,23 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		List<ComprobanteDto> comprobantes = new ArrayList<ComprobanteDto>();
 		BigDecimal totalContado = new BigDecimal(0);
 		BigDecimal totalRecibo = new BigDecimal(0);
+		BigDecimal totalCredito = new BigDecimal(0);
+		BigDecimal totalDebito = new BigDecimal(0);
+		BigDecimal totalEfectivo = new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		
 		try {
 			List<Venta> ventas = ventaDao.findByFiltro(filtro);
 			for (Venta venta : ventas) {
 				if (venta.isVenta()) {
 					for (Pago pago : venta.getPagos()) {
-						if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())
-								|| MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())
-								||MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo()))
-							totalContado = totalContado.add(pago.getPago());
+						if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo()))
+							totalEfectivo = totalEfectivo.add(pago.getPago());
+						if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo()))
+							totalDebito = totalDebito.add(pago.getPago());
+						if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo()))
+							totalCredito = totalCredito.add(pago.getPago());							
+						totalContado = totalContado.add(pago.getPago());
 					}
 				}
 			}
@@ -441,34 +450,50 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					monto = monto.add(pago.getPago());
 					comprobante.setMonto(monto);
 					totalRecibo = totalRecibo.add(monto);
-				}
-					
+				}				
 			}
+			total = totalContado.add(totalRecibo);
 			
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream("/reports/caja.jasper"));
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("totalContado", totalContado.toString());
+			parameters.put("totalCredito", totalCredito.toString());
+			parameters.put("totalDebito", totalDebito.toString());
+			parameters.put("totalEfectivo", totalEfectivo.toString());
+			parameters.put("total", total.toString());
 			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
 			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));
 			parameters.put("totalRecibos", totalRecibo.toString());
 			
+			JasperPrint jasperPrint = null;
+			if (Validator.isEmptyOrNull(comprobantes)){
+				ComprobanteDto compTemp = new ComprobanteDto();
+				compTemp.setCliente("No hay recibos");
+				compTemp.setMonto(new BigDecimal(0));
+				comprobantes.add(compTemp);
+			}
+				
 			JRDataSource dr = new JRBeanCollectionDataSource(comprobantes);
-
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
-					parameters, dr);
+			jasperPrint = JasperFillManager.fillReport(reporte,parameters, dr);			
 			JasperViewer.viewReport(jasperPrint, false);
 
 		} catch (PersistenceException e) {
 			throw new BusinessException(e,
-					"Error al intentar obtener el reporte de ventas");
+					"Error al intentar obtener el reporte de caja");
 		} catch (JRException e) {
 			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas", e);
+					"Error al intentar obtener el reporte de caja", e);
 		}
 
 	}
 
+	@Transactional(readOnly = true)
+	@Override
+	public void reporteCajero(ReportesDto filtro) {
+		this.reporteCaja(filtro);
+	}
+	
 	private ComprobanteDto getComprobanteCliente(List<ComprobanteDto> comprobantes, Cliente cliente){
 		for (ComprobanteDto comprobante : comprobantes) {
 			if (comprobante.getIdCliente().equals(cliente))
@@ -829,4 +854,17 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public void consultarTransaccion(String nroTrx){
+		Venta venta = ventaDao.findTransactionByNumeroFactura(nroTrx);
+		if (Validator.isNull(venta))
+			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacción con el número ingresado");
+		try {
+			VentaDto ventaDto = (VentaDto) entityDTOParser.getDtoFromEntity(venta);
+			ventaDao.generarFactura(ventaDto, true);
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar obtener el comprobante de la transacción");
+		}
+	}
 }

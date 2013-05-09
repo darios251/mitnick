@@ -17,7 +17,7 @@ public interface IVentaDAO extends GenericDao<Venta, Long>{
 	
 	Venta saveOrUpdate(Venta venta);
 	
-	void generarFactura(VentaDto venta);
+	void generarFactura(VentaDto venta, boolean duplicado);
 	
 	List<Venta> findByClient(Long cliente);
 	
@@ -31,4 +31,5 @@ public interface IVentaDAO extends GenericDao<Venta, Long>{
 	
 	public void actualizarCreditos(List<CuotaDto> cuotas);
 	
+	public Venta findTransactionByNumeroFactura(String numeroTicket);
 }

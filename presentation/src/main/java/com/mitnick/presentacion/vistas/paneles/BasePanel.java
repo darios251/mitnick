@@ -51,6 +51,10 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 		initializePanel();
 	}
 	
+	protected void mostrarPanel(){
+		
+	}
+	
 	protected void initializePanel () {
 		setFocusCycleRoot(true);		
 		setVisible(false);

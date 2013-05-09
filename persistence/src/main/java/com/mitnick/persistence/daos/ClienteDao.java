@@ -222,13 +222,15 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("fechaInicioActividadEmpresa", empresa.getFechaInicioActividad());
 			parameters.put("tipoIva", "Consumidor Final");
 			parameters.put("nombreCliente", cliente.getNombre());
-			if (Validator.isNotNull(cliente.getDireccion()))
-				parameters.put("direccionCliente", cliente.getDireccion()
-						.getDomicilio()
-						+ " "
-						+ cliente.getDireccion().getCiudad().getDescripcion());
-			else
-				parameters.put("direccionCliente","");
+			String direccion = "";
+			
+			if (Validator.isNotNull(cliente.getDireccion())) {
+				direccion = direccion.concat(cliente.getDireccion().getDomicilio());
+				if (Validator.isNotNull(cliente.getDireccion().getCiudad()))
+					direccion = direccion.concat(" ").concat(cliente.getDireccion().getCiudad().getDescripcion());
+			}
+			
+			parameters.put("direccionCliente",direccion);
 			BigDecimal saldoTotal = getSaldoDeudor(cliente);
 
 			BigDecimal saldoPendiente = saldoTotal.subtract(pagoComprobante);
@@ -374,10 +376,14 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("saldoDeudor", getSaldoDeudor(cliente).toString());
 			parameters.put("saldoAFavor", getSaldoFavor(cliente).toString());
 			parameters.put("nombreCliente", cliente.getNombre());
-			if (Validator.isNotNull(cliente.getDireccion()))
-				parameters.put("direccionCliente", cliente.getDireccion().getDomicilio() + " "+ cliente.getDireccion().getCiudad().getDescripcion());
-			else
-				parameters.put("direccionCliente", "");
+			String direccion = "";
+			if (Validator.isNotNull(cliente.getDireccion())){
+				direccion = direccion.concat(cliente.getDireccion().getDomicilio());
+				if (Validator.isNotNull(cliente.getDireccion().getCiudad()))
+					direccion = direccion.concat(" ").concat(cliente.getDireccion().getCiudad().getDescripcion());
+			}
+			
+			parameters.put("direccionCliente", direccion);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
 
