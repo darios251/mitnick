@@ -126,7 +126,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	}
 
 	@Override
-	protected void limpiarCamposPantalla() {
+	public void limpiarCamposPantalla() {
 		for (Component component : getComponents()) {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
@@ -138,7 +138,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			cmbTipoComprador.setSelectedIndex(0);
 		} catch (Exception e) {
 		}
-		
+		cliente = null;
 		controller.cleanFields();
 	}
 	

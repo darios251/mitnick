@@ -117,11 +117,24 @@ public interface IReportesServicio {
 	public void consultarEstadoCuentasPorCliente(ReportesDto filtro);
 	
 	/**
-	 * Obtiene el estado de cuenta de todos los clientes.
+	 * Obtiene el reporte de caja.
 	 * @param filtro
 	 * @return
 	 */
 	@Secured(value={"ROLE_ADMIN"})
 	public void reporteCaja(ReportesDto filtro);
-
+	
+	/**
+	 * Obtiene el reporte de caja generado por el cajero, no pide password.
+	 * @param filtro
+	 * @return
+	 */
+	public void reporteCajero(ReportesDto filtro);
+	
+	/**
+	 * Obtiene un duplicado del comprobante original de la transacción.
+	 * @param nroTrx
+	 */
+	public void consultarTransaccion(String nroTrx);
+ 
 }

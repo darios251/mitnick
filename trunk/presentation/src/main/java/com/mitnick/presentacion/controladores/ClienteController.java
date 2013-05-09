@@ -148,13 +148,14 @@ public class ClienteController extends BaseController {
 		clientePanel.actualizarPantalla();
 	}
 	
-	@AuthorizationRequired
-	public void cancelarComprobante(String nroComprobante) {
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
+	public boolean cancelarComprobante(String nroComprobante) {
 		try{
 			clienteServicio.cancelarComprobante(nroComprobante);
+			return true;
 		} catch(BusinessException e) {
 			throw new PresentationException(e);
-		}
+		}		
 	}
 	
 	public void mostrarClienteNuevoPanel() {
@@ -211,18 +212,17 @@ public class ClienteController extends BaseController {
 		
 	}
 	
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void nuevoCliente() {
 		clienteNuevoPanel.setCliente(null);
 		mostrarClienteNuevoPanel();
 	}
 	
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void editarCliente() {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
-			index = getClientePanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
@@ -247,7 +247,8 @@ public class ClienteController extends BaseController {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
-			index = getClientePanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
@@ -275,7 +276,8 @@ public class ClienteController extends BaseController {
 		int index = -1;
 		try {
 			index = getClientePanel().getTable().getSelectedRow();
-			index = getClientePanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
@@ -297,6 +299,7 @@ public class ClienteController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void eliminarCuota() {
 		CuotaDto cuotaDto = null;
 		int index = -1;
@@ -327,6 +330,8 @@ public class ClienteController extends BaseController {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
+			if (index>-1)
+				index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 			actualizarCuotas(clienteDto);
 			cuentaCorrientePanel.setCliente(clienteDto);
@@ -467,6 +472,8 @@ public class ClienteController extends BaseController {
 		ClienteDto clienteDto = null;
 		try {
 			int index = getClientePanel().getTable().getSelectedRow();
+			if (index>-1)
+				index = getClientePanel().getTable().convertRowIndexToModel(index);
 			clienteDto = getClientePanel().getModel().getCliente(index);
 			getClienteServicio().reporteMovimientosCliente(clienteDto);
 		} catch (IndexOutOfBoundsException exception) {

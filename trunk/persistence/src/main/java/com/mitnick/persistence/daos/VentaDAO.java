@@ -28,8 +28,10 @@ import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
+import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Repository("ventaDao")
@@ -147,9 +149,22 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		return ventas.get(0);
 	}
 	
-	public void generarFactura(VentaDto venta) {
+	@SuppressWarnings("unchecked")
+	public Venta findTransactionByNumeroFactura(String numeroTicket) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
+		
+		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
+		criteria.add(Restrictions.eq("canceled", false));
+
+		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
+		if (ventas==null || ventas.isEmpty())
+				return null;
+		return ventas.get(0);
+	}
+	
+	public void generarFactura(VentaDto venta, boolean duplicado) {
 		try {
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/factura.jasper"));
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/facturaDuplicado.jasper"));
 			DetachedCriteria criteria = DetachedCriteria.forClass(Empresa.class);
 			criteria.add(Restrictions.idEq(new Long(1)));
 			
@@ -179,22 +194,51 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			
 			parameters.put("tipoIva", venta.getTipoResponsabilidad().getDescripcion());
 			
-			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador() == MitnickConstants.TipoComprador.CONSUMIDOR_FINAL;
+			parameters.put("leyenda", "Comprobante no válido como Factura");
+			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador().equals(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL);
+			String nombre = "";
+			String direccion = "";
+			String cuit = "";
+			if (Validator.isNotNull(venta.getCliente())){
+				nombre = venta.getCliente().getNombre();
+				if (Validator.isNotNull(venta.getCliente().getDireccion())){
+					direccion = venta.getCliente().getDireccion().getDomicilio();
+					if (Validator.isNotNull(venta.getCliente().getDireccion().getCiudad()))
+						direccion = direccion.concat(" ").concat(venta.getCliente().getDireccion().getCiudad().getDescripcion());
+				}
+				if (Validator.isNotNull(venta.getCliente().getCuit()))
+					cuit =  venta.getCliente().getCuit().replaceAll("-", "").trim();	
+				if (Validator.isNotBlankOrNull(cuit)) 
+					cuit = venta.getCliente().getCuit();
+				else if (Validator.isNotBlankOrNull(venta.getCliente().getDocumento()))
+					cuit = venta.getCliente().getDocumento();
+			}
+			parameters.put("nombreCliente", nombre);
+			parameters.put("direccionCliente", direccion);
+			parameters.put("cuitCliente", cuit);
+			String leyenda = "Factura";
+			
 			if (consumidorFinal){
 				venta.setTipoTicket("B");
-				parameters.put("nombreCliente", "");
-				parameters.put("direccionCliente", "");
-				parameters.put("cuitCliente", "");
+				parameters.put("tipoLetra", "B");
 			} else {
 				venta.setTipoTicket("A");
-				parameters.put("nombreCliente", venta.getCliente().getNombre());
-				parameters.put("direccionCliente", venta.getCliente().getDireccion().getDomicilio() + " " + venta.getCliente().getDireccion().getCiudad().getDescripcion());
-				parameters.put("cuitCliente", venta.getCliente().getCuit());
-				
+				parameters.put("tipoLetra", "A");
 			}
+
+			List<ProductoVentaDto> productos = null;
+			if (venta.isDevolucion())
+				leyenda = "Nota de Crédito";
 			
+			if (duplicado){
+				leyenda = "Duplicado - ".concat(leyenda).concat(" - ").concat("No válido");
+				productos = VentaHelper.getProductosPrecioVendido(venta);				
+			} else
+				productos = venta.getProductos();
+				
+			parameters.put("leyenda", leyenda);
 			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			JRDataSource dr = new JRBeanCollectionDataSource(venta.getProductos());
+			JRDataSource dr = new JRBeanCollectionDataSource(productos);
 										
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,parameters, dr);
 			JasperViewer.viewReport(jasperPrint,false);

@@ -164,7 +164,8 @@ public class ProductoController extends BaseController {
 		ProductoDto productoDto = null;
 		try {
 			int index = getProductoPanel().getTable().getSelectedRow();
-			index = getProductoPanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getProductoPanel().getTable().convertRowIndexToModel(index);
 			productoDto = getProductoPanel().getTableModel().getProducto(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
@@ -195,7 +196,8 @@ public class ProductoController extends BaseController {
 		ProductoDto productoDto = null;
 		try {
 			int index = getProductoPanel().getTable().getSelectedRow();
-			index = getProductoPanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getProductoPanel().getTable().convertRowIndexToModel(index);
 			productoDto = getProductoPanel().getTableModel().getProducto(index);
 		}
 		catch (IndexOutOfBoundsException exception) {

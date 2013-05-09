@@ -23,7 +23,7 @@ public class ReportesController extends BaseController {
 	@Autowired
 	private ReportesPanel reportesPanel;
 	
-
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void reporteCaja(ReportesDto dto) {
 		try {
 			getReportesServicio().reporteCaja(dto);
@@ -33,6 +33,16 @@ public class ReportesController extends BaseController {
 		}
 	}
 
+	public void reporteCajero(ReportesDto dto) {
+		try {
+			getReportesServicio().reporteCajero(dto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+	}
+
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void reporteIngresos(ReportesDto dto, int tipo) {
 		try {
 			getReportesServicio().reporteIngresos(dto, tipo);
@@ -42,6 +52,7 @@ public class ReportesController extends BaseController {
 		}
 	}
 
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarEstadoCuentas(ReportesDto dto) {
 		try {
 			getReportesServicio().consultarEstadoCuentas(dto);
@@ -51,6 +62,7 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarEstadoCuentasCliente(ReportesDto dto) {
 		try {
 			getReportesServicio().consultarEstadoCuentasPorCliente(dto);
@@ -60,6 +72,7 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarReporteFacturas(ReportesDto dto) {
 		try {
 			getReportesServicio().reporteFacturas(dto);
@@ -69,7 +82,17 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	public void consultarTransaccion(String nroTransaccion) {
+		try {
+			getReportesServicio().consultarTransaccion(nroTransaccion);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
+	}
 	
+	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarListadoDeControl(ReportesDto dto) {
 		try {
 			getReportesServicio().consultarListadoDeControl(dto);
@@ -79,6 +102,7 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarListadoDeRecibo(ReportesDto dto) {
 		try {
 			getReportesServicio().consultarListadoDeRecibos(dto);
@@ -87,8 +111,7 @@ public class ReportesController extends BaseController {
 			throw new PresentationException(e);
 		}
 	}
-	
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
+		
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		reportesPanel.setVisible(true);

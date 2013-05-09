@@ -369,6 +369,7 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 
 	@Override
 	public void actualizarPantalla() {
+		limpiarCamposPantalla();
 		consultarProductos();
 	}
 	

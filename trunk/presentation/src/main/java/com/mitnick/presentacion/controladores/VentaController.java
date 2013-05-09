@@ -158,7 +158,7 @@ public class VentaController extends BaseController {
 	}
 
 	public void mostrarClienteNuevoPanel() {
-		ultimoPanelMostrado = ventaClientePanel;
+		ultimoPanelMostrado = clienteNuevoPanel;
 		buscarProductoPanel.setVisible(false);
 		ventaPanel.setVisible(false);
 		detalleProductoPanel.setVisible(false);
@@ -166,6 +166,7 @@ public class VentaController extends BaseController {
 		ventaClientePanel.setVisible(false);
 		clienteNuevoPanel.setPanelRetorno(ventaClientePanel);
 		clienteNuevoPanel.setVisible(true);
+		clienteNuevoPanel.limpiarCamposPantalla();
 		clienteNuevoPanel.actualizarPantalla();
 	}
 
@@ -173,7 +174,8 @@ public class VentaController extends BaseController {
 		ClienteDto cliente = null;
 		try {
 			int index = getVentaClientePanel().getTable().getSelectedRow();
-			index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
 			cliente = getVentaClientePanel().getModel().getCliente(index);			
 		} catch (IndexOutOfBoundsException exception) {
 			if (getVentaClientePanel().getModel().getRowCount() == 0) {
@@ -184,7 +186,7 @@ public class VentaController extends BaseController {
 						"error.ventaClientePanel.cliente.noSeleccionado");
 			}
 		}
-		ultimoPanelMostrado = ventaClientePanel;
+		ultimoPanelMostrado = clienteNuevoPanel;
 		buscarProductoPanel.setVisible(false);
 		ventaPanel.setVisible(false);
 		detalleProductoPanel.setVisible(false);
@@ -204,7 +206,8 @@ public class VentaController extends BaseController {
 
 		try {
 			int index = ventaPanel.getTable().getSelectedRow();
-			index = ventaPanel.getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = ventaPanel.getTable().convertRowIndexToModel(index);
 			ProductoVentaDto productoVentaDto = ventaPanel.getModel().getProductosVenta(index);
 
 			detalleProductoPanel.setProducto(productoVentaDto);
@@ -269,7 +272,8 @@ public class VentaController extends BaseController {
 
 		try {
 			int index = ventaPanel.getTable().getSelectedRow();
-			index = ventaPanel.getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = ventaPanel.getTable().convertRowIndexToModel(index);
 			ProductoVentaDto productoVentaDto = ventaPanel.getModel().getProductosVenta(index);
 
 			VentaManager.setVentaActual(ventaServicio.quitarProducto(
@@ -492,7 +496,8 @@ public class VentaController extends BaseController {
 		ClienteDto cliente = null;
 		try {
 			int index = getVentaClientePanel().getTable().getSelectedRow();
-			index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
 			cliente = getVentaClientePanel().getModel().getCliente(index);
 		} catch (IndexOutOfBoundsException exception) {
 			if (getVentaClientePanel().getModel().getRowCount() == 0) {
@@ -526,7 +531,8 @@ public class VentaController extends BaseController {
 		ClienteDto cliente = null;
 		try {
 			int index = getVentaClientePanel().getTable().getSelectedRow();
-			index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
 			cliente = getVentaClientePanel().getModel().getCliente(index);
 		} catch (IndexOutOfBoundsException exception) {
 			if (getVentaClientePanel().getModel().getRowCount() == 0) {

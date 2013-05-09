@@ -290,6 +290,10 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		return btnContinuar;
 	}
 	
+	public void mostrarPanel(){
+		controller.mostrarClienteVenta();
+	}
+	
 	public JButton getBtnVolver() {
 		if(btnVolver == null) {
 			btnVolver = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.volver"));

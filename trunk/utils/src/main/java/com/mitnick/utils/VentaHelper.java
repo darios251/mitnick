@@ -32,7 +32,7 @@ public class VentaHelper {
 		return monto;
 	}
 
-	public static List<ProductoVentaDto> getProductosDevolucion(VentaDto ventaDto) {
+	public static List<ProductoVentaDto> getProductosPrecioVendido(VentaDto ventaDto) {
 		List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
 		for(ProductoVentaDto productoVenta : ventaDto.getProductos()) {
 			productoVenta.setId(null);

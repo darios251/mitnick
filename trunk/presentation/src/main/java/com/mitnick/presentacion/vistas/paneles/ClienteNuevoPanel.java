@@ -126,19 +126,20 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	}
 
 	@Override
-	protected void limpiarCamposPantalla() {
+	public void limpiarCamposPantalla() {
 		for (Component component : getComponents()) {
 			if (component instanceof JTextField)
 				((JTextField) component).setText("");
 		}
 		cleanErrors();
 		try {
-			cmbCiudad.setSelectedIndex(0);
-			cmbProvincia.setSelectedIndex(0);
-			cmbTipoComprador.setSelectedIndex(0);
+			cmbTipoComprador.setSelectedItem(null);
+			cmbProvincia.setSelectedItem(null);
+			cmbCiudad.setSelectedItem(null);
 		} catch (Exception e) {
+			logger.error(e);
 		}
-		
+		cliente = null;
 		controller.cleanFields();
 	}
 	
@@ -589,12 +590,8 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	private void retornarLLamador() {
 		if (panelRetorno == null)
 			controller.mostrarClientePanel();
-		else {
-			this.setVisible(false);
-			if (panelRetorno instanceof VentaClientePanel){
-				((VentaClientePanel)panelRetorno).setTipoComprador(cliente);
-			}
-			panelRetorno.setVisible(true);
+		else {			
+			panelRetorno.mostrarPanel();
 		}
 	}
 

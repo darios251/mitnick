@@ -40,6 +40,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	private JLabel lblFechaInicio;
 	private JLabel lblFechaFin;
 
+	private JButton btnReporteCajero;
 	private JButton btnReporteCaja;
 	private JButton btnReporteVentas;
 	private JButton btnReporteVentasDiario;
@@ -49,10 +50,11 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 
 	private JButton btnReporteDeEstado;
 	private JButton btnReporteDeEstadoPorCliente;
-	private JButton btnListadoDeControl;
 	private JButton btnListadoDeRecibo;
 
 	private JButton btnReporteFacturas;
+	
+	private JButton btnConsultarTransaccion;
 	
 	@Autowired
 	public ReportesPanel(@Qualifier("reportesController") ReportesController reportesController) {
@@ -91,6 +93,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getTxtFechaInicio());
 		add(getTxtFechaFinal());
 		
+		add(getBtnReporteCajero());
 		add(getBtnReporteCaja());
 		add(getBtnReporteVentas());
 		add(getBtnReporteVentasDiario());
@@ -102,6 +105,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getBtnReporteDeEstadoPorCliente());
 		
 		add(getBtnReporteFacturas());
+		add(getBtnConsultarTransaccion());
 		
 		add(getImagenFondo());
 		
@@ -109,6 +113,26 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		this.actualizarPantalla();
 	}
 
+	public JButton getBtnReporteCajero() {
+		if (btnReporteCajero == null) {
+			btnReporteCajero = new JButton();
+			btnReporteCajero.setText(PropertiesManager.getProperty("reportePanel.label.reporteCajero"));
+			btnReporteCajero.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteCajero"));
+
+			btnReporteCajero.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteCajero.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteCajero.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteCajero.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarCajaActual();
+				}
+			});
+			btnReporteCajero.setBounds(200, 120, 330, 20);
+		}
+		return btnReporteCajero;
+	}
+	
 	public JButton getBtnReporteCaja() {
 		if (btnReporteCaja == null) {
 			btnReporteCaja = new JButton();
@@ -124,7 +148,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 					consultarCaja();
 				}
 			});
-			btnReporteCaja.setBounds(200, 120, 330, 20);
+			btnReporteCaja.setBounds(200, 150, 330, 20);
 		}
 		return btnReporteCaja;
 	}
@@ -144,7 +168,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 					consultarIngresos(IReportesServicio.TRANSACCIONAL);
 				}
 			});
-			btnReporteVentas.setBounds(200, 150, 330, 20);
+			btnReporteVentas.setBounds(200, 180, 330, 20);
 		}
 		return btnReporteVentas;
 	}
@@ -164,7 +188,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 					consultarIngresos(IReportesServicio.DIARIO);
 				}
 			});
-			btnReporteVentasDiario.setBounds(200, 180, 330, 20);
+			btnReporteVentasDiario.setBounds(200, 210, 330, 20);
 		}
 		return btnReporteVentasDiario;
 	}
@@ -183,7 +207,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 					consultarIngresos(IReportesServicio.MENSUAL);
 				}
 			});
-			btnReporteVentasMensual.setBounds(200, 210, 330, 20);
+			btnReporteVentasMensual.setBounds(200, 240, 330, 20);
 		}
 		return btnReporteVentasMensual;
 	}
@@ -202,27 +226,9 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 					consultarIngresos(IReportesServicio.ANUAL);
 				}
 			});
-			btnReporteVentasAnual.setBounds(200, 240, 330, 20);
+			btnReporteVentasAnual.setBounds(200, 270, 330, 20);
 		}
 		return btnReporteVentasAnual;
-	}
-	
-	private JButton getBtnListadoDeControl() {
-		if (btnListadoDeControl == null) {
-			btnListadoDeControl = new JButton();
-			btnListadoDeControl.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnListadoDeControl.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.listadoControl"));
-			btnListadoDeControl.setText(PropertiesManager.getProperty("reportePanel.label.listadoControl"));
-			btnListadoDeControl.setMargin(new Insets(-1, -1, -1, -1));
-			btnListadoDeControl.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnListadoDeControl.setBounds(200, 280, 330, 20);
-			btnListadoDeControl.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarListadoDeControl();
-				}
-			});
-		}
-		return btnListadoDeControl;
 	}
 	
 	private JButton getBtnListadoDeRecibos() {
@@ -295,6 +301,24 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			});
 		}
 		return btnReporteFacturas;
+	}
+	
+	private JButton getBtnConsultarTransaccion() {
+		if (btnConsultarTransaccion == null) {
+			btnConsultarTransaccion = new JButton();
+			btnConsultarTransaccion.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnConsultarTransaccion.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.consultaTransaccion"));
+			btnConsultarTransaccion.setText(PropertiesManager.getProperty("reportePanel.label.consultaTransaccion"));
+			btnConsultarTransaccion.setMargin(new Insets(-1, -1, -1, -1));
+			btnConsultarTransaccion.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnConsultarTransaccion.setBounds(200, 450, 330, 20);
+			btnConsultarTransaccion.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					consultarTransaccion();
+				}
+			});
+		}
+		return btnConsultarTransaccion;
 	}
 	
 	private JLabel getImagenFondo() {
@@ -384,7 +408,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		// TODO Auto-generated method stub
 		
 	}
-	
+		
 	protected void consultarCaja() {
 		try {
 			ReportesDto dto = new ReportesDto();
@@ -396,11 +420,22 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		}
 	}
 	
+	protected void consultarCajaActual() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(new Date());
+			dto.setFechaFin(new Date());
+			controller.reporteCajero(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}
+	
 	protected void consultarIngresos(int tipo) {
 		try {
 			String año = JOptionPane.showInputDialog(PropertiesManager.getProperty("reportePanel.query.ingreseAno"));
 			ReportesDto dto = new ReportesDto();
-			if (año!=null && !año.equals("")){
+			if (Validator.isNotBlankOrNull(año)){
 				if (Validator.isNumeric(año) && año.length()==4){
 					String inicio = "01/01/".concat(año);
 					String fin = "31/12/".concat(año);
@@ -416,7 +451,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			mostrarMensaje(ex);
 		}
 	}
-	
+		
 	protected void consultarListadoDeControl() {
 		try {
 			ReportesDto dto = new ReportesDto();
@@ -427,7 +462,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			mostrarMensaje(ex);
 		}
 	}
-	
+		
 	protected void consultarListadoDeRecibos() {
 		try {
 			ReportesDto dto = new ReportesDto();
@@ -438,6 +473,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			mostrarMensaje(ex);
 		}
 	}
+		
 	protected void consultarEstadoCuentas() {
 		try {
 			ReportesDto dto = new ReportesDto();
@@ -459,13 +495,23 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			mostrarMensaje(ex);
 		}
 	}	
-	
+		
 	protected void consultarReporteFacturas() {
 		try {
 			ReportesDto dto = new ReportesDto();
 			dto.setFechaInicio(getFechaInicio());
 			dto.setFechaFin(getFechaFinal());
 			controller.consultarReporteFacturas(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}	
+	
+	protected void consultarTransaccion() {
+		try {			
+			String nroTrx = JOptionPane.showInputDialog(PropertiesManager.getProperty("reportePanel.query.numeroTransaccion"));
+			if (Validator.isNotBlankOrNull(nroTrx))
+				controller.consultarTransaccion(nroTrx);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}

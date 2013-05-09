@@ -30,7 +30,7 @@ public class PrinterService {
 	
 	public boolean imprimirTicketFactura(VentaDto venta) {
 		try{
-			ventaDao.generarFactura(venta);
+			ventaDao.generarFactura(venta, false);
 		} catch (Exception e1) {
 			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
 		}	

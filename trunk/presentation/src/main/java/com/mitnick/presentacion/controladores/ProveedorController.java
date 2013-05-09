@@ -102,7 +102,8 @@ public class ProveedorController extends BaseController {
 		ProveedorDto proveedorDto = null;
 		try {
 			int index = getProveedorPanel().getTable().getSelectedRow();
-			index = getProveedorPanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getProveedorPanel().getTable().convertRowIndexToModel(index);
 			proveedorDto = getProveedorPanel().getTableModel().getProveedor(index);
 		}
 		catch (IndexOutOfBoundsException exception) {
@@ -131,7 +132,8 @@ public class ProveedorController extends BaseController {
 		ProveedorDto proveedorDto = null;
 		try {
 			int index = getProveedorPanel().getTable().getSelectedRow();
-			index = getProveedorPanel().getTable().convertRowIndexToModel(index);
+			if (index>-1)
+				index = getProveedorPanel().getTable().convertRowIndexToModel(index);
 			proveedorDto = getProveedorPanel().getTableModel().getProveedor(index);
 		}
 		catch (IndexOutOfBoundsException exception) {

@@ -290,6 +290,10 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		return btnContinuar;
 	}
 	
+	public void mostrarPanel(){
+		controller.mostrarClienteVenta();
+	}
+	
 	public JButton getBtnVolver() {
 		if(btnVolver == null) {
 			btnVolver = new JButton(PropertiesManager.getProperty("ventaClientePanel.button.volver"));
@@ -438,12 +442,11 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
 		        public void valueChanged(ListSelectionEvent e) {
 		        	int index = table.getSelectedRow();
-					index = table.convertRowIndexToModel(index);
 					if (index>-1){
 						index = table.convertRowIndexToModel(index);
-						ClienteDto cliente = getModel().getCliente(index);
-						if (Validator.isNotNull(cliente))
-							setTipoComprador(cliente);
+					ClienteDto cliente = getModel().getCliente(index);
+					if (Validator.isNotNull(cliente))
+						setTipoComprador(cliente);
 		        	} else
 		        		setTipoComprador(null);
 		        }
