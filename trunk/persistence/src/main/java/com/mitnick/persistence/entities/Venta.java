@@ -62,10 +62,6 @@ public class Venta extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@OneToMany (cascade = {CascadeType.ALL})
-	@JoinColumn(name = "venta_id")
-	private List<Cuota> cuotas;
-	
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "discriminacionIVA_id")
 	private DiscriminacionIVA discriminacionIVA; 
@@ -176,14 +172,6 @@ public class Venta extends BaseObject implements Serializable {
 		this.cliente = cliente;
 	}
 
-	public List<Cuota> getCuotas() {
-		return cuotas;
-	}
-
-	public void setCuotas(List<Cuota> cuotas) {
-		this.cuotas = cuotas;
-	}
-
 	public DiscriminacionIVA getDiscriminacionIVA() {
 		return discriminacionIVA;
 	}
@@ -252,7 +240,6 @@ public class Venta extends BaseObject implements Serializable {
 				+ ((ajusteRedondeo == null) ? 0 : ajusteRedondeo.hashCode());
 		result = prime * result + (canceled ? 1231 : 1237);
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-		result = prime * result + ((cuotas == null) ? 0 : cuotas.hashCode());
 		result = prime * result
 				+ ((descuento == null) ? 0 : descuento.hashCode());
 		result = prime
@@ -309,13 +296,6 @@ public class Venta extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!cliente.equals(other.cliente)) {
-			return false;
-		}
-		if (cuotas == null) {
-			if (other.cuotas != null) {
-				return false;
-			}
-		} else if (!cuotas.equals(other.cuotas)) {
 			return false;
 		}
 		if (descuento == null) {
@@ -417,9 +397,9 @@ public class Venta extends BaseObject implements Serializable {
 				+ pagos + ", fecha=" + fecha + ", subtotal=" + subtotal
 				+ ", descuento=" + descuento + ", ajusteRedondeo="
 				+ ajusteRedondeo + ", impuesto=" + impuesto + ", total="
-				+ total + ", cliente=" + cliente + ", cuotas=" + cuotas
-				+ ", discriminacionIVA=" + discriminacionIVA + ", printed="
-				+ printed + ", numeroTicket=" + numeroTicket + ", tipoTicket="
+				+ total + ", cliente=" + cliente + ", discriminacionIVA="
+				+ discriminacionIVA + ", printed=" + printed
+				+ ", numeroTicket=" + numeroTicket + ", tipoTicket="
 				+ tipoTicket + ", canceled=" + canceled + ", tipo=" + tipo
 				+ ", numeroTicketOriginal=" + numeroTicketOriginal + "]";
 	}

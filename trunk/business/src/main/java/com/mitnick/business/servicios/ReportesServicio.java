@@ -436,8 +436,11 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						if (MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo()))
 							totalDebito = totalDebito.add(pago.getPago());
 						if (MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo()))
-							totalCredito = totalCredito.add(pago.getPago());							
-						totalContado = totalContado.add(pago.getPago());
+							totalCredito = totalCredito.add(pago.getPago());	
+						if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago.getMedioPago().getCodigo())
+								|| MitnickConstants.Medio_Pago.DEBITO.equals(pago.getMedioPago().getCodigo())
+								||MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo()))
+							totalContado = totalContado.add(pago.getPago());
 					}
 				}
 			}
