@@ -527,19 +527,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		if (Validator.isNotNull(ventaDto.getCliente())){
 			Cliente cliente = clienteDao.get(ventaDto.getCliente().getId());
 			venta.setCliente(cliente);
-			if (Validator.isNotEmptyOrNull(ventaDto.getCuotas())) {
-				List<Cuota> cuotas = new ArrayList<Cuota>();
-				for (CuotaDto cuotaDto : ventaDto.getCuotas()){
-					Cuota cuota = getEntityFromDto(cuotaDto);
-					cuota.setVenta(venta);
-					cuota.setCliente(cliente);
-					cuotas.add(cuota);
-				}
-				venta.setCuotas(cuotas);
-			}
 		}
 			
-
 		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());
 		venta.setTipo(ventaDto.getTipo());

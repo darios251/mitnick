@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
-	<property name="ireport.zoom" value="2.1435888100000025"/>
-	<property name="ireport.x" value="308"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="651" pageHeight="439" whenNoDataType="AllSectionsNoDetail" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
+	<property name="ireport.zoom" value="1.1000000000000014"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -111,7 +111,7 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="111" splitType="Stretch">
+		<band height="136" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="d63b836b-ae19-4138-841d-62e04fda1fea" x="353" y="0" width="90" height="25"/>
 				<textElement>
@@ -125,10 +125,10 @@ WHERE
 				<text><![CDATA[Documento no válido como factura]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement uuid="8f34d303-a6bd-44ec-a75e-2a499a278d50" x="0" y="0" width="247" height="98"/>
+				<reportElement uuid="8f34d303-a6bd-44ec-a75e-2a499a278d50" x="0" y="9" width="247" height="98"/>
 			</rectangle>
 			<textField>
-				<reportElement uuid="fcfcfcfc-7381-46db-a22d-53152e647577" x="0" y="0" width="247" height="45"/>
+				<reportElement uuid="fcfcfcfc-7381-46db-a22d-53152e647577" x="0" y="9" width="247" height="45"/>
 				<textElement textAlignment="Center">
 					<font size="20" isBold="true"/>
 				</textElement>
@@ -148,7 +148,7 @@ WHERE
 				<textFieldExpression><![CDATA[$P{tipoResponsable}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement uuid="b35a7627-2c6b-4385-8c81-01cc28ae3429" x="360" y="65" width="195" height="46"/>
+				<reportElement uuid="b35a7627-2c6b-4385-8c81-01cc28ae3429" x="360" y="65" width="212" height="46"/>
 			</rectangle>
 			<staticText>
 				<reportElement uuid="d2c9fec8-6881-4d2a-b788-1241bab18ff9" x="360" y="65" width="100" height="20"/>
@@ -200,9 +200,9 @@ WHERE
 		</band>
 	</title>
 	<pageHeader>
-		<band height="76" splitType="Stretch">
+		<band height="52" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="2223a2c2-5cc6-4dd1-8ce9-7055f090e704" x="0" y="0" width="555" height="43"/>
+				<reportElement uuid="2223a2c2-5cc6-4dd1-8ce9-7055f090e704" x="0" y="0" width="572" height="43"/>
 			</rectangle>
 			<line>
 				<reportElement uuid="ae007068-7323-41c0-8510-64a1c46bedb9" x="49" y="20" width="495" height="1"/>
@@ -278,7 +278,7 @@ WHERE
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="94" splitType="Stretch">
+		<band height="35" splitType="Stretch">
 			<textField>
 				<reportElement uuid="93e22776-7e1f-4a16-9a3a-c97d0b2700fb" x="2" y="6" width="142" height="20"/>
 				<textElement/>
@@ -350,6 +350,6 @@ WHERE
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="50"/>
 	</summary>
 </jasperReport>

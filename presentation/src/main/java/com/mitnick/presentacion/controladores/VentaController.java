@@ -83,10 +83,10 @@ public class VentaController extends BaseController {
 		buscarProductoPanel.limpiarCamposPantalla();
 	}
 	
-	public List<CuotaDto> getCuotas(String cuotas, String total) {
+	public List<CuotaDto> getCuotas(String cuotas, BigDecimal total) {
 		if (Validator.isInt(cuotas))
 			return ventaServicio.generarCuotas(Integer.parseInt(cuotas),
-					new BigDecimal(total), VentaManager.getVentaActual()
+					total, VentaManager.getVentaActual()
 							.getCliente());
 		else
 			throw new PresentationException("error.venta.cantidad.cuotas");
@@ -518,6 +518,20 @@ public class VentaController extends BaseController {
 			logger.debug("Saliendo del método agregarCliente");
 			
 			return clienteServicio.getSaldoDeudor(cliente);
+		} catch (BusinessException e) {
+			throw new PresentationException(e);
+		}
+
+		
+	}
+	
+	public BigDecimal getSaldoDeudor(){
+		logger.debug("Entrando al método getSaldoDeudor");
+		ClienteDto cliente = VentaManager.getVentaActual().getCliente();
+		try {
+			if (Validator.isNotNull(cliente))
+				return clienteServicio.getSaldoDeudor(cliente);
+			else return new BigDecimal(0);
 		} catch (BusinessException e) {
 			throw new PresentationException(e);
 		}
