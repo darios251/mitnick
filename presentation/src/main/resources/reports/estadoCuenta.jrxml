@@ -122,20 +122,24 @@
 			<line>
 				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="27" y="24" width="605" height="1"/>
 			</line>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="31">
 			<staticText>
-				<reportElement uuid="4cbf00dd-9132-4e58-b90a-49aa3fd27f9b" x="408" y="0" width="58" height="20" forecolor="#000099"/>
+				<reportElement uuid="4cbf00dd-9132-4e58-b90a-49aa3fd27f9b" x="445" y="0" width="58" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="9db4c601-32fc-46a8-832e-cb49e06fb4d3" x="468" y="0" width="118" height="20"/>
+				<reportElement uuid="9db4c601-32fc-46a8-832e-cb49e06fb4d3" x="505" y="0" width="118" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 		</band>
-	</pageFooter>
+	</lastPageFooter>
 </jasperReport>
