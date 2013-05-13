@@ -58,28 +58,28 @@
 				<text><![CDATA[Artículo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ced20d85-d3ee-43ed-8628-a64e27b1d8c1" x="385" y="3" width="37" height="20" forecolor="#000099"/>
+				<reportElement uuid="ced20d85-d3ee-43ed-8628-a64e27b1d8c1" x="338" y="3" width="37" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Stock]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a9d07a18-519a-4628-a8c0-04ee89193c23" x="422" y="3" width="50" height="20" forecolor="#000099"/>
+				<reportElement uuid="a9d07a18-519a-4628-a8c0-04ee89193c23" x="375" y="3" width="50" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Mínimo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="30377159-2d66-4bc4-8e4a-e5bffaa9fb45" x="475" y="2" width="62" height="20" forecolor="#000099"/>
+				<reportElement uuid="30377159-2d66-4bc4-8e4a-e5bffaa9fb45" x="428" y="2" width="62" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Compra]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2be0ea65-10a5-4a6b-9c6c-09813c2bc293" x="537" y="2" width="64" height="20" forecolor="#000099"/>
+				<reportElement uuid="2be0ea65-10a5-4a6b-9c6c-09813c2bc293" x="490" y="2" width="64" height="20" forecolor="#000099"/>
 				<textElement>
 					<font size="12" isBold="true" isItalic="true"/>
 				</textElement>
@@ -93,7 +93,7 @@
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="5" y="22" width="596" height="1" forecolor="#000099"/>
+				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="5" y="23" width="550" height="1" forecolor="#000099"/>
 			</line>
 		</band>
 	</columnHeader>
@@ -107,35 +107,35 @@
 				<textFieldExpression><![CDATA[$F{productoCodigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="7afabc08-7561-44e2-97e3-a2484d1e0c6b" x="103" y="0" width="282" height="20"/>
+				<reportElement uuid="7afabc08-7561-44e2-97e3-a2484d1e0c6b" x="103" y="0" width="229" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{productoDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0cbf36f9-7dc5-468c-bf94-4361376af057" x="422" y="0" width="50" height="20"/>
+				<reportElement uuid="0cbf36f9-7dc5-468c-bf94-4361376af057" x="375" y="0" width="50" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{stockMinimo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="2d72cc40-742b-444e-bbba-e4f01c9e3500" x="472" y="0" width="65" height="20"/>
+				<reportElement uuid="2d72cc40-742b-444e-bbba-e4f01c9e3500" x="425" y="0" width="65" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{stockCompra}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="56ff62b8-f0a2-47af-bece-2b0683960252" x="540" y="0" width="61" height="20"/>
+				<reportElement uuid="56ff62b8-f0a2-47af-bece-2b0683960252" x="493" y="0" width="61" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{compraSugerida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="6820e730-d3a2-48e2-8169-8ebb68ad540a" x="385" y="0" width="37" height="20"/>
+				<reportElement uuid="6820e730-d3a2-48e2-8169-8ebb68ad540a" x="338" y="0" width="37" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
