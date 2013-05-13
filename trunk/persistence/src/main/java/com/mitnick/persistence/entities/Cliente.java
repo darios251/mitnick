@@ -45,6 +45,17 @@ public class Cliente extends BaseObject implements Serializable {
 	@Column(name = "telefono", length = 40, nullable = true)
 	private String telefono="";
 	
+	@Column(name = "celular", length = 40, nullable = true)
+	private String celular="";
+	
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
 	@Column(name = "email", length = 40, nullable = true)
 	private String email="";
 	
@@ -180,6 +191,7 @@ public class Cliente extends BaseObject implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((actividad == null) ? 0 : actividad.hashCode());
+		result = prime * result + ((celular == null) ? 0 : celular.hashCode());
 		result = prime * result
 				+ ((comprobantes == null) ? 0 : comprobantes.hashCode());
 		result = prime * result + ((cuit == null) ? 0 : cuit.hashCode());
@@ -217,6 +229,13 @@ public class Cliente extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!actividad.equals(other.actividad)) {
+			return false;
+		}
+		if (celular == null) {
+			if (other.celular != null) {
+				return false;
+			}
+		} else if (!celular.equals(other.celular)) {
 			return false;
 		}
 		if (comprobantes == null) {
@@ -299,11 +318,11 @@ public class Cliente extends BaseObject implements Serializable {
 	public String toString() {
 		return "Cliente [id=" + id + ", nombre=" + nombre + ", actividad="
 				+ actividad + ", documento=" + documento + ", cuit=" + cuit
-				+ ", telefono=" + telefono + ", email=" + email
-				+ ", eliminado=" + eliminado + ", fechaNacimiento="
-				+ fechaNacimiento + ", direccion=" + direccion
-				+ ", comprobantes=" + comprobantes + ", tipoComprador="
-				+ tipoComprador + "]";
+				+ ", telefono=" + telefono + ", celular=" + celular
+				+ ", email=" + email + ", eliminado=" + eliminado
+				+ ", fechaNacimiento=" + fechaNacimiento + ", direccion="
+				+ direccion + ", comprobantes=" + comprobantes
+				+ ", tipoComprador=" + tipoComprador + "]";
 	}
 	
 }

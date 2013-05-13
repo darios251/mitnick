@@ -91,17 +91,6 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
-	public void consultarListadoDeControl(ReportesDto dto) {
-		try {
-			getReportesServicio().consultarListadoDeControl(dto);
-		}
-		catch(BusinessException e) {
-			throw new PresentationException(e);
-		}
-	}
-	
 	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarListadoDeRecibo(ReportesDto dto) {
 		try {

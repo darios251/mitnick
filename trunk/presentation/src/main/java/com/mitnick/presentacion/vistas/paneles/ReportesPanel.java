@@ -452,17 +452,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		}
 	}
 		
-	protected void consultarListadoDeControl() {
-		try {
-			ReportesDto dto = new ReportesDto();
-			dto.setFechaInicio(getFechaInicio());
-			dto.setFechaFin(getFechaFinal());
-			controller.consultarListadoDeControl(dto);
-		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
-		}
-	}
-		
 	protected void consultarListadoDeRecibos() {
 		try {
 			ReportesDto dto = new ReportesDto();

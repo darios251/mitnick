@@ -101,6 +101,7 @@ public class PrincipalView extends JFrame
 	private JMenu menuProductos;
 	private JMenu menuArchivo;
 	private JMenu menuAyuda;
+	private JMenu menuVentas;
 
 	private JLabel lblArrow;
 	public static JLabel lblLogo;
@@ -115,6 +116,7 @@ public class PrincipalView extends JFrame
 	private JMenuItem menuNuevaMarca;
 	private JMenuItem menuNuevoTipo;
 	private JMenuItem menuAcercade;	
+	private JMenuItem menuCancelarVenta;	
 	
 	public PrincipalView()
 	{
@@ -138,6 +140,7 @@ public class PrincipalView extends JFrame
 			menuBar = new JMenuBar();
 			menuBar.add(getMenuArchivo());
 			menuBar.add(getMenuArticulo());
+			menuBar.add(getMenuVentas());
 			menuBar.add(getMenuImpresora());
 			menuBar.add(getMenuAyuda());
 		}
@@ -155,6 +158,16 @@ public class PrincipalView extends JFrame
 			menuProductos.add(getMenuNuevoTipo());			
 		}
 		return menuProductos;
+	}
+	
+	private JMenu getMenuVentas() {
+		if (menuVentas == null)
+		{
+			menuVentas = new JMenu();
+			menuVentas.setText(PropertiesManager.getProperty("principalView.menu.ventas"));
+			menuVentas.add(getMenuCancelarVentas());
+		}
+		return menuVentas;
 	}
 
 	private JMenu getMenuAyuda() {
@@ -752,6 +765,37 @@ public class PrincipalView extends JFrame
 			});
 		}
 		return menuActualizarStock;
+	}
+	
+	private JMenuItem getMenuCancelarVentas() {
+		if (menuCancelarVenta == null) {
+			menuCancelarVenta = new JMenuItem(PropertiesManager.getProperty("principalView.menu.ventas.cancelar"));
+			menuCancelarVenta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						cancelarVenta();
+					} catch(PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+				}
+			});
+		}
+		return menuCancelarVenta;
+	}
+	
+	private void cancelarVenta(){
+		String nroTicket = JOptionPane.showInputDialog(PropertiesManager.getProperty("principalView.ventas.ingresarNumero"));
+		
+		if (nroTicket == null){			
+			return;
+		}
+		VentaDto venta = ventaController.getVentaByNroFactura(nroTicket);
+		if (Validator.isNull(venta)){
+			JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("principalView.ventas.noTicketOriginal"), "Error", JOptionPane.CLOSED_OPTION);
+			return;
+		} 
+		ventaController.cancelarVenta(venta);
+		JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("principalView.ventas.cancelada"), "Info", JOptionPane.CLOSED_OPTION);
 	}
 	
 	public void actualizarStock(){

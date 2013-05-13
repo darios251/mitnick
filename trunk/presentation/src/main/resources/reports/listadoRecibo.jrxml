@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35158e7f-d3ad-47fa-861b-1b4675dca881">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadoRecibos" pageWidth="651" pageHeight="878" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35158e7f-d3ad-47fa-861b-1b4675dca881">
+	<property name="ireport.zoom" value="1.1"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="totalEfectivo" class="java.lang.String"/>
@@ -32,7 +32,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="70" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="129" y="17" width="426" height="32" forecolor="#000099" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle" rotation="None" markup="none">
@@ -52,11 +52,8 @@
 			</textField>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
-		<band height="33" splitType="Stretch">
+		<band height="24" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="0" y="0" width="92" height="20" forecolor="#000099"/>
 				<textElement>
@@ -127,7 +124,7 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="43" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
 				<reportElement uuid="b3be2eb8-b2d7-469c-9e46-be61a63b338f" x="129" y="0" width="92" height="20"/>
 				<textElement>
@@ -166,23 +163,20 @@
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="53" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<textField>
-				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="413" y="31" width="80" height="20"/>
+				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="413" y="4" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="493" y="31" width="40" height="20"/>
+				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="493" y="4" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="45" y="30" width="488" height="1"/>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="45" y="3" width="488" height="1"/>
 			</line>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

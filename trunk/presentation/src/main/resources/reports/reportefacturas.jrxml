@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ccf0a3b-9b1c-40f4-ae3b-d20c0d2f94d6">
-	<property name="ireport.zoom" value="1.3310000000000004"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportefacturas" pageWidth="651" pageHeight="878" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ccf0a3b-9b1c-40f4-ae3b-d20c0d2f94d6">
+	<property name="ireport.zoom" value="1.0000000000000002"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -58,54 +58,54 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="17" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="26" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="395" y="1" width="50" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="429" y="1" width="33" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Neto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a76fc191-00f0-4473-b149-954ffff978ab" x="445" y="1" width="52" height="20"/>
+				<reportElement uuid="a76fc191-00f0-4473-b149-954ffff978ab" x="479" y="1" width="29" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Iva]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="d27c951e-62f5-43f7-a45f-954c7ee8ba86" x="497" y="1" width="54" height="20"/>
+				<reportElement uuid="d27c951e-62f5-43f7-a45f-954c7ee8ba86" x="526" y="1" width="25" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="23" y="0" width="42" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="21" y="1" width="42" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[N°Fact.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="136" y="0" width="88" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="136" y="0" width="88" height="18"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="274" y="0" width="56" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="294" y="0" width="56" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cuit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="361" y="0" width="34" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="395" y="0" width="34" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -114,99 +114,99 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="61" splitType="Stretch">
+		<band height="44" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="0bbb1114-2f34-42a9-bf75-eac3da0f2bd2" x="16" y="12" width="535" height="42"/>
+				<reportElement uuid="0bbb1114-2f34-42a9-bf75-eac3da0f2bd2" x="0" y="2" width="557" height="42"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{facturas})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detalleFactura.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="82">
 			<textField>
-				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="97" y="54" width="19" height="20"/>
+				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="114" y="43" width="19" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{corteZ}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="76" y="14" width="17" height="20"/>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="96" y="3" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[A]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="76" y="34" width="17" height="20"/>
+				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="96" y="23" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="76" y="54" width="17" height="20"/>
+				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="96" y="43" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Z]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="9f556d93-5f88-48b3-a0a3-3d5983d936a7" x="396" y="14" width="50" height="20"/>
+				<reportElement uuid="9f556d93-5f88-48b3-a0a3-3d5983d936a7" x="401" y="3" width="50" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{netoA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e7511dc4-ac6c-4a1f-90b8-092bf925529b" x="446" y="14" width="52" height="20"/>
+				<reportElement uuid="e7511dc4-ac6c-4a1f-90b8-092bf925529b" x="451" y="3" width="52" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ivaA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="af66925c-5cf3-44e4-8f87-2a259c0e0941" x="498" y="14" width="48" height="20"/>
+				<reportElement uuid="af66925c-5cf3-44e4-8f87-2a259c0e0941" x="502" y="3" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e80cb671-6ece-413d-b58d-b4f2347b53ee" x="498" y="34" width="48" height="20"/>
+				<reportElement uuid="e80cb671-6ece-413d-b58d-b4f2347b53ee" x="503" y="24" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalB}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e304b11f-1dc7-4a3f-8887-07d9adc71f1f" x="498" y="54" width="48" height="20"/>
+				<reportElement uuid="e304b11f-1dc7-4a3f-8887-07d9adc71f1f" x="503" y="43" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="11" y="14" width="65" height="20"/>
+				<reportElement uuid="9097bc8d-4189-4389-8f07-d5cce33569ce" x="31" y="3" width="65" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Totales]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="00f551ee-885d-4fcf-ac1c-5370d0559b68" x="21" y="10" width="520" height="1"/>
+				<reportElement uuid="00f551ee-885d-4fcf-ac1c-5370d0559b68" x="21" y="0" width="590" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="5" y="54" width="71" height="20"/>
+				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="25" y="43" width="71" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="0" y="78" width="555" height="1"/>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="0" y="79" width="601" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Double"/>
 				</graphicElement>
@@ -214,19 +214,19 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="43" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<textField evaluationTime="Report">
-				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="500" y="20" width="40" height="20"/>
+				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="500" y="5" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="418" y="20" width="80" height="20"/>
+				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="418" y="5" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="53" y="15" width="488" height="1"/>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="52" y="3" width="488" height="1"/>
 			</line>
 		</band>
 	</pageFooter>

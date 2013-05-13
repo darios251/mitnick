@@ -96,7 +96,7 @@ public class ClienteTableModel extends AbstractTableModel implements TableModel 
 			case 0:
 				return fila.getNombre(); 
 			case 1: 
-				return fila.getTelefono();			
+				return fila.getTelefono()+" - "+fila.getCelular();			
 		}
 		return data.get(-1);
 	}

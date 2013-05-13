@@ -3,6 +3,8 @@ package com.mitnick.utils.dtos;
 import org.hibernate.validator.constraints.MitnickField;
 import org.hibernate.validator.constraints.MitnickField.FieldType;
 
+import com.mitnick.utils.Validator;
+
 public class ClienteDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
@@ -22,6 +24,9 @@ public class ClienteDto extends BaseDto {
 	@MitnickField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
 	private String telefono;
 	
+	@MitnickField(min=5, max=40, fieldType=FieldType.PHONE_NUMBER)
+	private String celular;
+	
 	@MitnickField(min=3, max=40, fieldType=FieldType.EMAIL)
 	private String email;
 	
@@ -30,6 +35,16 @@ public class ClienteDto extends BaseDto {
 		
 	private DireccionDto direccion;
 	
+	public String getCelular() {	
+		if (Validator.isNull(celular))
+			return "";
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
 	private String tipoComprador;
 	
 	private int cantidadComprobantes=0;
@@ -83,6 +98,8 @@ public class ClienteDto extends BaseDto {
 	}
 
 	public String getFechaNacimiento() {
+		if (Validator.isNull(fechaNacimiento))
+			return "";
 		return fechaNacimiento;
 	}
 

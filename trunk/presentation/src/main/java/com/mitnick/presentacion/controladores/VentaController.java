@@ -70,6 +70,16 @@ public class VentaController extends BaseController {
 
 	}
 
+	public void cancelarVenta(VentaDto venta){
+		try {
+			ventaServicio.cancelarVenta(venta);
+		} catch (BusinessException be) {
+			throw new PresentationException(be);
+		}
+		
+		
+	}
+	
 	/**
 	 * Este metodo es invocado cuando el cliente cancela la venta actual antes de finalizarla.
 	 * Se limpian todas las pantallas de la venta, y se anula la venta actual.
