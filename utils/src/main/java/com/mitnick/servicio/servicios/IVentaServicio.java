@@ -72,4 +72,7 @@ public interface IVentaServicio {
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	public CreditoDto obtenerCredito(String nroNC);
 	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public void cancelarVenta(VentaDto ventaDto);
+	
 }

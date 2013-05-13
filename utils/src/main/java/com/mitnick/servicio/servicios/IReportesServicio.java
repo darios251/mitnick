@@ -52,14 +52,6 @@ public interface IReportesServicio {
 	public void consultarEstadoCuentas(ReportesDto filtro);
 	
 	/**
-	 * Obtiene el detalle de cobros de cuentas corrientes y ventas contado.
-	 * @param filtro
-	 * @return
-	 */
-	@Secured(value={"ROLE_ADMIN"})
-	public void consultarListadoDeControl(ReportesDto filtro);
-	
-	/**
 	 * Obtiene el detalle de cobros de cuentas corrientes.
 	 * @param filtro
 	 * @return

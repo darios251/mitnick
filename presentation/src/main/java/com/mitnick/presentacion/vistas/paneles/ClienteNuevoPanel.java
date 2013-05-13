@@ -68,6 +68,9 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	private JTextField txtTelefono;
 	private JLabel lblErrorTxtTelefono;
 	
+	private JTextField txtCelular;
+	private JLabel lblErrorTxtCelular;
+	
 	private JTextField txtFechaNacimiento;
 	private JLabel lblErrorTxtFechaNacimiento;
 	
@@ -101,6 +104,8 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	private JLabel lblEmail;
 
 	private JLabel lblTelefono;
+	
+	private JLabel lblCelular;
 
 	private JLabel lblCuit;
 
@@ -122,7 +127,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 
 	@Autowired(required = true)
 	public ClienteNuevoPanel(@Qualifier("clienteController") ClienteController clienteController) {
-		controller = clienteController;		
+		controller = clienteController;
 	}
 
 	@Override
@@ -154,6 +159,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		add(getLblDocumento());
 		add(getLblCuit());
 		add(getLblTelefono());
+		add(getLblCelular());
 		add(getLblEmail());
 		add(getLblFechaNacimiento());
 		add(getLblDomicilio());
@@ -166,6 +172,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		add(getTxtDocumento());
 		add(getTxtCuit());
 		add(getTxtTelefono());
+		add(getTxtCelular());
 		add(getTxtEmail());
 		add(getTxtFechaNacimiento());
 		add(getTxtDomicilio());
@@ -185,6 +192,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		add(getLblErrorTxtDocumento());
 		add(getLblErrorTxtCuit());
 		add(getLblErrorTxtTelefono());
+		add(getLblErrorTxtCelular());
 		add(getLblErrorTxtEmail());
 		add(getLblErrorTxtFechaNacimiento());
 		add(getLblErrorTxtDomicilio());
@@ -229,7 +237,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	public JLabel getLblFechaNacimiento() {
 		if(lblFechaNacimiento == null) {
 			lblFechaNacimiento = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.fechaNacimiento"));
-			lblFechaNacimiento.setBounds(57, 351, 94, 20);
+			lblFechaNacimiento.setBounds(57, 394, 94, 20);
 		}
 		return lblFechaNacimiento;
 	}
@@ -237,7 +245,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	public JLabel getLblEmail() {
 		if(lblEmail == null) {
 			lblEmail = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.email"));
-			lblEmail.setBounds(57, 306, 94, 20);
+			lblEmail.setBounds(57, 349, 94, 20);
 		}
 		return lblEmail;
 	}
@@ -248,6 +256,14 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			lblTelefono.setBounds(57, 259, 94, 20);
 		}
 		return lblTelefono;
+	}
+	
+	public JLabel getLblCelular() {
+		if(lblCelular == null) {
+			lblCelular = new JLabel(PropertiesManager.getProperty("clienteNuevoPanel.etiqueta.celular"));
+			lblCelular.setBounds(57, 304, 94, 20);
+		}
+		return lblCelular;
 	}
 
 	public JLabel getLblCuit() {
@@ -328,7 +344,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			btnAceptar.setBounds(465, 293, 60, 60);
 			btnAceptar.setFocusable(false);
 
-		}
+		}	
 		return btnAceptar;
 	}
 
@@ -351,7 +367,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			});
 			btnCancelar.setBounds(541, 293, 60, 60);
 			btnCancelar.setFocusable(false);
-		}		
+		}
 		return btnCancelar;
 	}
 
@@ -435,6 +451,15 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		return txtTelefono;
 	}
 	
+	public JTextField getTxtCelular() {
+		if (txtCelular == null) {
+			txtCelular = new JTextField();
+			txtCelular.setColumns(10);
+			txtCelular.setBounds(161, 304, 105, 20);
+		}
+		return txtCelular;
+	}
+	
 	public JLabel getLblErrorTxtTelefono() {
 		if (lblErrorTxtTelefono == null) {
 			lblErrorTxtTelefono = new JLabel("");
@@ -442,13 +467,21 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		}
 		return lblErrorTxtTelefono;
 	}
+	
+	public JLabel getLblErrorTxtCelular() {
+		if (lblErrorTxtCelular == null) {
+			lblErrorTxtCelular = new JLabel("");
+			lblErrorTxtCelular.setBounds(57, 324, 300, 14);
+		}
+		return lblErrorTxtCelular;
+	}
 
 	public JTextField getTxtFechaNacimiento() {
 		if (txtFechaNacimiento == null) {
 			try {
 				txtFechaNacimiento = new JFormattedTextField(new AllowBlankMaskFormatter(MitnickConstants.DATE_MASKFORMAT)); 						
 				txtFechaNacimiento.setColumns(10);
-				txtFechaNacimiento.setBounds(161, 351, 105, 20);
+				txtFechaNacimiento.setBounds(161, 394, 105, 20);
 			} catch (ParseException e) {}
 		}
 		return txtFechaNacimiento;
@@ -457,7 +490,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	public JLabel getLblErrorTxtFechaNacimiento() {
 		if (lblErrorTxtFechaNacimiento == null) {
 			lblErrorTxtFechaNacimiento = new JLabel("");
-			lblErrorTxtFechaNacimiento.setBounds(57, 371, 300, 14);
+			lblErrorTxtFechaNacimiento.setBounds(57, 414, 300, 14);
 		}
 		return lblErrorTxtFechaNacimiento;
 	}
@@ -469,7 +502,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			DefaultFormatterFactory dff = new DefaultFormatterFactory(emailFormatter);
 			txtEmail.setFormatterFactory(dff);
 			txtEmail.setColumns(10);
-			txtEmail.setBounds(161, 306, 175, 20);		
+			txtEmail.setBounds(161, 349, 175, 20);
 		}
 		return txtEmail;
 	}
@@ -477,7 +510,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	public JLabel getLblErrorTxtEmail() {
 		if (lblErrorTxtEmail == null) {
 			lblErrorTxtEmail = new JLabel("");
-			lblErrorTxtEmail.setBounds(57, 326, 300, 14);
+			lblErrorTxtEmail.setBounds(57, 369, 300, 14);
 		}
 		return lblErrorTxtEmail;
 	}
@@ -568,7 +601,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { txtActividad, txtNombre, txtDocumento,
-						txtCuit, txtTelefono, txtEmail, txtFechaNacimiento,	txtDomicilio, txtCodigoPostal, cmbProvincia, cmbCiudad,
+						txtCuit, txtTelefono, txtCelular, txtEmail, txtFechaNacimiento,	txtDomicilio, txtCodigoPostal, cmbProvincia, cmbCiudad,
 						btnAceptar, btnCancelar}));
 	}
 
@@ -578,7 +611,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			if (Validator.isNotNull(cmbTipoComprador) && Validator.isNotNull(cmbTipoComprador.getSelectedItem()))
 				tipoComprador = ((TipoCompradorDto)cmbTipoComprador.getSelectedItem()).getTipoComprador();
 			cliente = controller.guardarCliente(cliente, txtActividad.getText(), txtNombre.getText(), txtDocumento.getText(),
-					txtCuit.getText(), txtTelefono.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
+					txtCuit.getText(), txtTelefono.getText(), txtCelular.getText(), txtEmail.getText(), txtFechaNacimiento.getText(),
 					txtDomicilio.getText(), txtCodigoPostal.getText(), (CiudadDto) cmbCiudad.getSelectedItem(), tipoComprador);
 			limpiarCamposPantalla();
 			retornarLLamador();
@@ -590,8 +623,12 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 	private void retornarLLamador() {
 		if (panelRetorno == null)
 			controller.mostrarClientePanel();
-		else {			
-			panelRetorno.mostrarPanel();
+		else {
+			this.setVisible(false);
+			if (panelRetorno instanceof VentaClientePanel){
+				((VentaClientePanel)panelRetorno).setTipoComprador(cliente);
+			}
+			panelRetorno.setVisible(true);
 		}
 	}
 
@@ -605,6 +642,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		txtDocumento.setEnabled(editable);
 		txtCuit.setEnabled(editable);
 		txtTelefono.setEnabled(editable);
+		txtCelular.setEnabled(editable);
 		txtEmail.setEnabled(editable);
 		txtFechaNacimiento.setEnabled(editable);
 		txtDomicilio.setEnabled(editable);
@@ -620,6 +658,7 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		if (Validator.isNotNull(txtActividad)) {
 			txtActividad.requestFocus();
 		}
+
 		if (Validator.isNotNull(cliente)) {
 			if (Validator.isNotNull(txtActividad) && Validator.isNotBlankOrNull(cliente.getActividad()))
 				txtActividad.setText(cliente.getActividad());
@@ -631,6 +670,8 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 				txtCuit.setText(cliente.getCuit());
 			if(Validator.isNotNull(txtTelefono) && Validator.isNotNull(cliente.getTelefono()))
 				txtTelefono.setText(cliente.getTelefono());
+			if(Validator.isNotNull(txtCelular) && Validator.isNotNull(cliente.getCelular()))
+				txtCelular.setText(cliente.getCelular());
 			if (Validator.isNotNull(txtEmail) && Validator.isNotBlankOrNull(cliente.getEmail()))
 				txtEmail.setText(cliente.getEmail());
 			if (Validator.isNotNull(txtFechaNacimiento)	&& Validator.isNotNull(cliente.getFechaNacimiento()))
@@ -657,14 +698,15 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			cmbProvincia.setSelectedItem(null);
 			cmbCiudad.setSelectedItem(null);
 		}
-		this.setEditable(true);			
+		this.setEditable(true);
+			
 	}
 
 	@Override
 	public void setDefaultFocusField() {
 		this.defaultFocusField = txtActividad;
 	}
-	
+
 	@Override
 	protected void keyDownArrow() {
 		if (txtActividad.hasFocus()) 
@@ -676,7 +718,9 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		else if (txtCuit.hasFocus())
 		    txtTelefono.requestFocus();
 		else if (txtTelefono.hasFocus())
-	        txtEmail.requestFocus();
+	        txtCelular.requestFocus();
+		else if (txtCelular.hasFocus())
+			txtEmail.requestFocus();
 		else if (txtEmail.hasFocus())
 	        txtFechaNacimiento.requestFocus();
 		else if (txtFechaNacimiento.hasFocus())
@@ -698,6 +742,8 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		else if (txtTelefono.hasFocus())
 			txtCuit.requestFocus();
 		else if (txtEmail.hasFocus())
+			txtCelular.requestFocus();
+		else if (txtCelular.hasFocus())
 			txtTelefono.requestFocus();
 		else if (txtFechaNacimiento.hasFocus())
 			txtEmail.requestFocus();
@@ -705,16 +751,6 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 			txtFechaNacimiento.requestFocus();
 		else if (txtCodigoPostal.hasFocus())
 			txtDomicilio.requestFocus();		
-	}
-	
-	@Override
-	protected void keyAdd() {
-		btnAceptar.doClick();
-	}
-	
-	@Override
-	protected void keyPageDown() {
-		btnAceptar.doClick();
 	}
 	
 	@Override

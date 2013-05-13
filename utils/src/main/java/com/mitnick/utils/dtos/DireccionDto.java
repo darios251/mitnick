@@ -3,6 +3,8 @@ package com.mitnick.utils.dtos;
 import org.hibernate.validator.constraints.MitnickField;
 import org.hibernate.validator.constraints.MitnickField.FieldType;
 
+import com.mitnick.utils.Validator;
+
 public class DireccionDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
@@ -17,6 +19,8 @@ public class DireccionDto extends BaseDto {
 	private String codigoPostal;
 
 	public String getDomicilio() {
+		if (Validator.isNull(domicilio))
+			return "";
 		return domicilio;
 	}
 

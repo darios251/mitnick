@@ -197,6 +197,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			cliente.setFechaNacimiento(null);
 		
 		cliente.setTelefono(clienteDto.getTelefono());
+		cliente.setCelular(clienteDto.getCelular());
 		
 		//si se desea asignar una direccion para el cliente
 		if (Validator.isNotNull(clienteDto.getDireccion())&&Validator.isNotBlankOrNull(clienteDto.getDireccion().getDomicilio())){
@@ -235,6 +236,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		if (Validator.isNotNull(cliente.getFechaNacimiento()))
 			clienteDto.setFechaNacimiento(DateHelper.getFecha(cliente.getFechaNacimiento()));
 		clienteDto.setTelefono(cliente.getTelefono());
+		clienteDto.setCelular(cliente.getCelular());
 		if (Validator.isNotNull(cliente.getComprobantes()))
 			clienteDto.setCantidadComprobantes(cliente.getComprobantes().size());
 		if(Validator.isNotNull(cliente.getDireccion()))
@@ -478,7 +480,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	@SuppressWarnings("unchecked")
 	private VentaDto getDtoFromEntity(Venta venta) {
 		VentaDto ventaDto = new VentaDto();
-		
+		ventaDto.setId(venta.getId());
 		ventaDto.setProductos((List<ProductoVentaDto>) getDtosFromEntities((List<E>) venta.getProductos()));
 		
 		ventaDto.setTipo(venta.getTipo());
@@ -528,7 +530,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			Cliente cliente = clienteDao.get(ventaDto.getCliente().getId());
 			venta.setCliente(cliente);
 		}
-			
+		venta.setId(ventaDto.getId());
+		
 		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());
 		venta.setTipo(ventaDto.getTipo());
