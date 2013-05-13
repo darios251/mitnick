@@ -153,57 +153,7 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="21" splitType="Stretch">
-			<textField>
-				<reportElement uuid="7bb039d9-4d27-4a76-ada6-8aa67e40ef83" x="92" y="0" width="70" height="20"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{totalCC}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="b3be2eb8-b2d7-469c-9e46-be61a63b338f" x="162" y="0" width="65" height="20"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{totalTarjeta}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="bc62ce5c-a935-4aba-9b73-588ed8133abf" x="227" y="0" width="81" height="20"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{totalEfectivo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="9d1d7572-d56d-4b50-948a-27cbc8fa8290" x="460" y="0" width="92" height="20"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="ccfff5f4-cf4c-49a9-b50a-4537b31eed39" x="4" y="0" width="76" height="20" forecolor="#000099"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Totales:]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="bc62ce5c-a935-4aba-9b73-588ed8133abf" x="308" y="0" width="69" height="20"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{totalNC}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="378ca135-4345-4415-abc7-47f57e49f37c" x="377" y="0" width="83" height="20"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["-"+$P{totalDev}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="21" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="25" splitType="Stretch">
@@ -222,4 +172,57 @@
 			</line>
 		</band>
 	</pageFooter>
+	<lastPageFooter>
+		<band height="21">
+			<staticText>
+				<reportElement uuid="ccfff5f4-cf4c-49a9-b50a-4537b31eed39" x="0" y="0" width="76" height="20" forecolor="#000099"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="378ca135-4345-4415-abc7-47f57e49f37c" x="373" y="0" width="83" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"+$P{totalDev}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc62ce5c-a935-4aba-9b73-588ed8133abf" x="223" y="0" width="81" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalEfectivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc62ce5c-a935-4aba-9b73-588ed8133abf" x="304" y="0" width="69" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalNC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7bb039d9-4d27-4a76-ada6-8aa67e40ef83" x="87" y="0" width="70" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalCC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b3be2eb8-b2d7-469c-9e46-be61a63b338f" x="158" y="0" width="65" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalTarjeta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9d1d7572-d56d-4b50-948a-27cbc8fa8290" x="456" y="0" width="92" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
 </jasperReport>
