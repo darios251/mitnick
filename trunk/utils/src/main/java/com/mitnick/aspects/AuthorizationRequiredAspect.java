@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.mitnick.exceptions.PresentationException;
@@ -45,7 +46,7 @@ public class AuthorizationRequiredAspect {
 			return null;//throw new PresentationException(PropertiesManager.getProperty("dialog.auth.request.error.null"));
 		
 		try {
-			loginUtils.authenticate((String) SecurityContextHolder.getContext().getAuthentication().getCredentials(), password);
+			loginUtils.authenticate(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(), password);
 		}
 		catch (BadCredentialsException e) {
 			throw new PresentationException(PropertiesManager.getProperty("dialog.auth.request.error"));
