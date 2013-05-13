@@ -75,14 +75,14 @@
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c82be9f0-9ad4-4c4b-ae4b-74ed75415929" x="499" y="1" width="43" height="20" forecolor="#000099"/>
+				<reportElement uuid="c82be9f0-9ad4-4c4b-ae4b-74ed75415929" x="451" y="1" width="43" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4b3e6a88-186a-404f-b990-ca81f8b1e64a" x="542" y="0" width="62" height="20" forecolor="#000099"/>
+				<reportElement uuid="4b3e6a88-186a-404f-b990-ca81f8b1e64a" x="494" y="0" width="62" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
@@ -92,14 +92,14 @@
 				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="3" y="21" width="601" height="1" forecolor="#000099"/>
 			</line>
 			<staticText>
-				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="383" y="2" width="79" height="20" forecolor="#000099"/>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="335" y="2" width="79" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Marca]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="462" y="2" width="37" height="20" forecolor="#000099"/>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="414" y="2" width="37" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
@@ -120,27 +120,29 @@
 				<textFieldExpression><![CDATA[$F{productoCodigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="01b8adf4-c083-4baa-ba3f-6f95f791dac0" x="128" y="1" width="255" height="20"/>
-				<textElement/>
+				<reportElement uuid="01b8adf4-c083-4baa-ba3f-6f95f791dac0" x="128" y="1" width="205" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{productoDescripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="fa245fed-4e80-4b0e-878d-eaeb517946a9" x="383" y="0" width="79" height="20"/>
+				<reportElement uuid="fa245fed-4e80-4b0e-878d-eaeb517946a9" x="335" y="0" width="79" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{productoMarca}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="15000d72-e03d-40a2-b58a-d46b8ed8aa83" x="462" y="1" width="37" height="20"/>
+				<reportElement uuid="15000d72-e03d-40a2-b58a-d46b8ed8aa83" x="414" y="1" width="37" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{talle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e8048cb4-85d8-460a-8e88-04513a7d44a4" x="499" y="0" width="43" height="20"/>
+				<reportElement uuid="e8048cb4-85d8-460a-8e88-04513a7d44a4" x="451" y="0" width="43" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ba06ec29-ecd2-4dc8-b9e2-1e289f398d1d" x="542" y="0" width="62" height="20"/>
+				<reportElement uuid="ba06ec29-ecd2-4dc8-b9e2-1e289f398d1d" x="494" y="0" width="62" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
