@@ -216,9 +216,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		}
 		else
-			venta.setPrinted(true);		
+			venta.setPrinted(true);	
+		//borrar es para pruebas
+//		ventaDto.setNumeroTicket(Long.toString(System.currentTimeMillis()));
+		
 		actualizarStock(venta);
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());
+		
+		
+		
 		venta.setTipoTicket(ventaDto.getTipoTicket());
 		
 		//este metodo se invoca solo si es una venta - la devolucion nunca puede tener pagos realizados con notas de credito.
@@ -261,6 +267,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				for (Cuota cuota : cuotas){
 					if (i<venta.getCuotas().size()){
 						BigDecimal pagado = cuota.getTotal().subtract(cuota.getFaltaPagar());
+						cuota.setFecha_pagar(DateHelper.getFecha(venta.getCuotas().get(i).getFecha_pagar()));
 						cuota.setTotal(venta.getCuotas().get(i).getTotal().add(pagado));
 						cuota.setFaltaPagar(venta.getCuotas().get(i).getTotal());
 						cuotaDao.saveOrUpdate(cuota);
@@ -275,6 +282,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				for (CuotaDto cuota : venta.getCuotas()){
 					if (i<cuotas.size()){
 						BigDecimal pagado = cuotas.get(i).getTotal().subtract(cuotas.get(i).getFaltaPagar());
+						cuotas.get(i).setFecha_pagar(DateHelper.getFecha(cuota.getFecha_pagar()));
 						cuotas.get(i).setTotal(cuota.getTotal().add(pagado));
 						cuotas.get(i).setFaltaPagar(cuota.getTotal());
 						cuotaDao.saveOrUpdate(cuotas.get(i));

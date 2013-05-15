@@ -52,6 +52,7 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.anotaciones.View;
 import com.mitnick.utils.dtos.ClienteDto;
+import com.mitnick.utils.dtos.PagoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -308,8 +309,13 @@ public class PrincipalView extends JFrame
 					getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
 					if (Validator.isNotNull(venta)){
 						cliente = venta.getCliente();
+						List<PagoDto> pagos = venta.getPagos();
 						productos = VentaHelper.getProductosPrecioVendido(venta);						
 						VentaManager.getVentaActual().setCliente(cliente);
+						for (PagoDto pago : pagos){
+							pago.setId(null);
+						}
+						VentaManager.getVentaActual().setPagos(pagos);
 						VentaManager.getVentaActual().setProductos(productos);
 						VentaManager.getVentaActual().setNumeroTicketOriginal(nroTicket);
 						VentaHelper.calcularTotales(VentaManager.getVentaActual());

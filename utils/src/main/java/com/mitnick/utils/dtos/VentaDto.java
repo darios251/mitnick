@@ -231,6 +231,28 @@ public class VentaDto extends BaseDto {
 		return nCreditos;
 	}
 	
+	public BigDecimal getPagoContado(){
+		BigDecimal total = new BigDecimal(0);
+		Iterator<PagoDto> pagos = getPagos().iterator();
+		while (pagos.hasNext()){
+			PagoDto pago = pagos.next();
+			if (!MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()) && !MitnickConstants.Medio_Pago.NOTA_CREDITO.equals(pago.getMedioPago().getCodigo()))
+				total = total.add(pago.getMonto());
+		}
+		return total;
+	}
+	
+	public BigDecimal getPagoACuenta(){
+		BigDecimal total = new BigDecimal(0);
+		Iterator<PagoDto> pagos = getPagos().iterator();
+		while (pagos.hasNext()){
+			PagoDto pago = pagos.next();
+			if (MitnickConstants.Medio_Pago.CUENTA_CORRIENTE.equals(pago.getMedioPago().getCodigo()))
+				total = total.add(pago.getMonto());
+		}
+		return total;
+	}
+	
 	public boolean isVenta(){
 		return tipo == MitnickConstants.VENTA;	
 	}

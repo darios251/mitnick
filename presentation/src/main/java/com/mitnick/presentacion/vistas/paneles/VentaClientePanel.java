@@ -138,7 +138,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 	
 	private void mensajeCuentaPendiente(BigDecimal cuentaPendiente){
-		if (Validator.isMoreThanZero(cuentaPendiente))			
+		if (Validator.isMoreThanZero(cuentaPendiente) && VentaManager.getVentaActual().isVenta())			
 			mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.cuentaPendiente", new Object[]{ cuentaPendiente.toString() }));
 	}
 	
@@ -172,29 +172,8 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			
 			if (VentaManager.getVentaActual().isVenta())
 				controller.mostrarPagosPanel();
-			else {
-				BigDecimal deuda = new BigDecimal(0);
-				if (Validator.isNull(VentaManager.getVentaActual().getCliente())){
-					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.devolucion.agregarCliente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.YES_NO_OPTION);
-					if (option == JOptionPane.YES_OPTION)
-						 deuda = new BigDecimal(0);
-					else if (option == JOptionPane.NO_OPTION)
-						return;
-				} else
-					controller.obtenerSaldoDeudorCliente();
-				
-				BigDecimal devolucion = VentaManager.getVentaActual().getTotal();
-				
-				int option = JOptionPane.CANCEL_OPTION;
-				if (deuda.compareTo(new BigDecimal(0))>0) 
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.deuda", new Object[] {devolucion, deuda}), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.OK_CANCEL_OPTION);	
-				else
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito", new Object[] {devolucion, devolucion}), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.OK_CANCEL_OPTION);
-				
-				if (option != JOptionPane.CANCEL_OPTION)					
-					controller.finalizarVenta();
-			}
-				
+			else 
+				controller.finalizarVenta();
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -402,7 +381,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	
 	protected void setFocusTraversalPolicy() {
 		super.setFocusTraversalPolicy(new FocusTraversalOnArray(
-				new Component[]{cmbTipoComprador, txtNombre, txtNumeroDocumento, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
+				new Component[]{txtNombre, txtNumeroDocumento, cmbTipoComprador, table, btnBuscar, btnNuevo, btnContinuar, btnContinuar}));
 	}
 	
 	protected void deshabilitarComponentes() {
@@ -466,9 +445,9 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	@Override
 	public void actualizarPantalla() {
 //		consultarClientes();
-		getCmbTipoComprador().requestFocus();
+		txtNombre.requestFocus();
 	}
-		
+	
 	public void limpiarClientes(){
 		getCmbTipoComprador().setSelectedIndex(0);
 		setTipoComprador(null);

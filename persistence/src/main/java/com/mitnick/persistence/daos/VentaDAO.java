@@ -66,7 +66,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			Credito credito = new Credito();
 			credito.setFecha(new Date());
 			credito.setCliente(venta.getCliente());
-			credito.setMonto(venta.getTotal());
+			credito.setMonto(venta.getPagoContado());
 			credito.setMontoUsado(new BigDecimal(0));
 			credito.setNumeroTicket(venta.getNumeroTicketOriginal());
 			credito.setNumeroNC(venta.getNumeroTicket());
@@ -105,7 +105,10 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		if (creditos!=null && !creditos.isEmpty()) {
 			Credito credito = creditos.get(0);
 			BigDecimal montoUsadoAntes=credito.getMontoUsado();
-			credito.setMontoUsado(montoUsado.add(montoUsadoAntes));
+			BigDecimal nuevoUsado = montoUsado.add(montoUsadoAntes);
+			if (credito.getDisponible().compareTo(nuevoUsado)<0)
+				nuevoUsado = credito.getDisponible(); 
+			credito.setMontoUsado(nuevoUsado);
 			getHibernateTemplate().saveOrUpdate(credito);	
 		}
 		
@@ -134,6 +137,23 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Venta findLastByClient(Long cliente) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
+		
+		criteria.createAlias("cliente", "c");
+		if(Validator.isNotNull(cliente)){
+			criteria.add(Restrictions.eq("c.id", cliente));
+		}		
+		criteria.add(Restrictions.eq("canceled", false));
+		criteria.addOrder(Order.desc("fecha"));
+		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
+		if (Validator.isNotEmptyOrNull(ventas))
+			return ventas.get(0);
+		return null;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public Venta findByNumeroFactura(String numeroTicket) {

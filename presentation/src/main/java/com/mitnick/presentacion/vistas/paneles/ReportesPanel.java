@@ -50,7 +50,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 
 	private JButton btnReporteDeEstado;
 	private JButton btnReporteDeEstadoPorCliente;
-	private JButton btnListadoDeRecibo;
 
 	private JButton btnReporteFacturas;
 	
@@ -99,8 +98,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getBtnReporteVentasDiario());
 		add(getBtnReporteVentasMensual());
 		add(getBtnReporteVentasAnual());
-				
-		add(getBtnListadoDeRecibos());		
+						
 		add(getBtnReporteDeEstado());
 		add(getBtnReporteDeEstadoPorCliente());
 		
@@ -229,24 +227,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			btnReporteVentasAnual.setBounds(200, 270, 330, 20);
 		}
 		return btnReporteVentasAnual;
-	}
-	
-	private JButton getBtnListadoDeRecibos() {
-		if (btnListadoDeRecibo == null) {
-			btnListadoDeRecibo = new JButton();
-			btnListadoDeRecibo.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnListadoDeRecibo.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.listadoRecibo"));
-			btnListadoDeRecibo.setText(PropertiesManager.getProperty("reportePanel.label.listadoRecibo"));
-			btnListadoDeRecibo.setMargin(new Insets(-1, -1, -1, -1));
-			btnListadoDeRecibo.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnListadoDeRecibo.setBounds(200, 310, 330, 20);
-			btnListadoDeRecibo.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evento) {
-					consultarListadoDeRecibos();
-				}
-			});
-		}
-		return btnListadoDeRecibo;
 	}
 	
 	private JButton getBtnReporteDeEstado() {
@@ -447,17 +427,6 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 				dto.setFechaFin(getFechaFinal());
 			}
 			controller.reporteIngresos(dto, tipo);
-		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
-		}
-	}
-		
-	protected void consultarListadoDeRecibos() {
-		try {
-			ReportesDto dto = new ReportesDto();
-			dto.setFechaInicio(getFechaInicio());
-			dto.setFechaFin(getFechaFinal());
-			controller.consultarListadoDeRecibo(dto);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}

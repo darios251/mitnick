@@ -76,22 +76,6 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Override
 	public ClienteDto guardarCliente(ClienteDto clienteDto) {
 		try {
-			Cliente c = null;
-			if (Validator.isNotBlankOrNull(clienteDto.getDocumento())){
-				c = clienteDao.findByDocumentoEq(clienteDto.getDocumento().trim());
-				if (Validator.isNotNull(c) && !c.getId().equals(clienteDto.getId()))
-					throw new BusinessException(
-							"error.cliente.documento.duplicado",
-							"Ya existe un cliente con el documento ingresado");
-			}
-			if (Validator.isNotBlankOrNull(clienteDto.getCuit())){
-				c = clienteDao.findByCuitEq(clienteDto.getCuit().trim());
-				if (Validator.isNotNull(c) && !c.getId().equals(clienteDto.getId()))
-					throw new BusinessException(
-							"error.cliente.cuit.duplicado",
-							"Ya existe un cliente con el cuit ingresado");
-			}
-			
 			@SuppressWarnings("unchecked")
 			Cliente cliente = (Cliente) entityDTOParser
 					.getEntityFromDto(clienteDto);
@@ -229,7 +213,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Override
 	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas) {
 		if (pago.isComprobante())
-			throw new BusinessException("El pago ya generó comprobante de pago");
+			throw new BusinessException("El pago ya generÃ³ comprobante de pago");
 		for (int i = 0; i < cuotas.size(); i++) {
 			CuotaDto cuota = cuotas.get(i);
 			cuota.getPagos().remove(pago);

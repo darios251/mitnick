@@ -52,7 +52,6 @@ public class ReportesController extends BaseController {
 		}
 	}
 
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarEstadoCuentas(ReportesDto dto) {
 		try {
 			getReportesServicio().consultarEstadoCuentas(dto);
@@ -62,7 +61,6 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void consultarEstadoCuentasCliente(ReportesDto dto) {
 		try {
 			getReportesServicio().consultarEstadoCuentasPorCliente(dto);
@@ -91,16 +89,6 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
-	public void consultarListadoDeRecibo(ReportesDto dto) {
-		try {
-			getReportesServicio().consultarListadoDeRecibos(dto);
-		}
-		catch(BusinessException e) {
-			throw new PresentationException(e);
-		}
-	}
-		
 	public void mostrarReportesPanel() {
 		logger.info("Mostrando el panel de movimientos");
 		reportesPanel.setVisible(true);
