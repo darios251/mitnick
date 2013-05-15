@@ -3,6 +3,8 @@ package com.mitnick.business.servicios;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,12 +26,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.ICierreZDao;
+import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IReporteDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.CierreZ;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.Venta;
@@ -46,6 +50,7 @@ import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
@@ -67,6 +72,9 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 
 	@Autowired
 	protected ICuotaDao cuotaDao;
+	
+	@Autowired
+	protected IClienteDao clienteDao;
 	
 	@Autowired
 	protected ICierreZDao cierreDao;
@@ -419,8 +427,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		
 		// reporte de transacciones realizadas sin agrupar
 		List<ComprobanteDto> comprobantes = new ArrayList<ComprobanteDto>();
-		BigDecimal totalContado = new BigDecimal(0);
-		BigDecimal totalRecibo = new BigDecimal(0);
+		BigDecimal totalContado = new BigDecimal(0);		
 		BigDecimal totalCredito = new BigDecimal(0);
 		BigDecimal totalDebito = new BigDecimal(0);
 		BigDecimal totalEfectivo = new BigDecimal(0);
@@ -452,8 +459,12 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					BigDecimal monto = comprobante.getMonto();
 					monto = monto.add(pago.getPago());
 					comprobante.setMonto(monto);
-					totalRecibo = totalRecibo.add(monto);
+					
 				}				
+			}
+			BigDecimal totalRecibo = new BigDecimal(0);
+			for (ComprobanteDto c: comprobantes){
+				totalRecibo = totalRecibo.add(c.getMonto());
 			}
 			total = totalContado.add(totalRecibo);
 			
@@ -499,7 +510,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	private ComprobanteDto getComprobanteCliente(List<ComprobanteDto> comprobantes, Cliente cliente){
 		for (ComprobanteDto comprobante : comprobantes) {
-			if (comprobante.getIdCliente().equals(cliente))
+			if (comprobante.getIdCliente().equals(cliente.getId()))
 				return comprobante;
 		}
 		ComprobanteDto comprobante = new ComprobanteDto();
@@ -568,73 +579,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		return dto;
 	}
 
-	@Transactional(readOnly = true)
-	@Override
-	public void consultarListadoDeRecibos(ReportesDto filtro) {
-		List<Pago> pagos = cuotaDao.getPagosCuotas(filtro);
-		List<ReporteVentasResultadoDTO> ingresos = new ArrayList<ReporteVentasResultadoDTO>();
-		BigDecimal totalEfectivo = new BigDecimal(0);
-		BigDecimal totalDebito = new BigDecimal(0);
-		BigDecimal totalCredito = new BigDecimal(0);
-		BigDecimal total = new BigDecimal(0);
-		try {
-			for (Pago pago : pagos) {
-				ReporteVentasResultadoDTO dto = getDTOFecha(ingresos,
-						pago.getFecha());
-				BigDecimal totalRegistro = dto.getTotal().add(pago.getPago());
-				dto.setTotal(totalRegistro);
-				total = total.add(pago.getPago());
-
-				BigDecimal parcialTotal = pago.getPago();
-
-				if (MitnickConstants.Medio_Pago.EFECTIVO.equals(pago
-						.getMedioPago().getCodigo())) {
-					parcialTotal = parcialTotal.add(dto.getTotalEfectivo());
-					dto.setTotalEfectivo(parcialTotal);
-					totalEfectivo = totalEfectivo.add(pago.getPago());
-				}
-
-				if (MitnickConstants.Medio_Pago.DEBITO.equals(pago
-						.getMedioPago().getCodigo())) {
-					parcialTotal = parcialTotal.add(dto.getTotalDebito());
-					dto.setTotalDebito(parcialTotal);
-					totalDebito = totalDebito.add(pago.getPago());
-				}
-
-				if (MitnickConstants.Medio_Pago.CREDITO.equals(pago
-						.getMedioPago().getCodigo())) {
-					parcialTotal = parcialTotal.add(dto.getTotalCredito());
-					dto.setTotalCredito(parcialTotal);
-					totalCredito = totalCredito.add(pago.getPago());
-				}
-			}
-
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
-					.getClass().getResourceAsStream(
-							"/reports/listadoRecibo.jasper"));
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("totalEfectivo", totalEfectivo.toString());
-			parameters.put("totalDebito", totalDebito.toString());
-			parameters.put("totalCredito", totalCredito.toString());
-			parameters.put("total", total.toString());
-
-			JRDataSource dr = new JRBeanCollectionDataSource(ingresos);
-
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
-					parameters, dr);
-
-			JasperViewer.viewReport(jasperPrint, false);
-
-		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar obtener el reporte de ventas");
-		} catch (JRException e) {
-			throw new BusinessException(
-					"Error al intentar obtener el reporte de ventas", e);
-		}
-
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	@Override
@@ -648,6 +592,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			for (CuotaDto cuota: cuotas){
 				total = total.add(cuota.getFaltaPagar());
+				setUltimoMovimiento(cuota.getClienteDto());
 			}
 			parameters.put("total", total.toString());
 			
@@ -684,6 +629,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			for (CuotaDto cuota: cuotas){
 				total = total.add(cuota.getFaltaPagar());
+				setUltimoMovimiento(cuota.getClienteDto());
 			}
 			
 			parameters.put("total", total.toString());
@@ -803,4 +749,39 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el comprobante de la transacción");
 		}
 	}
+	
+	public void setUltimoMovimiento(ClienteDto cliente) {
+		try {
+			Date ultimo = null;
+			Venta venta = ventaDao.findLastByClient(cliente.getId());
+			Comprobante comprobante = null;
+			List<Comprobante> comprobantes = clienteDao.findComprobantesByClienteId(cliente.getId());
+			if (Validator.isNotEmptyOrNull(comprobantes))
+				comprobante = getlast(comprobantes);
+			if (Validator.isNotNull(venta))
+				ultimo = venta.getFecha();
+			if (Validator.isNotNull(comprobante) && Validator.isNotNull(ultimo))
+				if (comprobante.getFecha().compareTo(ultimo)>0)
+					ultimo = comprobante.getFecha();
+			if (Validator.isNotNull(comprobante) && Validator.isNull(ultimo))
+				ultimo = comprobante.getFecha();
+			if (Validator.isNotNull(ultimo))
+				cliente.setUltimoMovimiento(DateHelper.getFecha(ultimo));
+					
+		} catch (Exception e1) {
+			throw new PersistenceException("error.reporte.movimientos.Cliente","Error al generar el reporte de movimientos del cliente.",e1);
+		}	
+	}
+	
+	private Comprobante getlast(List<Comprobante> comprobantes) {
+	       Collections.sort(comprobantes, new Comparator() {  
+	 
+	           public int compare(Object o1, Object o2) {  
+	           	Comprobante e1 = (Comprobante) o1;  
+	           	Comprobante e2 = (Comprobante) o2;  
+	               return e2.getFecha().compareTo(e1.getFecha());  
+	           }  
+	       }); 
+			return comprobantes.get(0);
+		}
 }

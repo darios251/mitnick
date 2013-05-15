@@ -32,4 +32,6 @@ public interface IVentaDAO extends GenericDao<Venta, Long>{
 	public void actualizarCreditos(List<CuotaDto> cuotas);
 	
 	public Venta findTransactionByNumeroFactura(String numeroTicket);
+	
+	public Venta findLastByClient(Long cliente);
 }

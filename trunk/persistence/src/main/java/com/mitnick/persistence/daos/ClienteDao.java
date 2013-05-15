@@ -2,6 +2,8 @@ package com.mitnick.persistence.daos;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -319,7 +321,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		List<Credito> creditos = getHibernateTemplate().findByCriteria(criteria);
 		if (creditos!=null && !creditos.isEmpty()){
 			for (int i = 0; i < creditos.size(); i++) {
-				Credito credito = creditos.get(i);
+				Credito credito = creditos.get(i);				
 				aFavor = aFavor.add(credito.getDisponible());
 			}
 		}
@@ -338,13 +340,13 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				String nro = venta.getNumeroTicket();
 				movimiento.setFecha(venta.getFecha());
 				if (venta.isVenta()){
-					movimiento.setNroComprobante("Fact-" + nro);
+					movimiento.setNroComprobante("F" + venta.getTipoTicket() + "-" +nro);
 					movimiento.setDebe(venta.getPagoCuenta());
 					BigDecimal pago = venta.getPagoContado();
 					pago = pago.add(venta.getPagoNC());
 					movimiento.setHaber(pago);
 				} else {
-					movimiento.setNroComprobante("NC-" + nro);
+					movimiento.setNroComprobante("NC" + venta.getTipoTicket() + "-" +nro);
 					movimiento.setDebe(new BigDecimal(0));
 					movimiento.setHaber(venta.getTotal());
 				}
@@ -394,9 +396,19 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		}	
 	}
 
-	private List<ReporteMovimientoClienteDto> orderByDate(
-			List<ReporteMovimientoClienteDto> movimientos) {
+	
+	
+	private List<ReporteMovimientoClienteDto> orderByDate(List<ReporteMovimientoClienteDto> movimientos) {
+		 //ordenamos la lista por fecha 
+        Collections.sort(movimientos, new Comparator() {  
+  
+            public int compare(Object o1, Object o2) {  
+            	ReporteMovimientoClienteDto e1 = (ReporteMovimientoClienteDto) o1;  
+            	ReporteMovimientoClienteDto e2 = (ReporteMovimientoClienteDto) o2;  
+                return e1.getFecha().compareTo(e2.getFecha());  
+            }  
+        }); 
 		return movimientos;
 	}
-
+	
 }

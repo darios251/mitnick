@@ -87,8 +87,8 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 
 		
 	public void limpiarComboPantalla() {
-		getCmbTipoComprador().setSelectedIndex(0);
 		getTxtNombre().setText("");
+		getCmbTipoComprador().setSelectedIndex(0);
 	}
 	
 	@Override
@@ -138,7 +138,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 	
 	private void mensajeCuentaPendiente(BigDecimal cuentaPendiente){
-		if (Validator.isMoreThanZero(cuentaPendiente))			
+		if (Validator.isMoreThanZero(cuentaPendiente) && VentaManager.getVentaActual().isVenta())			
 			mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.cuentaPendiente", new Object[]{ cuentaPendiente.toString() }));
 	}
 	
@@ -151,10 +151,10 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
 				controller.validarCliente();
 				mensajeCuentaPendiente(controller.agregarCliente());
-				
 				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.clienteOK");
 				if (mostrarMsg)
 					mostrarMensajeInformativo(PropertiesManager.getProperty("ventaClientePanel.cliente.agregar.exito"));
+				
 			} else {
 				int index = getTable().getSelectedRow();
 				if (index>-1){
@@ -172,29 +172,8 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			
 			if (VentaManager.getVentaActual().isVenta())
 				controller.mostrarPagosPanel();
-			else {
-				BigDecimal deuda = new BigDecimal(0);
-				if (Validator.isNull(VentaManager.getVentaActual().getCliente())){
-					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.devolucion.agregarCliente"), PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.YES_NO_OPTION);
-					if (option == JOptionPane.YES_OPTION)
-						 deuda = new BigDecimal(0);
-					else if (option == JOptionPane.NO_OPTION)
-						return;
-				} else
-					controller.obtenerSaldoDeudorCliente();
-				
-				BigDecimal devolucion = VentaManager.getVentaActual().getTotal();
-				
-				int option = JOptionPane.CANCEL_OPTION;
-				if (deuda.compareTo(new BigDecimal(0))>0) 
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.deuda", new Object[] {devolucion, deuda}), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.OK_CANCEL_OPTION);	
-				else
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito", new Object[] {devolucion, devolucion}), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.OK_CANCEL_OPTION);
-				
-				if (option != JOptionPane.CANCEL_OPTION)					
-					controller.finalizarVenta();
-			}
-				
+			else 
+				controller.finalizarVenta();
 		}
 		catch(PresentationException ex) {
 			mostrarMensaje(ex);
@@ -359,6 +338,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC));
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.EXENTO, MitnickConstants.TipoComprador.EXENTO_DESC));
 			cmbTipoComprador.addItem(new TipoCompradorDto(MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO, MitnickConstants.TipoComprador.RESPONSABLE_INSCRIPTO_DESC));
+			
 			cmbTipoComprador.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
@@ -369,6 +349,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 					}
 				}
 			});
+
 		}
 		return cmbTipoComprador;
 	}
@@ -427,17 +408,18 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			table = new JTable(getModel());
 	        table.setRowSorter(getSorter());
 			table.setBounds(0, 0, 1, 1);
+			
 			ListSelectionModel cellSelectionModel = table.getSelectionModel();
 		    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
 		        public void valueChanged(ListSelectionEvent e) {
 		        	int index = table.getSelectedRow();
-		        	if (index>-1){
+					if (index>-1){
 						index = table.convertRowIndexToModel(index);
-						ClienteDto cliente = getModel().getCliente(index);
-						if (Validator.isNotNull(cliente))
-							setTipoComprador(cliente);
+					ClienteDto cliente = getModel().getCliente(index);
+					if (Validator.isNotNull(cliente))
+						setTipoComprador(cliente);
 		        	} else
 		        		setTipoComprador(null);
 		        }
@@ -449,7 +431,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	
 	public ClienteTableModel getModel() {
 		if (model == null) {
-			model = new ClienteTableModel();			
+			model = new ClienteTableModel();
 		}
 		return model;
 	}

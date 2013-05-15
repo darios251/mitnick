@@ -455,7 +455,8 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 				
 			} else
 				((VentaController) controller).agregarPago(pago, txtMonto.getText(), null);
-
+			//foco en monto
+			txtMonto.requestFocus();			
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -514,9 +515,9 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		}
 	}
 
+	
 	public void finalizarVenta() {
 		try {
-			
 			if (VentaManager.getVentaActual().isVenta()){
 				boolean mostrarMsg = PropertiesManager.getPropertyAsBoolean("application.mensajeInformativo.venta.vuelto");
 				if (mostrarMsg)
@@ -525,23 +526,27 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 				((VentaController) controller).mostrarVentasPanel();
 			} else {
 				BigDecimal deuda = controller.obtenerSaldoDeudorCliente();
-				BigDecimal devolucion = VentaManager.getVentaActual().getTotal();
-				
+				BigDecimal devolucionContado = VentaManager.getVentaActual().getPagoContado();				
+				BigDecimal devolucionTotal = VentaManager.getVentaActual().getTotal();
+				BigDecimal disponible = devolucionTotal;
 				int option = JOptionPane.CANCEL_OPTION;
-				if (deuda.compareTo(new BigDecimal(0))>0) {
-					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.cuentaCorriente"), "Informaciï¿½n", JOptionPane.YES_NO_OPTION);	
+				if (Validator.isMoreThanZero(deuda) && Validator.isMoreThanZero(devolucionTotal)) {
+					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.cuentaCorriente"), "Información", JOptionPane.YES_NO_OPTION);	
 					if (option == JOptionPane.OK_OPTION){
-						//se pagan cuotas pendientes del cliente con la nota de crï¿½dito
+						//se pagan cuotas pendientes del cliente con la nota de crédito
 						((VentaController) controller).pagarCuotasNC();
-						if (deuda.compareTo(devolucion)>=0) {
-							deuda = deuda.subtract(devolucion);
-							JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.saldo", new Object[] {devolucion, deuda}));
-						} else {
-							BigDecimal disponible = devolucion.subtract(deuda);
-							JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.disponible", new Object[] {deuda, disponible}));
-						}
+						if (deuda.compareTo(devolucionTotal)>=0) {
+							deuda = deuda.subtract(devolucionTotal);
+							JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.saldo", new Object[] {devolucionTotal, deuda}));
+						} 
+						disponible = devolucionTotal.subtract(deuda);
 					}
 				}
+				
+				if (disponible.compareTo(devolucionContado)>0)
+					disponible = devolucionContado;
+				if (Validator.isMoreThanZero(disponible))
+					JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.disponible", new Object[] {disponible}));
 				
 				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
 				((VentaController) controller).mostrarVentasPanel();

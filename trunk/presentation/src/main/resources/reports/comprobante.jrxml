@@ -115,7 +115,7 @@ WHERE
 			<staticText>
 				<reportElement uuid="d63b836b-ae19-4138-841d-62e04fda1fea" x="374" y="8" width="90" height="25"/>
 				<textElement>
-					<font size="16" isBold="true"/>
+					<font size="16" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Recibo [x]]]></text>
 			</staticText>
@@ -124,13 +124,10 @@ WHERE
 				<textElement/>
 				<text><![CDATA[Documento no válido como factura]]></text>
 			</staticText>
-			<rectangle>
-				<reportElement uuid="8f34d303-a6bd-44ec-a75e-2a499a278d50" x="1" y="16" width="246" height="95"/>
-			</rectangle>
 			<textField>
 				<reportElement uuid="fcfcfcfc-7381-46db-a22d-53152e647577" x="0" y="19" width="247" height="36"/>
 				<textElement textAlignment="Center">
-					<font size="20" isBold="true"/>
+					<font size="20" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombreEmpresa}]]></textFieldExpression>
 			</textField>
@@ -144,9 +141,6 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{tipoResponsable}]]></textFieldExpression>
 			</textField>
-			<rectangle>
-				<reportElement uuid="b35a7627-2c6b-4385-8c81-01cc28ae3429" x="344" y="65" width="220" height="45"/>
-			</rectangle>
 			<staticText>
 				<reportElement uuid="d2c9fec8-6881-4d2a-b788-1241bab18ff9" x="345" y="64" width="100" height="20"/>
 				<box leftPadding="5"/>
@@ -180,10 +174,6 @@ WHERE
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{ingBrutos}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement uuid="2a417fd5-b4ae-4411-a728-9faffb99a73f" x="501" y="8" width="64" height="25"/>
-				<imageExpression><![CDATA[".\\img\\logoComprobante.png"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="412" y="48" width="100" height="20"/>
 				<textElement/>
@@ -198,9 +188,6 @@ WHERE
 	</title>
 	<pageHeader>
 		<band height="52" splitType="Stretch">
-			<rectangle>
-				<reportElement uuid="2223a2c2-5cc6-4dd1-8ce9-7055f090e704" x="3" y="5" width="561" height="42"/>
-			</rectangle>
 			<staticText>
 				<reportElement uuid="380d33b6-41b0-4892-b2a1-1ecc0b7a0ca3" x="3" y="5" width="49" height="20"/>
 				<box leftPadding="3"/>

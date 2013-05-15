@@ -35,6 +35,8 @@ public class ClienteDto extends BaseDto {
 		
 	private DireccionDto direccion;
 	
+	private String ultimoMovimiento = "";
+	
 	public String getCelular() {	
 		if (Validator.isNull(celular))
 			return "";
@@ -131,6 +133,13 @@ public class ClienteDto extends BaseDto {
 	public void setCantidadComprobantes(int cantidadComprobantes) {
 		this.cantidadComprobantes = cantidadComprobantes;
 	}
-	
-	
+
+	public String getUltimoMovimiento() {
+		return ultimoMovimiento;
+	}
+
+	public void setUltimoMovimiento(String ultimoMovimiento) {
+		this.ultimoMovimiento = ultimoMovimiento;
+	}
+
 }
