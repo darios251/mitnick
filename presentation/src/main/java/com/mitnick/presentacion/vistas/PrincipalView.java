@@ -800,8 +800,11 @@ public class PrincipalView extends JFrame
 			JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("principalView.ventas.noTicketOriginal"), "Error", JOptionPane.CLOSED_OPTION);
 			return;
 		} 
-		ventaController.cancelarVenta(venta);
-		JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("principalView.ventas.cancelada"), "Info", JOptionPane.CLOSED_OPTION);
+		int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("principalView.dialog.confirm.cancelVenta", new Object[] {nroTicket}));
+		if (opcion == JOptionPane.YES_OPTION) {
+			ventaController.cancelarVenta(venta);
+			JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("principalView.ventas.cancelada"), "Info", JOptionPane.CLOSED_OPTION);
+		}
 	}
 	
 	public void actualizarStock(){
