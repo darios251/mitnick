@@ -536,7 +536,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	}
 
 	/**
-	 * dto.getFecha format: mes - año (Enero-2012)
+	 * dto.getFecha format: mes - aï¿½o (Enero-2012)
 	 * @param ingresos
 	 * @param fecha
 	 * @return
@@ -548,14 +548,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		int month = calendario.get(Calendar.MONTH);
 		int year = calendario.get(Calendar.YEAR);
 		String mes = DateHelper.getMes(month);
-		String año = String.valueOf(year);
+		String ano = String.valueOf(year);
 		for (ReporteVentasResultadoDTO dto : ingresos) {
 			String[] fechaDto = dto.getFecha().split("-");
-			if (fechaDto[0].equals(mes) && fechaDto[1].equals(año))
+			if (fechaDto[0].equals(mes) && fechaDto[1].equals(ano))
 				return dto;
 		}
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
-		dto.setFecha(mes.concat("-").concat(año));
+		dto.setFecha(mes.concat("-").concat(ano));
 		dto.setTotal(new BigDecimal(0));
 		ingresos.add(dto);
 		return dto;
@@ -566,14 +566,14 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		Calendar calendario = Calendar.getInstance();
 		calendario.setTime(fecha);
 		int year = calendario.get(Calendar.YEAR);
-		String año = String.valueOf(year);
+		String ano = String.valueOf(year);
 		for (ReporteVentasResultadoDTO dto : ingresos) {
 			String fechaDto = dto.getFecha();
-			if (fechaDto.equals(año))
+			if (fechaDto.equals(ano))
 				return dto;
 		}
 		ReporteVentasResultadoDTO dto = new ReporteVentasResultadoDTO();
-		dto.setFecha(año);
+		dto.setFecha(ano);
 		dto.setTotal(new BigDecimal(0));
 		ingresos.add(dto);
 		return dto;
@@ -740,13 +740,13 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	public void consultarTransaccion(String nroTrx){
 		Venta venta = ventaDao.findTransactionByNumeroFactura(nroTrx);
 		if (Validator.isNull(venta))
-			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacción con el número ingresado");
+			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacciï¿½n con el nï¿½mero ingresado");
 		try {
 			VentaDto ventaDto = (VentaDto) entityDTOParser.getDtoFromEntity(venta);
 			ventaDao.generarFactura(ventaDto, true);
 		} catch (PersistenceException e) {
 			throw new BusinessException(e,
-					"Error al intentar obtener el comprobante de la transacción");
+					"Error al intentar obtener el comprobante de la transacciï¿½n");
 		}
 	}
 	

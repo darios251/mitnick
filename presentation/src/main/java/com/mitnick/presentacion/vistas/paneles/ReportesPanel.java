@@ -413,12 +413,12 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	
 	protected void consultarIngresos(int tipo) {
 		try {
-			String año = JOptionPane.showInputDialog(PropertiesManager.getProperty("reportePanel.query.ingreseAno"));
+			String ano = JOptionPane.showInputDialog(PropertiesManager.getProperty("reportePanel.query.ingreseAno"));
 			ReportesDto dto = new ReportesDto();
-			if (Validator.isNotBlankOrNull(año)){
-				if (Validator.isNumeric(año) && año.length()==4){
-					String inicio = "01/01/".concat(año);
-					String fin = "31/12/".concat(año);
+			if (Validator.isNotBlankOrNull(ano)){
+				if (Validator.isNumeric(ano) && ano.length()==4){
+					String inicio = "01/01/".concat(ano);
+					String fin = "31/12/".concat(ano);
 					dto.setFechaInicio(DateHelper.getFecha(inicio));
 					dto.setFechaFin(DateHelper.getFecha(fin));
 				}
