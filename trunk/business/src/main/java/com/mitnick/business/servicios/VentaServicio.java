@@ -215,8 +215,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			if(!printerService.imprimirTicketFactura(ventaDto))
 				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		}
-		else
-			venta.setPrinted(true);	
+		
+		venta.setPrinted(true);	
 		//borrar es para pruebas
 //		ventaDto.setNumeroTicket(Long.toString(System.currentTimeMillis()));
 		
@@ -245,17 +245,19 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		@SuppressWarnings("unchecked")
 		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 		//se transforma en devolucion para que se genera la nota de credito y se cancele la venta.
+		venta.setId(null);
 		ventaDto.setTipo(MitnickConstants.DEVOLUCION);		
 		venta.setTipo(MitnickConstants.DEVOLUCION);
 		if(!venta.isPrinted()) {
 			if(!printerService.imprimirTicketFactura(ventaDto))
 				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		}
-		else
-			venta.setPrinted(true);		
-		actualizarStock(venta);
 		
-		cancelar(ventaDto);
+		venta.setPrinted(true);		
+		actualizarStock(venta);
+		ventaDao.saveOrUpdate(venta);
+		ventaDto.setId(venta.getId());
+				
 	}
 	
 	@SuppressWarnings("unchecked")
