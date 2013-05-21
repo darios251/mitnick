@@ -328,6 +328,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				if (TRANSACCIONAL == tipo) {
 					dto = new ReporteVentasResultadoDTO();
 					dto.setFecha(DateHelper.getFecha(venta.getFecha()));
+					dto.setNroTrx(venta.getNumeroTicket());
 					ingresos.add(dto);
 				} else if (DIARIO == tipo)
 					dto = getDTOFecha(ingresos, venta.getFecha());
@@ -773,6 +774,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}	
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Comprobante getlast(List<Comprobante> comprobantes) {
 	       Collections.sort(comprobantes, new Comparator() {  
 	 

@@ -802,6 +802,7 @@ public class PrincipalView extends JFrame
 		} 
 		int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("principalView.dialog.confirm.cancelVenta", new Object[] {nroTicket}));
 		if (opcion == JOptionPane.YES_OPTION) {
+			venta.setPrinted(false);
 			ventaController.cancelarVenta(venta);
 			JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("principalView.ventas.cancelada"), "Info", JOptionPane.CLOSED_OPTION);
 		}

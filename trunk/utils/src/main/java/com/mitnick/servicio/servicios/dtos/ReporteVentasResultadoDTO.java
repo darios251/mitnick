@@ -15,6 +15,7 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 	private BigDecimal totalNC= new BigDecimal(0);
 	private BigDecimal totalDev= new BigDecimal(0);
 	private BigDecimal total= new BigDecimal(0);
+	private String nroTrx = "";
 	
 	public BigDecimal getTotalDev() {
 		return totalDev;
@@ -93,12 +94,15 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
+		result = prime * result + ((nroTrx == null) ? 0 : nroTrx.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		result = prime * result + ((totalCC == null) ? 0 : totalCC.hashCode());
 		result = prime * result
 				+ ((totalCredito == null) ? 0 : totalCredito.hashCode());
 		result = prime * result
 				+ ((totalDebito == null) ? 0 : totalDebito.hashCode());
+		result = prime * result
+				+ ((totalDev == null) ? 0 : totalDev.hashCode());
 		result = prime * result
 				+ ((totalEfectivo == null) ? 0 : totalEfectivo.hashCode());
 		result = prime * result + ((totalNC == null) ? 0 : totalNC.hashCode());
@@ -124,6 +128,13 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 				return false;
 			}
 		} else if (!fecha.equals(other.fecha)) {
+			return false;
+		}
+		if (nroTrx == null) {
+			if (other.nroTrx != null) {
+				return false;
+			}
+		} else if (!nroTrx.equals(other.nroTrx)) {
 			return false;
 		}
 		if (total == null) {
@@ -152,6 +163,13 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 				return false;
 			}
 		} else if (!totalDebito.equals(other.totalDebito)) {
+			return false;
+		}
+		if (totalDev == null) {
+			if (other.totalDev != null) {
+				return false;
+			}
+		} else if (!totalDev.equals(other.totalDev)) {
 			return false;
 		}
 		if (totalEfectivo == null) {
@@ -184,7 +202,16 @@ public class ReporteVentasResultadoDTO extends ServicioBaseDto {
 				+ totalEfectivo + ", totalCC=" + totalCC + ", totalTarjeta="
 				+ totalTarjeta + ", totalDebito=" + totalDebito
 				+ ", totalCredito=" + totalCredito + ", totalNC=" + totalNC
-				+ ", total=" + total + "]";
+				+ ", totalDev=" + totalDev + ", total=" + total + ", nroTrx="
+				+ nroTrx + "]";
+	}
+
+	public String getNroTrx() {
+		return nroTrx;
+	}
+
+	public void setNroTrx(String nroTrx) {
+		this.nroTrx = nroTrx;
 	}
 
 }
