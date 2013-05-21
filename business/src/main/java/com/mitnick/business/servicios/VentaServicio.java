@@ -211,19 +211,16 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		@SuppressWarnings("unchecked")
 		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 				
-		if(!venta.isPrinted()) {
+		if(!ventaDto.isPrinted()) {
 			if(!printerService.imprimirTicketFactura(ventaDto))
 				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
-		}
+		} 	
 		
-		venta.setPrinted(true);	
-		//borrar es para pruebas
-//		ventaDto.setNumeroTicket(Long.toString(System.currentTimeMillis()));
+		venta.setPrinted(true);
+		ventaDto.setPrinted(true);
 		
 		actualizarStock(venta);
 		venta.setNumeroTicket(ventaDto.getNumeroTicket());
-		
-		
 		
 		venta.setTipoTicket(ventaDto.getTipoTicket());
 		
@@ -248,12 +245,14 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		venta.setId(null);
 		ventaDto.setTipo(MitnickConstants.DEVOLUCION);		
 		venta.setTipo(MitnickConstants.DEVOLUCION);
-		if(!venta.isPrinted()) {
+		if(!ventaDto.isPrinted()) {
 			if(!printerService.imprimirTicketFactura(ventaDto))
 				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		}
 		
 		venta.setPrinted(true);		
+		ventaDto.setPrinted(true);
+		
 		actualizarStock(venta);
 		ventaDao.saveOrUpdate(venta);
 		ventaDto.setId(venta.getId());
@@ -283,6 +282,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			} else {
 				int i = 0;
 				for (CuotaDto cuota : venta.getCuotas()){
+					cuota.setClienteDto(cliente);
 					if (i<cuotas.size()){
 						BigDecimal pagado = cuotas.get(i).getTotal().subtract(cuotas.get(i).getFaltaPagar());
 						cuotas.get(i).setFecha_pagar(DateHelper.getFecha(cuota.getFecha_pagar()));

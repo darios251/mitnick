@@ -144,8 +144,12 @@ public class ProductoController extends BaseController {
 		if(Validator.isNull(producto))
 			producto = new ProductoNuevoDto();
 		
-		if (Validator.isBlankOrNull(stock) || !Validator.isNumeric(stock))
+		try {
+			new Integer(stock);
+		} catch (NumberFormatException e) {
 			throw new PresentationException("error.actualizarStock.stock.invalido");
+		}
+			
 		producto.setPrecioVenta(producto.getPrecioVentaConIva().toString());
 		producto.setStock(stock);
 		

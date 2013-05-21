@@ -98,6 +98,7 @@ WHERE
 	<parameter name="saldoPendiente" class="java.lang.String"/>
 	<parameter name="saldoTotal" class="java.lang.String"/>
 	<parameter name="nroComprobante" class="java.lang.String"/>
+	<parameter name="codigo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -166,12 +167,25 @@ WHERE
 				<text><![CDATA[Sr. (es):]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="791afea8-8152-442e-b1d3-69f6dce46f69" x="68" y="5" width="444" height="20"/>
+				<reportElement uuid="791afea8-8152-442e-b1d3-69f6dce46f69" x="52" y="5" width="412" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombreCliente}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="3a5e4a19-67e1-452e-b61c-18ba74cb18e3" x="513" y="5" width="84" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{codigo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="380d33b6-41b0-4892-b2a1-1ecc0b7a0ca3" x="464" y="5" width="49" height="20"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Código:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>

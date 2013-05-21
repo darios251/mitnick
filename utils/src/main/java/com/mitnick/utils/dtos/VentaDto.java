@@ -48,6 +48,8 @@ public class VentaDto extends BaseDto {
 	
 	private boolean cancelada;
 	
+	private boolean printed;
+	
 	private TipoCompradorDto tipoResponsabilidad = new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC);
 
 	private int tipo;
@@ -272,8 +274,202 @@ public class VentaDto extends BaseDto {
 				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket
 				+ ", numeroTicketOriginal=" + numeroTicketOriginal
 				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa
-				+ ", cancelada=" + cancelada + ", tipoResponsabilidad="
-				+ tipoResponsabilidad + ", tipo=" + tipo + "]";
+				+ ", cancelada=" + cancelada + ", printed=" + printed
+				+ ", tipoResponsabilidad=" + tipoResponsabilidad + ", tipo="
+				+ tipo + "]";
+	}
+
+	public boolean isPrinted() {
+		return printed;
+	}
+
+	public void setPrinted(boolean printed) {
+		this.printed = printed;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((ajusteRedondeo == null) ? 0 : ajusteRedondeo.hashCode());
+		result = prime * result + (cancelada ? 1231 : 1237);
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + ((cuotas == null) ? 0 : cuotas.hashCode());
+		result = prime * result
+				+ ((descuento == null) ? 0 : descuento.hashCode());
+		result = prime * result
+				+ ((faltaPagar == null) ? 0 : faltaPagar.hashCode());
+		result = prime * result + (impresa ? 1231 : 1237);
+		result = prime * result
+				+ ((impuesto == null) ? 0 : impuesto.hashCode());
+		result = prime * result
+				+ ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
+		result = prime
+				* result
+				+ ((numeroTicketOriginal == null) ? 0 : numeroTicketOriginal
+						.hashCode());
+		result = prime * result + (pagado ? 1231 : 1237);
+		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
+		result = prime * result + (printed ? 1231 : 1237);
+		result = prime * result
+				+ ((productos == null) ? 0 : productos.hashCode());
+		result = prime * result
+				+ ((subTotal == null) ? 0 : subTotal.hashCode());
+		result = prime * result + tipo;
+		result = prime
+				* result
+				+ ((tipoResponsabilidad == null) ? 0 : tipoResponsabilidad
+						.hashCode());
+		result = prime * result
+				+ ((tipoTicket == null) ? 0 : tipoTicket.hashCode());
+		result = prime * result + ((total == null) ? 0 : total.hashCode());
+		result = prime * result
+				+ ((totalPagado == null) ? 0 : totalPagado.hashCode());
+		result = prime * result + ((vuelto == null) ? 0 : vuelto.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof VentaDto)) {
+			return false;
+		}
+		VentaDto other = (VentaDto) obj;
+		if (ajusteRedondeo == null) {
+			if (other.ajusteRedondeo != null) {
+				return false;
+			}
+		} else if (!ajusteRedondeo.equals(other.ajusteRedondeo)) {
+			return false;
+		}
+		if (cancelada != other.cancelada) {
+			return false;
+		}
+		if (cliente == null) {
+			if (other.cliente != null) {
+				return false;
+			}
+		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
+		if (cuotas == null) {
+			if (other.cuotas != null) {
+				return false;
+			}
+		} else if (!cuotas.equals(other.cuotas)) {
+			return false;
+		}
+		if (descuento == null) {
+			if (other.descuento != null) {
+				return false;
+			}
+		} else if (!descuento.equals(other.descuento)) {
+			return false;
+		}
+		if (faltaPagar == null) {
+			if (other.faltaPagar != null) {
+				return false;
+			}
+		} else if (!faltaPagar.equals(other.faltaPagar)) {
+			return false;
+		}
+		if (impresa != other.impresa) {
+			return false;
+		}
+		if (impuesto == null) {
+			if (other.impuesto != null) {
+				return false;
+			}
+		} else if (!impuesto.equals(other.impuesto)) {
+			return false;
+		}
+		if (numeroTicket == null) {
+			if (other.numeroTicket != null) {
+				return false;
+			}
+		} else if (!numeroTicket.equals(other.numeroTicket)) {
+			return false;
+		}
+		if (numeroTicketOriginal == null) {
+			if (other.numeroTicketOriginal != null) {
+				return false;
+			}
+		} else if (!numeroTicketOriginal.equals(other.numeroTicketOriginal)) {
+			return false;
+		}
+		if (pagado != other.pagado) {
+			return false;
+		}
+		if (pagos == null) {
+			if (other.pagos != null) {
+				return false;
+			}
+		} else if (!pagos.equals(other.pagos)) {
+			return false;
+		}
+		if (printed != other.printed) {
+			return false;
+		}
+		if (productos == null) {
+			if (other.productos != null) {
+				return false;
+			}
+		} else if (!productos.equals(other.productos)) {
+			return false;
+		}
+		if (subTotal == null) {
+			if (other.subTotal != null) {
+				return false;
+			}
+		} else if (!subTotal.equals(other.subTotal)) {
+			return false;
+		}
+		if (tipo != other.tipo) {
+			return false;
+		}
+		if (tipoResponsabilidad == null) {
+			if (other.tipoResponsabilidad != null) {
+				return false;
+			}
+		} else if (!tipoResponsabilidad.equals(other.tipoResponsabilidad)) {
+			return false;
+		}
+		if (tipoTicket == null) {
+			if (other.tipoTicket != null) {
+				return false;
+			}
+		} else if (!tipoTicket.equals(other.tipoTicket)) {
+			return false;
+		}
+		if (total == null) {
+			if (other.total != null) {
+				return false;
+			}
+		} else if (!total.equals(other.total)) {
+			return false;
+		}
+		if (totalPagado == null) {
+			if (other.totalPagado != null) {
+				return false;
+			}
+		} else if (!totalPagado.equals(other.totalPagado)) {
+			return false;
+		}
+		if (vuelto == null) {
+			if (other.vuelto != null) {
+				return false;
+			}
+		} else if (!vuelto.equals(other.vuelto)) {
+			return false;
+		}
+		return true;
 	}
 
 	

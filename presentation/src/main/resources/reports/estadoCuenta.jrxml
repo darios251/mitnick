@@ -20,7 +20,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="68" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="142" y="18" width="403" height="32" forecolor="#000099" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle" rotation="None" markup="none">
@@ -34,79 +34,86 @@
 				<imageExpression><![CDATA[".\\img\\logoReporte.png"]]></imageExpression>
 			</image>
 			<textField pattern="dd/MM/yyyy h:mm a">
-				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="445" y="50" width="100" height="20"/>
+				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="445" y="48" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="25" splitType="Stretch">
+		<band height="35" splitType="Stretch">
+			<line>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="4" y="31" width="642" height="1"/>
+			</line>
 			<staticText>
-				<reportElement uuid="2f6d8eba-bc08-4444-99f1-deba7b0f06ae" x="0" y="2" width="118" height="20" forecolor="#000099"/>
+				<reportElement uuid="2f6d8eba-bc08-4444-99f1-deba7b0f06ae" x="85" y="0" width="74" height="31" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Fecha Vencimiento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9cb28822-94e3-470e-bbc5-60354dacb7d6" x="118" y="2" width="100" height="20" forecolor="#000099"/>
+				<reportElement uuid="9cb28822-94e3-470e-bbc5-60354dacb7d6" x="159" y="12" width="100" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[ Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4cbf00dd-9132-4e58-b90a-49aa3fd27f9b" x="445" y="2" width="100" height="20" forecolor="#000099"/>
+				<reportElement uuid="4cbf00dd-9132-4e58-b90a-49aa3fd27f9b" x="487" y="12" width="56" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="08e4e590-7bfa-4613-8043-90f8ef9c2b44" x="288" y="2" width="100" height="20" forecolor="#000099"/>
+				<reportElement uuid="08e4e590-7bfa-4613-8043-90f8ef9c2b44" x="330" y="12" width="100" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Teléfono]]></text>
 			</staticText>
-			<line>
-				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="3" y="22" width="649" height="3" forecolor="#000099"/>
-			</line>
 			<staticText>
-				<reportElement uuid="2f6d8eba-bc08-4444-99f1-deba7b0f06ae" x="545" y="2" width="58" height="20" forecolor="#000099"/>
+				<reportElement uuid="2f6d8eba-bc08-4444-99f1-deba7b0f06ae" x="545" y="12" width="58" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Ult.Mov.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9cb28822-94e3-470e-bbc5-60354dacb7d6" x="11" y="11" width="62" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement uuid="38c96947-e54e-4dfe-a2a7-6843ab83a98a" x="0" y="2" width="87" height="20"/>
+				<reportElement uuid="38c96947-e54e-4dfe-a2a7-6843ab83a98a" x="85" y="2" width="74" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_pagar}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="af57b1ba-5d09-40c0-a346-932a9e9fc614" x="118" y="2" width="170" height="20"/>
+				<reportElement uuid="af57b1ba-5d09-40c0-a346-932a9e9fc614" x="159" y="1" width="170" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{clienteDto}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e5d7e3ff-ec31-4098-b2b5-882f985d1ef1" x="288" y="2" width="156" height="20"/>
+				<reportElement uuid="e5d7e3ff-ec31-4098-b2b5-882f985d1ef1" x="330" y="1" width="156" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{clienteDto}.getTelefono()+"-"+$F{clienteDto}.getCelular()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="a94c443f-4bb3-483a-9df9-0ca267e1f1a3" x="445" y="2" width="100" height="20"/>
+				<reportElement uuid="a94c443f-4bb3-483a-9df9-0ca267e1f1a3" x="487" y="2" width="58" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -119,10 +126,17 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{clienteDto}.getUltimoMovimiento()]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="af57b1ba-5d09-40c0-a346-932a9e9fc614" x="11" y="2" width="74" height="20"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clienteDto}.getId()]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="53" splitType="Stretch">
 			<textField>
 				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="463" y="28" width="80" height="20"/>
 				<textElement textAlignment="Right"/>

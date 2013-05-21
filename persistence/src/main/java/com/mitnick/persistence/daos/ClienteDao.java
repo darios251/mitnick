@@ -224,6 +224,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("fechaInicioActividadEmpresa", empresa.getFechaInicioActividad());
 			parameters.put("tipoIva", "Consumidor Final");
 			parameters.put("nombreCliente", cliente.getNombre());
+			parameters.put("codigo", cliente.getId().toString());
 			String direccion = "";
 			
 			if (Validator.isNotNull(cliente.getDireccion())) {

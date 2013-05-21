@@ -17,7 +17,6 @@ import javax.swing.SwingConstants;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.utils.PropertiesManager;
-import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ProductoNuevoDto;
 
 public class ActualizarStockDialog extends BaseDialog {
@@ -198,15 +197,17 @@ public class ActualizarStockDialog extends BaseDialog {
 	}
 
 	private void mostrarNuevoStock(){
-		if (Validator.isBlankOrNull(getTxtProductoStock().getText()) || !Validator.isNumeric(getTxtProductoStock().getText())){
-			mostrarMensaje(new PresentationException("error.actualizarStock.stock.invalido"));			
+		try {
+			new Integer(getTxtProductoStock().getText());
+		} catch (NumberFormatException e) {
+			mostrarMensaje(new PresentationException("error.actualizarStock.stock.invalido"));		
 			txtProductoStock.setText("");
 			txtProductoStock.requestFocus();
-		} else {
+			return;
+		}
 			lblEstadoProceso.setText(CONFIRME_ACTUALIZACION);
 			lblStock.setText(getTxtProductoStock().getText());
 			step = 2;
-		}
 	}
 	
 	private void getProducto(){

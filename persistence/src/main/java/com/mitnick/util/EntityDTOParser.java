@@ -170,6 +170,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 	}
 	
 	private Cliente getEntityFromDto(ClienteDto clienteDto) {
+		if (Validator.isNull(clienteDto))
+			return null;
 		Cliente cliente = null;
 		if (Validator.isNotNull(clienteDto.getId()))
 			cliente = clienteDao.get(clienteDto.getId());
@@ -489,6 +491,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setTotal(venta.getTotal());
 		ventaDto.setImpuesto(venta.getImpuesto());
 		
+		ventaDto.setPrinted(venta.isPrinted());
+		
 		//el descuento se toma por monto para reportes aun cuando fue por porcentaje
 		DescuentoDto descuento = new DescuentoDto();
 		descuento.setTipo(DescuentoDto.MONTO);
@@ -531,7 +535,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			venta.setCliente(cliente);
 		}
 		venta.setId(ventaDto.getId());
-		
+		venta.setPrinted(ventaDto.isPrinted());
 		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());
 		venta.setTipo(ventaDto.getTipo());
