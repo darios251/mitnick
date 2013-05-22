@@ -44,4 +44,10 @@ public class DireccionDto extends BaseDto {
 		this.ciudad = ciudad;
 	}
 
+	@Override
+	public String toString() {
+		return "DireccionDto [domicilio=" + domicilio + ", ciudad=" + ciudad
+				+ ", codigoPostal=" + codigoPostal + "]";
+	}
+
 }

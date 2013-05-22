@@ -40,5 +40,11 @@ public class CuotaNuevaDto extends BaseDto {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "CuotaNuevaDto [fecha=" + fecha + ", montoCuota=" + montoCuota
+				+ ", descripcion=" + descripcion + "]";
+	}
+
 }

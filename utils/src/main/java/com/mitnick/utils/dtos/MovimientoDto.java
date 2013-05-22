@@ -45,7 +45,11 @@ public class MovimientoDto extends BaseDto {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "MovimientoDto [fecha=" + fecha + ", stock=" + stock
+				+ ", cantidad=" + cantidad + ", tipo=" + tipo + "]";
+	}
+	
 }

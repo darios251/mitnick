@@ -142,4 +142,15 @@ public class ClienteDto extends BaseDto {
 		this.ultimoMovimiento = ultimoMovimiento;
 	}
 
+	@Override
+	public String toString() {
+		return "ClienteDto [nombre=" + nombre + ", actividad=" + actividad
+				+ ", documento=" + documento + ", cuit=" + cuit + ", telefono="
+				+ telefono + ", celular=" + celular + ", email=" + email
+				+ ", fechaNacimiento=" + fechaNacimiento + ", direccion="
+				+ direccion + ", ultimoMovimiento=" + ultimoMovimiento
+				+ ", tipoComprador=" + tipoComprador
+				+ ", cantidadComprobantes=" + cantidadComprobantes + "]";
+	}
+	
 }

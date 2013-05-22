@@ -471,6 +471,5 @@ public class VentaDto extends BaseDto {
 		}
 		return true;
 	}
-
 	
 }

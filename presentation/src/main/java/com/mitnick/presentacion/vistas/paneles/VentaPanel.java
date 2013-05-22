@@ -112,7 +112,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	}
 	
 	public void agregarProducto() {
-		logger.debug("entrado a agregarProducto");
+		logger.debug("entrado a agregarProducto, con codigo: " + getTxtCodigo().getText().trim());
 		try {
 			controller.agregarProducto(getTxtCodigo().getText().trim());
 			getTxtCodigo().setText("");
@@ -264,6 +264,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	}
 
 	protected void keyF5() {
+		logger.debug("Inicio de una venta: " + VentaManager.getVentaActual());
 		try {
 			if (table.isEditing())
 			    table.getCellEditor().stopCellEditing();
@@ -367,6 +368,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	}
 
 	protected void buscarProducto() {
+		logger.debug("Entrando a buscar producto");
 		controller.mostrarBuscarArticuloPanel();
 	}
 

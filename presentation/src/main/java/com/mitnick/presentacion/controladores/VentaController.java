@@ -168,6 +168,7 @@ public class VentaController extends BaseController {
 	}
 
 	public void mostrarClienteNuevoPanel() {
+		logger.debug("Entrando a la funcionalidad de agregar cliente");
 		ultimoPanelMostrado = clienteNuevoPanel;
 		buscarProductoPanel.setVisible(false);
 		ventaPanel.setVisible(false);
@@ -181,6 +182,7 @@ public class VentaController extends BaseController {
 	}
 
 	public void mostrarModificarClientePanel() {
+		logger.debug("Entrando a la modificacion de clientes");
 		ClienteDto cliente = null;
 		try {
 			int index = getVentaClientePanel().getTable().getSelectedRow();
@@ -196,6 +198,8 @@ public class VentaController extends BaseController {
 						"error.ventaClientePanel.cliente.noSeleccionado");
 			}
 		}
+		
+		logger.debug("Cliente: " + cliente);
 		ultimoPanelMostrado = clienteNuevoPanel;
 		buscarProductoPanel.setVisible(false);
 		ventaPanel.setVisible(false);
@@ -278,16 +282,15 @@ public class VentaController extends BaseController {
 	}
 
 	public void quitarProductoVentaDto() {
-		logger.info("Quitando producto ... ");
-
 		try {
 			int index = ventaPanel.getTable().getSelectedRow();
 			if (index>-1)
 				index = ventaPanel.getTable().convertRowIndexToModel(index);
 			ProductoVentaDto productoVentaDto = ventaPanel.getModel().getProductosVenta(index);
+			
+			logger.info("Quitando producto: " + productoVentaDto);
 
-			VentaManager.setVentaActual(ventaServicio.quitarProducto(
-					productoVentaDto, VentaManager.getVentaActual()));
+			VentaManager.setVentaActual(ventaServicio.quitarProducto(productoVentaDto, VentaManager.getVentaActual()));
 			ventaPanel.actualizarPantalla();
 		} catch (IndexOutOfBoundsException exception) {
 			if (ventaPanel.getModel().getRowCount() == 0) {

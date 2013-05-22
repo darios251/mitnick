@@ -80,20 +80,20 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-			<plugin> 
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>native2ascii-maven-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <goals>
-		              <goal>native2ascii</goal>
-		            </goals>
-		            <configuration>
+<!-- 			<plugin>  -->
+<!-- 		        <groupId>org.codehaus.mojo</groupId> -->
+<!-- 		        <artifactId>native2ascii-maven-plugin</artifactId> -->
+<!-- 		        <executions> -->
+<!-- 		          <execution> -->
+<!-- 		            <goals> -->
+<!-- 		              <goal>native2ascii</goal> -->
+<!-- 		            </goals> -->
+<!-- 		            <configuration> -->
 		              
-		            </configuration>
-		          </execution>
-		        </executions>
-		    </plugin>
+<!-- 		            </configuration> -->
+<!-- 		          </execution> -->
+<!-- 		        </executions> -->
+<!-- 		    </plugin> -->
         </plugins>
         <testResources>
             <testResource>

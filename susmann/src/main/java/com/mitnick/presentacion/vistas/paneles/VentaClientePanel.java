@@ -143,6 +143,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 	
 	protected void continuar() {
+		logger.debug("Entrando a continuar con la venta: " + VentaManager.getVentaActual());
 		try {
 			controller.validarTotalVenta();
 			
@@ -389,6 +390,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 
 	protected void consultarClientes() {
+		logger.debug("Entrando a la consulta de clientes");
 		try {
 			ConsultaClienteDto filtroDto = new ConsultaClienteDto();
 			filtroDto.setDocumento(getTxtNumeroDocumento().getText());

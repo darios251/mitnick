@@ -98,6 +98,5 @@ private static final long serialVersionUID = 1L;
 				+ ", ventas=" + ventas + ", ajustes=" + ajustes + ", producto="
 				+ producto + "]";
 	}
-
 	
 }
