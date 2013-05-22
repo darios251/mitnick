@@ -18,7 +18,6 @@ import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IVentaDAO;
-import com.mitnick.persistence.entities.Cuota;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
@@ -229,7 +228,6 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
 		ventaDto.setId(venta.getId());
-		actualizarCuotas(ventaDto);
 		
 		return ventaDto;
 
@@ -257,46 +255,6 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		ventaDao.saveOrUpdate(venta);
 		ventaDto.setId(venta.getId());
 				
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void actualizarCuotas(VentaDto venta){
-		ClienteDto cliente = venta.getCliente();
-		if (Validator.isNotNull(cliente) && Validator.isNotEmptyOrNull(venta.getCuotas())){
-			List<Cuota> cuotas = cuotaDao.getCuotaByClienteId(cliente.getId());
-			if (cuotas.size()>=venta.getCuotas().size()){
-				int i = 0;
-				for (Cuota cuota : cuotas){
-					if (i<venta.getCuotas().size()){
-						BigDecimal pagado = cuota.getTotal().subtract(cuota.getFaltaPagar());
-						cuota.setFecha_pagar(DateHelper.getFecha(venta.getCuotas().get(i).getFecha_pagar()));
-						cuota.setTotal(venta.getCuotas().get(i).getTotal().add(pagado));
-						cuota.setFaltaPagar(venta.getCuotas().get(i).getTotal());
-						cuotaDao.saveOrUpdate(cuota);
-					} else {
-						cuota.setFaltaPagar(new BigDecimal(0));
-						cuota.setPagado(true);
-					}
-					i = i+1;
-				}
-			} else {
-				int i = 0;
-				for (CuotaDto cuota : venta.getCuotas()){
-					cuota.setClienteDto(cliente);
-					if (i<cuotas.size()){
-						BigDecimal pagado = cuotas.get(i).getTotal().subtract(cuotas.get(i).getFaltaPagar());
-						cuotas.get(i).setFecha_pagar(DateHelper.getFecha(cuota.getFecha_pagar()));
-						cuotas.get(i).setTotal(cuota.getTotal().add(pagado));
-						cuotas.get(i).setFaltaPagar(cuota.getTotal());
-						cuotaDao.saveOrUpdate(cuotas.get(i));
-						i = i+1;
-					} else {
-						cuotaDao.saveOrUpdate((Cuota)entityDTOParser.getEntityFromDto(cuota));
-					}
-						
-				}
-			}
-		}
 	}
 	
 	private void actualizarPagoEFTVuelto(VentaDto venta){

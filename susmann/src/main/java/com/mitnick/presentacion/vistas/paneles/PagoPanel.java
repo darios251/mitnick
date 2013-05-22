@@ -418,13 +418,11 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 			if (pago.isCuentaCorriente()) {
 				String cuotas = JOptionPane.showInputDialog(PropertiesManager.getProperty("pagoPanel.cuentaCorriente.cantidadCuotas"));
 				if (cuotas!=null && !cuotas.equals("")){
-					BigDecimal debe = ((VentaController) controller).getSaldoDeudor();
-					BigDecimal total = new BigDecimal(txtMonto.getText());
-					List<CuotaDto> cuotasDto = ((VentaController) controller).getCuotas(cuotas, debe.add(total));
+					List<CuotaDto> cuotasDto = ((VentaController) controller).getCuotas(cuotas, txtMonto.getText());
 					CuotasCuentaCorrienteDialog cuotasDialog = new CuotasCuentaCorrienteDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), cuotasDto, txtMonto.getText());
 					if (cuotasDialog.aceptar) {
 						((VentaController) controller).guardarCuotas(cuotasDialog.getModel().getCuotas());
-						((VentaController) controller).agregarPago(pago, txtMonto.getText(), null);
+						((VentaController) controller).agregarPago(pago, cuotasDialog.getMonto(), null);
 					} 
 				}
 			}

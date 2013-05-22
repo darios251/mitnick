@@ -19,6 +19,7 @@ import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.AuthorizationRequired;
 import com.mitnick.utils.dtos.CiudadDto;
@@ -356,6 +357,8 @@ public class ClienteController extends BaseController {
 	}
 	
 	public void guardarCuota(CuotaDto cuotaDto, String monto, String fecha, String descripcion){
+		if (!Validator.isMoreThanZero(new BigDecimal(monto)))
+			throw new PresentationException("error.cuota.monto.cero","El monto de la cuota debe ser mayor a cero");
 		CuotaNuevaDto cuotaNuevaDto = new CuotaNuevaDto();
 		cuotaNuevaDto.setFecha(fecha);
 		cuotaNuevaDto.setMontoCuota(monto);
@@ -418,6 +421,8 @@ public class ClienteController extends BaseController {
 			getClienteServicio().comprobantePago(getCuentaCorrientePagoPanel().getCuotas());
 		}
 		catch(BusinessException e) {
+			if (PropertiesManager.getProperty("error.cuota.comprobante.sinPagos").equals(e.getMessage()))
+				throw new PresentationException("error.cuota.comprobante.sinPagos");
 			int opcion = getCuentaCorrientePagoPanel().mostrarMensajeReintentar();
 			
 			if(opcion == 0) {
