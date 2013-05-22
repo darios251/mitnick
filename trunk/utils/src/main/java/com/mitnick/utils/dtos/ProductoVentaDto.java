@@ -55,6 +55,12 @@ public class ProductoVentaDto extends BaseDto {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "ProductoVentaDto [producto=" + producto + ", cantidad="
+				+ cantidad + ", descripcion=" + descripcion + ", precioTotal="
+				+ precioTotal + ", iva=" + iva + "]";
+	}
+
 }

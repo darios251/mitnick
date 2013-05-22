@@ -127,5 +127,13 @@ public class CuotaDto extends BaseDto {
 		this.descripcion = descripcion;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "CuotaDto [fecha_pagar=" + fecha_pagar + ", total=" + total
+				+ ", nroCuota=" + nroCuota + ", descripcion=" + descripcion
+				+ ", clienteDto=" + clienteDto + ", pagos=" + pagos
+				+ ", totalPagado=" + totalPagado + ", faltaPagar=" + faltaPagar
+				+ ", pagado=" + pagado + "]";
+	}
+
 }

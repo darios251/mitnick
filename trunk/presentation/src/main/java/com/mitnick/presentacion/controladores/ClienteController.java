@@ -190,20 +190,20 @@ public class ClienteController extends BaseController {
 		if(Validator.isNull(cliente))
 			cliente = new ClienteDto();
 		
-		cliente.setActividad(actividad);
-		cliente.setNombre(nombre);
-		cliente.setDocumento(documento);
-		cliente.setCuit(cuit);
-		cliente.setEmail(email);
-		cliente.setFechaNacimiento(fechaNacimiento);
-		cliente.setTelefono(telefono);
-		cliente.setCelular(celular);
+		cliente.setActividad(actividad.trim());
+		cliente.setNombre(nombre.trim());
+		cliente.setDocumento(documento.trim());
+		cliente.setCuit(cuit.trim());
+		cliente.setEmail(email.trim());
+		cliente.setFechaNacimiento(fechaNacimiento.trim());
+		cliente.setTelefono(telefono.trim());
+		cliente.setCelular(celular.trim());
 		if(cliente.getDireccion() == null)
 			cliente.setDireccion(new DireccionDto());
-		cliente.getDireccion().setDomicilio(domicilio);
-		cliente.getDireccion().setCodigoPostal(codigoPostal);
+		cliente.getDireccion().setDomicilio(domicilio.trim());
+		cliente.getDireccion().setCodigoPostal(codigoPostal.trim());
 		cliente.getDireccion().setCiudad(ciudad);
-		cliente.setTipoComprador(tipoComprador);
+		cliente.setTipoComprador(tipoComprador.trim());
 		
 		//valido el dto
 		validateDto(cliente);

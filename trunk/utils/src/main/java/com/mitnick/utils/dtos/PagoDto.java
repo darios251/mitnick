@@ -51,4 +51,11 @@ public class PagoDto extends BaseDto {
 	public boolean isEfectivo(){
 		return MitnickConstants.Medio_Pago.EFECTIVO.equals(this.getMedioPago().getCodigo());
 	}
+
+	@Override
+	public String toString() {
+		return "PagoDto [medioPago=" + medioPago + ", monto=" + monto
+				+ ", comprobante=" + comprobante + ", nroNC=" + nroNC + "]";
+	}
+	
 }

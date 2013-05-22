@@ -25,5 +25,11 @@ public class CierreZDto extends BaseDto {
 	public Date getFecha() {
 		return fecha;
 	}
+
+	@Override
+	public String toString() {
+		return "CierreZDto [numero=" + numero + ", fecha=" + fecha + "]";
+	}
+
 	
 }
