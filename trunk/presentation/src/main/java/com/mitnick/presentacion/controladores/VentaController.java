@@ -93,10 +93,10 @@ public class VentaController extends BaseController {
 		buscarProductoPanel.limpiarCamposPantalla();
 	}
 	
-	public List<CuotaDto> getCuotas(String cuotas, BigDecimal total) {
+	public List<CuotaDto> getCuotas(String cuotas, String total) {
 		if (Validator.isInt(cuotas))
 			return ventaServicio.generarCuotas(Integer.parseInt(cuotas),
-					total, VentaManager.getVentaActual()
+					new BigDecimal(total), VentaManager.getVentaActual()
 							.getCliente());
 		else
 			throw new PresentationException("error.venta.cantidad.cuotas");

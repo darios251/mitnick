@@ -92,7 +92,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			return clientes.get(0);
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Cliente findByCuitEq(String cuit) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
@@ -107,7 +107,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			return clientes.get(0);
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Cliente findById(Long id) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
@@ -137,22 +137,22 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			return clientes.get(0).getComprobantes();
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Comprobante findComprobanteByNumero(String nroComprobante) {
-		DetachedCriteria criteria = DetachedCriteria.forClass(Comprobante.class);
+		DetachedCriteria criteria = DetachedCriteria
+				.forClass(Comprobante.class);
 
 		if (Validator.isNotBlankOrNull(nroComprobante)) {
 			criteria.add(Restrictions.eq("id", nroComprobante));
 		}
-		List<Comprobante> comprobantes = getHibernateTemplate()
-				.findByCriteria(criteria);
+		List<Comprobante> comprobantes = getHibernateTemplate().findByCriteria(
+				criteria);
 		if (comprobantes != null && !comprobantes.isEmpty())
 			return comprobantes.get(0);
 		return null;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cliente> findByFiltro(ConsultaClienteDto filtro) {
@@ -184,25 +184,27 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		getHibernateTemplate().saveOrUpdate(cliente);
 		return cliente;
 	}
-	
+
 	public Comprobante generarComprobante(List<CuotaDto> cuotas) {
+		ClienteDto cliente = cuotas.get(0).getClienteDto();
+		List<PagoDto> pagosComprobante = new ArrayList<PagoDto>();
+		BigDecimal pagoComprobante = new BigDecimal(0);
+
+		for (int i = 0; i < cuotas.size(); i++) {
+			pagosComprobante.addAll(cuotas.get(i).getPagosComprobante());
+			pagoComprobante = pagoComprobante.add(cuotas.get(i)
+					.getPagoComprobante());
+		}
+
+		if (Validator.isEmptyOrNull(pagosComprobante))
+			throw new PersistenceException("error.cuota.comprobante.sinPagos");
 		try {
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
-					.getClass().getResourceAsStream(
-							"/reports/comprobante.jasper"));
 			DetachedCriteria criteria = DetachedCriteria
 					.forClass(Empresa.class);
 			criteria.add(Restrictions.idEq(new Long(1)));
-			ClienteDto cliente = cuotas.get(0).getClienteDto();
-			List<PagoDto> pagosComprobante = new ArrayList<PagoDto>();
-			BigDecimal pagoComprobante = new BigDecimal(0);
-
-			for (int i = 0; i < cuotas.size(); i++) {
-				pagosComprobante.addAll(cuotas.get(i).getPagosComprobante());
-				pagoComprobante = pagoComprobante.add(cuotas.get(i)
-						.getPagoComprobante());
-			}
-
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+					.getClass().getResourceAsStream(
+							"/reports/comprobante.jasper"));
 			JRDataSource dr = new JRBeanCollectionDataSource(
 					clean(pagosComprobante));
 
@@ -221,19 +223,23 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("tipoResponsable", empresa.getTipoResponsable());
 			parameters.put("cuitEmpresa", empresa.getCuit());
 			parameters.put("ingBrutos", empresa.getIngBrutos());
-			parameters.put("fechaInicioActividadEmpresa", empresa.getFechaInicioActividad());
+			parameters.put("fechaInicioActividadEmpresa",
+					empresa.getFechaInicioActividad());
 			parameters.put("tipoIva", "Consumidor Final");
 			parameters.put("nombreCliente", cliente.getNombre());
 			parameters.put("codigo", cliente.getId().toString());
 			String direccion = "";
-			
+
 			if (Validator.isNotNull(cliente.getDireccion())) {
-				direccion = direccion.concat(cliente.getDireccion().getDomicilio());
+				direccion = direccion.concat(cliente.getDireccion()
+						.getDomicilio());
 				if (Validator.isNotNull(cliente.getDireccion().getCiudad()))
-					direccion = direccion.concat(" ").concat(cliente.getDireccion().getCiudad().getDescripcion());
+					direccion = direccion.concat(" ")
+							.concat(cliente.getDireccion().getCiudad()
+									.getDescripcion());
 			}
-			
-			parameters.put("direccionCliente",direccion);
+
+			parameters.put("direccionCliente", direccion);
 			BigDecimal saldoTotal = getSaldoDeudor(cliente);
 
 			BigDecimal saldoPendiente = saldoTotal.subtract(pagoComprobante);
@@ -243,7 +249,8 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("saldoPendiente", saldoPendiente.toString());
 
 			Comprobante comprobante = new Comprobante();
-			String id = String.valueOf(cliente.getId()).concat(String.valueOf(cliente.getCantidadComprobantes()));
+			String id = String.valueOf(cliente.getId()).concat(
+					String.valueOf(cliente.getCantidadComprobantes()));
 			comprobante.setId(id);
 			comprobante.setFecha(new Date());
 			comprobante.setTotal(pagoComprobante);
@@ -256,28 +263,31 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
 
-			JasperViewer.viewReport(jasperPrint,false);
-			
+			JasperViewer.viewReport(jasperPrint, false);
+
 			return comprobante;
-			
+
 		} catch (Exception e1) {
-			throw new PersistenceException("error.comprobante.Cliente","Error al generar el comprobante de pago del cliente.",e1);
-		}		
+			throw new PersistenceException("error.comprobante.Cliente",
+					"Error al generar el comprobante de pago del cliente.", e1);
+		}
 	}
-	
-	public void eliminarComprobante(Comprobante comprobante){
+
+	public void eliminarComprobante(Comprobante comprobante) {
 		try {
 			getHibernateTemplate().delete(comprobante);
 		} catch (Exception e1) {
-			throw new PersistenceException("error.cancelar.comprobante.Cliente","Error al eliminar el comprobante de pago del cliente.",e1);
-		}	
+			throw new PersistenceException(
+					"error.cancelar.comprobante.Cliente",
+					"Error al eliminar el comprobante de pago del cliente.", e1);
+		}
 	}
 
-	public Comprobante saveOrUpdate(Comprobante comprobante){
+	public Comprobante saveOrUpdate(Comprobante comprobante) {
 		getHibernateTemplate().saveOrUpdate(comprobante);
 		return comprobante;
 	}
-	
+
 	private List<PagoDto> clean(List<PagoDto> pagos) {
 		List<PagoDto> pagosLimpios = new ArrayList<PagoDto>();
 		Iterator<PagoDto> pagosIt = pagos.iterator();
@@ -285,7 +295,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			PagoDto pago = pagosIt.next();
 			PagoDto auxiliar = new PagoDto();
 			auxiliar.setMedioPago(pago.getMedioPago());
-			auxiliar.setMonto(pago.getMonto());			
+			auxiliar.setMonto(pago.getMonto());
 			PagoDto pagoDto = getPagoMedioPago(pagosLimpios, auxiliar);
 			if (pagoDto == null)
 				pagosLimpios.add(auxiliar);
@@ -308,25 +318,26 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 
 		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public BigDecimal getSaldoFavor(ClienteDto cliente) {
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
-		BigDecimal aFavor = new BigDecimal(0); 
+		BigDecimal aFavor = new BigDecimal(0);
 		criteria.createAlias("cliente", "c");
-		if(Validator.isNotNull(cliente)){
+		if (Validator.isNotNull(cliente)) {
 			criteria.add(Restrictions.eq("c.id", cliente.getId()));
-		}	
-		
-		List<Credito> creditos = getHibernateTemplate().findByCriteria(criteria);
-		if (creditos!=null && !creditos.isEmpty()){
+		}
+
+		List<Credito> creditos = getHibernateTemplate()
+				.findByCriteria(criteria);
+		if (creditos != null && !creditos.isEmpty()) {
 			for (int i = 0; i < creditos.size(); i++) {
-				Credito credito = creditos.get(i);				
+				Credito credito = creditos.get(i);
 				aFavor = aFavor.add(credito.getDisponible());
 			}
 		}
-			
+
 		return aFavor;
 	}
 
@@ -340,20 +351,23 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				movimiento.setMonto(venta.getTotal());
 				String nro = venta.getNumeroTicket();
 				movimiento.setFecha(venta.getFecha());
-				if (venta.isVenta()){
-					movimiento.setNroComprobante("F" + venta.getTipoTicket() + "-" +nro);
+				if (venta.isVenta()) {
+					movimiento.setNroComprobante("F" + venta.getTipoTicket()
+							+ "-" + nro);
 					movimiento.setDebe(venta.getPagoCuenta());
 					BigDecimal pago = venta.getPagoContado();
 					pago = pago.add(venta.getPagoNC());
 					movimiento.setHaber(pago);
 				} else {
-					movimiento.setNroComprobante("NC" + venta.getTipoTicket() + "-" +nro);
+					movimiento.setNroComprobante("NC" + venta.getTipoTicket()
+							+ "-" + nro);
 					movimiento.setDebe(new BigDecimal(0));
 					movimiento.setHaber(venta.getTotal());
 				}
 				movimientos.add(movimiento);
 			}
-			List<Comprobante> comprobantes = findComprobantesByClienteId(cliente.getId());
+			List<Comprobante> comprobantes = findComprobantesByClienteId(cliente
+					.getId());
 			for (int j = 0; j < comprobantes.size(); j++) {
 				Comprobante comprobante = comprobantes.get(j);
 				ReporteMovimientoClienteDto movimiento = new ReporteMovimientoClienteDto();
@@ -371,7 +385,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream(
 							"/reports/movimientosCliente.jasper"));
-			
+
 			JRDataSource dr = new JRBeanCollectionDataSource(
 					orderByDate(movimientos));
 
@@ -380,36 +394,41 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			parameters.put("saldoAFavor", getSaldoFavor(cliente).toString());
 			parameters.put("nombreCliente", cliente.getNombre());
 			String direccion = "";
-			if (Validator.isNotNull(cliente.getDireccion())){
-				direccion = direccion.concat(cliente.getDireccion().getDomicilio());
+			if (Validator.isNotNull(cliente.getDireccion())) {
+				direccion = direccion.concat(cliente.getDireccion()
+						.getDomicilio());
 				if (Validator.isNotNull(cliente.getDireccion().getCiudad()))
-					direccion = direccion.concat(" ").concat(cliente.getDireccion().getCiudad().getDescripcion());
+					direccion = direccion.concat(" ")
+							.concat(cliente.getDireccion().getCiudad()
+									.getDescripcion());
 			}
-			
+
 			parameters.put("direccionCliente", direccion);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
 
-			JasperViewer.viewReport(jasperPrint,false);
+			JasperViewer.viewReport(jasperPrint, false);
 
 		} catch (Exception e1) {
-			throw new PersistenceException("error.reporte.movimientos.Cliente","Error al generar el reporte de movimientos del cliente.",e1);
-		}	
+			throw new PersistenceException("error.reporte.movimientos.Cliente",
+					"Error al generar el reporte de movimientos del cliente.",
+					e1);
+		}
 	}
 
-	
-	
-	private List<ReporteMovimientoClienteDto> orderByDate(List<ReporteMovimientoClienteDto> movimientos) {
-		 //ordenamos la lista por fecha 
-        Collections.sort(movimientos, new Comparator() {  
-  
-            public int compare(Object o1, Object o2) {  
-            	ReporteMovimientoClienteDto e1 = (ReporteMovimientoClienteDto) o1;  
-            	ReporteMovimientoClienteDto e2 = (ReporteMovimientoClienteDto) o2;  
-                return e1.getFecha().compareTo(e2.getFecha());  
-            }  
-        }); 
+	@SuppressWarnings("unchecked")
+	private List<ReporteMovimientoClienteDto> orderByDate(
+			List<ReporteMovimientoClienteDto> movimientos) {
+		// ordenamos la lista por fecha
+		Collections.sort(movimientos, new Comparator() {
+
+			public int compare(Object o1, Object o2) {
+				ReporteMovimientoClienteDto e1 = (ReporteMovimientoClienteDto) o1;
+				ReporteMovimientoClienteDto e2 = (ReporteMovimientoClienteDto) o2;
+				return e1.getFecha().compareTo(e2.getFecha());
+			}
+		});
 		return movimientos;
 	}
-	
+
 }

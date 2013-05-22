@@ -65,10 +65,10 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 
 	@Autowired
 	protected ICuotaDao cuotaDao;
-	
+
 	@Autowired
 	protected IMedioPagoDAO medioPagoDao;
-	
+
 	@Autowired
 	protected IVentaDAO ventaDao;
 
@@ -81,7 +81,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 					.getEntityFromDto(clienteDto);
 
 			validateEntity(cliente);
-			
+
 			cliente = clienteDao.saveOrUpdate(cliente);
 			clienteDto.setId(cliente.getId());
 		} catch (PersistenceException e) {
@@ -143,31 +143,35 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void cargarReporte(ConsultaClienteDto filtro) {
-			try {
-				List<ClienteDto> clientes = entityDTOParser.getDtosFromEntities(clienteDao.findByFiltro(filtro));
-				JasperReport reporte = (JasperReport) JRLoader.loadObject(this
-						.getClass().getResourceAsStream(
-								"/reports/reporteClientes.jasper"));
-				HashMap<String, Object> parameters = new HashMap<String, Object>();
+		try {
+			List<ClienteDto> clientes = entityDTOParser
+					.getDtosFromEntities(clienteDao.findByFiltro(filtro));
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+					.getClass().getResourceAsStream(
+							"/reports/reporteClientes.jasper"));
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
 
-				JRDataSource dr = new JRBeanCollectionDataSource(clientes);
+			JRDataSource dr = new JRBeanCollectionDataSource(clientes);
 
-				JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
-						parameters, dr);
-				JasperViewer.viewReport(jasperPrint, false);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
+					parameters, dr);
+			JasperViewer.viewReport(jasperPrint, false);
 
-			} catch (PersistenceException e) {
-				throw new BusinessException("error.reporte.listadoClientes",
-						"Error al intentar obtener el reporte de movimientos agrupados por producto", e);
-			} catch (JRException e) {
-				throw new BusinessException("error.reporte.listadoClientes",
-						"Error al intentar obtener el reporte de ventas", e);
-			}
+		} catch (PersistenceException e) {
+			throw new BusinessException(
+					"error.reporte.listadoClientes",
+					"Error al intentar obtener el reporte de movimientos agrupados por producto",
+					e);
+		} catch (JRException e) {
+			throw new BusinessException("error.reporte.listadoClientes",
+					"Error al intentar obtener el reporte de ventas", e);
+		}
 	}
-	
+
 	public List<CuotaDto> obtenerCuotasPendientes(ClienteDto cliente) {
 		@SuppressWarnings("unchecked")
-		List<CuotaDto> cuotas = entityDTOParser.getDtosFromEntities(cuotaDao.getCuotaByClienteId(cliente.getId()));
+		List<CuotaDto> cuotas = entityDTOParser.getDtosFromEntities(cuotaDao
+				.getCuotaByClienteId(cliente.getId()));
 		return cuotas;
 	}
 
@@ -175,12 +179,15 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Override
 	public void eliminarCuota(CuotaDto cuotaDto) {
 		if (cuotaDto.getId() == null) {
-			throw new BusinessException("error.clienteServicio.id.nulo", "Se invoca la eliminación de una cuota que no existe en la base de datos ya que no se brinda el ID");
+			throw new BusinessException(
+					"error.clienteServicio.id.nulo",
+					"Se invoca la eliminación de una cuota que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
 			cuotaDao.eliminarCuota(cuotaDto);
 		} catch (PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar eliminar el cliente");
+			throw new BusinessException(e,
+					"Error al intentar eliminar el cliente");
 		}
 	}
 
@@ -191,7 +198,8 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		try {
 			saveCuota(cuotaDto, null);
 		} catch (PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar guardar las cuotas");
+			throw new BusinessException(e,
+					"Error al intentar guardar las cuotas");
 		}
 	}
 
@@ -199,6 +207,9 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	private Cuota saveCuota(CuotaDto cuotaDto, Date fechaPago) {
 
 		try {
+			VentaHelper.calcularTotales(cuotaDto);
+			if (!Validator.isMoreThanZero(cuotaDto.getFaltaPagar()))
+				cuotaDto.setPagado(true);
 			@SuppressWarnings("unchecked")
 			Cuota cuota = (Cuota) entityDTOParser.getEntityFromDto(cuotaDto);
 			cuota.setFechaPago(fechaPago);
@@ -206,14 +217,16 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			cuotaDto.setId(cuota.getId());
 			return cuota;
 		} catch (PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar guardar las cuotas");
+			throw new BusinessException(e,
+					"Error al intentar guardar las cuotas");
 		}
 	}
-		
+
 	@Override
 	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas) {
 		if (pago.isComprobante())
-			throw new BusinessException("El pago ya generó comprobante de pago");
+			throw new BusinessException(
+					"El pago ya generó comprobante de pago");
 		for (int i = 0; i < cuotas.size(); i++) {
 			CuotaDto cuota = cuotas.get(i);
 			cuota.getPagos().remove(pago);
@@ -227,38 +240,40 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		boolean continuar = true;
 		Iterator<CuotaDto> cuotasIt = cuotas.iterator();
 		String nc = pago.getNroNC();
-		while (continuar && cuotasIt.hasNext()){
+		while (continuar && cuotasIt.hasNext()) {
 			BigDecimal total = pago.getMonto();
 			CuotaDto cuota = cuotasIt.next();
 			if (!cuota.isPagado()) {
 				total = agregarPago(pago, cuota);
 			}
-			if (total.compareTo(new BigDecimal(0))>0){
+			if (total.compareTo(new BigDecimal(0)) > 0) {
 				MedioPagoDto mp = pago.getMedioPago();
 				pago = new PagoDto();
 				pago.setNroNC(nc);
 				pago.setMonto(total);
 				pago.setComprobante(false);
-				pago.setMedioPago(mp);				
+				pago.setMedioPago(mp);
 			} else
 				continuar = false;
 		}
 		return cuotas;
 	}
-	
+
 	/**
-	 * Agrega el pago ala cuota y retorna el monto sobrante para generar un nuevo pago si corresponde.
+	 * Agrega el pago ala cuota y retorna el monto sobrante para generar un
+	 * nuevo pago si corresponde.
+	 * 
 	 * @param pago
 	 * @param cuota
 	 * @return
 	 */
 	private BigDecimal agregarPago(PagoDto pago, CuotaDto cuota) {
 		BigDecimal resto = new BigDecimal(0);
-		if (cuota.getFaltaPagar().compareTo(pago.getMonto())<0) {
+		if (cuota.getFaltaPagar().compareTo(pago.getMonto()) < 0) {
 			resto = pago.getMonto().subtract(cuota.getFaltaPagar());
-			pago.setMonto(cuota.getFaltaPagar());			
+			pago.setMonto(cuota.getFaltaPagar());
 		}
-		
+
 		PagoDto pagoDto = getPagoDto(pago, cuota);
 		validarPago(pago, cuota);
 		if (pagoDto == null)
@@ -288,10 +303,12 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		PagoDto pagoDto = null;
 		while (pagos.hasNext()) {
 			PagoDto pDto = pagos.next();
-			if (!pDto.isComprobante() && pDto.getMedioPago().getId().equals(pago.getMedioPago().getId()))
+			if (!pDto.isComprobante()
+					&& pDto.getMedioPago().getId()
+							.equals(pago.getMedioPago().getId()))
 				pagoDto = pDto;
 		}
-		if (pagoDto==null) {
+		if (pagoDto == null) {
 			pagoDto = new PagoDto();
 			pagoDto.setComprobante(false);
 			pagoDto.setMedioPago(pago.getMedioPago());
@@ -305,104 +322,113 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	@Transactional
 	@Override
 	public void comprobantePago(List<CuotaDto> cuotas) {
-		
-		for (int i = 0; i < cuotas.size(); i++) {
-			VentaHelper.calcularTotales(cuotas.get(i));
+		try {
+			for (int i = 0; i < cuotas.size(); i++) {
+				VentaHelper.calcularTotales(cuotas.get(i));
+			}
+
+			ventaDao.actualizarCreditos(cuotas);
+
+			Comprobante comprobante = clienteDao.generarComprobante(cuotas);
+
+			for (int i = 0; i < cuotas.size(); i++) {
+				Cuota cuotaEnt = saveCuota(cuotas.get(i), new Date());
+				if (cuotaEnt.getPagos() != null) {
+					Iterator<Pago> pagosIt = cuotaEnt.getPagos().iterator();
+					while (pagosIt.hasNext()) {
+						Pago pago = pagosIt.next();
+						if (!pago.isComprobante()) {
+							comprobante.addPago(pago);
+							pago.setFecha(new Date());
+						}
+
+						pago.setComprobante(true);
+					}
+				}
+				clienteDao.saveOrUpdate(comprobante);
+			}
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar generar el comprobante de pago");
 		}
 
-		ventaDao.actualizarCreditos(cuotas);
-		
-		Comprobante comprobante = clienteDao.generarComprobante(cuotas);
-		
-		for (int i = 0; i < cuotas.size(); i++) {			
-			Cuota cuotaEnt = saveCuota(cuotas.get(i), new Date());
-			if (cuotaEnt.getPagos()!=null) {
-				Iterator<Pago> pagosIt = cuotaEnt.getPagos().iterator();
-				while (pagosIt.hasNext()){
-					Pago pago = pagosIt.next();
-					if (!pago.isComprobante()) {
-						comprobante.addPago(pago);
-						pago.setFecha(new Date());
-					}
-					
-					pago.setComprobante(true);
-				}
-			}
-			clienteDao.saveOrUpdate(comprobante);			
-		}
-		
 	}
-	
-	
-	public void reporteMovimientosCliente(ClienteDto cliente){
+
+	public void reporteMovimientosCliente(ClienteDto cliente) {
 		clienteDao.reporteMovimientosCliente(cliente);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	/**
 	 * Este metodo se invoca cuando el cliente que realiza la devolucion tiene cuenta corriente con cuotas pendientes de pago.
 	 * Este metodo utiliza el credito otorgado por la devolucion para cancelar las cuotas correspondientes.
 	 */
 	public void pagarCuotasNC(VentaDto venta) {
-		List<Cuota> cuotas = cuotaDao.getCuotaByClienteId(venta.getCliente().getId());
+		List<Cuota> cuotas = cuotaDao.getCuotaByClienteId(venta.getCliente()
+				.getId());
 		BigDecimal pendiente = new BigDecimal(0);
-		if (cuotas!=null){
+		if (cuotas != null) {
 			Iterator<Cuota> cuotasIt = cuotas.iterator();
 			boolean seguir = true;
 			List<CuotaDto> cuotasAPagar = new ArrayList<CuotaDto>();
-			while (cuotasIt.hasNext() && seguir){
+			while (cuotasIt.hasNext() && seguir) {
 				Cuota cuota = cuotasIt.next();
 				pendiente = pendiente.add(cuota.getFaltaPagar());
-				cuotasAPagar.add((CuotaDto)entityDTOParser.getDtoFromEntity(cuota));
-				if (pendiente.compareTo(venta.getTotal())>=0)
+				cuotasAPagar.add((CuotaDto) entityDTOParser
+						.getDtoFromEntity(cuota));
+				if (pendiente.compareTo(venta.getTotal()) >= 0)
 					seguir = false;
-			}			
-			MedioPagoDto medioPagoDto = (MedioPagoDto)entityDTOParser.getDtoFromEntity(medioPagoDao.getByCode(MitnickConstants.Medio_Pago.NOTA_CREDITO));
+			}
+			MedioPagoDto medioPagoDto = (MedioPagoDto) entityDTOParser
+					.getDtoFromEntity(medioPagoDao
+							.getByCode(MitnickConstants.Medio_Pago.NOTA_CREDITO));
 			PagoDto pago = new PagoDto();
 			pago.setMedioPago(medioPagoDto);
 			pago.setMonto(venta.getTotal());
 			pago.setNroNC(venta.getNumeroTicket());
 			agregarPago(pago, cuotasAPagar);
 			BigDecimal creditoUsado = new BigDecimal(0);
-			if (pendiente.compareTo(venta.getTotal())>=0)
+			if (pendiente.compareTo(venta.getTotal()) >= 0)
 				creditoUsado = venta.getTotal();
 			else
 				creditoUsado = pendiente;
-				
+
 			ventaDao.usarCredito(venta.getNumeroTicket(), creditoUsado);
 			comprobantePago(cuotasAPagar);
-			
+
 		}
 	}
-		
+
 	@Transactional
 	public void cancelarComprobante(String nroComprobante) {
-		
-		Comprobante comprobante = clienteDao.findComprobanteByNumero(nroComprobante);
+
+		Comprobante comprobante = clienteDao
+				.findComprobanteByNumero(nroComprobante);
 		if (Validator.isNull(comprobante))
 			throw new BusinessException(
-					"error.clienteServicio.comprobante.cancelar.noExiste", "No se encuentra el comprobante que desea eliminar");
+					"error.clienteServicio.comprobante.cancelar.noExiste",
+					"No se encuentra el comprobante que desea eliminar");
 		List<Pago> pagos = comprobante.getPagos();
-		for (Pago pago: pagos){
-			//se actualiza la cuota
+		for (Pago pago : pagos) {
+			// se actualiza la cuota
 			Cuota cuota = pago.getCuota();
 			BigDecimal cuotafaltaPagar = cuota.getFaltaPagar();
 			cuotafaltaPagar = cuotafaltaPagar.add(pago.getPago());
 			cuota.setFaltaPagar(cuotafaltaPagar);
 			cuota.setPagado(false);
 			cuota.getPagos().remove(pago);
-			
+
 		}
-		//se elimina el comprobante
-		try{
+		// se elimina el comprobante
+		try {
 			clienteDao.eliminarComprobante(comprobante);
 		} catch (PersistenceException e) {
-			throw new BusinessException(e, "Error al intentar eliminar el comprobante");
+			throw new BusinessException(e,
+					"Error al intentar eliminar el comprobante");
 		}
-		
+
 	}
-	
-	
+
 	public BigDecimal getSaldoDeudor(ClienteDto cliente) {
 		return clienteDao.getSaldoDeudor(cliente);
 	}

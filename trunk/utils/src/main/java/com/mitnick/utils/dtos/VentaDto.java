@@ -48,7 +48,7 @@ public class VentaDto extends BaseDto {
 	
 	private boolean cancelada;
 	
-	private boolean printed;
+	private boolean printed = false;
 	
 	private TipoCompradorDto tipoResponsabilidad = new TipoCompradorDto(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL, MitnickConstants.TipoComprador.CONSUMIDOR_FINAL_DESC);
 
