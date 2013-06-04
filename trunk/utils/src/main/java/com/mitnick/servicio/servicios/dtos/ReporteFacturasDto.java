@@ -11,10 +11,19 @@ public class ReporteFacturasDto extends ServicioBaseDto {
 
 	private Date fecha;
 	private int corteZ;
+	
 	private BigDecimal netoA;
 	private BigDecimal ivaA;
 	private BigDecimal totalA;
+	
+	private BigDecimal netoNA;
+	private BigDecimal ivaNA;
+	private BigDecimal totalNA;
+	
 	private BigDecimal totalB;
+	
+	private BigDecimal totalNB;
+	
 	private BigDecimal total;
 	
 	private List<FacturaDto> facturas;
@@ -178,6 +187,38 @@ public class ReporteFacturasDto extends ServicioBaseDto {
 				+ ", netoA=" + netoA + ", ivaA=" + ivaA + ", totalA=" + totalA
 				+ ", totalB=" + totalB + ", total=" + total + ", facturas="
 				+ facturas + "]";
+	}
+
+	public BigDecimal getNetoNA() {
+		return netoNA;
+	}
+
+	public void setNetoNA(BigDecimal netoNA) {
+		this.netoNA = netoNA;
+	}
+
+	public BigDecimal getIvaNA() {
+		return ivaNA;
+	}
+
+	public void setIvaNA(BigDecimal ivaNA) {
+		this.ivaNA = ivaNA;
+	}
+
+	public BigDecimal getTotalNA() {
+		return totalNA;
+	}
+
+	public void setTotalNA(BigDecimal totalNA) {
+		this.totalNA = totalNA;
+	}
+
+	public BigDecimal getTotalNB() {
+		return totalNB;
+	}
+
+	public void setTotalNB(BigDecimal totalNB) {
+		this.totalNB = totalNB;
 	}
 
 }

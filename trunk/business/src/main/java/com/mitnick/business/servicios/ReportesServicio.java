@@ -245,27 +245,40 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					factura.setCuit(venta.getCliente().getCuit());
 					factura.setNeto(venta.getNeto());
 					factura.setIva(venta.getImpuesto());
+					
 					if (venta.isDevolucion()){
-						totalVenta = totalVenta.negate();	
-						impuestoVenta = impuestoVenta.negate();
-						netoVenta = netoVenta.negate();
 						nroFactura = "NC-".concat(nroFactura);
-					} else
+						diarioDto.setIvaNA(diarioDto.getIvaNA().add(impuestoVenta));
+						diarioDto.setNetoNA(diarioDto.getNetoNA().add(netoVenta));
+						diarioDto.setTotalNA(diarioDto.getTotalNA().add(totalVenta));
+					} else {
 						nroFactura = "F-".concat(nroFactura);
+						diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
+						diarioDto.setNetoA(diarioDto.getNetoA().add(netoVenta));
+						diarioDto.setTotalA(diarioDto.getTotalA().add(totalVenta));
+					}
+						
 					
 					factura.setNroFactura(nroFactura);
 					factura.setTotal(totalVenta);
-					
-					diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
-					diarioDto.setNetoA(diarioDto.getNetoA().add(netoVenta));
-					diarioDto.setTotalA(diarioDto.getTotalA().add(totalVenta));
+
 					diarioDto.addfactura(factura);
 					
 				} else {
-					diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));						
+					if (venta.isDevolucion()){
+						diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
+					} else {
+						diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));	
+					}
+											
 				}
-				diarioDto.setTotal(diarioDto.getTotal().add(totalVenta));
-				
+			}
+			for (ReporteFacturasDto diario: reportes){
+				BigDecimal total = diario.getTotalA();
+				total = total.add(diario.getTotalB());
+				total = total.subtract(diario.getTotalNA());
+				total = total.subtract(diario.getTotalNB());
+				diario.setTotal(total);
 			}
 			JasperReport reporteJR = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream("/reports/reportefacturas.jasper"));
@@ -303,7 +316,11 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		dto.setIvaA(new BigDecimal(0));
 		dto.setNetoA(new BigDecimal(0));
 		dto.setTotalA(new BigDecimal(0));
+		dto.setIvaNA(new BigDecimal(0));
+		dto.setNetoNA(new BigDecimal(0));
+		dto.setTotalNA(new BigDecimal(0));
 		dto.setTotalB(new BigDecimal(0));
+		dto.setTotalNB(new BigDecimal(0));
 		dto.setTotal(new BigDecimal(0));
 		reportes.add(dto);
 		return dto;

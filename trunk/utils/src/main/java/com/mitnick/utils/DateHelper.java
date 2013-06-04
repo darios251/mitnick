@@ -14,7 +14,8 @@ public class DateHelper {
 
 	public static Date getFecha(String fecha) {
 		try {
-			return getParser().parse(fecha);
+			if (Validator.isNotBlankOrNullDate(fecha))
+				return getParser().parse(fecha);
 		} catch (ParseException e) {
 			logger.error(e);
 		}
@@ -22,7 +23,9 @@ public class DateHelper {
 	}
 
 	public static String getFecha(Date fecha) {
-		return getParser().format(fecha);
+		if (Validator.isNotNull(fecha))
+			return getParser().format(fecha);
+		return null;
 	}
 
 	public static SimpleDateFormat getParser() {

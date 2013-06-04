@@ -92,6 +92,57 @@ public class Validator extends GenericValidator{
 			return false;
 		}
 	}
+	
+	public static boolean isNotBlankOrNullCuit(String cuit) {
+		try {
+			if (cuit==null)
+				return false;
+			cuit = cuit.trim();
+			if (cuit.startsWith("-"))
+				return false;
+			if ("".equals(cuit))
+				return false;
+			else
+				return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
+	
+	public static boolean isBlankOrNullDale(String date) {
+		try {
+			if (date==null)
+				return true;
+			date = date.trim();
+			if (date.startsWith("/"))
+				return true;
+			if ("".equals(date))
+				return true;
+			else
+			return false;
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
+	
+	public static boolean isNotBlankOrNullDate(String date) {
+		try {
+			if (date==null)
+				return false;
+			date = date.trim();
+			if (date.startsWith("/"))
+				return false;
+			if ("".equals(date))
+				return false;
+			else
+				return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
 
 	public static boolean isPhoneNumber(String telefono) {
 		return true;
