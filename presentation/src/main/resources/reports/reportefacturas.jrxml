@@ -33,6 +33,18 @@
 	<field name="totalB" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[totalB]]></fieldDescription>
 	</field>
+	<field name="totalNA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalNA]]></fieldDescription>
+	</field>
+	<field name="totalNB" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalNB]]></fieldDescription>
+	</field>
+	<field name="netoNA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[netoNA]]></fieldDescription>
+	</field>
+	<field name="ivaNA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[ivaNA]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -121,9 +133,9 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detalleFactura.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="82">
+		<band height="126">
 			<textField>
-				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="114" y="43" width="19" height="20"/>
+				<reportElement uuid="81354b31-dabc-4d62-b98c-5ac049b4277d" x="114" y="86" width="19" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -137,14 +149,14 @@
 				<text><![CDATA[A]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="96" y="23" width="17" height="20"/>
+				<reportElement uuid="877bfb37-6a68-4edc-9bf5-0f2a1dcb42cd" x="96" y="43" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="96" y="43" width="17" height="20"/>
+				<reportElement uuid="7ec20fe2-cdca-44d3-b79c-d7c94cef52b7" x="96" y="86" width="17" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -172,14 +184,14 @@
 				<textFieldExpression><![CDATA[$F{totalA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e80cb671-6ece-413d-b58d-b4f2347b53ee" x="503" y="24" width="48" height="20"/>
+				<reportElement uuid="e80cb671-6ece-413d-b58d-b4f2347b53ee" x="503" y="43" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalB}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e304b11f-1dc7-4a3f-8887-07d9adc71f1f" x="503" y="43" width="48" height="20"/>
+				<reportElement uuid="e304b11f-1dc7-4a3f-8887-07d9adc71f1f" x="503" y="86" width="48" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -199,18 +211,60 @@
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="25" y="43" width="71" height="20"/>
+				<reportElement uuid="3486f325-6f0c-42d0-bbee-a55eea14d7b7" x="25" y="86" width="71" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="0" y="79" width="601" height="1"/>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="0" y="117" width="601" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Double"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="96" y="23" width="17" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="96" y="63" width="17" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NB]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e8e68b2a-2f9a-4958-ade3-c33156c46a29" x="503" y="63" width="47" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalNB}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="41b3017b-c1cd-4ee6-b522-27e90788e0d3" x="503" y="23" width="47" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalNA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3708a12a-b97e-4290-a9b9-73658031dd67" x="451" y="23" width="52" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ivaNA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5a284383-8686-4f16-838b-ee868a908f3b" x="401" y="23" width="50" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{netoNA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

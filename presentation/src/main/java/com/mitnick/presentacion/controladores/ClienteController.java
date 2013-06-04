@@ -190,20 +190,31 @@ public class ClienteController extends BaseController {
 		if(Validator.isNull(cliente))
 			cliente = new ClienteDto();
 		
-		cliente.setActividad(actividad.trim());
-		cliente.setNombre(nombre.trim());
-		cliente.setDocumento(documento.trim());
-		cliente.setCuit(cuit.trim());
-		cliente.setEmail(email.trim());
-		cliente.setFechaNacimiento(fechaNacimiento.trim());
-		cliente.setTelefono(telefono.trim());
-		cliente.setCelular(celular.trim());
-		if(cliente.getDireccion() == null)
+		if (Validator.isNotNull(actividad))
+			cliente.setActividad(actividad.trim());
+		if (Validator.isNotNull(nombre))
+			cliente.setNombre(nombre.trim());
+		if (Validator.isNotNull(documento))
+			cliente.setDocumento(documento.trim());
+		if (Validator.isNotBlankOrNullCuit(cuit))
+			cliente.setCuit(cuit.trim());
+		if (Validator.isNotNull(email))
+			cliente.setEmail(email.trim());
+		if (Validator.isNotNull(fechaNacimiento))
+			cliente.setFechaNacimiento(fechaNacimiento.trim());
+		if (Validator.isNotNull(telefono))
+			cliente.setTelefono(telefono.trim());
+		if (Validator.isNotNull(celular))
+			cliente.setCelular(celular.trim());
+		if (Validator.isNull(cliente.getDireccion()))
 			cliente.setDireccion(new DireccionDto());
-		cliente.getDireccion().setDomicilio(domicilio.trim());
-		cliente.getDireccion().setCodigoPostal(codigoPostal.trim());
+		if (Validator.isNotNull(domicilio))
+			cliente.getDireccion().setDomicilio(domicilio.trim());
+		if (Validator.isNotNull(codigoPostal))
+			cliente.getDireccion().setCodigoPostal(codigoPostal.trim());
 		cliente.getDireccion().setCiudad(ciudad);
-		cliente.setTipoComprador(tipoComprador.trim());
+		if (Validator.isNotNull(tipoComprador))
+			cliente.setTipoComprador(tipoComprador.trim());
 		
 		//valido el dto
 		validateDto(cliente);
