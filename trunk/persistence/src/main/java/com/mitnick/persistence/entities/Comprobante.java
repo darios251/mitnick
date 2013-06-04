@@ -12,7 +12,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -38,6 +40,18 @@ public class Comprobante extends BaseObject implements Serializable {
 	@OneToMany (cascade = {CascadeType.ALL})
 	@JoinColumn(name = "comprobante_id")
 	private List<Pago> pagos;
+	
+	@ManyToOne
+	@PrimaryKeyJoinColumn(name = "cliente_id")
+	private Cliente cliente;
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 
 	public String getId() {
 		return id;
@@ -108,6 +122,7 @@ public class Comprobante extends BaseObject implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
@@ -127,6 +142,13 @@ public class Comprobante extends BaseObject implements Serializable {
 			return false;
 		}
 		Comprobante other = (Comprobante) obj;
+		if (cliente == null) {
+			if (other.cliente != null) {
+				return false;
+			}
+		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
 		if (fecha == null) {
 			if (other.fecha != null) {
 				return false;
@@ -161,7 +183,7 @@ public class Comprobante extends BaseObject implements Serializable {
 	@Override
 	public String toString() {
 		return "Comprobante [id=" + id + ", fecha=" + fecha + ", total="
-				+ total + ", pagos=" + pagos + "]";
+				+ total + ", pagos=" + pagos + ", cliente=" + cliente + "]";
 	}
 	
 

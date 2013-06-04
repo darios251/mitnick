@@ -22,6 +22,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -255,6 +256,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 			comprobante.setFecha(new Date());
 			comprobante.setTotal(pagoComprobante);
 			Cliente clienteObject = findById(cliente.getId());
+			comprobante.setCliente(clienteObject);
 			clienteObject.addComprobante(comprobante);
 			clienteObject = saveOrUpdate(clienteObject);
 			super.getHibernateTemplate().flush();
@@ -431,4 +433,10 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		return movimientos;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Cliente> findAllWithComprobantes() {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);
+		criteria.setFetchMode("comprobantes", FetchMode.JOIN);
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
 }

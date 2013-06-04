@@ -470,16 +470,19 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				}
 			}
 			
-			List<Pago> recibos = cuotaDao.getPagosCuotas(filtro);
-			for (Pago pago: recibos) {
-				if (Validator.isNotNull(pago.getCuota()) && Validator.isNotNull(pago.getCuota().getCliente()) ){
-					ComprobanteDto comprobante = getComprobanteCliente(comprobantes, pago.getCuota().getCliente());
+			//nueva funcionalidad (04062013)
+			List<Comprobante> recibosNew = cuotaDao.getComprobantes(filtro);
+			for (Comprobante recibo: recibosNew) {
+				if (Validator.isNotNull(recibo.getCliente()) ){
+					ComprobanteDto comprobante = getComprobanteCliente(comprobantes, recibo.getCliente());
 					BigDecimal monto = comprobante.getMonto();
-					monto = monto.add(pago.getPago());
+					monto = monto.add(recibo.getTotal());
 					comprobante.setMonto(monto);
 					
 				}				
 			}
+
+			
 			BigDecimal totalRecibo = new BigDecimal(0);
 			for (ComprobanteDto c: comprobantes){
 				totalRecibo = totalRecibo.add(c.getMonto());

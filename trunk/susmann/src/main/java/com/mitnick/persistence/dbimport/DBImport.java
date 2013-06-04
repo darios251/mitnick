@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
+import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IProvinciaDao;
@@ -24,11 +25,13 @@ import com.mitnick.persistence.daos.ITipoDao;
 import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Ciudad;
 import com.mitnick.persistence.entities.Cliente;
+import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Direccion;
 import com.mitnick.persistence.entities.Marca;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Venta;
+import com.mitnick.servicio.servicios.dtos.ReportesDto;
 
 @Service("dbImport")
 public class DBImport {
@@ -353,4 +356,21 @@ public class DBImport {
 		return retorno;
 	}
 
+	public void asociarComprobanteCliente(){
+		try {
+			ReportesDto filtro = new ReportesDto();
+			List<Cliente> clientes = clienteDao.findAllWithComprobantes();
+			for (Cliente cliente: clientes){
+				List<Comprobante> comprobantes = cliente.getComprobantes();
+				for (Comprobante comprobante: comprobantes){
+					comprobante.setCliente(cliente);
+					clienteDao.saveOrUpdate(comprobante);
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
