@@ -209,12 +209,12 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		actualizarPagoEFTVuelto(ventaDto);
 		@SuppressWarnings("unchecked")
 		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
-				
+		logger.info("Facturando venta con monto: " + venta.getTotal());
 		if(!ventaDto.isPrinted()) {
 			if(!printerService.imprimirTicketFactura(ventaDto))
 				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		} 	
-		
+		logger.info("Venta facturada: " + ventaDto.getNumeroTicket());
 		venta.setPrinted(true);
 		ventaDto.setPrinted(true);
 		
@@ -228,7 +228,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
 		ventaDto.setId(venta.getId());
-		
+		logger.info("Venta guardada: " +venta.getId() + " - nro ticket: " + ventaDto.getNumeroTicket());
 		return ventaDto;
 
 	}
@@ -376,6 +376,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	
 	@Transactional
 	public void cancelar(VentaDto ventaDto) {
+		logger.info("Cancelando venta con monto: " + ventaDto.getTotal());
 		ventaDto.setCancelada(true);
 		//se eliminan las cuotas que estuvieran asociadas a la venta
 		ventaDto.setCuotas(new ArrayList<CuotaDto>());
@@ -383,6 +384,9 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		Venta venta = (Venta) entityDTOParser.getEntityFromDto(ventaDto);
 		
 		ventaDao.saveOrUpdate(venta);
+		logger.info("Venta facturada (ticket impreso): " + ventaDto.isPrinted());
+		logger.info("Cancelando venta facturada nro: " + ventaDto.getNumeroTicket());
+		logger.info("Venta cancelada id: " + venta.getId());
 	}
 	
 	@SuppressWarnings("unchecked")
