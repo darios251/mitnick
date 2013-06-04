@@ -38,8 +38,8 @@ public class Cuota extends BaseObject implements Serializable {
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "venta_id")
 	private Venta venta;
-	
-	@OneToMany (cascade = {CascadeType.ALL})
+		
+	@OneToMany (cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "cuota_id")
 	private List<Pago> pagos;
 	
