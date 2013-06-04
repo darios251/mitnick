@@ -3,8 +3,6 @@ package com.mitnick.presentacion.vistas.paneles;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.text.ParseException;
 
@@ -21,7 +19,6 @@ import com.mitnick.presentacion.controladores.ClienteController;
 import com.mitnick.utils.AllowBlankMaskFormatter;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
-import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 
@@ -45,11 +42,8 @@ public class NuevaCuotaDialog extends BaseDialog {
 	private JTextField txtDescripcion;
 	
 	private JLabel lblFecha;
-	private JLabel lblMontoOriginal;
 	private JLabel lblMontoCuota;
 	private JLabel lblDescripcion;
-	
-	private JLabel lblMontoOriginalValor;
 	
 	private CuotaDto cuotaDto;
 	
@@ -69,8 +63,6 @@ public class NuevaCuotaDialog extends BaseDialog {
 		getContentPane().add(getLblDescripcion());
 		getContentPane().add(getBtnAceptar());
 		getContentPane().add(getBtnCancelar());
-		getContentPane().add(getLblMontoCuotaOriginal());
-		getContentPane().add(getLblMontoCuotaOriginalValor());
 		
 		getContentPane().add(getLblErrorTxtFecha());
 		getContentPane().add(getLblErrorTxtMontoCuota());
@@ -78,10 +70,6 @@ public class NuevaCuotaDialog extends BaseDialog {
 		String fecha = "";
 		if (cuotaDto.getFaltaPagar()!=null)
 			fecha = cuotaDto.getFecha_pagar();
-		
-		String monto = "";
-		if (cuotaDto.getTotal()!=null)
-			monto = cuotaDto.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 		
 		String montoAPagar = "";
 		if (cuotaDto.getFaltaPagar()!=null)
@@ -92,7 +80,6 @@ public class NuevaCuotaDialog extends BaseDialog {
 			descripcion = cuotaDto.getDescripcion();
 		
 		getTxtFecha().setText(fecha);
-		getLblMontoCuotaOriginalValor().setText(monto);
 		getTxtMontoCuota().setText(montoAPagar);
 		getTxtDescripcion().setText(descripcion);
 		
@@ -165,14 +152,6 @@ public class NuevaCuotaDialog extends BaseDialog {
 		return lblFecha;
 	}
 
-	public JLabel getLblMontoCuotaOriginal() {
-		if (lblMontoOriginal == null) {
-			lblMontoOriginal = new JLabel(PropertiesManager.getProperty("nuevaCuotaDialog.label.monto"));
-			lblMontoOriginal.setBounds(110, 45, 70, 20);
-		}
-		return lblMontoOriginal;
-	}
-	
 	public JLabel getLblMontoCuota() {
 		if (lblMontoCuota == null) {
 			lblMontoCuota = new JLabel(PropertiesManager.getProperty("nuevaCuotaDialog.label.montoAPagar"));
@@ -200,52 +179,13 @@ public class NuevaCuotaDialog extends BaseDialog {
 		return txtFecha;
 	}
 
-	public JLabel getLblMontoCuotaOriginalValor() {
-		if (lblMontoOriginalValor == null) {
-			lblMontoOriginalValor = new JLabel("");
-			lblMontoOriginalValor.setBounds(190, 45, 70, 20);
-		}
-		return lblMontoOriginalValor;
-	}
-
 	public JTextField getTxtMontoCuota() {
 		if (txtMontoCuota == null) {
 			txtMontoCuota = new JTextField();
 			txtMontoCuota.setColumns(10);
-			txtMontoCuota.setBounds(190, 75, 110, 20);
-			txtMontoCuota.addKeyListener(new KeyListener() {
-				@Override
-				public void keyTyped(KeyEvent e) {
-					// TODO Auto-generated method stub
-				}
-				@Override
-				public void keyReleased(KeyEvent e) {
-					actualizarTotales();
-				}
-				@Override
-				public void keyPressed(KeyEvent e) {
-					// TODO Auto-generated method stub
-				}
-			});
+			txtMontoCuota.setBounds(190, 75, 110, 20);			
 		}
 		return txtMontoCuota;
-	}
-	
-	private void actualizarTotales(){
-		try {
-			BigDecimal aPagarOriginal = new BigDecimal(0);
-			BigDecimal totalOriginal =  new BigDecimal(0);
-			BigDecimal nuevoApagar =  new BigDecimal(txtMontoCuota.getText());
-			BigDecimal nuevoTotal = nuevoApagar;
-			if (Validator.isNotNull(cuotaDto) && Validator.isNotNull(cuotaDto.getFaltaPagar())  && Validator.isNotNull(cuotaDto.getTotal()) ){
-				aPagarOriginal = cuotaDto.getFaltaPagar();	
-				totalOriginal = cuotaDto.getTotal();
-				BigDecimal diferencia = nuevoApagar.subtract(aPagarOriginal);
-				nuevoTotal = totalOriginal.add(diferencia);		
-			} 
-			getLblMontoCuotaOriginalValor().setText(nuevoTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		} catch (Exception e) {			
-		}
 	}
 	
 	public JTextField getTxtDescripcion() {
@@ -291,7 +231,7 @@ public class NuevaCuotaDialog extends BaseDialog {
 	
 	protected void keyIntro() {
 		try {
-			clienteController.guardarCuota(cuotaDto, getLblMontoCuotaOriginalValor().getText(), getTxtFecha().getText(), getTxtDescripcion().getText());
+			clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText(), getTxtDescripcion().getText());
 			setVisible(false);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);

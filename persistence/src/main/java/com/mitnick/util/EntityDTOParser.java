@@ -325,11 +325,10 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		cuotaDto.setId(cuota.getId());
 		cuotaDto.setFecha_pagar(DateHelper.getFecha(cuota.getFecha_pagar()));
 		cuotaDto.setNroCuota(cuota.getNroCuota());
-		cuotaDto.setTotal(cuota.getTotal());
+		cuotaDto.setTotal(cuota.getFaltaPagar());
 		cuotaDto.setFaltaPagar(cuota.getFaltaPagar());
 		cuotaDto.setClienteDto(getDtoFromEntity(cuota.getCliente()));
 		cuotaDto.setPagado(cuota.isPagado());
-		cuotaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) cuota.getPagos()));
 		cuotaDto.setDescripcion(cuota.getDescripcion());
 		VentaHelper.calcularTotales(cuotaDto);
 		return cuotaDto;

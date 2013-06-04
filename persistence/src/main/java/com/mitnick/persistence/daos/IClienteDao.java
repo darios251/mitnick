@@ -39,5 +39,6 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	
 	List<Comprobante> findComprobantesByClienteId(Long id);
 	
+	public List<Cliente> findAllWithComprobantes();
 	
 }
