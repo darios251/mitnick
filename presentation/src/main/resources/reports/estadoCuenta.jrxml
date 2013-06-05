@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="total" class="java.lang.String"/>
+	<parameter name="tipoReporte" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -22,12 +23,12 @@
 	<title>
 		<band height="68" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="142" y="18" width="403" height="32" forecolor="#000099" backcolor="#FFFFFF"/>
+				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="142" y="18" width="117" height="32" forecolor="#000099" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Baskerville Old Face" size="24" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Estado de Cuentas]]></text>
+				<text><![CDATA[Estado de]]></text>
 			</staticText>
 			<image>
 				<reportElement uuid="fc81937d-438a-4c0e-adff-c998141c956a" x="14" y="0" width="128" height="50"/>
@@ -37,6 +38,13 @@
 				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="445" y="48" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="96d0158a-fbe2-4af7-8249-742f5154d51e" x="259" y="18" width="344" height="32" forecolor="#000099"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Baskerville Old Face" size="24" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipoReporte}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

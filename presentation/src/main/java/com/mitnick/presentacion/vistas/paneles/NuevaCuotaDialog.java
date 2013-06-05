@@ -229,12 +229,18 @@ public class NuevaCuotaDialog extends BaseDialog {
 		setVisible(false);
 	}
 	
+	boolean estadoError = false;
 	protected void keyIntro() {
 		try {
-			clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText(), getTxtDescripcion().getText());
-			setVisible(false);
+			if (estadoError)
+				estadoError = false;
+			else {
+				clienteController.guardarCuota(cuotaDto, getTxtMontoCuota().getText(), getTxtFecha().getText(), getTxtDescripcion().getText());
+				setVisible(false);
+			}
 		} catch (PresentationException ex) {
-			mostrarMensaje(ex);
+			estadoError = true;
+			mostrarMensaje(ex);			
 		}
 	}
 	

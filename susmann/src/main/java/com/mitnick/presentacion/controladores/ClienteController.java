@@ -449,7 +449,7 @@ public class ClienteController extends BaseController {
 				return;
 			}
 		}
-		actualizarCuotas(getCuentaCorrientePagoPanel().getCliente());
+		actualizarCuotas(getCuentaCorrientePagoPanel().getCliente()); cuentaCorrientePanel.actualizarTotalOriginal(); //AGREGADO POR SUSMANN 
 		mostrarCuentaCorrientePanel();
 	}
 	
@@ -470,7 +470,7 @@ public class ClienteController extends BaseController {
 					return;
 				}
 			}
-			getCuentaCorrientePagoPanel().finalizarPagos();
+			getCuentaCorrientePagoPanel().finalizarPagos(); cuentaCorrientePanel.actualizarTotalOriginal(); //AGREGADO POR SUSMANN 
 		}
 	}	
 	
