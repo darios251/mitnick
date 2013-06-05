@@ -345,7 +345,15 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				if (TRANSACCIONAL == tipo) {
 					dto = new ReporteVentasResultadoDTO();
 					dto.setFecha(DateHelper.getFecha(venta.getFecha()));
-					dto.setNroTrx(venta.getNumeroTicket());
+					String nroTRX = "";
+					if (venta.isDevolucion())
+						nroTRX = "N";
+					if ("A".equals(venta.getTipoTicket()))
+						nroTRX = nroTRX.concat("A-");
+					else
+						nroTRX = nroTRX.concat("B-");
+					nroTRX = nroTRX.concat(venta.getNumeroTicket());
+					dto.setNroTrx(nroTRX);
 					ingresos.add(dto);
 				} else if (DIARIO == tipo)
 					dto = getDTOFecha(ingresos, venta.getFecha());

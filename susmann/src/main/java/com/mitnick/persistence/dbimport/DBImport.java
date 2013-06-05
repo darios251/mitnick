@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.mitnick.persistence.daos.ICiudadDao;
 import com.mitnick.persistence.daos.IClienteDao;
-import com.mitnick.persistence.daos.ICuotaDao;
 import com.mitnick.persistence.daos.IMarcaDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IProvinciaDao;
@@ -32,6 +31,8 @@ import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
+import com.mitnick.util.EntityDTOParser;
+import com.mitnick.utils.dtos.ProductoDto;
 
 @Service("dbImport")
 public class DBImport {
@@ -62,6 +63,9 @@ public class DBImport {
 	private Ciudad santoTome;
 	
 	List<Marca> marcas = null;
+	
+	@Autowired
+	protected EntityDTOParser entityDTOParser;
 
 	// migracion de cliente
 	private static String RAZONSOC = "RAZONSOC";
@@ -366,6 +370,23 @@ public class DBImport {
 					comprobante.setCliente(cliente);
 					clienteDao.saveOrUpdate(comprobante);
 				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void fixPrecioProducts(){
+		try {
+			List<Producto> productos = productoDao.getAll();
+			for (Producto producto: productos){
+				ProductoDto prodDTO = (ProductoDto)entityDTOParser.getDtoFromEntity(producto);
+				BigDecimal precio = prodDTO.getPrecioVentaConIva();
+				producto.setPrecioVenta(precio);
+				productoDao.save(producto);
+				System.out.println("finalizó con exito!!");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
