@@ -377,10 +377,8 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 				String nro = comprobante.getId().toString();
 				movimiento.setNroComprobante("Comp-" + nro);
 				movimiento.setFecha(comprobante.getFecha());
-				movimiento.setDebe(comprobante.getPagoCuenta());
-				BigDecimal pago = comprobante.getPagoContado();
-				pago = pago.add(comprobante.getPagoNC());
-				movimiento.setHaber(pago);
+				movimiento.setDebe(new BigDecimal(0));
+				movimiento.setHaber(comprobante.getTotal());
 				movimientos.add(movimiento);
 			}
 

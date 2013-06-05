@@ -622,7 +622,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					.getClass().getResourceAsStream(
 							"/reports/estadoCuenta.jasper"));
 
-			JRDataSource dr = new JRBeanCollectionDataSource(cuotas);
+			JRDataSource dr = new JRBeanCollectionDataSource(orderByCodigoCliente(cuotas));
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
@@ -660,7 +660,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					.getClass().getResourceAsStream(
 							"/reports/estadoCuenta.jasper"));
 
-			JRDataSource dr = new JRBeanCollectionDataSource(agruparPorCliente(cuotas));
+			JRDataSource dr = new JRBeanCollectionDataSource(orderByCodigoCliente(agruparPorCliente(cuotas)));
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
@@ -806,5 +806,21 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	           }  
 	       }); 
 			return comprobantes.get(0);
-		}
+	}
+	
+	//AGREGADO A SUSMANN - ORDENAR REPORTE DE CUOTAS Y CUENTAS POR CÓDIGO DE CLIENTE. NO POR FECHA
+	@SuppressWarnings("unchecked")
+	private List<CuotaDto> orderByCodigoCliente(
+			List<CuotaDto> cuotas) {
+		// ordenamos la lista por fecha
+		Collections.sort(cuotas, new Comparator() {
+
+			public int compare(Object o1, Object o2) {
+				CuotaDto e1 = (CuotaDto) o1;
+				CuotaDto e2 = (CuotaDto) o2;
+				return e1.getClienteDto().getId().compareTo(e2.getClienteDto().getId());
+			}
+		});
+		return cuotas;
+	}
 }

@@ -449,6 +449,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 
 	public void setCliente(ClienteDto cliente) {
 		this.cliente = cliente;
+		actualizarTotalOriginal();
 	}
 	
 	//Agregado para susmann
@@ -457,7 +458,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	
 	private JLabel getLblTotalOriginal() {
 		if(lblTotalOriginal == null) {
-			lblTotalOriginal = new JLabel("Total Original: $0");
+			lblTotalOriginal = new JLabel("Total Original: $ 0");
 			lblTotalOriginal.setFont(new java.awt.Font("Tahoma", Font.BOLD, 14));
 			lblTotalOriginal.setBounds(280, 441, 180, 60);	
 		}
@@ -465,14 +466,16 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 		return lblTotalOriginal;
 	}
 	
-	private void actualizarTotalOriginal(){
-		BigDecimal total = new BigDecimal(0);
-		if(Validator.isNotNull(cuotas)){
-			for (CuotaDto cuota: cuotas){
-				total = total.add(cuota.getFaltaPagar());
+	public void actualizarTotalOriginal(){
+		if(lblTotalOriginal != null) {
+			BigDecimal total = new BigDecimal(0);
+			if(Validator.isNotNull(cuotas)){
+				for (CuotaDto cuota: cuotas){
+					total = total.add(cuota.getFaltaPagar());
+				}
 			}
+			lblTotalOriginal.setText("Total Original: $ " + total);
 		}
-		lblTotalOriginal.setText("Total Original: $" + total);
 	}
 	
 	public JButton getBtnConfirmar() {
