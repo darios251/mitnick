@@ -15,7 +15,8 @@ public class Migracion {
 			DBInitialization dbInitialization = (DBInitialization) BeanLocator.getBean("dbInitialization");
 			dbInitialization.initializeDB();
 			DBImport dbimport = (DBImport) BeanLocator.getBean("dbImport");
-			dbimport.asociarComprobanteCliente();
+//			dbimport.asociarComprobanteCliente();
+			dbimport.fixPrecioProducts();
 //			String path = "C:/project/mitnick/susmann-inst/datos/";
 //			dbimport.ejecutar(path);
 //			dbimport.ejecutar(args[0]);
