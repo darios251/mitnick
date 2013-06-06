@@ -287,7 +287,7 @@ public class PrinterService {
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println(venta.getTipoResponsabilidad().getTipoComprador());
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println(getSaldoAFavor(venta.getCliente()));
+			output.println("............");
 			output.println(LINEA_REMITOS_ASOCIADOS);
 			output.println(getSaldoDeudor(venta.getCliente()));
 			output.println(NUMERO_DOCUMENTO_COMPRADOR);
