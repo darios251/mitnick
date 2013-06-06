@@ -2,6 +2,7 @@ package com.mitnick.persistence.dbimport;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.util.EntityDTOParser;
+import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ProductoDto;
 
 @Service("dbImport")
@@ -383,8 +385,15 @@ public class DBImport {
 			List<Producto> productos = productoDao.getAll();
 			for (Producto producto: productos){
 				ProductoDto prodDTO = (ProductoDto)entityDTOParser.getDtoFromEntity(producto);
-				BigDecimal precio = prodDTO.getPrecioVentaConIva();
-				producto.setPrecioVenta(precio);
+				BigDecimal precio = prodDTO.getPrecioVenta().setScale(2, RoundingMode.HALF_UP);
+				//la printer toma el precio y multiplica por 1.21;
+				BigDecimal precioFinalPrinter = precio.multiply(new BigDecimal("1.21")).setScale(2, RoundingMode.HALF_UP);
+				
+				//iva para el sistema, preciofinalPrinter - precio
+				BigDecimal ivaSistema = precioFinalPrinter.subtract(precio).setScale(2, RoundingMode.HALF_UP);
+				// se calcula el precio del producto sumandole el iva				
+				producto.setIva(ivaSistema);
+				
 				productoDao.save(producto);
 				System.out.println("finalizó con exito!!");
 			}
