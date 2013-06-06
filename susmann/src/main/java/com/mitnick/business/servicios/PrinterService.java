@@ -312,13 +312,13 @@ public class PrinterService {
 				output.println(ITEM_DESCRIPCION); //extra 4
 				output.println("");
 				output.println(ITEM_DESCRIPCION);
-				output.println("CÃ³digo -- " + producto.getProducto().getCodigo());
+				output.println("Código -- " + producto.getProducto().getCodigo());
 
 				output.println(ITEM_CANTIDAD);
 				output.println(producto.getCantidad());
 				
 				output.println(ITEM_PRECIO);
-					output.println(producto.getProducto().getPrecioVenta().setScale(2, RoundingMode.HALF_UP));
+				output.println(producto.getProducto().getPrecioVenta().setScale(2, RoundingMode.HALF_UP));
 				
 				output.println(ITEM_IVA);
 				output.println("21");
