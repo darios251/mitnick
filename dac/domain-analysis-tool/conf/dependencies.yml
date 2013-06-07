@@ -2,3 +2,7 @@
 
 require:
     - play
+    - play -> crud    
+    - play -> secure
+    - play -> greenscript 1.2.8b
+    - play -> jpastats 0.9

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="${lang}">
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta charset="UTF-8" />
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        #{css 'main', output:'all'/}
+        #{css 'crud', output:'all'/}
+    </head>
+    <body id="crud">
+
+        <div id="crudHeader">
+            <h1><a href="@{CRUD.index()}">&{'crud.title'}</a><div style="float:right"><span id="username">${user} - </span><a href="@{Secure.logout()}"><span id="logout">logout</span></a></div></h1>
+        </div>
+
+#{if request.actionMethod != 'index'}
+            <div id="crudBreadcrumb">
+                #{crud.navigation /}
+            </div>
+#{/if}
+
+#{if flash.success}
+            <div class="crudFlash flashSuccess">
+                ${flash.success}
+            </div>
+#{/if}
+#{if flash.error || error}
+            <div class="crudFlash flashError">
+                ${error ?: flash.error}
+            </div>
+#{/if}
+
+        <div id="crudContent">
+			#{doLayout /}
+        </div>
+
+        <div id="crudFooter">
+        </div>
+
+    </body>
+</html>
