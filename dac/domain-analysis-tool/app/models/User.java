@@ -1,7 +1,10 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import controllers.CRUD.Hidden;
 
 import play.data.validation.Password;
 import play.data.validation.Required;
@@ -22,6 +25,13 @@ public class User extends Model {
 
 	@Required
 	public String name;
+
+	@Hidden
+	public boolean isAdmin;
+
+	@Hidden
+	@OneToOne
+	public Permission permission;
 
 	public static User connect(String username, String password) {
 		return find("byUsernameAndPassword", username, password).first();

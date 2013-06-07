@@ -13,7 +13,18 @@
             </tr>
         </thead>
         <tbody>
-
+#{crud.types}
+		#{secure.check type.name}
+	            <tr>
+	                <td>
+	                    <a href="${type.listAction}">&{type.name}</a>
+	                </td>
+	                <td class="crudNew" >
+	                    <a href="${type.blankAction}">&{'crud.index.add', type.name}</a>
+	                </td>
+	            </tr>
+       #{/secure.check}
+#{/crud.types}
         </tbody>
     </table>
 
