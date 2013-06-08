@@ -11,6 +11,7 @@
 	<parameter name="totalDebito" class="java.lang.String"/>
 	<parameter name="totalEfectivo" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
+	<parameter name="totalDevolucion" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -45,6 +46,20 @@
 				<reportElement uuid="0650bc17-c078-48aa-bcbc-f9a66359f65c" x="10" y="3" width="128" height="50"/>
 				<imageExpression><![CDATA[".\\img\\logoReporte.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="370" y="83" width="86" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Devoluciones:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e734de5c-2a54-4cc6-a193-d7d6e0712124" x="455" y="83" width="83" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalDevolucion}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -57,21 +72,21 @@
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="295" y="-63" width="96" height="20" forecolor="#000099"/>
+				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="196" y="-63" width="96" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Total Contado:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="d9d99940-a280-46a7-9c14-b5522a9b5d6c" x="391" y="-63" width="100" height="20"/>
+				<reportElement uuid="d9d99940-a280-46a7-9c14-b5522a9b5d6c" x="292" y="-63" width="78" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalContado}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="295" y="-43" width="96" height="20" forecolor="#000099"/>
+				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="196" y="-43" width="96" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
@@ -102,14 +117,14 @@
 				<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="78af9c4b-699e-48fe-8ac1-be38ed87353b" x="391" y="-43" width="100" height="20"/>
+				<reportElement uuid="78af9c4b-699e-48fe-8ac1-be38ed87353b" x="292" y="-43" width="78" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalRecibos}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="295" y="-23" width="96" height="20" forecolor="#000099"/>
+				<reportElement uuid="7fab2a0c-dd4a-4b44-9ad1-fee584f7388a" x="196" y="-23" width="96" height="20" forecolor="#000099"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 				</textElement>
@@ -137,22 +152,22 @@
 				<text><![CDATA[Total Efectivo:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="6a09f6c9-5ca7-4c44-b312-241bc6f37f68" x="106" y="-63" width="100" height="20"/>
+				<reportElement uuid="6a09f6c9-5ca7-4c44-b312-241bc6f37f68" x="106" y="-63" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{totalCredito}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="95adf49e-c078-44ad-a97c-4538275903f2" x="106" y="-43" width="100" height="20"/>
+				<reportElement uuid="95adf49e-c078-44ad-a97c-4538275903f2" x="106" y="-43" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{totalDebito}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="904c5016-067d-4e6d-891a-865457f33924" x="106" y="-23" width="100" height="20"/>
+				<reportElement uuid="904c5016-067d-4e6d-891a-865457f33924" x="106" y="-23" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{totalEfectivo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ca1a0cc3-c543-48e2-93fd-c9e4d21d9fc1" x="391" y="-23" width="100" height="20"/>
+				<reportElement uuid="ca1a0cc3-c543-48e2-93fd-c9e4d21d9fc1" x="292" y="-23" width="78" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>

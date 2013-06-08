@@ -458,6 +458,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		BigDecimal totalDebito = new BigDecimal(0);
 		BigDecimal totalEfectivo = new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
+		BigDecimal totalDevolucion = new BigDecimal(0);
 		
 		try {
 			List<Venta> ventas = ventaDao.findByFiltro(filtro);
@@ -475,7 +476,8 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 								||MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo()))
 							totalContado = totalContado.add(pago.getPago());
 					}
-				}
+				} else
+					totalDevolucion = totalDevolucion.add(venta.getTotal());			
 			}
 			
 			//nueva funcionalidad (04062013)
@@ -504,6 +506,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			parameters.put("totalCredito", totalCredito.toString());
 			parameters.put("totalDebito", totalDebito.toString());
 			parameters.put("totalEfectivo", totalEfectivo.toString());
+			parameters.put("totalDevolucion", totalDevolucion.toString());		
 			parameters.put("total", total.toString());
 			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
 			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));

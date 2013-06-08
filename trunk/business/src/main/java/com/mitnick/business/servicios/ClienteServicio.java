@@ -374,8 +374,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			while (cuotasIt.hasNext() && seguir) {
 				Cuota cuota = cuotasIt.next();
 				pendiente = pendiente.add(cuota.getFaltaPagar());
-				cuotasAPagar.add((CuotaDto) entityDTOParser
-						.getDtoFromEntity(cuota));
+				cuotasAPagar.add((CuotaDto) entityDTOParser.getDtoFromEntity(cuota));
 				if (pendiente.compareTo(venta.getTotal()) >= 0)
 					seguir = false;
 			}
@@ -387,13 +386,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 			pago.setMonto(venta.getTotal());
 			pago.setNroNC(venta.getNumeroTicket());
 			agregarPago(pago, cuotasAPagar);
-			BigDecimal creditoUsado = new BigDecimal(0);
-			if (pendiente.compareTo(venta.getTotal()) >= 0)
-				creditoUsado = venta.getTotal();
-			else
-				creditoUsado = pendiente;
-
-			ventaDao.usarCredito(venta.getNumeroTicket(), creditoUsado);
+			
 			comprobantePago(cuotasAPagar);
 
 		}

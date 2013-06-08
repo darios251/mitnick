@@ -410,16 +410,6 @@ public class PrinterService {
 		return "............";
 	}
 	
-	private String getSaldoAFavor(ClienteDto cliente){
-		if (Validator.isNotNull(cliente)){
-			BigDecimal favor = clienteDao.getSaldoFavor(cliente);
-			if (Validator.isNotNull(favor) && Validator.isMoreThanZero(favor))
-				return "Tiene un saldo a favor de: ".concat(favor.toString());
-		}
-		return "............";
-		
-	}
-
 	@SuppressWarnings("deprecation")
 	public boolean imprimirNotaCredito(VentaDto venta) {
 		try {
@@ -437,7 +427,7 @@ public class PrinterService {
 			output.println(TIPO_IVA_COMPRADOR);
 			output.println(venta.getTipoResponsabilidad().getTipoComprador());
 			output.println(LINEA_REMITOS_ASOCIADOS);
-			output.println(getSaldoAFavor(venta.getCliente()));
+			output.println("............");
 			output.println(LINEA_REMITOS_ASOCIADOS);
 			output.println(getSaldoDeudor(venta.getCliente()));
 			output.println(NUMERO_FACTURA_ORIGINAL);
@@ -499,7 +489,7 @@ public class PrinterService {
 			output.println(PAGO_DESCRIPCION);
 			output.println(""); // linea extra
 			output.println(PAGO_DESCRIPCION);
-			output.println("Credito a favor");
+			output.println("Nota de crédito por: ");
 			output.println(PAGO_MONTO);
 			output.println(venta.getTotal().setScale (2, BigDecimal.ROUND_HALF_UP));
 			output.println(FIN_PAGO);

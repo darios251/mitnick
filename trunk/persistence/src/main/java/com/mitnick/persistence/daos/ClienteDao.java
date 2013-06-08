@@ -32,7 +32,6 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
-import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
@@ -321,28 +320,6 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
 
-	@SuppressWarnings("unchecked")
-	public BigDecimal getSaldoFavor(ClienteDto cliente) {
-
-		DetachedCriteria criteria = DetachedCriteria.forClass(Credito.class);
-		BigDecimal aFavor = new BigDecimal(0);
-		criteria.createAlias("cliente", "c");
-		if (Validator.isNotNull(cliente)) {
-			criteria.add(Restrictions.eq("c.id", cliente.getId()));
-		}
-
-		List<Credito> creditos = getHibernateTemplate()
-				.findByCriteria(criteria);
-		if (creditos != null && !creditos.isEmpty()) {
-			for (int i = 0; i < creditos.size(); i++) {
-				Credito credito = creditos.get(i);
-				aFavor = aFavor.add(credito.getDisponible());
-			}
-		}
-
-		return aFavor;
-	}
-
 	public void reporteMovimientosCliente(ClienteDto cliente) {
 		try {
 			List<Venta> ventas = ventaDao.findByClient(cliente.getId());
@@ -390,8 +367,7 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 					orderByDate(movimientos));
 
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("saldoDeudor", getSaldoDeudor(cliente).toString());
-			parameters.put("saldoAFavor", getSaldoFavor(cliente).toString());
+			parameters.put("saldoDeudor", getSaldoDeudor(cliente).toString());			
 			parameters.put("nombreCliente", cliente.getNombre());
 			String direccion = "";
 			if (Validator.isNotNull(cliente.getDireccion())) {

@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -27,10 +25,6 @@ public class Credito extends BaseObject implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = true)
 	private Date fecha;
-	
-	@ManyToOne
-	@PrimaryKeyJoinColumn(name = "cliente_id")
-	private Cliente cliente;
 	
 	@Column(name = "monto", nullable = false)
 	private BigDecimal monto;
@@ -58,14 +52,6 @@ public class Credito extends BaseObject implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 
 	public BigDecimal getMonto() {
@@ -107,16 +93,12 @@ public class Credito extends BaseObject implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((monto == null) ? 0 : monto.hashCode());
-		result = prime * result
-				+ ((montoUsado == null) ? 0 : montoUsado.hashCode());
-		result = prime * result
-				+ ((numeroNC == null) ? 0 : numeroNC.hashCode());
-		result = prime * result
-				+ ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
+		result = prime * result + ((montoUsado == null) ? 0 : montoUsado.hashCode());
+		result = prime * result + ((numeroNC == null) ? 0 : numeroNC.hashCode());
+		result = prime * result + ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
 		return result;
 	}
 
@@ -132,13 +114,6 @@ public class Credito extends BaseObject implements Serializable {
 			return false;
 		}
 		Credito other = (Credito) obj;
-		if (cliente == null) {
-			if (other.cliente != null) {
-				return false;
-			}
-		} else if (!cliente.equals(other.cliente)) {
-			return false;
-		}
 		if (fecha == null) {
 			if (other.fecha != null) {
 				return false;
@@ -186,10 +161,8 @@ public class Credito extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Credito [id=" + id + ", fecha=" + fecha + ", cliente="
-				+ cliente + ", monto=" + monto + ", montoUsado=" + montoUsado
-				+ ", numeroNC=" + numeroNC + ", numeroTicket=" + numeroTicket
-				+ "]";
+		return "Credito [id=" + id + ", fecha=" + fecha + ", monto=" + monto + ", montoUsado=" + montoUsado + ", numeroNC="
+				+ numeroNC + ", numeroTicket=" + numeroTicket + "]";
 	}
 
 }

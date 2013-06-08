@@ -9,8 +9,6 @@ import java.util.List;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
-import com.mitnick.utils.dtos.ProductoDto;
-import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -36,14 +34,15 @@ public class VentaHelper {
 		List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
 		for(ProductoVentaDto productoVenta : ventaDto.getProductos()) {
 			productoVenta.setId(null);
-			BigDecimal precioTotal = productoVenta.getProducto().getPrecioVentaConIva();
-			precioTotal = precioTotal.multiply(new BigDecimal(productoVenta.getCantidad()));
+			BigDecimal precioCantidad = productoVenta.getProducto().getPrecioVenta().multiply(new BigDecimal(productoVenta.getCantidad()));
+			BigDecimal precioTotal = calcularPrecioFinal(precioCantidad);
 			//si se modificó el precio del producto en la venta original
 			if (!productoVenta.getPrecioTotal().equals(precioTotal)){
-				BigDecimal precioUnitario = productoVenta.getPrecioTotal().divide(new BigDecimal(productoVenta.getCantidad()));
-				BigDecimal ivaProducto = VentaHelper.calcularImpuesto(precioUnitario);
-				productoVenta.getProducto().setPrecioVenta(precioUnitario.subtract(ivaProducto));
-				productoVenta.getProducto().setIva(ivaProducto);
+				BigDecimal precioTotalSinIva = calcularPrecioSinIva(productoVenta.getPrecioTotal()) ;
+				BigDecimal precioUnitarioSinIva = precioTotalSinIva.divide(new BigDecimal(productoVenta.getCantidad()),2, RoundingMode.HALF_UP);
+				productoVenta.getProducto().setPrecioVenta(precioUnitarioSinIva);
+				BigDecimal precioUnitarioConIva = calcularPrecioFinal(precioUnitarioSinIva);
+				productoVenta.getProducto().setIva(precioUnitarioConIva.subtract(precioUnitarioSinIva));
 			}
 			productos.add(productoVenta);
 		}
@@ -57,14 +56,17 @@ public class VentaHelper {
 		BigDecimal impuestos = BigDecimal.ZERO;
 		
 		for(ProductoVentaDto producto : ventaDto.getProductos()) {
-			BigDecimal precioTotal = producto.getProducto().getPrecioVentaConIva().multiply(new BigDecimal(producto.getCantidad()));
-			producto.setPrecioTotal(precioTotal);
-			subTotal = subTotal.add(precioTotal);
-			producto.setIva(calcularImpuesto(producto));
+			BigDecimal precioCantidad = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
+			BigDecimal precioFinal = calcularPrecioFinal(precioCantidad);
+			BigDecimal iva = precioFinal.subtract(precioCantidad);
+			producto.setPrecioTotal(precioFinal);
+			subTotal = subTotal.add(precioCantidad);
+			producto.setIva(iva);
 			impuestos = impuestos.add(producto.getIva());
 		}
 
-		// incluye los impuestos
+		// se incluyen los impuestos
+		subTotal = calcularPrecioFinal(subTotal);
 		ventaDto.setSubTotal(subTotal);
 		
 		ventaDto.setImpuesto(impuestos);
@@ -72,10 +74,9 @@ public class VentaHelper {
 		BigDecimal descuentos = VentaHelper.getDescuentoTotal(ventaDto);
 		BigDecimal total = subTotal.subtract(descuentos);
 		
-		ventaDto.setAjusteRedondeo(calcularAjusteRedondeo(ventaDto));
-
 		ventaDto.setTotal(total);
-
+		ventaDto.setAjusteRedondeo(new BigDecimal(0));
+		
 		if (ventaDto.isVenta()){
 			// suma de todos los pagos
 			BigDecimal montoPagado = BigDecimal.ZERO;
@@ -100,57 +101,37 @@ public class VentaHelper {
 
 	}
 
-	private static BigDecimal calcularAjusteRedondeo(VentaDto ventaDto) {
-		BigDecimal subTotal = new BigDecimal(0); 
-		
-		for(ProductoVentaDto producto : ventaDto.getProductos()) {
-			subTotal = subTotal.add(calcularPrecioSinIva(producto.getPrecioTotal()));
-			subTotal = subTotal.add(calcularImpuesto(producto.getPrecioTotal()));
-		}
-		
-		BigDecimal result = ventaDto.getSubTotal();
-		
-		if(ventaDto.getDescuento() != null) 
-			result = result.subtract(ventaDto.getDescuento().getDescuento());
-		return result.subtract(subTotal);
-	}
-
-	public static BigDecimal calcularImpuesto(BigDecimal precioProducto) {
+	/**
+	 * El calculo del precio final se hace sobre el precio base del producto sin iva.
+	 * @param precioProducto
+	 * @return
+	 */
+	public static BigDecimal calcularPrecioFinal(BigDecimal precioProducto) {
 		BigDecimal impuesto = BigDecimal.ZERO;
-		BigDecimal iva = BigDecimal.ZERO;
 		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
-		if (Validator.isNotBlankOrNull(ivaString)) {
+		BigDecimal precio = precioProducto; 
+		if (Validator.isNotBlankOrNull(ivaString)){
 			impuesto = new BigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100));
-			BigDecimal precio = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.ONE.add(impuesto),2, RoundingMode.HALF_UP);
-			iva = precioProducto.subtract(precio);			
+			precio = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.ONE.add(impuesto));
 		}
-		return iva;
+		
+		return precio.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 	
+	/**
+	 * El cálculo se hace sobre el precio final.
+	 * @param precioProducto
+	 * @return
+	 */
 	public static BigDecimal calcularPrecioSinIva(BigDecimal precioProducto) {
 		BigDecimal impuesto = BigDecimal.ZERO;
-//		BigDecimal iva = BigDecimal.ZERO;
 		BigDecimal precio = BigDecimal.ZERO;
 		String ivaString = PropertiesManager.getProperty("applicationConfiguration.impuesto.porcentaje");
 		if (Validator.isNotBlankOrNull(ivaString)) {
 			impuesto = new BigDecimal(ivaString).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100));
 			precio = precioProducto.setScale(2, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.ONE.add(impuesto),2, RoundingMode.HALF_UP);
-//			iva = precio.multiply(impuesto).setScale(2, BigDecimal.ROUND_HALF_UP);
 		}
 		return precio;
-	}
-
-	
-	public static BigDecimal calcularImpuesto(ProductoNuevoDto productoDto) {
-		return calcularImpuesto(new BigDecimal(productoDto.getPrecioVenta()));
-	}
-	
-	public static BigDecimal calcularImpuesto(ProductoDto productoDto) {
-		return calcularImpuesto(productoDto.getPrecioVenta());
-	}
-	
-	public static BigDecimal calcularImpuesto(ProductoVentaDto productoDto) {
-		return calcularImpuesto(productoDto.getPrecioTotal());
 	}
 	
 	public static void calcularTotales(CuotaDto cuotaDto) {

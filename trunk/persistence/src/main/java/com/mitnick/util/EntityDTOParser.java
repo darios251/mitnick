@@ -263,7 +263,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoDto.setCodigo(producto.getCodigo());
 		productoDto.setDescripcion(producto.getDescripcion());
 		productoDto.setPrecioVenta(producto.getPrecioVenta());
-		productoDto.setPrecioCompra(producto.getPrecioCompra());
+		productoDto.setPrecioCompra(producto.getPrecioCompra());		
 		productoDto.setIva(producto.getIva());
 		productoDto.setStock(producto.getStock());
 		productoDto.setStockMinimo(producto.getStockMinimo());
@@ -363,8 +363,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		producto.setPrecioVenta(productoDto.getPrecioVenta());
 		producto.setPrecioCompra(productoDto.getPrecioCompra());
 
-		producto.setTalle(productoDto.getTalle());
-		producto.setIva(productoDto.getIva());
+		producto.setTalle(productoDto.getTalle());		
 
 		producto.setStock(productoDto.getStock());
 		producto.setStockMinimo(productoDto.getStockMinimo());
@@ -482,13 +481,13 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		VentaDto ventaDto = new VentaDto();
 		ventaDto.setId(venta.getId());
 		ventaDto.setProductos((List<ProductoVentaDto>) getDtosFromEntities((List<E>) venta.getProductos()));
-		
+		ventaDto.setNumeroTicket(venta.getNumeroTicket());
 		ventaDto.setTipo(venta.getTipo());
 		ventaDto.setNumeroTicketOriginal(venta.getNumeroTicketOriginal());
 		ventaDto.setSubTotal(venta.getSubtotal());
 		ventaDto.setTotal(venta.getTotal());
 		ventaDto.setImpuesto(venta.getImpuesto());
-		
+		ventaDto.setFecha(venta.getFecha());
 		ventaDto.setPrinted(venta.isPrinted());
 		
 		//el descuento se toma por monto para reportes aun cuando fue por porcentaje

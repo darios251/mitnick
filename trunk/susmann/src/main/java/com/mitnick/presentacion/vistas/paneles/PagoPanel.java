@@ -524,9 +524,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 				((VentaController) controller).mostrarVentasPanel();
 			} else {
 				BigDecimal deuda = controller.obtenerSaldoDeudorCliente();
-				BigDecimal devolucionContado = VentaManager.getVentaActual().getPagoContado();				
 				BigDecimal devolucionTotal = VentaManager.getVentaActual().getTotal();
-				BigDecimal disponible = devolucionTotal;
 				int option = JOptionPane.CANCEL_OPTION;
 				if (Validator.isMoreThanZero(deuda) && Validator.isMoreThanZero(devolucionTotal)) {
 					option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.cuentaCorriente"), "Información", JOptionPane.YES_NO_OPTION);	
@@ -537,14 +535,8 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 							deuda = deuda.subtract(devolucionTotal);
 							JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.saldo", new Object[] {devolucionTotal, deuda}));
 						} 
-						disponible = devolucionTotal.subtract(deuda);
 					}
 				}
-				
-				if (disponible.compareTo(devolucionContado)>0)
-					disponible = devolucionContado;
-				if (Validator.isMoreThanZero(disponible))
-					JOptionPane.showMessageDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.notaCredito.disponible", new Object[] {disponible}));
 				
 				((VentaController) controller).crearNuevaVenta(MitnickConstants.VENTA);
 				((VentaController) controller).mostrarVentasPanel();

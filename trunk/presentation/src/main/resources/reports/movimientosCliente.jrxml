@@ -245,7 +245,7 @@ WHERE
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="45" splitType="Stretch">
+		<band height="29" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="27f7ef34-0743-4517-a8bd-72df284cad9b" x="0" y="3" width="144" height="20"/>
 				<textElement/>
@@ -257,16 +257,6 @@ WHERE
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{saldoDeudor}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="27f7ef34-0743-4517-a8bd-72df284cad9b" x="0" y="23" width="144" height="20"/>
-				<textElement/>
-				<text><![CDATA[Tiene un saldo a favor de:   $]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="9d98d9e9-858c-4cb1-9614-89ad59861215" x="144" y="23" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$P{saldoAFavor}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
