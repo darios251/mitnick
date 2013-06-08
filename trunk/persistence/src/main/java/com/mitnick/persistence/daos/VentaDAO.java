@@ -191,8 +191,8 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			String nroTRX = venta.getNumeroTicket();
 			String nroFactura = StringUtils.leftPad(empresa.getNumeroPrefijo() + "", 4, "0"); 
 			if (Validator.isBlankOrNull(nroTRX)){
-				nroTRX = Integer.toString(nroFactActual);
 				nroFactActual = nroFactActual + 1;
+				nroTRX = Integer.toString(nroFactActual);
 				empresa.setNumeroFacturaActual(nroFactActual);
 				getHibernateTemplate().save(empresa);
 				valido = false;

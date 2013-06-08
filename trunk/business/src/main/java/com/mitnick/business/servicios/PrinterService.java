@@ -11,6 +11,7 @@ import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.servicio.servicios.ICierreZServicio;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
+import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Component(value="printerService")
@@ -29,7 +30,7 @@ public class PrinterService {
 	}
 	
 	public boolean imprimirTicketFactura(VentaDto venta) {
-		try{
+		try{			
 			ventaDao.generarFactura(venta, false);
 		} catch (Exception e1) {
 			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
