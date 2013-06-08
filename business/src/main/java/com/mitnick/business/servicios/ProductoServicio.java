@@ -62,11 +62,9 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	@Override
 	public List<ProductoDto> consultaProducto(ConsultaProductoDto filtro) {
 		try {
-			return entityDTOParser.getDtosFromEntities(productoDao
-					.findByFiltro(filtro));
+			return entityDTOParser.getDtosFromEntities(productoDao.findByFiltro(filtro));
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar consultar productos");
+			throw new BusinessException(e, "Error al intentar consultar productos");
 		}
 	}
 
@@ -87,8 +85,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			}
 
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar resetear los movimientos de los productos");
+			throw new BusinessException(e, "Error al intentar resetear los movimientos de los productos");
 		}
 	}
 
@@ -101,54 +98,45 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 				// si es un producto nuevo
 				Producto p = productoDao.findByCode(productoDto.getCodigo());
 				if (p != null)
-					throw new BusinessException(
-							"error.productoServicio.codigo.duplicado",
+					throw new BusinessException("error.productoServicio.codigo.duplicado",
 							"Ya existe un producto con el código ingresado");
 			}
 
-			// se calcula el impuesto del producto
-			BigDecimal iva = VentaHelper.calcularImpuesto(productoDto);
 			productoDto.setIva("0"); // se setea para que no salga un error de
-										// conversiÃ³n luego se sobreescribe
+										// conversión luego se sobreescribe
 
 			int stockOriginal = Integer.parseInt(productoDto.getStock());
 			// si el producto existe en la base de datos
 			if (Validator.isNotNull(productoDto.getId())) {
-				Producto productoOriginal = productoDao
-						.get(productoDto.getId());
+				Producto productoOriginal = productoDao.get(productoDto.getId());
 				stockOriginal = productoOriginal.getStock();
 			}
 
 			@SuppressWarnings("unchecked")
-			Producto producto = (Producto) entityDTOParser
-					.getEntityFromDto(productoDto);
+			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 
-			producto.setIva(iva);
 			int cantidad = producto.getStock() - stockOriginal;
 			int cantidadValidar = Math.abs(cantidad);
-			boolean validarCantidad = PropertiesManager.getPropertyAsBoolean("application.producto.edit.max.cantidad").booleanValue();
-			
-			if (validarCantidad){
-				Parametro parConfigurable = parametroDao
-						.getByName("producto.cantidad.warning");
+			boolean validarCantidad = PropertiesManager.getPropertyAsBoolean("application.producto.edit.max.cantidad")
+					.booleanValue();
+
+			if (validarCantidad) {
+				Parametro parConfigurable = parametroDao.getByName("producto.cantidad.warning");
 				if (parConfigurable != null) {
-					if (!productoDto.isConfirmado()
-							&& cantidadValidar > parConfigurable.getIntValor())
+					if (!productoDto.isConfirmado() && cantidadValidar > parConfigurable.getIntValor())
 						throw new BusinessException("producto.edit.max.cantidad");
 				}
 			} else {
-				productoDto.setConfirmado(true);	
+				productoDto.setConfirmado(true);
 			}
 
-			// se calcula el precio del producto sumandole el iva
-			BigDecimal ivaProducto = VentaHelper.calcularImpuesto(producto
-					.getPrecioVenta());
+			BigDecimal precioVenta = producto.getPrecioVenta();
+			// se calcula el precio del producto sin el iva
+			BigDecimal precioSinIva = VentaHelper.calcularPrecioSinIva(producto.getPrecioVenta());
+			producto.setPrecioVenta(precioSinIva);
+			producto.setIva(precioVenta.subtract(precioSinIva));
 
-			producto.setPrecioVenta(producto.getPrecioVenta().subtract(
-					ivaProducto));
-
-			if (stockOriginal != producto.getStock()
-					|| productoDto.getId() == null) {
+			if (stockOriginal != producto.getStock() || productoDto.getId() == null) {
 				Movimiento movimiento = new Movimiento();
 				movimiento.setStockAlaFecha(stockOriginal);
 				movimiento.setFecha(new Date());
@@ -166,37 +154,33 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			producto = productoDao.saveOrUpdate(producto);
 			productoDto.setId(producto.getId());
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar guardar el producto");
+			throw new BusinessException(e, "Error al intentar guardar el producto");
 		}
 		return productoDto;
 	}
 
-	public ProductoNuevoDto getProductoByCode(String code){
+	public ProductoNuevoDto getProductoByCode(String code) {
 		Producto producto = productoDao.findByStartCode(code);
 		if (Validator.isNull(producto))
 			throw new BusinessException("error.producto.buscarProducto.productoNoEncontrado", "El producto no se encuentra");
-		ProductoNuevoDto productoDTO = (ProductoNuevoDto)entityDTOParser.getProductoNuevoDtoFromProducto(producto);
+		ProductoNuevoDto productoDTO = (ProductoNuevoDto) entityDTOParser.getProductoNuevoDtoFromProducto(producto);
 		return productoDTO;
 	}
-	
+
 	@Transactional
 	@Override
 	public void bajaProducto(ProductoDto productoDto) {
 		if (productoDto.getId() == null) {
-			throw new BusinessException(
-					"error.productoServicio.id.nulo",
+			throw new BusinessException("error.productoServicio.id.nulo",
 					"Se invoca la modificacion de un producto que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
 			@SuppressWarnings("unchecked")
-			Producto producto = (Producto) entityDTOParser
-					.getEntityFromDto(productoDto);
+			Producto producto = (Producto) entityDTOParser.getEntityFromDto(productoDto);
 			producto.setEliminado(true);
 			productoDao.saveOrUpdate(producto);
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar eliminar el producto");
+			throw new BusinessException(e, "Error al intentar eliminar el producto");
 		}
 	}
 
@@ -205,11 +189,9 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	public List<TipoDto> obtenerTipos() {
 		List<TipoDto> resultado = new ArrayList<TipoDto>();
 		try {
-			resultado.addAll(entityDTOParserTipo.getDtosFromEntities(tipoDao
-					.getAll()));
+			resultado.addAll(entityDTOParserTipo.getDtosFromEntities(tipoDao.getAll()));
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar obtener los tipos");
+			throw new BusinessException(e, "Error al intentar obtener los tipos");
 		}
 		return resultado;
 	}
@@ -221,7 +203,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		tipo.setDescripcion(descripcion);
 		tipoDao.save(tipo);
 	}
-	
+
 	@Transactional(readOnly = true)
 	@Override
 	public void agregarNuevaMarca(String descripcion) {
@@ -229,17 +211,15 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 		marca.setDescripcion(descripcion);
 		marcaDao.save(marca);
 	}
-	
+
 	@Transactional(readOnly = true)
 	@Override
 	public List<MarcaDto> obtenerMarcas() {
 		List<MarcaDto> resultado = new ArrayList<MarcaDto>();
 		try {
-			resultado.addAll(entityDTOParserMarca.getDtosFromEntities(marcaDao
-					.getAll()));
+			resultado.addAll(entityDTOParserMarca.getDtosFromEntities(marcaDao.getAll()));
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar obtener las marcas");
+			throw new BusinessException(e, "Error al intentar obtener las marcas");
 		}
 		return resultado;
 	}
@@ -249,18 +229,15 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 	@Override
 	public List<ProductoDto> obtenerProductos() {
 		List<ProductoDto> productos = new ArrayList<ProductoDto>();
-		productos.addAll(entityDTOParser.getDtosFromEntities(productoDao
-				.getAll()));
+		productos.addAll(entityDTOParser.getDtosFromEntities(productoDao.getAll()));
 		return productos;
 	}
 
 	@Transactional(readOnly = true)
 	@Override
 	public ProductoNuevoDto getProductoNuevo(ProductoDto productoDto) {
-		if (Validator.isNull(productoDto)
-				|| Validator.isNull(productoDto.getId()))
-			throw new BusinessException("error.producto.id.null",
-					"El producto o el id es nulo");
+		if (Validator.isNull(productoDto) || Validator.isNull(productoDto.getId()))
+			throw new BusinessException("error.producto.id.null", "El producto o el id es nulo");
 
 		Producto producto = productoDao.get(productoDto.getId());
 
@@ -269,7 +246,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 
 	@Transactional(readOnly = true)
 	@Override
-	public void updateCantidadMaximaWarning(String cantidad){
+	public void updateCantidadMaximaWarning(String cantidad) {
 		try {
 			if (Validator.isBlankOrNull(cantidad) || !Validator.isNumeric(cantidad))
 				throw new BusinessException("error.parametro.cantidad.validation", "El parámetro cantidad no es valido");
@@ -277,8 +254,7 @@ public class ProductoServicio extends ServicioBase implements IProductoServicio 
 			parConfigurable.setValor(cantidad);
 			parametroDao.save(parConfigurable);
 		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar modificar la cantidad máxima sin alertas");
-		}		
+			throw new BusinessException(e, "Error al intentar modificar la cantidad máxima sin alertas");
+		}
 	}
 }

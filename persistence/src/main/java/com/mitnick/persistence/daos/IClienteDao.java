@@ -35,8 +35,6 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	
 	BigDecimal getSaldoDeudor(ClienteDto cliente);
 	
-	BigDecimal getSaldoFavor(ClienteDto cliente);
-	
 	List<Comprobante> findComprobantesByClienteId(Long id);
 	
 	public List<Cliente> findAllWithComprobantes();

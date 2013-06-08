@@ -26,6 +26,7 @@ import com.mitnick.persistence.entities.Credito;
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
@@ -64,8 +65,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		if (!venta.isCanceled() && venta.isDevolucion()){
 			//SE CREA LA NOTA DE CREDITO
 			Credito credito = new Credito();
-			credito.setFecha(new Date());
-			credito.setCliente(venta.getCliente());
+			credito.setFecha(new Date());			
 			credito.setMonto(venta.getPagoContado());
 			credito.setMontoUsado(new BigDecimal(0));
 			credito.setNumeroTicket(venta.getNumeroTicketOriginal());
@@ -104,11 +104,8 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		List<Credito> creditos = getHibernateTemplate().findByCriteria(criteria);
 		if (creditos!=null && !creditos.isEmpty()) {
 			Credito credito = creditos.get(0);
-			BigDecimal montoUsadoAntes=credito.getMontoUsado();
-			BigDecimal nuevoUsado = montoUsado.add(montoUsadoAntes);
-			if (credito.getDisponible().compareTo(nuevoUsado)<0)
-				nuevoUsado = credito.getDisponible(); 
-			credito.setMontoUsado(nuevoUsado);
+			BigDecimal montoUsadoAntes=credito.getMontoUsado();			
+			credito.setMontoUsado(montoUsado.add(montoUsadoAntes));
 			getHibernateTemplate().saveOrUpdate(credito);	
 		}
 		
@@ -189,16 +186,19 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			criteria.add(Restrictions.idEq(new Long(1)));
 			
 			Empresa empresa = (Empresa) getHibernateTemplate().findByCriteria(criteria).get(0);
-			
 			int nroFactActual = empresa.getNumeroFacturaActual();
+			boolean valido = true;
+			String nroTRX = venta.getNumeroTicket();
 			String nroFactura = StringUtils.leftPad(empresa.getNumeroPrefijo() + "", 4, "0"); 
+			if (Validator.isBlankOrNull(nroTRX)){
+				nroTRX = Integer.toString(nroFactActual);
+				nroFactActual = nroFactActual + 1;
+				empresa.setNumeroFacturaActual(nroFactActual);
+				getHibernateTemplate().save(empresa);
+				valido = false;
+			}
 			nroFactura = nroFactura.concat("-");
-			nroFactura = nroFactura.concat(StringUtils.leftPad(nroFactActual + "", 8, "0"));
-
-			nroFactActual = nroFactActual + 1;
-			empresa.setNumeroFacturaActual(nroFactActual);
-			getHibernateTemplate().save(empresa);
-			
+			nroFactura = nroFactura.concat(StringUtils.leftPad(nroTRX+ "", 8, "0"));
 					
 			venta.setNumeroTicket(String.valueOf(nroFactActual));
 			
@@ -214,7 +214,15 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			
 			parameters.put("tipoIva", venta.getTipoResponsabilidad().getDescripcion());
 			
-			parameters.put("leyenda", "Comprobante no válido como Factura");
+			if (Validator.isNotNull(venta.getFecha()))
+				parameters.put("fechaTrx", DateHelper.getFecha(venta.getFecha()));
+			else
+				parameters.put("fechaTrx", DateHelper.getFecha(new Date()));
+			
+			if (!valido)
+				parameters.put("leyenda", "Comprobante no válido como Factura");
+			else
+				parameters.put("leyenda", "");
 			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador().equals(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL);
 			String nombre = "";
 			String direccion = "";

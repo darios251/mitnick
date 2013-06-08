@@ -114,9 +114,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 
 	@Override
 	public VentaDto modificarPrecioUnitario(ProductoVentaDto productoVenta, BigDecimal precioUnitario, VentaDto venta) {
-		BigDecimal ivaProducto = VentaHelper.calcularImpuesto(precioUnitario);
-		productoVenta.getProducto().setPrecioVenta(precioUnitario.subtract(ivaProducto));
-		productoVenta.getProducto().setIva(ivaProducto);
+		BigDecimal precioSinIva = VentaHelper.calcularPrecioSinIva(precioUnitario);
+		productoVenta.getProducto().setPrecioVenta(precioSinIva);
 		VentaHelper.calcularTotales(venta);
 
 		return venta;
@@ -214,6 +213,10 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			if(!printerService.imprimirTicketFactura(ventaDto))
 				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		} 	
+		//las siguientes dos lineas se descomentan para probar sin impresora fiscal
+//		ventaDto.setNumeroTicket(String.valueOf(System.currentTimeMillis()));
+//		ventaDto.setTipoTicket("B");
+		
 		logger.info("Venta facturada: " + ventaDto.getNumeroTicket());
 		venta.setPrinted(true);
 		ventaDto.setPrinted(true);

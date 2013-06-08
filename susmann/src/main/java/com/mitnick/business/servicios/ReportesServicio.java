@@ -458,6 +458,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		BigDecimal totalDebito = new BigDecimal(0);
 		BigDecimal totalEfectivo = new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
+		BigDecimal totalDevolucion = new BigDecimal(0);
 		
 		try {
 			List<Venta> ventas = ventaDao.findByFiltro(filtro);
@@ -475,7 +476,8 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 								||MitnickConstants.Medio_Pago.CREDITO.equals(pago.getMedioPago().getCodigo()))
 							totalContado = totalContado.add(pago.getPago());
 					}
-				}
+				} else
+					totalDevolucion = totalDevolucion.add(venta.getTotal());
 			}
 			
 			//nueva funcionalidad (04062013)
@@ -504,6 +506,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			parameters.put("totalCredito", totalCredito.toString());
 			parameters.put("totalDebito", totalDebito.toString());
 			parameters.put("totalEfectivo", totalEfectivo.toString());
+			parameters.put("totalDevolucion", totalDevolucion.toString());			
 			parameters.put("total", total.toString());
 			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
 			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));
@@ -630,7 +633,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					.getClass().getResourceAsStream(
 							"/reports/estadoCuenta.jasper"));
 
-			JRDataSource dr = new JRBeanCollectionDataSource(orderByCodigoCliente(cuotas));
+			JRDataSource dr = new JRBeanCollectionDataSource(orderByCodigoCliente(cuotas, filtro));
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
@@ -668,7 +671,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					.getClass().getResourceAsStream(
 							"/reports/estadoCuenta.jasper"));
 
-			JRDataSource dr = new JRBeanCollectionDataSource(orderByCodigoCliente(agruparPorCliente(cuotas)));
+			JRDataSource dr = new JRBeanCollectionDataSource(orderByCodigoCliente(agruparPorCliente(cuotas), filtro));
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
@@ -818,8 +821,10 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	//AGREGADO A SUSMANN - ORDENAR REPORTE DE CUOTAS Y CUENTAS POR CÓDIGO DE CLIENTE. NO POR FECHA
 	@SuppressWarnings("unchecked")
-	private List<CuotaDto> orderByCodigoCliente(
-			List<CuotaDto> cuotas) {
+	private List<CuotaDto> orderByCodigoCliente(List<CuotaDto> cuotas, ReportesDto filtro) {	
+		if (!filtro.isOrderByCode())
+			return cuotas;
+		
 		// ordenamos la lista por fecha
 		Collections.sort(cuotas, new Comparator() {
 

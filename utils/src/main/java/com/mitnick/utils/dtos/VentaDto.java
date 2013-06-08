@@ -2,6 +2,7 @@ package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,6 +55,16 @@ public class VentaDto extends BaseDto {
 
 	private int tipo;
 	
+	private Date fecha;
+	
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
 	public int getTipo() {
 		return tipo;
 	}
@@ -265,18 +276,12 @@ public class VentaDto extends BaseDto {
 	
 	@Override
 	public String toString() {
-		return "VentaDto [productos=" + productos + ", subTotal=" + subTotal
-				+ ", total=" + total + ", impuesto=" + impuesto
-				+ ", descuento=" + descuento + ", ajusteRedondeo="
-				+ ajusteRedondeo + ", pagos=" + pagos + ", cliente=" + cliente
-				+ ", pagado=" + pagado + ", totalPagado=" + totalPagado
-				+ ", faltaPagar=" + faltaPagar + ", vuelto=" + vuelto
-				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket
-				+ ", numeroTicketOriginal=" + numeroTicketOriginal
-				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa
-				+ ", cancelada=" + cancelada + ", printed=" + printed
-				+ ", tipoResponsabilidad=" + tipoResponsabilidad + ", tipo="
-				+ tipo + "]";
+		return "VentaDto [productos=" + productos + ", subTotal=" + subTotal + ", total=" + total + ", impuesto=" + impuesto
+				+ ", descuento=" + descuento + ", ajusteRedondeo=" + ajusteRedondeo + ", pagos=" + pagos + ", cliente=" + cliente
+				+ ", pagado=" + pagado + ", totalPagado=" + totalPagado + ", faltaPagar=" + faltaPagar + ", vuelto=" + vuelto
+				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket + ", numeroTicketOriginal=" + numeroTicketOriginal
+				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa + ", cancelada=" + cancelada + ", printed=" + printed
+				+ ", tipoResponsabilidad=" + tipoResponsabilidad + ", tipo=" + tipo + ", fecha=" + fecha + "]";
 	}
 
 	public boolean isPrinted() {
@@ -291,41 +296,27 @@ public class VentaDto extends BaseDto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((ajusteRedondeo == null) ? 0 : ajusteRedondeo.hashCode());
+		result = prime * result + ((ajusteRedondeo == null) ? 0 : ajusteRedondeo.hashCode());
 		result = prime * result + (cancelada ? 1231 : 1237);
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((cuotas == null) ? 0 : cuotas.hashCode());
-		result = prime * result
-				+ ((descuento == null) ? 0 : descuento.hashCode());
-		result = prime * result
-				+ ((faltaPagar == null) ? 0 : faltaPagar.hashCode());
+		result = prime * result + ((descuento == null) ? 0 : descuento.hashCode());
+		result = prime * result + ((faltaPagar == null) ? 0 : faltaPagar.hashCode());
+		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + (impresa ? 1231 : 1237);
-		result = prime * result
-				+ ((impuesto == null) ? 0 : impuesto.hashCode());
-		result = prime * result
-				+ ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
-		result = prime
-				* result
-				+ ((numeroTicketOriginal == null) ? 0 : numeroTicketOriginal
-						.hashCode());
+		result = prime * result + ((impuesto == null) ? 0 : impuesto.hashCode());
+		result = prime * result + ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
+		result = prime * result + ((numeroTicketOriginal == null) ? 0 : numeroTicketOriginal.hashCode());
 		result = prime * result + (pagado ? 1231 : 1237);
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
 		result = prime * result + (printed ? 1231 : 1237);
-		result = prime * result
-				+ ((productos == null) ? 0 : productos.hashCode());
-		result = prime * result
-				+ ((subTotal == null) ? 0 : subTotal.hashCode());
+		result = prime * result + ((productos == null) ? 0 : productos.hashCode());
+		result = prime * result + ((subTotal == null) ? 0 : subTotal.hashCode());
 		result = prime * result + tipo;
-		result = prime
-				* result
-				+ ((tipoResponsabilidad == null) ? 0 : tipoResponsabilidad
-						.hashCode());
-		result = prime * result
-				+ ((tipoTicket == null) ? 0 : tipoTicket.hashCode());
+		result = prime * result + ((tipoResponsabilidad == null) ? 0 : tipoResponsabilidad.hashCode());
+		result = prime * result + ((tipoTicket == null) ? 0 : tipoTicket.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
-		result = prime * result
-				+ ((totalPagado == null) ? 0 : totalPagado.hashCode());
+		result = prime * result + ((totalPagado == null) ? 0 : totalPagado.hashCode());
 		result = prime * result + ((vuelto == null) ? 0 : vuelto.hashCode());
 		return result;
 	}
@@ -378,6 +369,13 @@ public class VentaDto extends BaseDto {
 				return false;
 			}
 		} else if (!faltaPagar.equals(other.faltaPagar)) {
+			return false;
+		}
+		if (fecha == null) {
+			if (other.fecha != null) {
+				return false;
+			}
+		} else if (!fecha.equals(other.fecha)) {
 			return false;
 		}
 		if (impresa != other.impresa) {

@@ -50,7 +50,7 @@ public class Venta extends BaseObject implements Serializable {
 	private BigDecimal descuento;
 	
 	@Column(name = "ajusteRedondeo", nullable = false)
-	private BigDecimal ajusteRedondeo;
+	private BigDecimal ajusteRedondeo = new BigDecimal(0);
 	
 	@Column(name = "impuesto", nullable = false)
 	private BigDecimal impuesto;

@@ -78,6 +78,7 @@
 	<parameter name="nroFactura" class="java.lang.String"/>
 	<parameter name="tipoLetra" class="java.lang.String"/>
 	<parameter name="leyenda" class="java.lang.String"/>
+	<parameter name="fechaTrx" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -105,11 +106,6 @@
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="18c9bd72-e01a-47a1-a947-710054b40e60" x="499" y="44" width="93" height="20"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="452" y="44" width="52" height="20"/>
 				<textElement/>
@@ -198,6 +194,11 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{leyenda}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="c023d929-25dd-4555-a028-163f6950efb5" x="504" y="44" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{fechaTrx}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -264,68 +265,80 @@
 	<columnHeader>
 		<band height="27" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="12" y="3" width="56" height="20"/>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="12" y="3" width="46" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[CANT.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="115" y="3" width="56" height="20"/>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="136" y="3" width="56" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[DETALLE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="283" y="3" width="56" height="20"/>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="347" y="3" width="56" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[P.UNIT.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="451" y="3" width="56" height="20"/>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="509" y="3" width="56" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[TOTALES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="360" y="3" width="56" height="20"/>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="423" y="3" width="56" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[IMP.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="65" y="3" width="56" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement uuid="3976e1a6-9182-4e18-a406-e91619a7860f" x="13" y="2" width="59" height="20"/>
+				<reportElement uuid="3976e1a6-9182-4e18-a406-e91619a7860f" x="13" y="2" width="36" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="68d32d7e-d05c-4425-a375-46a2d3614d7a" x="116" y="2" width="168" height="20"/>
+				<reportElement uuid="68d32d7e-d05c-4425-a375-46a2d3614d7a" x="134" y="2" width="202" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{producto}.getDescripcion()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="cb3e8558-d5a8-4c70-9966-18bf8eb29596" x="444" y="2" width="100" height="20"/>
+				<reportElement uuid="cb3e8558-d5a8-4c70-9966-18bf8eb29596" x="509" y="2" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{precioTotal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="65af191d-749f-4a0a-a7a0-bbfd3f316511" x="284" y="2" width="77" height="20"/>
+				<reportElement uuid="65af191d-749f-4a0a-a7a0-bbfd3f316511" x="348" y="2" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{producto}.getPrecioVenta()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="65af191d-749f-4a0a-a7a0-bbfd3f316511" x="361" y="2" width="75" height="20"/>
+				<reportElement uuid="65af191d-749f-4a0a-a7a0-bbfd3f316511" x="424" y="2" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{producto}.getIva()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="68d32d7e-d05c-4425-a375-46a2d3614d7a" x="63" y="2" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{producto}.getCodigo()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

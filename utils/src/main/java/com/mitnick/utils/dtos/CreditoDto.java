@@ -2,6 +2,8 @@ package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
 
+import com.mitnick.utils.Validator;
+
 public class CreditoDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
@@ -29,7 +31,10 @@ public class CreditoDto extends BaseDto {
 	}
 	
 	public BigDecimal getDisponible(){
-		return montoTotal.subtract(montoUsado);
+		BigDecimal disponible = montoTotal.subtract(montoUsado);
+		if (Validator.isMoreThanZero(disponible))
+			return disponible;
+		return new BigDecimal(0);
 	}
 	
 	@Override
