@@ -1,4 +1,4 @@
-# you describe your data using the YAML notation here
+# you describe your data using the YAML notation here 
 # and then load them using Fixtures.load("data.yml")
 
 # User(bob):
