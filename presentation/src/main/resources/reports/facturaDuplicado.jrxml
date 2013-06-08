@@ -91,6 +91,9 @@
 	<field name="precioTotal" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[precioTotal]]></fieldDescription>
 	</field>
+	<field name="iva" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[iva]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -331,14 +334,14 @@
 				<textFieldExpression><![CDATA[$F{producto}.getPrecioVenta()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="65af191d-749f-4a0a-a7a0-bbfd3f316511" x="424" y="2" width="75" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{producto}.getIva()]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement uuid="68d32d7e-d05c-4425-a375-46a2d3614d7a" x="63" y="2" width="71" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{producto}.getCodigo()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="214f6dfe-b158-4008-99b1-501fef4b609d" x="423" y="2" width="56" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
