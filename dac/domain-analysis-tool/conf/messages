@@ -1,3 +1,19 @@
 # You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
+
+output.tab.label=bulkbacklinks.csv
+output.header.site=Site	
+output.header.pr=PR
+output.header.inGoogle=In GOOGLE
+output.header.www=WWW
+output.header.percentToHome=PERCENT TO HOME
+output.header.refDomianHome=Ref Domains HOME
+output.header.refDomians=RefDomains
+output.header.extBackLinks=ExtBackLinks
+output.header.refIps=RefIPs
+output.header.refSubNet=RefSubNets
+output.header.extBackLnksEdu=ExtBackLinksEDU
+output.header.extBackLinksGov=ExtBackLinksGOV
+output.header.refDomainsEdu=RefDomainsEDU
+output.header.refDomainsGov=RefDomainsGOV

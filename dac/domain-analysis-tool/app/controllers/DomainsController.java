@@ -8,6 +8,9 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import controllers.CRUD.ObjectType;
+
+import models.Domain;
 import models.Domains;
 import play.data.binding.Binder;
 import play.db.Model;
@@ -27,9 +30,11 @@ public class DomainsController extends CRUD {
 		constructor.setAccessible(true);
 		Model object = (Model) constructor.newInstance();
 		Binder.bindBean(params.getRootParamNode(), "object", object);
-
-		importDomainNames((Domains) object);
 		
+		Domain.deleteAll();
+		
+		importDomainNames((Domains) object);
+
 		validation.valid(object);
 		if (validation.hasErrors()) {
 			renderArgs.put("error", play.i18n.Messages.get("crud.hasErrors"));
@@ -41,25 +46,27 @@ public class DomainsController extends CRUD {
 		}
 
 		object._save();
+		
 		flash.success(play.i18n.Messages.get("report.created", type.modelName));
 		if (params.get("_save") != null) {
 			redirect("Admin.index");
 		}
 		render("Admin.index");
 	}
-	
-	private static void importDomainNames(Domains domains){
+
+	private static void importDomainNames(Domains domains) {
 		File f = domains.domainFile.getFile();
-		List<String> names = new ArrayList<String>();
 		BufferedReader entrada;
 		try {
-			entrada = new BufferedReader( new FileReader( f ) );
+			entrada = new BufferedReader(new FileReader(f));
 			String linea;
-			while(entrada.ready()){
+			while (entrada.ready()) {
 				linea = entrada.readLine();
-				names.add(linea);
+				Domain domain = new Domain();
+				domain.name = linea.trim();
+				domain._save();
 			}
-		}catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
