@@ -6,3 +6,12 @@ require:
     - play -> secure
     - play -> greenscript 1.2.8b
     - play -> jpastats 0.9
+    - provided -> jxl 1.0
+    - provided -> majesticseo-external-rpc 0.9.3
+
+repositories: 
+    - provided: 
+        type:       local 
+        artifact:   "${application.path}/jar/[module]-[revision].jar" 
+        contains:
+        - provided -> *
