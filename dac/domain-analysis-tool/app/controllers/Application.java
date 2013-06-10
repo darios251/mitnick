@@ -12,5 +12,10 @@ public class Application extends Controller {
     public static void index() {
         render();
     }
+    
+    public static void getBackLinks() {
+    	List<Map<String, String>> backLinks = MajesticSEOConnector.getBackLinks();
+    	render(backLinks);
+    }
 
 }

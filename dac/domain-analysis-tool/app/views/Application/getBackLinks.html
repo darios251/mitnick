@@ -1,0 +1,8 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<h1>Back Links Data Call</h1>
+<h2>SourceURL</h2>
+#{list items:backLinks, as:'backLink'}
+	<br>${backLink.get('SourceURL')}
+#{/list}
