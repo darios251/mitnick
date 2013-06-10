@@ -27,7 +27,6 @@ import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 import com.mitnick.presentacion.modelos.ProductoTableModel;
 import com.mitnick.servicio.servicios.dtos.ConsultaProductoDto;
 import com.mitnick.utils.FocusTraversalOnArray;
-import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
@@ -50,6 +49,9 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 	
 	private JComboBox<TipoDto> cmbTipo;
 	private JComboBox<MarcaDto> cmbMarca;
+	
+	private MitnickComboBoxModel<TipoDto> modelCmbTipo;
+	private MitnickComboBoxModel<MarcaDto> modelCmbMarca;
 	
 	private JLabel lblMarca;
 	private JLabel lblTipo;
@@ -160,26 +162,54 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 		return txtDescripcion;
 	}
 
+	public JComboBox<TipoDto> createCmbTipo() {
+		cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
+		cmbTipo.setBounds(200, 55, 110, 20);
+		cmbTipo.insertItemAt(null, 0);
+		return cmbTipo;
+	}
+	
 	public JComboBox<TipoDto> getCmbTipo() {
 		if (cmbTipo == null) {
-			MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
-			modeloTipo.addElement(MitnickConstants.tipoTodos);
-			modeloTipo.addItems(controller.obtenerTipos());
-			cmbTipo = new JComboBox<TipoDto>(modeloTipo);
+			cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
 			cmbTipo.setBounds(200, 55, 110, 20);
+			cmbTipo.insertItemAt(null, 0);
 		}
 		return cmbTipo;
 	}
 
+	public JComboBox<MarcaDto> createCmbMarca() {
+		cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
+		cmbMarca.setBounds(420, 55, 110, 20);
+		cmbMarca.insertItemAt(null, 0);
+		return cmbMarca;
+	}
+	
 	public JComboBox<MarcaDto> getCmbMarca() {
 		if (cmbMarca == null) {
-			MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
-			modeloMarca.addElement(MitnickConstants.marcaTodos);
-			modeloMarca.addItems(controller.obtenerMarcas());
-			cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
+			cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
 			cmbMarca.setBounds(420, 55, 110, 20);
+			cmbMarca.insertItemAt(null, 0);
 		}
 		return cmbMarca;
+	}
+	
+	public MitnickComboBoxModel<TipoDto> getModelCmbTipo() {
+		if (modelCmbTipo == null) {
+			modelCmbTipo = new MitnickComboBoxModel<TipoDto>();			
+		}
+		modelCmbTipo.removeAllElements();
+		modelCmbTipo.addItems(controller.obtenerTipos());
+		return modelCmbTipo;
+	}
+	
+	public MitnickComboBoxModel<MarcaDto> getModelCmbMarca() {
+		if (modelCmbMarca == null) {
+			modelCmbMarca = new MitnickComboBoxModel<MarcaDto>();			
+		}
+		modelCmbMarca.removeAllElements();
+		modelCmbMarca.addItems(controller.obtenerMarcas());
+		return modelCmbMarca;
 	}
 
 	public JLabel getLblMarca() {
@@ -370,6 +400,18 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 	@Override
 	public void actualizarPantalla() {
 		limpiarCamposPantalla();
+		
+		getCmbMarca();
+		remove(getCmbMarca());
+		add(createCmbMarca());
+		
+		getCmbTipo();
+		remove(getCmbTipo());
+		add(createCmbTipo());
+		
+		getCmbMarca().setSelectedItem(null);
+		getCmbTipo().setSelectedItem(null);
+
 		consultarProductos();
 	}
 	

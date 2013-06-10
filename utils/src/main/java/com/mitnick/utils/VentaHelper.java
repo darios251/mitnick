@@ -60,13 +60,12 @@ public class VentaHelper {
 			BigDecimal precioFinal = calcularPrecioFinal(precioCantidad);
 			BigDecimal iva = precioFinal.subtract(precioCantidad);
 			producto.setPrecioTotal(precioFinal);
-			subTotal = subTotal.add(precioCantidad);
+			subTotal = subTotal.add(precioFinal);
 			producto.setIva(iva);
 			impuestos = impuestos.add(producto.getIva());
 		}
 
 		// se incluyen los impuestos
-		subTotal = calcularPrecioFinal(subTotal);
 		ventaDto.setSubTotal(subTotal);
 		
 		ventaDto.setImpuesto(impuestos);
