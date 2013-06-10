@@ -50,6 +50,9 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	private JComboBox<MarcaDto> cmbMarca;
 	private JTextField txtFechaInicio;
 
+	private MitnickComboBoxModel<TipoDto> modelCmbTipo;
+	private MitnickComboBoxModel<MarcaDto> modelCmbMarca;
+	
 	private JTextField txtFechaFinal;
 
 	private JLabel lblMarca;
@@ -149,28 +152,56 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		return txtProductoDescripcion;
 	}
 
+	public JComboBox<TipoDto> createCmbTipo() {
+		cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
+		cmbTipo.setBounds(200, 55, 110, 20);
+		cmbTipo.insertItemAt(null, 0);
+		return cmbTipo;
+	}
+	
 	public JComboBox<TipoDto> getCmbTipo() {
 		if (cmbTipo == null) {
-			MitnickComboBoxModel<TipoDto> modeloTipo = new MitnickComboBoxModel<TipoDto>();
-			modeloTipo.addElement(MitnickConstants.tipoTodos);
-			modeloTipo.addItems(controller.obtenerTipos());
-			cmbTipo = new JComboBox<TipoDto>(modeloTipo);
+			cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
 			cmbTipo.setBounds(200, 55, 110, 20);
+			cmbTipo.insertItemAt(null, 0);
 		}
 		return cmbTipo;
 	}
-
+	
+	public JComboBox<MarcaDto> createCmbMarca() {
+		cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
+		cmbMarca.setBounds(420, 55, 110, 20);
+		cmbMarca.insertItemAt(null, 0);
+		return cmbMarca;
+	}
+	
 	public JComboBox<MarcaDto> getCmbMarca() {
 		if (cmbMarca == null) {
-			MitnickComboBoxModel<MarcaDto> modeloMarca = new MitnickComboBoxModel<MarcaDto>();
-			modeloMarca.addElement(MitnickConstants.marcaTodos);
-			modeloMarca.addItems(controller.obtenerMarcas());
-			cmbMarca = new JComboBox<MarcaDto>(modeloMarca);
+			cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
 			cmbMarca.setBounds(420, 55, 110, 20);
+			cmbMarca.insertItemAt(null, 0);
 		}
 		return cmbMarca;
 	}
-
+	
+	public MitnickComboBoxModel<TipoDto> getModelCmbTipo() {
+		if (modelCmbTipo == null) {
+			modelCmbTipo = new MitnickComboBoxModel<TipoDto>();			
+		}
+		modelCmbTipo.removeAllElements();
+		modelCmbTipo.addItems(controller.obtenerTipos());
+		return modelCmbTipo;
+	}
+	
+	public MitnickComboBoxModel<MarcaDto> getModelCmbMarca() {
+		if (modelCmbMarca == null) {
+			modelCmbMarca = new MitnickComboBoxModel<MarcaDto>();			
+		}
+		modelCmbMarca.removeAllElements();
+		modelCmbMarca.addItems(controller.obtenerMarcas());
+		return modelCmbMarca;
+	}
+	
 	public JLabel getLblMarca() {
 		if (lblMarca == null) {
 			lblMarca = new JLabel(
@@ -408,7 +439,6 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			table = new JTable(getModel());
 			table.setRowSorter(getSorter());
 			table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-			// table.setFillsViewportHeight(true);
 		}
 		return table;
 	}
@@ -423,6 +453,18 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	@Override
 	public void actualizarPantalla() {
 		mostrarError = false;
+		
+		getCmbMarca();
+		remove(getCmbMarca());
+		add(createCmbMarca());
+		
+		getCmbTipo();
+		remove(getCmbTipo());
+		add(createCmbTipo());
+		
+		getCmbMarca().setSelectedItem(null);
+		getCmbTipo().setSelectedItem(null);
+		
 		consultarProductos();
 	}
 

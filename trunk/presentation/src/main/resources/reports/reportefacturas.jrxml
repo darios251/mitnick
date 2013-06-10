@@ -224,18 +224,18 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="96" y="23" width="17" height="20"/>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="96" y="23" width="37" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[NA]]></text>
+				<text><![CDATA[NCA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="96" y="63" width="17" height="20"/>
+				<reportElement uuid="8f7fc6a4-011e-4e11-8804-0afc0719b8db" x="96" y="63" width="37" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[NB]]></text>
+				<text><![CDATA[NCB]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="e8e68b2a-2f9a-4958-ade3-c33156c46a29" x="503" y="63" width="47" height="20"/>

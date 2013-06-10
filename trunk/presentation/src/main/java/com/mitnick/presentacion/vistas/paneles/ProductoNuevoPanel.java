@@ -356,17 +356,19 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> implements
 
 	public MitnickComboBoxModel<TipoDto> getModelCmbTipo() {
 		if (modelCmbTipo == null) {
-			modelCmbTipo = new MitnickComboBoxModel<TipoDto>();
-			modelCmbTipo.addItems(controller.obtenerTipos());
+			modelCmbTipo = new MitnickComboBoxModel<TipoDto>();			
 		}
+		modelCmbTipo.removeAllElements();		
+		modelCmbTipo.addItems(controller.obtenerTipos());
 		return modelCmbTipo;
 	}
 	
 	public MitnickComboBoxModel<MarcaDto> getModelCmbMarca() {
 		if (modelCmbMarca == null) {
-			modelCmbMarca = new MitnickComboBoxModel<MarcaDto>();
-			modelCmbMarca.addItems(controller.obtenerMarcas());
+			modelCmbMarca = new MitnickComboBoxModel<MarcaDto>();			
 		}
+		modelCmbMarca.removeAllElements();
+		modelCmbMarca.addItems(controller.obtenerMarcas());
 		return modelCmbMarca;
 	}
 	
@@ -562,18 +564,34 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> implements
 		return txtTalle;
 	}
 
+	public JComboBox<TipoDto> createCmbTipo() {
+		cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
+		cmbTipo.setBounds(162, 115, 102, 20);
+		cmbTipo.insertItemAt(null, 0);
+		return cmbTipo;
+	}
+	
 	public JComboBox<TipoDto> getCmbTipo() {
 		if (cmbTipo == null) {
 			cmbTipo = new JComboBox<TipoDto>(getModelCmbTipo());
 			cmbTipo.setBounds(162, 115, 102, 20);
+			cmbTipo.insertItemAt(null, 0);
 		}
 		return cmbTipo;
 	}
 
+	public JComboBox<MarcaDto> createCmbMarca() {
+		cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
+		cmbMarca.setBounds(412, 115, 102, 20);
+		cmbMarca.insertItemAt(null, 0);
+		return cmbMarca;
+	}
+	
 	public JComboBox<MarcaDto> getCmbMarca() {
 		if (cmbMarca == null) {
 			cmbMarca = new JComboBox<MarcaDto>(getModelCmbMarca());
 			cmbMarca.setBounds(412, 115, 102, 20);
+			cmbMarca.insertItemAt(null, 0);
 		}
 		return cmbMarca;
 	}
@@ -581,6 +599,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> implements
 	public JComboBox<ProveedorDto> createCmbProveedores() {
 		cmbProveedor = new JComboBox<ProveedorDto>(getModelCmbProveedores());
 		cmbProveedor.setBounds(162, 250, 102, 20);
+		cmbProveedor.insertItemAt(null, 0);
 		return cmbProveedor;
 	}
 	
@@ -588,6 +607,7 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> implements
 		if (cmbProveedor == null) {
 			cmbProveedor = new JComboBox<ProveedorDto>(getModelCmbProveedores());
 			cmbProveedor.setBounds(162, 250, 102, 20);
+			cmbProveedor.insertItemAt(null, 0);
 		}
 		return cmbProveedor;
 	}
@@ -628,6 +648,15 @@ public class ProductoNuevoPanel extends BasePanel<ProductoController> implements
 		getCmbProveedores();
 		remove(getCmbProveedores());
 		add(createCmbProveedores());
+		
+		getCmbMarca();
+		remove(getCmbMarca());
+		add(createCmbMarca());
+		
+		getCmbTipo();
+		remove(getCmbTipo());
+		add(createCmbTipo());
+		
 		if (Validator.isNotNull(producto)) {
 			getTxtCodigo().setText(producto.getCodigo());
 			getTxtDescripcion().setText(producto.getDescripcion());
