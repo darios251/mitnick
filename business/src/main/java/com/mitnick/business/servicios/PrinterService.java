@@ -11,7 +11,6 @@ import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.servicio.servicios.ICierreZServicio;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
-import com.mitnick.utils.dtos.ProductoDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Component(value="printerService")

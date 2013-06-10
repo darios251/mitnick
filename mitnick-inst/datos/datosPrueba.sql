@@ -34,7 +34,7 @@ INSERT INTO marca(id, descripcion) values('5','LG');
 INSERT INTO marca(id, descripcion) values('6','Fender');	 
 
 -- ----------------------------
--- Records of medios de pago
+-- Records of productos
 -- ----------------------------
 INSERT INTO producto(id, codigo,descripcion, stock, stockminimo, stockcompra, precioventa, iva, eliminado) 
 VALUES ('0', '*', 'Comodín', '0', '0', '0', '0', '0', 'false');	
