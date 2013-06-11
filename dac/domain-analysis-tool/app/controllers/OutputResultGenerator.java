@@ -2,62 +2,79 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 
-import models.Domains;
-import play.mvc.With;
-import util.DATConstants;
-import util.OutputDTO;
-
-import jxl.write.Number;
-
 import jxl.CellView;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
+import jxl.biff.WorkbookMethods;
 import jxl.format.UnderlineStyle;
-import jxl.write.Formula;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
+import models.OutputResult;
+import play.data.binding.Binder;
+import play.db.Model;
+import play.exceptions.TemplateNotFoundException;
+import play.mvc.With;
+import util.DATConstants;
+import util.OutputDTO;
 
+/**
+ * This CRUD allow to export the results into a xls file.
+ * @author Martin
+ *
+ */
 @Check(DATConstants.Constants.Roles.DOMIANS_ROLE)
 @With(Secure.class)
-@CRUD.For(value = Domains.class)
+@CRUD.For(value = OutputResult.class)
 public class OutputResultGenerator extends CRUD {
 
 	private static WritableCellFormat timesBoldUnderline;
 	private static WritableCellFormat times;
-
-	/**
-	 * El metodo list tiene la funcionalidad del blank porque nunca se enlistan los archivos procesados.
-	 * @param page
-	 * @param search
-	 * @param searchFields
-	 * @param orderBy
-	 * @param order
-	 */
-	public static void list(int page, String search, String searchFields, String orderBy, String order) {
-		try {
-			write("c:/agustina/lars1.xls");
-		} catch (WriteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	 
+	
+	public static void create() throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		Model object = (Model) constructor.newInstance();
+		Binder.bindBean(params.getRootParamNode(), "object", object);
+		
+		OutputResult.deleteAll();
+		
+		validation.valid(object);
+		if (validation.hasErrors()) {
+			renderArgs.put("error", play.i18n.Messages.get("crud.hasErrors"));
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html", type, object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type, object);
+			}
 		}
-		System.out.println("Please check the result file under c:/temp/lars.xls ");
+		
+		write(((OutputResult)object).fileName);
+		object._save();
+		
+		flash.success(play.i18n.Messages.get("output.process.success", ((OutputResult)object).fileName));		
+        if (params.get("_save") != null) {
+        	redirect("Admin.index");
+        }
+        
+        redirect("Admin.index");
 	}
 	
-
-	public static void write(String inputFile) throws IOException, WriteException {
-		File file = new File(inputFile);
+	private static void write(String inputFile) throws IOException, WriteException {
+		File file = new File(inputFile + ".xls");
 		WorkbookSettings wbSettings = new WorkbookSettings();
 
 		wbSettings.setLocale(new Locale("en", "EN"));
@@ -67,9 +84,12 @@ public class OutputResultGenerator extends CRUD {
 		WritableSheet excelSheet = workbook.getSheet(0);
 		createLabel(excelSheet);
 		createContent(excelSheet);
-
+				
 		workbook.write();
 		workbook.close();
+		
+		// abrir el archivo
+		Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + inputFile + ".xls");
 	}
 
 	private static void createLabel(WritableSheet sheet) throws WriteException {
@@ -110,7 +130,6 @@ public class OutputResultGenerator extends CRUD {
 	}
 
 	private static void createContent(WritableSheet sheet) throws WriteException, RowsExceededException {
-		// Write a few number
 		List<OutputDTO> outputs = OutputDTO.getPruebas();
 		int i = 1;
 		for (OutputDTO output : outputs) {

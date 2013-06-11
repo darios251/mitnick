@@ -18,6 +18,11 @@ import play.exceptions.TemplateNotFoundException;
 import play.mvc.With;
 import util.DATConstants;
 
+/**
+ * This CRUD allow to import the Domain.txt file, to add the all domains into the system.
+ * @author Agustina
+ *
+ */
 @Check(DATConstants.Constants.Roles.DOMIANS_ROLE)
 @With(Secure.class)
 @CRUD.For(value = Domains.class)
@@ -32,9 +37,8 @@ public class DomainsController extends CRUD {
 		Binder.bindBean(params.getRootParamNode(), "object", object);
 		
 		Domain.deleteAll();
+		Domains.deleteAll();
 		
-		importDomainNames((Domains) object);
-
 		validation.valid(object);
 		if (validation.hasErrors()) {
 			renderArgs.put("error", play.i18n.Messages.get("crud.hasErrors"));
@@ -44,7 +48,8 @@ public class DomainsController extends CRUD {
 				render("CRUD/blank.html", type, object);
 			}
 		}
-
+		
+		importDomainNames((Domains) object);
 		object._save();
 		
 		flash.success(play.i18n.Messages.get("report.created", type.modelName));
