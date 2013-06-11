@@ -17,9 +17,16 @@
 		#{secure.check type.name}
 				
 		            <tr>
-		                <td>
-		                    <a href="${type.listAction}">&{type.name}</a>
-		                </td>	
+		             	#{if type.name == 'OutputResultGenerator'}	   
+			                <td>
+		                    	<a href="${type.blankAction}">&{type.name}</a>
+		                	</td>        
+	                	#{/if}
+		                #{if type.name != 'OutputResultGenerator'}	   
+			                <td>
+			                    <a href="${type.listAction}">&{type.name}</a>
+			                </td>
+		                #{/if}	
 		                #{if type.name == 'Domains'}	   
 			                <td class="crudNew" >	                    
 		                	</td>             
