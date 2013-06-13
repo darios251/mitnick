@@ -20,5 +20,6 @@ GET     /admin/?                                Admin.index
 
 GET	    /OutputResultGenerator/listResult.html		OutputResultGenerator.listResult
 
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

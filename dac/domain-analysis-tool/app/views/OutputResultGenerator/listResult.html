@@ -16,16 +16,41 @@ function goodToBuy(site, order, orderBy){
 
 </script>
 #{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}
-	In Google: <select name="inGoogle">
-	  <option value="">Select the option</option>
-	  <option value="0">YES</option>
-	  <option value="1">NO</option>
-	</select>
-	WWW: <select name="www">
-	  <option value="">Select the option</option>
-	  <option value="0">Y</option>
-	  <option value="1">N</option>
-	</select>
+	<div class="advancedSearch">
+		In Google: <select name="inGoogle" id="inGoogle">
+		  <option value="Select the option">Select the option</option>
+		  <option value="YES">YES</option>
+		  <option value="NO">NO</option>
+		</select>
+		
+		WWW: <select name="www" id="www">
+		  <option value="Select the option">Select the option</option>
+		  <option value="Y">Y</option>
+		  <option value="N">N</option>
+		</select>
+		
+		Page rank:<input type="text" name="pr" value="${pr}" />
+		
+		Ref Domains:<input type="text" name="refDomians" value="${refDomians}" />
+		
+		Ref Ips:<input type="text" name="refips" value="${refips}" />
+		
+		Ref Subnets:<input type="text" name="refsubnet" value="${refsubnet}" />
+		
+		Ext Back Links Edus:<input type="text" name="extlinksedu" value="${extlinksedu}" />
+		
+		Ref Domans Edu:<input type="text" name="refdomainedu" value="${refdomainedu}" />
+		
+		Ext Back links Gov:<input type="text" name="extbacklinksgov" value="${extbacklinksgov}" />
+		
+		Ref Domains Gov:<input type="text" name="refdomiansgov" value="${refdomiansgov}" />
+		
+		Ref Domains Home:<input type="text" name="refdomainshome" value="${refdomainshome}" />
+		
+		Percent To Homepage:<input type="text" name="percenttoh" value="${percenttoh}" />
+	</div>
+	
+	
 	<input type="submit" value="&{'crud.search'}" />
 
 
@@ -47,8 +72,9 @@ function goodToBuy(site, order, orderBy){
 			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extbacklinksgov')}">Ext Back links Gov</a></th>
 			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomiansgov')}">Ref Domains Gov</a></th>
 			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">Ref Domains Home</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">Percent To Homepage</a></th>		
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">Percent To Homepage</a></th>	
 			<th>Good to Buy</th>		
+			<th></th>			
 		</thead>
 		<tbody>
 			#{list results, as:'result'}
@@ -66,7 +92,8 @@ function goodToBuy(site, order, orderBy){
 				  <td>&{result.refDomainsGov}</td>				  
 				  <td>&{result.refDomianHome}</td>
 				  <td>&{result.percentToHome}</td>
-				  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}', '${order}', '${orderBy}');"></td>				  
+				  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}', '${order}', '${orderBy}');"></td>	
+				  <th><a href="@{delete().add('order',order).add('orderBy',orderBy).add('site', result.site)}"><img src="/public/images/delete.gif" alt="Edit"></a></th>			  
 			</tr>
 			#{/list}
 		</tbody>
@@ -75,3 +102,8 @@ function goodToBuy(site, order, orderBy){
 </div>
 
 #{/form}
+
+<script>
+$('#inGoogle option:contains(${inGoogle})').prop('selected', true);
+$('#www option:contains(${www})').prop('selected', true);
+</script>

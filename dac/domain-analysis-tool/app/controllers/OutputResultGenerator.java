@@ -44,10 +44,61 @@ public class OutputResultGenerator extends Controller {
 	private static WritableCellFormat timesBoldUnderline;
 	private static WritableCellFormat times;
 
-	public static void listResult(String orderBy, String order) {
-		String inGoogle = params.get("inGoogle");
-		String www = params.get("www");
+	public static void listResult(String orderBy, String order, boolean delete) {
 		OutputResult output = OutputResult.getInstance();
+		String inGoogle =null;
+		String www = null;
+		String pr = null;
+		String refDomians = null;
+		String refips = null;
+		String refsubnet = null;
+		String extlinksedu = null;
+		String refdomainedu = null;
+		String extbacklinksgov = null;
+		String refdomiansgov = null;
+		String refdomainshome = null;
+		String percenttoh = null;
+		if (delete){
+			inGoogle = output.getInGoogle();
+			www = output.getWww();
+			pr = output.getPr();
+			refDomians = output.getRefDomians();
+			refips = output.getRefips();
+			refsubnet = output.getRefsubnet();
+			extlinksedu = output.getExtlinksedu();
+			refdomainedu = output.getRefdomainedu();
+			extbacklinksgov = output.getExtbacklinksgov();
+			refdomiansgov = output.getRefdomiansgov();
+			refdomainshome = output.getRefdomainshome();
+			percenttoh = output.getPercenttoh();
+		} else {
+			inGoogle = params.get("inGoogle");
+			www = params.get("www");
+			pr = params.get("pr");
+			refDomians = params.get("refDomians");
+			refips = params.get("refips");
+			refsubnet = params.get("refsubnet");
+			extlinksedu = params.get("extlinksedu");
+			refdomainedu = params.get("refdomainedu");
+			extbacklinksgov = params.get("extbacklinksgov");
+			refdomiansgov = params.get("refdomiansgov");
+			refdomainshome = params.get("refdomainshome");
+			percenttoh = params.get("percenttoh");
+			
+			output.setInGoogle(inGoogle);
+			output.setWww(www);
+			output.setPr(pr);
+			output.setRefDomians(refDomians);
+			output.setRefips(refips);
+			output.setRefsubnet(refsubnet);
+			output.setExtlinksedu(extlinksedu);
+			output.setRefdomainedu(refdomainedu);
+			output.setExtbacklinksgov(extbacklinksgov);
+			output.setRefdomiansgov(refdomiansgov);
+			output.setRefdomainshome(refdomainshome);
+			output.setPercenttoh(percenttoh);
+		}
+		
 		List<OutputDTO> results = output.getResult();
 		if (orderBy==null)
 			orderBy = "site";
@@ -55,7 +106,21 @@ public class OutputResultGenerator extends Controller {
 			orderDESC(results, orderBy);
 		else
 			orderASC(results, orderBy);
-		render(results, orderBy, order, inGoogle, www);
+		render(results, orderBy, order, inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov, refdomiansgov, refdomainshome, percenttoh);
+	}
+	
+	public static void delete(String orderBy, String order, String site) {			
+		OutputResult outputs = OutputResult.getInstance();
+		List<OutputDTO> results = outputs.getResult();
+		OutputDTO remove = null;
+		for (OutputDTO output: results){
+			if (site!=null && site.equals(output.getSite()))
+				remove = output;
+		}
+		if (remove!=null)
+			outputs.getResult().remove(remove);
+		
+		listResult(orderBy, order, true);
 	}
 
 	public static void goodToBuy(String site){

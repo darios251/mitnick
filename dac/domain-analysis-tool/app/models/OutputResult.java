@@ -17,6 +17,20 @@ public class OutputResult {
 	
 	public List<OutputDTO> results;
 	
+	//filter search values
+	private String inGoogle="";
+	private String www="";
+	private String pr="";
+	private String refDomians="";
+	private String refips="";
+	private String refsubnet="";
+	private String extlinksedu="";
+	private String  refdomainedu="";
+	private String extbacklinksgov="";
+	private String refdomiansgov="";
+	private String refdomainshome="";
+	private String percenttoh="";
+	
 	public List<OutputDTO> getResult() {
 		if (results==null)
 			results = OutputDTO.getPruebas();
@@ -30,6 +44,126 @@ public class OutputResult {
 		if (output.results==null || output.results.isEmpty())
 			output.results = OutputDTO.getPruebas();
 		return output;
+	}
+
+	public static OutputResult getOutput() {
+		return output;
+	}
+
+	public static void setOutput(OutputResult output) {
+		OutputResult.output = output;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public List<OutputDTO> getResults() {
+		return results;
+	}
+
+	public void setResults(List<OutputDTO> results) {
+		this.results = results;
+	}
+
+	public String getInGoogle() {
+		return inGoogle;
+	}
+
+	public void setInGoogle(String inGoogle) {
+		this.inGoogle = inGoogle;
+	}
+
+	public String getWww() {
+		return www;
+	}
+
+	public void setWww(String www) {
+		this.www = www;
+	}
+
+	public String getPr() {
+		return pr;
+	}
+
+	public void setPr(String pr) {
+		this.pr = pr;
+	}
+
+	public String getRefDomians() {
+		return refDomians;
+	}
+
+	public void setRefDomians(String refDomians) {
+		this.refDomians = refDomians;
+	}
+
+	public String getRefips() {
+		return refips;
+	}
+
+	public void setRefips(String refips) {
+		this.refips = refips;
+	}
+
+	public String getRefsubnet() {
+		return refsubnet;
+	}
+
+	public void setRefsubnet(String refsubnet) {
+		this.refsubnet = refsubnet;
+	}
+
+	public String getExtlinksedu() {
+		return extlinksedu;
+	}
+
+	public void setExtlinksedu(String extlinksedu) {
+		this.extlinksedu = extlinksedu;
+	}
+
+	public String getRefdomainedu() {
+		return refdomainedu;
+	}
+
+	public void setRefdomainedu(String refdomainedu) {
+		this.refdomainedu = refdomainedu;
+	}
+
+	public String getExtbacklinksgov() {
+		return extbacklinksgov;
+	}
+
+	public void setExtbacklinksgov(String extbacklinksgov) {
+		this.extbacklinksgov = extbacklinksgov;
+	}
+
+	public String getRefdomiansgov() {
+		return refdomiansgov;
+	}
+
+	public void setRefdomiansgov(String refdomiansgov) {
+		this.refdomiansgov = refdomiansgov;
+	}
+
+	public String getRefdomainshome() {
+		return refdomainshome;
+	}
+
+	public void setRefdomainshome(String refdomainshome) {
+		this.refdomainshome = refdomainshome;
+	}
+
+	public String getPercenttoh() {
+		return percenttoh;
+	}
+
+	public void setPercenttoh(String percenttoh) {
+		this.percenttoh = percenttoh;
 	}
 	
 }
