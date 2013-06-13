@@ -1,5 +1,20 @@
 #{extends 'admin.html' /}
 
+#{js 'jquery-1.9.1.js', output:'all'/}
+
+<script>
+
+function goodToBuy(site, order, orderBy){		
+	var goodToBuyURL = #{jsRoute @OutputResultGenerator.goodToBuy(':site') /};
+	var jqxhr = $.ajax({
+      url: goodToBuyURL.url({site: site}),
+      type: 'goodToBuy.method'
+    }).done(function(data){
+    	
+    });
+}
+
+</script>
 #{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}
 	In Google: <select name="inGoogle">
 	  <option value="">Select the option</option>
@@ -51,7 +66,7 @@
 				  <td>&{result.refDomainsGov}</td>				  
 				  <td>&{result.refDomianHome}</td>
 				  <td>&{result.percentToHome}</td>
-				  <td><input id="gtb.${result.site}" type="checkbox" name="gtb.${result.site}" #{if result.goodToBuy}  checked="true" #{/if} onchange="@{goodToBuy().add('site',result.site).add('order',order).add('orderBy',orderBy)}"></td>				  
+				  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}', '${order}', '${orderBy}');"></td>				  
 			</tr>
 			#{/list}
 		</tbody>

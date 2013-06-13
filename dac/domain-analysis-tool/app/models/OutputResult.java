@@ -25,9 +25,10 @@ public class OutputResult {
 	
 	public static OutputResult getInstance(){
 		if (output==null){
-			output = new OutputResult();
-			output.getResult();
+			output = new OutputResult();			
 		}
+		if (output.results==null || output.results.isEmpty())
+			output.results = OutputDTO.getPruebas();
 		return output;
 	}
 	

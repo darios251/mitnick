@@ -58,8 +58,13 @@ public class OutputResultGenerator extends Controller {
 		render(results, orderBy, order, inGoogle, www);
 	}
 
-	public static void goodToBuy(String site, String orderBy, String order){
-		listResult(orderBy, order);
+	public static void goodToBuy(String site){
+		OutputResult outputs = OutputResult.getInstance();
+		List<OutputDTO> results = outputs.getResult();
+		for (OutputDTO output: results){
+			if (site!=null && site.equals(output.getSite()))
+				output.setGoodToBuy(!output.isGoodToBuy());
+		}
 	}
 	
 	public static void createXLSFile() throws Exception {
