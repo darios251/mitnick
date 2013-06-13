@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 import jxl.CellView;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
-import jxl.biff.WorkbookMethods;
 import jxl.format.UnderlineStyle;
 import jxl.write.Label;
 import jxl.write.Number;
@@ -24,34 +25,51 @@ import models.OutputResult;
 import play.data.binding.Binder;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
+import play.mvc.Controller;
 import play.mvc.With;
 import util.DATConstants;
 import util.OutputDTO;
+import controllers.CRUD.ObjectType;
 
 /**
  * This CRUD allow to export the results into a xls file.
+ * 
  * @author Martin
- *
+ * 
  */
 @Check(DATConstants.Constants.Roles.DOMIANS_ROLE)
 @With(Secure.class)
-@CRUD.For(value = OutputResult.class)
-public class OutputResultGenerator extends CRUD {
+public class OutputResultGenerator extends Controller {
 
 	private static WritableCellFormat timesBoldUnderline;
 	private static WritableCellFormat times;
-	 
+
+	public static void listResult(String orderBy, String order) {
+		String inGoogle = params.get("inGoogle");
+		String www = params.get("www");
+		OutputResult output = OutputResult.getInstance();
+		List<OutputDTO> results = output.getResult();
+		if (orderBy==null)
+			orderBy = "site";
+		if ("DESC".equals(order))
+			orderDESC(results, orderBy);
+		else
+			orderASC(results, orderBy);
+		render(results, orderBy, order, inGoogle, www);
+	}
+
+	public static void goodToBuy(String site, String orderBy, String order){
+		listResult(orderBy, order);
+	}
 	
-	public static void create() throws Exception {
+	public static void createXLSFile() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		Model object = (Model) constructor.newInstance();
 		Binder.bindBean(params.getRootParamNode(), "object", object);
-		
-		OutputResult.deleteAll();
-		
+
 		validation.valid(object);
 		if (validation.hasErrors()) {
 			renderArgs.put("error", play.i18n.Messages.get("crud.hasErrors"));
@@ -61,18 +79,18 @@ public class OutputResultGenerator extends CRUD {
 				render("CRUD/blank.html", type, object);
 			}
 		}
-		
-		write(((OutputResult)object).fileName);
+
+		write(((OutputResult) object).fileName);
 		object._save();
-		
-		flash.success(play.i18n.Messages.get("output.process.success", ((OutputResult)object).fileName));		
-        if (params.get("_save") != null) {
-        	redirect("Admin.index");
-        }
-        
-        redirect("Admin.index");
+
+		flash.success(play.i18n.Messages.get("output.process.success", ((OutputResult) object).fileName));
+		if (params.get("_save") != null) {
+			redirect("Admin.index");
+		}
+
+		redirect("Admin.index");
 	}
-	
+
 	private static void write(String inputFile) throws IOException, WriteException {
 		File file = new File(inputFile + ".xls");
 		WorkbookSettings wbSettings = new WorkbookSettings();
@@ -84,10 +102,10 @@ public class OutputResultGenerator extends CRUD {
 		WritableSheet excelSheet = workbook.getSheet(0);
 		createLabel(excelSheet);
 		createContent(excelSheet);
-				
+
 		workbook.write();
 		workbook.close();
-		
+
 		// abrir el archivo
 		Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + inputFile + ".xls");
 	}
@@ -126,6 +144,7 @@ public class OutputResultGenerator extends CRUD {
 		addCaption(sheet, 11, 0, play.i18n.Messages.get("output.header.extBackLinksGov"));
 		addCaption(sheet, 12, 0, play.i18n.Messages.get("output.header.refDomainsEdu"));
 		addCaption(sheet, 13, 0, play.i18n.Messages.get("output.header.refDomainsGov"));
+		addCaption(sheet, 14, 0, play.i18n.Messages.get("output.header.goodToBuy"));
 
 	}
 
@@ -147,9 +166,10 @@ public class OutputResultGenerator extends CRUD {
 			addNumber(sheet, 11, i, output.getExtBackLinksGov());
 			addNumber(sheet, 12, i, output.getRefDomainsEdu());
 			addNumber(sheet, 13, i, output.getRefDomainsGov());
+			addLabel(sheet, 14, i, String.valueOf(output.isGoodToBuy()));
 			i++;
 		}
-		
+
 	}
 
 	private static void addCaption(WritableSheet sheet, int column, int row, String s) throws RowsExceededException, WriteException {
@@ -170,5 +190,248 @@ public class OutputResultGenerator extends CRUD {
 		sheet.addCell(label);
 	}
 
+	@SuppressWarnings("unchecked")
+	private static OutputDTO orderDESC(List<OutputDTO> result, String orderBy) {
+		if ("site".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getSite().compareTo(e1.getSite());
+				}
+			});
+		}
+		if ("pr".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getPr().compareTo(e1.getPr());
+				}
+			});
+		}
+		if ("ingoogle".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getInGoogle().compareTo(e1.getInGoogle());
+				}
+			});
+		}
+		if ("www".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getWww().compareTo(e1.getWww());
+				}
+			});
+		}
+		if ("refdomain".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getRefDomians().compareTo(e1.getRefDomians());
+				}
+			});
+		}
+		if ("refips".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getRefIps().compareTo(e1.getRefIps());
+				}
+			});
+		}
+		if ("refsubnet".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getRefSubNet().compareTo(e1.getRefSubNet());
+				}
+			});
+		}
+		if ("extlinksedu".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getExtBackLnksEdu().compareTo(e1.getExtBackLnksEdu());
+				}
+			});
+		}
+		if ("refdomainedu".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getRefDomainsEdu().compareTo(e1.getRefDomainsEdu());
+				}
+			});
+		}
+		if ("extbacklinksgov".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getExtBackLinksGov().compareTo(e1.getExtBackLinksGov());
+				}
+			});
+		}
+		if ("refdomiansgov".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getRefDomainsGov().compareTo(e1.getRefDomainsGov());
+				}
+			});
+		}
+		if ("refdomainshome".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getRefDomianHome().compareTo(e1.getRefDomianHome());
+				}
+			});
+		}
+		if ("percenttoh".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e2.getPercentToHome().compareTo(e1.getPercentToHome());
+				}
+			});
+		}
+		return result.get(0);
+	}
 	
+	@SuppressWarnings("unchecked")
+	private static OutputDTO orderASC(List<OutputDTO> result, String orderBy) {
+		if ("site".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getSite().compareTo(e2.getSite());
+				}
+			});
+		}
+		if ("pr".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getPr().compareTo(e2.getPr());
+				}
+			});
+		}
+		if ("ingoogle".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getInGoogle().compareTo(e2.getInGoogle());
+				}
+			});
+		}
+		if ("www".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getWww().compareTo(e2.getWww());
+				}
+			});
+		}
+		if ("refdomain".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getRefDomians().compareTo(e2.getRefDomians());
+				}
+			});
+		}
+		if ("refips".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getRefIps().compareTo(e2.getRefIps());
+				}
+			});
+		}
+		if ("refsubnet".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getRefSubNet().compareTo(e2.getRefSubNet());
+				}
+			});
+		}
+		if ("extlinksedu".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getExtBackLnksEdu().compareTo(e2.getExtBackLnksEdu());
+				}
+			});
+		}
+		if ("refdomainedu".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getRefDomainsEdu().compareTo(e2.getRefDomainsEdu());
+				}
+			});
+		}
+		if ("extbacklinksgov".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getExtBackLinksGov().compareTo(e2.getExtBackLinksGov());
+				}
+			});
+		}
+		if ("refdomiansgov".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getRefDomainsGov().compareTo(e2.getRefDomainsGov());
+				}
+			});
+		}
+		if ("refdomainshome".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getRefDomianHome().compareTo(e2.getRefDomianHome());
+				}
+			});
+		}
+		if ("percenttoh".equals(orderBy)) {
+			Collections.sort(result, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					OutputDTO e1 = (OutputDTO) o1;
+					OutputDTO e2 = (OutputDTO) o2;
+					return e1.getPercentToHome().compareTo(e2.getPercentToHome());
+				}
+			});
+		}
+		return result.get(0);
+	}
+
 }

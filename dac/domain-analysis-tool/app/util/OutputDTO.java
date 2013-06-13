@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Domain;
+import play.db.jpa.Model;
 
 public class OutputDTO implements Serializable {
-	
+
 	private String site;
 	private BigDecimal pr;
 	private String inGoogle;
@@ -24,16 +25,22 @@ public class OutputDTO implements Serializable {
 	private BigDecimal extBackLinksGov;
 	private BigDecimal refDomainsEdu;
 	private BigDecimal refDomainsGov;
-
+	private boolean goodToBuy = false;
 	
+	public boolean isGoodToBuy() {
+		return goodToBuy;
+	}
+
+	public void setGoodToBuy(boolean goodToBuy) {
+		this.goodToBuy = goodToBuy;
+	}
 
 	@Override
 	public String toString() {
 		return "OutputDTO [site=" + site + ", pr=" + pr + ", inGoogle=" + inGoogle + ", www=" + www + ", percentToHome=" + percentToHome + ", refDomianHome=" + refDomianHome + ", refDomians=" + refDomians + ", extBackLinks=" + extBackLinks
-				+ ", refIps=" + refIps + ", refSubNet=" + refSubNet + ", extBackLnksEdu=" + extBackLnksEdu + ", extBackLinksGov=" + extBackLinksGov + ", refDomainsEdu=" + refDomainsEdu + ", refDomainsGov=" + refDomainsGov + "]";
+				+ ", refIps=" + refIps + ", refSubNet=" + refSubNet + ", extBackLnksEdu=" + extBackLnksEdu + ", extBackLinksGov=" + extBackLinksGov + ", refDomainsEdu=" + refDomainsEdu + ", refDomainsGov=" + refDomainsGov + ", goodToBuy="
+				+ goodToBuy + "]";
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -42,6 +49,7 @@ public class OutputDTO implements Serializable {
 		result = prime * result + ((extBackLinks == null) ? 0 : extBackLinks.hashCode());
 		result = prime * result + ((extBackLinksGov == null) ? 0 : extBackLinksGov.hashCode());
 		result = prime * result + ((extBackLnksEdu == null) ? 0 : extBackLnksEdu.hashCode());
+		result = prime * result + (goodToBuy ? 1231 : 1237);
 		result = prime * result + ((inGoogle == null) ? 0 : inGoogle.hashCode());
 		result = prime * result + ((percentToHome == null) ? 0 : percentToHome.hashCode());
 		result = prime * result + ((pr == null) ? 0 : pr.hashCode());
@@ -55,8 +63,6 @@ public class OutputDTO implements Serializable {
 		result = prime * result + ((www == null) ? 0 : www.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -81,6 +87,8 @@ public class OutputDTO implements Serializable {
 			if (other.extBackLnksEdu != null)
 				return false;
 		} else if (!extBackLnksEdu.equals(other.extBackLnksEdu))
+			return false;
+		if (goodToBuy != other.goodToBuy)
 			return false;
 		if (inGoogle == null) {
 			if (other.inGoogle != null)
@@ -140,177 +148,119 @@ public class OutputDTO implements Serializable {
 		return true;
 	}
 
-
-
 	public String getSite() {
 		return site;
 	}
-
-
 
 	public void setSite(String site) {
 		this.site = site;
 	}
 
-
-
 	public BigDecimal getPr() {
 		return pr;
 	}
-
-
 
 	public void setPr(BigDecimal pr) {
 		this.pr = pr;
 	}
 
-
-
 	public String getInGoogle() {
 		return inGoogle;
 	}
-
-
 
 	public void setInGoogle(String inGoogle) {
 		this.inGoogle = inGoogle;
 	}
 
-
-
 	public String getWww() {
 		return www;
 	}
-
-
 
 	public void setWww(String www) {
 		this.www = www;
 	}
 
-
-
 	public BigDecimal getPercentToHome() {
 		return percentToHome;
 	}
-
-
 
 	public void setPercentToHome(BigDecimal percentToHome) {
 		this.percentToHome = percentToHome;
 	}
 
-
-
 	public BigDecimal getRefDomianHome() {
 		return refDomianHome;
 	}
-
-
 
 	public void setRefDomianHome(BigDecimal refDomianHome) {
 		this.refDomianHome = refDomianHome;
 	}
 
-
-
 	public BigDecimal getRefDomians() {
 		return refDomians;
 	}
-
-
 
 	public void setRefDomians(BigDecimal refDomians) {
 		this.refDomians = refDomians;
 	}
 
-
-
 	public BigDecimal getExtBackLinks() {
 		return extBackLinks;
 	}
-
-
 
 	public void setExtBackLinks(BigDecimal extBackLinks) {
 		this.extBackLinks = extBackLinks;
 	}
 
-
-
 	public BigDecimal getRefIps() {
 		return refIps;
 	}
-
-
 
 	public void setRefIps(BigDecimal refIps) {
 		this.refIps = refIps;
 	}
 
-
-
 	public BigDecimal getRefSubNet() {
 		return refSubNet;
 	}
-
-
 
 	public void setRefSubNet(BigDecimal refSubNet) {
 		this.refSubNet = refSubNet;
 	}
 
-
-
 	public BigDecimal getExtBackLnksEdu() {
 		return extBackLnksEdu;
 	}
-
-
 
 	public void setExtBackLnksEdu(BigDecimal extBackLnksEdu) {
 		this.extBackLnksEdu = extBackLnksEdu;
 	}
 
-
-
 	public BigDecimal getExtBackLinksGov() {
 		return extBackLinksGov;
 	}
-
-
 
 	public void setExtBackLinksGov(BigDecimal extBackLinksGov) {
 		this.extBackLinksGov = extBackLinksGov;
 	}
 
-
-
 	public BigDecimal getRefDomainsEdu() {
 		return refDomainsEdu;
 	}
-
-
 
 	public void setRefDomainsEdu(BigDecimal refDomainsEdu) {
 		this.refDomainsEdu = refDomainsEdu;
 	}
 
-
-
 	public BigDecimal getRefDomainsGov() {
 		return refDomainsGov;
 	}
-
-
 
 	public void setRefDomainsGov(BigDecimal refDomainsGov) {
 		this.refDomainsGov = refDomainsGov;
 	}
 
-
-
-	public static List<OutputDTO> getPruebas(){
+	public static List<OutputDTO> getPruebas() {
 		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
 		List<Domain> domains = Domain.findAll();
 		for (Domain domian : domains) {
@@ -318,7 +268,7 @@ public class OutputDTO implements Serializable {
 			dto.setSite(domian.name);
 			dto.setPr(new BigDecimal(1));
 			dto.setInGoogle("YES");
-			dto.setWww("");
+			dto.setWww("Y");
 			BigDecimal refDomianHome = new BigDecimal(112);
 			BigDecimal refDomians = new BigDecimal(15);
 			BigDecimal percent = refDomianHome.divide(refDomians, 2, RoundingMode.HALF_UP);

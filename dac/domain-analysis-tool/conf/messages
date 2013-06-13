@@ -17,5 +17,6 @@ output.header.extBackLnksEdu=ExtBackLinksEDU
 output.header.extBackLinksGov=ExtBackLinksGOV
 output.header.refDomainsEdu=RefDomainsEDU
 output.header.refDomainsGov=RefDomainsGOV
+output.header.goodToBuy=Good to Buy
 output.process.success=Please check the result &{%s}. It is opening...
 crud.generate=Export Result

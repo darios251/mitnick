@@ -18,6 +18,7 @@ GET     /admin/?                                Admin.index
 # Import CRUD routes
 *      /admin              						module:crud
 
+GET	    /OutputResultGenerator/listResult.html		OutputResultGenerator.listResult
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

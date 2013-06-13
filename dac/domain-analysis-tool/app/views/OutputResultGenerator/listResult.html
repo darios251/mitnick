@@ -1,0 +1,62 @@
+#{extends 'admin.html' /}
+
+#{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}
+	In Google: <select name="inGoogle">
+	  <option value="">Select the option</option>
+	  <option value="0">YES</option>
+	  <option value="1">NO</option>
+	</select>
+	WWW: <select name="www">
+	  <option value="">Select the option</option>
+	  <option value="0">Y</option>
+	  <option value="1">N</option>
+	</select>
+	<input type="submit" value="&{'crud.search'}" />
+
+
+<div id="resultList" class="result">
+
+    <h2 id="resultListTitle">Domain Analysis Result</h2>
+
+	<table>
+		<thead>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','site')}">Domain</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','pr')}">Page Rank</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','ingoogle')}">In Google</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','www')}">WWW</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomain')}">Ref Domians</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refips')}">Ref Ips</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refsubnet')}">Ref Subnets</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extlinksedu')}">Ext Back Links Edu</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainedu')}">Ref Domans Edu</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extbacklinksgov')}">Ext Back links Gov</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomiansgov')}">Ref Domains Gov</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">Ref Domains Home</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">Percent To Homepage</a></th>		
+			<th>Good to Buy</th>		
+		</thead>
+		<tbody>
+			#{list results, as:'result'}
+			<tr>
+				  <td>&{result.site}</td>
+				  <td>&{result.pr}</td>
+				  <td>&{result.inGoogle}</td>
+				  <td>&{result.www}</td>
+				  <td>&{result.refDomians}</td>
+				  <td>&{result.refIps}</td>
+				  <td>&{result.refSubNet}</td>
+				  <td>&{result.extBackLnksEdu}</td>
+				  <td>&{result.refDomainsEdu}</td>
+				  <td>&{result.extBackLinksGov}</td>
+				  <td>&{result.refDomainsGov}</td>				  
+				  <td>&{result.refDomianHome}</td>
+				  <td>&{result.percentToHome}</td>
+				  <td><input id="gtb.${result.site}" type="checkbox" name="gtb.${result.site}" #{if result.goodToBuy}  checked="true" #{/if} onchange="@{goodToBuy().add('site',result.site).add('order',order).add('orderBy',orderBy)}"></td>				  
+			</tr>
+			#{/list}
+		</tbody>
+	</table>
+
+</div>
+
+#{/form}
