@@ -104,6 +104,8 @@ function goodToBuy(site, order, orderBy){
 #{/form}
 
 <script>
-$('#inGoogle option:contains(${inGoogle})').prop('selected', true);
-$('#www option:contains(${www})').prop('selected', true);
+if ('${inGoogle}'!='')
+	$('#inGoogle option:contains(${inGoogle})').prop('selected', true);
+if ('${www}'!='')	
+	$('#www option:contains(${www})').prop('selected', true);
 </script>
