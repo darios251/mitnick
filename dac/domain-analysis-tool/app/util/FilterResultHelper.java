@@ -43,7 +43,7 @@ public class FilterResultHelper {
 
 	private static List<OutputDTO> getInGoogle(List<OutputDTO> result, String inGoogle){
 		List<OutputDTO> filterResult = new ArrayList<OutputDTO>();
-		if (inGoogle == null || "".equals(inGoogle) || "Select the option".equals(inGoogle))
+		if (inGoogle == null || "".equals(inGoogle) || play.i18n.Messages.get("result.filter.selectOption").equals(inGoogle))
 			filterResult = result;
 		else {
 			for (OutputDTO output: result){
@@ -56,7 +56,7 @@ public class FilterResultHelper {
 	
 	private static List<OutputDTO> getWww(List<OutputDTO> result, String www){
 		List<OutputDTO> filterResult = new ArrayList<OutputDTO>();
-		if (www == null || "".equals(www) || "Select the option".equals(www))
+		if (www == null || "".equals(www) || play.i18n.Messages.get("result.filter.selectOption").equals(www))
 			filterResult = result;
 		else {
 			for (OutputDTO output: result){

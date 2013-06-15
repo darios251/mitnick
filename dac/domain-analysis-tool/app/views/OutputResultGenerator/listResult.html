@@ -16,42 +16,41 @@ function goodToBuy(site, order, orderBy){
 
 </script>
 #{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}
-	<div class="advancedSearch">
-		In Google: <select name="inGoogle" id="inGoogle">
-		  <option value="Select the option">Select the option</option>
-		  <option value="YES">YES</option>
-		  <option value="NO">NO</option>
-		</select>
-		
-		WWW: <select name="www" id="www">
-		  <option value="Select the option">Select the option</option>
-		  <option value="Y">Y</option>
-		  <option value="N">N</option>
-		</select>
-		
-		Page rank:<input type="text" name="pr" value="${pr}" />
-		
-		Ref Domains:<input type="text" name="refDomians" value="${refDomians}" />
-		
-		Ref Ips:<input type="text" name="refips" value="${refips}" />
-		
-		Ref Subnets:<input type="text" name="refsubnet" value="${refsubnet}" />
-		
-		Ext Back Links Edus:<input type="text" name="extlinksedu" value="${extlinksedu}" />
-		
-		Ref Domans Edu:<input type="text" name="refdomainedu" value="${refdomainedu}" />
-		
-		Ext Back links Gov:<input type="text" name="extbacklinksgov" value="${extbacklinksgov}" />
-		
-		Ref Domains Gov:<input type="text" name="refdomiansgov" value="${refdomiansgov}" />
-		
-		Ref Domains Home:<input type="text" name="refdomainshome" value="${refdomainshome}" />
-		
-		Percent To Homepage:<input type="text" name="percenttoh" value="${percenttoh}" />
-	</div>
+	<form class="advancedSearch">
+		<div>
+			&{'result.filter.inGoogle'} <select name="inGoogle" id="inGoogle">
+			  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
+			  <option value="&{'result.filter.yes'}">&{'result.filter.yes'}</option>
+			  <option value="&{'result.filter.no'}">&{'result.filter.no'}</option>
+			</select>
+			
+			&{'result.filter.www'} <select name="www" id="www">
+			  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
+			  <option value="&{'result.filter.y'}">&{'result.filter.y'}</option>
+			  <option value="&{'result.filter.n'}">&{'result.filter.n'}</option>
+			</select>
+
+			&{'result.filter.pr'}<input type="text" name="pr" value="${pr}" />
+		</div>
+		<div>
+			&{'result.filter.refDomains'}<input type="text" name="refDomians" value="${refDomians}" />
+			&{'result.filter.refIp'}<input type="text" name="refips" value="${refips}" />
+			&{'result.filter.refSubnet'}<input type="text" name="refsubnet" value="${refsubnet}" />
+		</div>		
+		<div>
+			&{'result.filter.extbackLinksEdu'}<input type="text" name="extlinksedu" value="${extlinksedu}" />
+			&{'result.filter.redDomainsEdu'}<input type="text" name="refdomainedu" value="${refdomainedu}" />
+			&{'result.filter.extBackLinksGov'}<input type="text" name="extbacklinksgov" value="${extbacklinksgov}" />
+		</div>
+		<div>
+			&{'result.filter.refDomiansGov'}<input type="text" name="refdomiansgov" value="${refdomiansgov}" />
+			&{'result.filter.refDomainsHome'}<input type="text" name="refdomainshome" value="${refdomainshome}" />
+			&{'result.filter.percentHomepage'}<input type="text" name="percenttoh" value="${percenttoh}" />
+		</div>		
+	</form>
 	
 	
-	<input type="submit" value="&{'crud.search'}" />
+	<input type="submit" value="&{'crud.search'}" /> &{'result.filter.leyend.example'}
 
 
 <div id="resultList" class="result">
