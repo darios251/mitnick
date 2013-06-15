@@ -18,60 +18,60 @@ function goodToBuy(site, order, orderBy){
 #{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}
 	<form class="advancedSearch">
 		<div>
-			&{'result.filter.inGoogle'} <select name="inGoogle" id="inGoogle">
+			&{'result.label.inGoogle'}: <select name="inGoogle" id="inGoogle">
 			  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
 			  <option value="&{'result.filter.yes'}">&{'result.filter.yes'}</option>
 			  <option value="&{'result.filter.no'}">&{'result.filter.no'}</option>
 			</select>
 			
-			&{'result.filter.www'} <select name="www" id="www">
+			&{'result.label.www'}: <select name="www" id="www">
 			  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
 			  <option value="&{'result.filter.y'}">&{'result.filter.y'}</option>
 			  <option value="&{'result.filter.n'}">&{'result.filter.n'}</option>
 			</select>
 
-			&{'result.filter.pr'}<input type="text" name="pr" value="${pr}" />
+			&{'result.label.pr'}: <input type="text" name="pr" value="${pr}" />
 		</div>
 		<div>
-			&{'result.filter.refDomains'}<input type="text" name="refDomians" value="${refDomians}" />
-			&{'result.filter.refIp'}<input type="text" name="refips" value="${refips}" />
-			&{'result.filter.refSubnet'}<input type="text" name="refsubnet" value="${refsubnet}" />
+			&{'result.label.refDomains'}: <input type="text" name="refDomians" value="${refDomians}" />
+			&{'result.label.refIp'}: <input type="text" name="refips" value="${refips}" />
+			&{'result.label.refSubnet'}: <input type="text" name="refsubnet" value="${refsubnet}" />
 		</div>		
 		<div>
-			&{'result.filter.extbackLinksEdu'}<input type="text" name="extlinksedu" value="${extlinksedu}" />
-			&{'result.filter.redDomainsEdu'}<input type="text" name="refdomainedu" value="${refdomainedu}" />
-			&{'result.filter.extBackLinksGov'}<input type="text" name="extbacklinksgov" value="${extbacklinksgov}" />
+			&{'result.label.extbackLinksEdu'}: <input type="text" name="extlinksedu" value="${extlinksedu}" />
+			&{'result.label.redDomainsEdu'}: <input type="text" name="refdomainedu" value="${refdomainedu}" />
+			&{'result.label.extBackLinksGov'}: <input type="text" name="extbacklinksgov" value="${extbacklinksgov}" />
 		</div>
 		<div>
-			&{'result.filter.refDomiansGov'}<input type="text" name="refdomiansgov" value="${refdomiansgov}" />
-			&{'result.filter.refDomainsHome'}<input type="text" name="refdomainshome" value="${refdomainshome}" />
-			&{'result.filter.percentHomepage'}<input type="text" name="percenttoh" value="${percenttoh}" />
+			&{'result.label.refDomiansGov'}: <input type="text" name="refdomiansgov" value="${refdomiansgov}" />
+			&{'result.label.refDomainsHome'}: <input type="text" name="refdomainshome" value="${refdomainshome}" />
+			&{'result.label.percentHomepage'}: <input type="text" name="percenttoh" value="${percenttoh}" />
 		</div>		
 	</form>
 	
 	
-	<input type="submit" value="&{'crud.search'}" /> &{'result.filter.leyend.example'}
+	<input type="submit" value="&{'crud.search'}" /> &{'result.label.leyend.example'}
 
 
 <div id="resultList" class="result">
 
-    <h2 id="resultListTitle">Domain Analysis Result</h2>
+    <h2 id="resultListTitle">&{'result.label.tittle'}</h2>
 
 	<table>
 		<thead>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','site')}">Domain</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','pr')}">Page Rank</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','ingoogle')}">In Google</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','www')}">WWW</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomain')}">Ref Domians</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refips')}">Ref Ips</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refsubnet')}">Ref Subnets</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extlinksedu')}">Ext Back Links Edu</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainedu')}">Ref Domans Edu</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extbacklinksgov')}">Ext Back links Gov</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomiansgov')}">Ref Domains Gov</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">Ref Domains Home</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">Percent To Homepage</a></th>	
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','site')}">&{'result.label.domain'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','pr')}">&{'result.label.pr'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','ingoogle')}">&{'result.label.inGoogle'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','www')}">&{'result.label.www'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomain')}">&{'result.label.refDomains'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refips')}">&{'result.label.refIp'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refsubnet')}">&{'result.label.refSubnet'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extlinksedu')}">&{'result.label.extbackLinksEdu'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainedu')}">&{'result.label.redDomainsEdu'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extbacklinksgov')}">&{'result.label.extBackLinksGov'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomiansgov')}">&{'result.label.refDomiansGov'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">&{'result.label.refDomainsHome'}</a></th>
+			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">&{'result.label.percentHomepage'}</a></th>	
 			<th>Good to Buy</th>		
 			<th></th>			
 		</thead>
