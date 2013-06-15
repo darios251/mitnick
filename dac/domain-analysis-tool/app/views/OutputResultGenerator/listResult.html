@@ -1,7 +1,21 @@
 #{extends 'admin.html' /}
 
 #{js 'jquery-1.9.1.js', output:'all'/}
+#{css 'listResult.css', output:'all'/}
 
+<style>
+label {
+	width: 420px;
+}
+label input{
+	float: right;
+	margin-right: 111px;
+}
+label select{
+	float: right;
+	margin-right: 111px;
+}
+</style>
 <script>
 
 function goodToBuy(site, order, orderBy){		
@@ -16,38 +30,61 @@ function goodToBuy(site, order, orderBy){
 
 </script>
 #{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}
-	<form class="advancedSearch">
+	<div class="advancedSearch">
 		<div>
-			&{'result.label.inGoogle'}: <select name="inGoogle" id="inGoogle">
-			  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
-			  <option value="&{'result.filter.yes'}">&{'result.filter.yes'}</option>
-			  <option value="&{'result.filter.no'}">&{'result.filter.no'}</option>
-			</select>
-			
-			&{'result.label.www'}: <select name="www" id="www">
-			  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
-			  <option value="&{'result.filter.y'}">&{'result.filter.y'}</option>
-			  <option value="&{'result.filter.n'}">&{'result.filter.n'}</option>
-			</select>
+			<label>&{'result.label.inGoogle'}: 
+				<select name="inGoogle" id="inGoogle">
+				  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
+				  <option value="&{'result.filter.yes'}">&{'result.filter.yes'}</option>
+				  <option value="&{'result.filter.no'}">&{'result.filter.no'}</option>
+				</select>
+			</label>
+			<label>&{'result.label.www'}: 
+				<select name="www" id="www">
+				  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
+				  <option value="&{'result.filter.y'}">&{'result.filter.y'}</option>
+				  <option value="&{'result.filter.n'}">&{'result.filter.n'}</option>
+				</select>
+			</label>
 
-			&{'result.label.pr'}: <input type="text" name="pr" value="${pr}" />
+			<label>&{'result.label.pr'}:
+				<input type="text" name="pr" value="${pr}" />
+			</label>
 		</div>
 		<div>
-			&{'result.label.refDomains'}: <input type="text" name="refDomians" value="${refDomians}" />
-			&{'result.label.refIp'}: <input type="text" name="refips" value="${refips}" />
-			&{'result.label.refSubnet'}: <input type="text" name="refsubnet" value="${refsubnet}" />
+			<label>&{'result.label.refDomains'}:
+				<input type="text" name="refDomians" value="${refDomians}" />
+			</label>
+			<label>&{'result.label.refIp'}:
+				<input type="text" name="refips" value="${refips}" />
+			</label>
+			<label>&{'result.label.refSubnet'}:
+				<input type="text" name="refsubnet" value="${refsubnet}" />
+			</label>
 		</div>		
 		<div>
-			&{'result.label.extbackLinksEdu'}: <input type="text" name="extlinksedu" value="${extlinksedu}" />
-			&{'result.label.redDomainsEdu'}: <input type="text" name="refdomainedu" value="${refdomainedu}" />
-			&{'result.label.extBackLinksGov'}: <input type="text" name="extbacklinksgov" value="${extbacklinksgov}" />
+			<label>&{'result.label.extbackLinksEdu'}:
+				<input type="text" name="extlinksedu" value="${extlinksedu}" />
+			</label>
+			<label>&{'result.label.redDomainsEdu'}:		
+				<input type="text" name="refdomainedu" value="${refdomainedu}" />
+			</label>
+			<label>&{'result.label.extBackLinksGov'}:
+				<input type="text" name="extbacklinksgov" value="${extbacklinksgov}" />
+			</label>
 		</div>
 		<div>
-			&{'result.label.refDomiansGov'}: <input type="text" name="refdomiansgov" value="${refdomiansgov}" />
-			&{'result.label.refDomainsHome'}: <input type="text" name="refdomainshome" value="${refdomainshome}" />
-			&{'result.label.percentHomepage'}: <input type="text" name="percenttoh" value="${percenttoh}" />
+			<label>&{'result.label.refDomiansGov'}:
+				<input type="text" name="refdomiansgov" value="${refdomiansgov}" />
+			</label>
+			<label>&{'result.label.refDomainsHome'}:
+				<input type="text" name="refdomainshome" value="${refdomainshome}" />
+			</label>
+			<label>&{'result.label.percentHomepage'}:
+				<input type="text" name="percenttoh" value="${percenttoh}" />
+			</label>
 		</div>		
-	</form>
+	</div>
 	
 	
 	<input type="submit" value="&{'crud.search'}" /> &{'result.label.leyend.example'}
