@@ -1,47 +1,14 @@
 #{extends 'admin.html' /}
 
-#{js 'jquery-1.9.1.js', output:'all'/}
-#{css 'listResult.css', output:'all'/}
+#{set 'moreStyles' }
+	#{css 'listResult', output:'all'/}
+#{/set}
 
-<style>
-.advancedSearch {
-width: 880px;
-}
-label {
-	width: 420px;
-}
-label input{
-	float: right;
-	margin-right: 111px;
-}
-label select{
-	float: right;
-	margin-right: 111px;
-}
-</style>
-<script>
+#{set 'moreScripts' }
+	#{js 'jquery-1.9.1.js', output:'all'/}
+	#{js 'listResult.js', output:'all'/}
+#{/set}
 
-function goodToBuy(site){		
-	var goodToBuyURL = #{jsRoute @OutputResultGenerator.goodToBuy(':site') /};
-	var jqxhr = $.ajax({
-      url: goodToBuyURL.url({site: site}),
-      type: 'goodToBuy.method'
-    }).done(function(data){
-    	
-    });
-}
-
-function exportResult(){		
-	var createXLSFile = #{jsRoute @OutputResultGenerator.createXLSFile() /};
-	var jqxhr = $.ajax({
-      url: createXLSFile.url({}),
-      type: 'createXLSFile.method'
-    }).done(function(data){
-    	
-    });
-}
-
-</script>
 <div>
 
 #{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}

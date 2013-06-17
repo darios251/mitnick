@@ -1,3 +1,14 @@
+.advancedSearch {
+	width: 880px;
+}
 label {
 	width: 420px;
+}
+label input{
+	float: right;
+	margin-right: 111px;
+}
+label select{
+	float: right;
+	margin-right: 111px;
 }

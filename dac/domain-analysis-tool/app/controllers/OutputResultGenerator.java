@@ -105,7 +105,8 @@ public class OutputResultGenerator extends Controller {
 		String percenttoh = output.getPercenttoh();
 		List<OutputDTO> results = FilterResultHelper.addFilters(inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov,
 				refdomiansgov, refdomainshome, percenttoh, "site", "ASC");
-		XLSExportHelper.write("temporal", results);			
+		String temporalName = String.valueOf(System.currentTimeMillis());
+		XLSExportHelper.write(temporalName, results);			
 	}
 	
 	public static void delete(String orderBy, String order, String site) {
