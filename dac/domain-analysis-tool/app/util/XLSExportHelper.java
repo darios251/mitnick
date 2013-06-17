@@ -35,7 +35,7 @@ public class XLSExportHelper {
 	private static WritableCellFormat timesBoldUnderline;
 	private static WritableCellFormat times;
 	
-	public static void write(String inputFile) throws IOException, WriteException {
+	public static void write(String inputFile, List<OutputDTO> result) throws IOException, WriteException {
 		File file = new File(inputFile + ".xls");
 		WorkbookSettings wbSettings = new WorkbookSettings();
 
@@ -45,7 +45,7 @@ public class XLSExportHelper {
 		workbook.createSheet(play.i18n.Messages.get("output.tab.label"), 0);
 		WritableSheet excelSheet = workbook.getSheet(0);
 		createLabel(excelSheet);
-		createContent(excelSheet);
+		createContent(excelSheet, result);
 
 		workbook.write();
 		workbook.close();
@@ -92,8 +92,7 @@ public class XLSExportHelper {
 
 	}
 
-	private static void createContent(WritableSheet sheet) throws WriteException, RowsExceededException {
-		List<OutputDTO> outputs = OutputDTO.getPruebas();
+	private static void createContent(WritableSheet sheet, List<OutputDTO> outputs) throws WriteException, RowsExceededException {
 		int i = 1;
 		for (OutputDTO output : outputs) {
 			addLabel(sheet, 0, i, output.getSite());

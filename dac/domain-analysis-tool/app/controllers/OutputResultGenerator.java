@@ -90,32 +90,22 @@ public class OutputResultGenerator extends Controller {
 	}
 
 	public static void createXLSFile() throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Constructor<?> constructor = type.entityClass.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		Model object = (Model) constructor.newInstance();
-		Binder.bindBean(params.getRootParamNode(), "object", object);
-
-		validation.valid(object);
-		if (validation.hasErrors()) {
-			renderArgs.put("error", play.i18n.Messages.get("crud.hasErrors"));
-			try {
-				render(request.controller.replace(".", "/") + "/blank.html", type, object);
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type, object);
-			}
-		}
-
-		XLSExportHelper.write(((OutputResult) object).fileName);
-		object._save();
-
-		flash.success(play.i18n.Messages.get("output.process.success", ((OutputResult) object).fileName));
-		if (params.get("_save") != null) {
-			redirect("Admin.index");
-		}
-
-		redirect("Admin.index");
+		OutputResult output = OutputResult.getInstance();
+		String inGoogle = output.getInGoogle();
+		String www = output.getWww();
+		String pr = output.getPr();
+		String refDomians = output.getRefDomians();
+		String refips = output.getRefips();
+		String refsubnet = output.getRefsubnet();
+		String extlinksedu = output.getExtlinksedu();
+		String refdomainedu = output.getRefdomainedu();
+		String extbacklinksgov = output.getExtbacklinksgov();
+		String refdomiansgov = output.getRefdomiansgov();
+		String refdomainshome = output.getRefdomainshome();
+		String percenttoh = output.getPercenttoh();
+		List<OutputDTO> results = FilterResultHelper.addFilters(inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov,
+				refdomiansgov, refdomainshome, percenttoh, "site", "ASC");
+		XLSExportHelper.write("temporal", results);			
 	}
 	
 	public static void delete(String orderBy, String order, String site) {

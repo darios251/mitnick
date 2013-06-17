@@ -21,7 +21,7 @@ label select{
 </style>
 <script>
 
-function goodToBuy(site, order, orderBy){		
+function goodToBuy(site){		
 	var goodToBuyURL = #{jsRoute @OutputResultGenerator.goodToBuy(':site') /};
 	var jqxhr = $.ajax({
       url: goodToBuyURL.url({site: site}),
@@ -31,7 +31,19 @@ function goodToBuy(site, order, orderBy){
     });
 }
 
+function exportResult(){		
+	var createXLSFile = #{jsRoute @OutputResultGenerator.createXLSFile() /};
+	var jqxhr = $.ajax({
+      url: createXLSFile.url({}),
+      type: 'createXLSFile.method'
+    }).done(function(data){
+    	
+    });
+}
+
 </script>
+<div>
+
 #{form action:@listResult().add('order', order ).add('orderBy', orderBy), method:'GET'}
 	<div class="advancedSearch">
 		<div>
@@ -91,58 +103,54 @@ function goodToBuy(site, order, orderBy){
 		<input type="submit" value="&{'crud.search'}" /> &{'result.label.leyend.example'}	
 	</div>
 	
+	<div id="resultList" class="result">
 	
+	    <h2 id="resultListTitle">&{'result.label.tittle'}</h2>
 	
-
-
-<div id="resultList" class="result">
-
-    <h2 id="resultListTitle">&{'result.label.tittle'}</h2>
-
-	<table>
-		<thead>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','site')}">&{'result.label.domain'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','pr')}">&{'result.label.pr'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','ingoogle')}">&{'result.label.inGoogle'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','www')}">&{'result.label.www'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomain')}">&{'result.label.refDomains'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refips')}">&{'result.label.refIp'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refsubnet')}">&{'result.label.refSubnet'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extlinksedu')}">&{'result.label.extbackLinksEdu'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainedu')}">&{'result.label.redDomainsEdu'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extbacklinksgov')}">&{'result.label.extBackLinksGov'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomiansgov')}">&{'result.label.refDomiansGov'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">&{'result.label.refDomainsHome'}</a></th>
-			<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">&{'result.label.percentHomepage'}</a></th>	
-			<th>Good to Buy</th>		
-			<th></th>			
-		</thead>
-		<tbody>
-			#{list results, as:'result'}
-			<tr>
-				  <td>&{result.site}</td>
-				  <td>&{result.pr}</td>
-				  <td>&{result.inGoogle}</td>
-				  <td>&{result.www}</td>
-				  <td>&{result.refDomians}</td>
-				  <td>&{result.refIps}</td>
-				  <td>&{result.refSubNet}</td>
-				  <td>&{result.extBackLnksEdu}</td>
-				  <td>&{result.refDomainsEdu}</td>
-				  <td>&{result.extBackLinksGov}</td>
-				  <td>&{result.refDomainsGov}</td>				  
-				  <td>&{result.refDomianHome}</td>
-				  <td>&{result.percentToHome}</td>
-				  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}', '${order}', '${orderBy}');"></td>	
-				  <th><a href="@{delete().add('order',order).add('orderBy',orderBy).add('site', result.site)}"><img src="/public/images/delete.gif" alt="Edit"></a></th>			  
-			</tr>
-			#{/list}
-		</tbody>
-	</table>
-
-</div>
-
+		<table>
+			<thead>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','site')}">&{'result.label.domain'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','pr')}">&{'result.label.pr'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','ingoogle')}">&{'result.label.inGoogle'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','www')}">&{'result.label.www'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomain')}">&{'result.label.refDomains'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refips')}">&{'result.label.refIp'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refsubnet')}">&{'result.label.refSubnet'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extlinksedu')}">&{'result.label.extbackLinksEdu'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainedu')}">&{'result.label.redDomainsEdu'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','extbacklinksgov')}">&{'result.label.extBackLinksGov'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomiansgov')}">&{'result.label.refDomiansGov'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">&{'result.label.refDomainsHome'}</a></th>
+				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">&{'result.label.percentHomepage'}</a></th>	
+				<th>Good to Buy</th>		
+				<th></th>			
+			</thead>
+			<tbody>
+				#{list results, as:'result'}
+				<tr>
+					  <td>&{result.site}</td>
+					  <td>&{result.pr}</td>
+					  <td>&{result.inGoogle}</td>
+					  <td>&{result.www}</td>
+					  <td>&{result.refDomians}</td>
+					  <td>&{result.refIps}</td>
+					  <td>&{result.refSubNet}</td>
+					  <td>&{result.extBackLnksEdu}</td>
+					  <td>&{result.refDomainsEdu}</td>
+					  <td>&{result.extBackLinksGov}</td>
+					  <td>&{result.refDomainsGov}</td>				  
+					  <td>&{result.refDomianHome}</td>
+					  <td>&{result.percentToHome}</td>
+					  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}');"></td>	
+					  <th><a href="@{delete().add('order',order).add('orderBy',orderBy).add('site', result.site)}"><img src="/public/images/delete.gif" alt="Edit"></a></th>			  
+				</tr>
+				#{/list}
+			</tbody>
+		</table>
+	</div>
 #{/form}
+</div>
+<input type="submit" value="&{'crud.generate'}" onclick="exportResult();"/>    
 
 <script>
 if ('${inGoogle}'!='')
