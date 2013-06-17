@@ -4,6 +4,9 @@
 #{css 'listResult.css', output:'all'/}
 
 <style>
+.advancedSearch {
+width: 880px;
+}
 label {
 	width: 420px;
 }
@@ -83,11 +86,13 @@ function goodToBuy(site, order, orderBy){
 			<label>&{'result.label.percentHomepage'}:
 				<input type="text" name="percenttoh" value="${percenttoh}" />
 			</label>
-		</div>		
+		</div>	
+		
+		<input type="submit" value="&{'crud.search'}" /> &{'result.label.leyend.example'}	
 	</div>
 	
 	
-	<input type="submit" value="&{'crud.search'}" /> &{'result.label.leyend.example'}
+	
 
 
 <div id="resultList" class="result">
