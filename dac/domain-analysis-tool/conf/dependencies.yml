@@ -8,6 +8,7 @@ require:
     - play -> jpastats 0.9
     - provided -> jxl 1.0
     - provided -> majesticseo-external-rpc 0.9.3
+    - provided -> google-pagerank-api 2.0
     - com.google.apis -> google-api-services-customsearch v1-rev18-1.15.0-rc
 
 repositories: 

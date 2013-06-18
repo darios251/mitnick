@@ -21,6 +21,10 @@ output.header.goodToBuy=Good to Buy
 output.process.success=Please check the result &{%s}. It is opening...
 crud.generate=Export Result
 
+domian.importFile=Import Domain File
+DomainsController=Domains Analysis
+domainFile=Select Domain File
+
 result.filter.selectOption=Select the option
 result.filter.yes=YES
 result.filter.no=NO

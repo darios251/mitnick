@@ -20,27 +20,13 @@
 	             	    <td>
 		                    <a href="${type.listAction}">&{type.name}</a>
 		                </td>
-		                #{if type.name == 'Domains'}	   
-			                <td class="crudNew" >	                    
-		                	</td>             
-	                	#{/if}
-	                	#{if type.name != 'Domains'}
-			                <td class="crudNew" >
-			                    <a href="${type.blankAction}">&{'crud.index.add', type.name}</a>
-			                </td>
-	                	#{/if}
+		                <td class="crudNew" >
+		                    <a href="${type.blankAction}">&{'domian.importFile'}</a>
+		                </td>
 		            </tr>
        #{/secure.check}
 #{/crud.types}
-#{secure.check 'OutputResultGenerator'}
-			<tr>
-                <td>
-                    <a href="/OutputResultGenerator/listResult.html">OutputResultGenerator</a>
-                </td>
-                <td class="crudNew" >
-                </td>
-            </tr>
-#{/secure.check}
+
         </tbody>
     </table>
 

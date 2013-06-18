@@ -6,14 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Entity;
+import util.OutputDTO;
+
+import com.temesoft.google.pr.PageRankService;
 
 import controllers.MajesticSEOConnector;
-
-import play.data.validation.Required;
-import play.db.jpa.Blob;
-import play.db.jpa.Model;
-import util.OutputDTO;
 
 public class OutputResult {
 	
@@ -21,7 +18,7 @@ public class OutputResult {
 	
 	public String fileName;
 	
-	public List<OutputDTO> results;
+	public List<OutputDTO> results = new ArrayList<OutputDTO>();
 	
 	//filter search values
 	private String inGoogle="";
@@ -38,31 +35,30 @@ public class OutputResult {
 	private String percenttoh="";
 	
 	public List<OutputDTO> getResult() {
-		if (output.results==null || output.results.isEmpty())
-			results =  getOutputs();
 		return results;
 	}
 	
+	public static OutputResult restartInstance(List<Domain> domains){
+		output = new OutputResult();
+		output.results = getOutputs(domains);
+		return output;
+	}
+	
 	public static OutputResult getInstance(){
-		if (output==null){
-			output = new OutputResult();
-			output.results = getOutputs();			
-		}
-		
-		if (output.results==null || output.results.isEmpty())
-			output.results = getOutputs();
+		if (output==null)
+			return new OutputResult();
 		return output;
 	}
 
-	private static List<OutputDTO> getOutputs(){
-		List<Map<String, String>> indexItemInfo = MajesticSEOConnector.getIndexItemInfo();
+	private static List<OutputDTO> getOutputs(List<Domain> domains){
+		List<Map<String, String>> indexItemInfo = MajesticSEOConnector.getIndexItemInfo(domains);
 		
 		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
-		
+		PageRankService pr = new PageRankService();
 		for(Map<String, String> itemInfo : indexItemInfo) {
 				OutputDTO dto = new OutputDTO();
 				dto.setSite(itemInfo.get("Item"));
-				dto.setPr(new BigDecimal(1));//TODO: FALTA CALCULAR
+				dto.setPr(new BigDecimal(pr.getPR(itemInfo.get("Item"))));
 				dto.setInGoogle("YES");//TODO: FALTA CALCULAR
 				dto.setWww("Y");//TODO: FALTA CALCULAR
 				BigDecimal refDomianHome = new BigDecimal(112);//TODO: FALTA CALCULAR
@@ -79,6 +75,7 @@ public class OutputResult {
 				dto.setRefDomians(refDomians);
 				dto.setRefIps(new BigDecimal(itemInfo.get("RefIPs")));
 				dto.setRefSubNet(new BigDecimal(itemInfo.get("RefSubNets")));
+				dto.setExtBackLinks(new BigDecimal(itemInfo.get("ExtBackLinks")));
 				dto.setExtBackLnksEdu(new BigDecimal(itemInfo.get("ExtBackLinksEDU")));
 				dto.setExtBackLinksGov(new BigDecimal(itemInfo.get("ExtBackLinksGOV")));
 				dto.setRefDomainsEdu(new BigDecimal(itemInfo.get("RefDomainsEDU")));

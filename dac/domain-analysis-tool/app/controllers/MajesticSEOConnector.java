@@ -21,10 +21,8 @@ public class MajesticSEOConnector {
 		return response.getTableForName("BackLinks").getTableRows();
 	}
 	
-	public static List<Map<String, String>> getIndexItemInfo() {
+	public static List<Map<String, String>> getIndexItemInfo(List<Domain> domains) {
 		Map parameters = new HashMap();
-		
-		List<Domain> domains = Domain.findAll();
 		
 		parameters.put("items", domains.size() + "");
 		

@@ -18,14 +18,6 @@ public class Domains extends Model {
 	
 	@Override
 	public String toString() {
-		String retorno = "";
-		List<Domain> domainNames = Domain.findAll();
-		int cant = domainNames.size();
-		int i = 0;
-		while (i<3 && i<= cant){
-			retorno = retorno.concat(domainNames.get(i).name).concat(", ");
-			i++;
-		}
-		return retorno.concat("....");
+		return domainFile.toString();
 	}
 }
