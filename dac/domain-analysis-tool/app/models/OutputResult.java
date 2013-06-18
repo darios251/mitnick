@@ -38,16 +38,23 @@ public class OutputResult {
 	private String percenttoh="";
 	
 	public List<OutputDTO> getResult() {
-		if (results==null)
-			results = OutputDTO.getPruebas();
+		if (output.results==null || output.results.isEmpty())
+			results =  getOutputs();
 		return results;
 	}
 	
 	public static OutputResult getInstance(){
 		if (output==null){
-			output = new OutputResult();			
+			output = new OutputResult();
+			output.results = getOutputs();			
 		}
 		
+		if (output.results==null || output.results.isEmpty())
+			output.results = getOutputs();
+		return output;
+	}
+
+	private static List<OutputDTO> getOutputs(){
 		List<Map<String, String>> indexItemInfo = MajesticSEOConnector.getIndexItemInfo();
 		
 		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
@@ -80,14 +87,9 @@ public class OutputResult {
 				dto.setTrustFlow(new BigDecimal(itemInfo.get("TrustFlow")));
 				outputs.add(dto);
 		}
-		
-		output.results = outputs;
-		
-		if (output.results==null || output.results.isEmpty())
-			output.results = OutputDTO.getPruebas();
-		return output;
+		return outputs;
 	}
-
+	
 	public static OutputResult getOutput() {
 		return output;
 	}

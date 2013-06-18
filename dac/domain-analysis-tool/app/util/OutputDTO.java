@@ -165,35 +165,35 @@ public class OutputDTO implements Serializable {
 		return trustFlow;
 	}
 
-	public static List<OutputDTO> getPruebas() {
-		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
-		List<Domain> domains = Domain.findAll();
-		for (Domain domian : domains) {
-			OutputDTO dto = new OutputDTO();
-			dto.setSite(domian.name);
-			dto.setPr(new BigDecimal(1));
-			dto.setInGoogle("YES");
-			dto.setWww("Y");
-			BigDecimal refDomianHome = new BigDecimal(112);
-			BigDecimal refDomians = new BigDecimal(15);
-			BigDecimal percent = refDomianHome.divide(refDomians, 2, RoundingMode.HALF_UP);
-			percent = percent.multiply(new BigDecimal(100));
-			dto.setPercentToHome(percent);
-			dto.setRefDomianHome(refDomianHome);
-			dto.setRefDomians(refDomians);
-			dto.setExtBackLinks(new BigDecimal(1));
-			dto.setRefIps(new BigDecimal(5));
-			dto.setRefSubNet(new BigDecimal(3));
-			dto.setExtBackLnksEdu(new BigDecimal(5));
-			dto.setExtBackLinksGov(new BigDecimal(111));
-			dto.setRefDomainsEdu(new BigDecimal(14));
-			dto.setRefDomainsGov(new BigDecimal(23));
-			dto.setCitationFlow(new BigDecimal(2));
-			dto.setTrustFlow(new BigDecimal(3));
-			outputs.add(dto);
-		}
-		return outputs;
-	}
+//	public static List<OutputDTO> getPruebas() {
+//		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
+//		List<Domain> domains = Domain.findAll();
+//		for (Domain domian : domains) {
+//			OutputDTO dto = new OutputDTO();
+//			dto.setSite(domian.name);
+//			dto.setPr(new BigDecimal(1));
+//			dto.setInGoogle("YES");
+//			dto.setWww("Y");
+//			BigDecimal refDomianHome = new BigDecimal(112);
+//			BigDecimal refDomians = new BigDecimal(15);
+//			BigDecimal percent = refDomianHome.divide(refDomians, 2, RoundingMode.HALF_UP);
+//			percent = percent.multiply(new BigDecimal(100));
+//			dto.setPercentToHome(percent);
+//			dto.setRefDomianHome(refDomianHome);
+//			dto.setRefDomians(refDomians);
+//			dto.setExtBackLinks(new BigDecimal(1));
+//			dto.setRefIps(new BigDecimal(5));
+//			dto.setRefSubNet(new BigDecimal(3));
+//			dto.setExtBackLnksEdu(new BigDecimal(5));
+//			dto.setExtBackLinksGov(new BigDecimal(111));
+//			dto.setRefDomainsEdu(new BigDecimal(14));
+//			dto.setRefDomainsGov(new BigDecimal(23));
+//			dto.setCitationFlow(new BigDecimal(2));
+//			dto.setTrustFlow(new BigDecimal(3));
+//			outputs.add(dto);
+//		}
+//		return outputs;
+//	}
 
 	@Override
 	public int hashCode() {
