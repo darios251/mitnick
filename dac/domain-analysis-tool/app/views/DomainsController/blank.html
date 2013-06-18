@@ -1,5 +1,15 @@
-#{extends 'CRUD/layout.html' /}
+#{extends 'layout.html' /}
 #{set title:messages.get('crud.blank.title', type.modelName) /}
+             
+#{set 'moreStyles' }
+	#{css 'waiting', output:'all'/}
+#{/set}
+
+#{set 'moreScripts' }	
+	#{js 'jquery-1.9.1.js', output:'all'/}
+	#{js 'blockUI.js', output:'all'/}
+	#{js 'waiting.js', output:'all'/}
+#{/set}
 
 <div id="crudBlank" class="${type.name}">
 
@@ -9,7 +19,7 @@
     #{form action:@create(), enctype:'multipart/form-data'}
         #{crud.form /}
         <p class="crudButtons">
-            <input type="submit" name="_save" value="&{'domian.importFile'}" />
+            <input name="_save" type="submit" value="&{'domian.importFile'}" onclick="wait();"/>
         </p>
     #{/form}
     </div>
