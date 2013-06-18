@@ -8,8 +8,8 @@ import java.util.Map;
 
 import util.OutputDTO;
 
+import controllers.GoogleSearchAPIConnector;
 import com.temesoft.google.pr.PageRankService;
-
 import controllers.MajesticSEOConnector;
 
 public class OutputResult {
@@ -59,9 +59,10 @@ public class OutputResult {
 				OutputDTO dto = new OutputDTO();
 				dto.setSite(itemInfo.get("Item"));
 				dto.setPr(new BigDecimal(pr.getPR(itemInfo.get("Item"))));
-				dto.setInGoogle("YES");//TODO: FALTA CALCULAR
+				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "Yes" : "No");
+				//dto.setInGoogle(true ? "Yes" : "No");
 				dto.setWww("Y");//TODO: FALTA CALCULAR
-				BigDecimal refDomianHome = new BigDecimal(112);//TODO: FALTA CALCULAR
+				BigDecimal refDomianHome = new BigDecimal(1);//TODO: FALTA CALCULAR
 				BigDecimal refDomians = new BigDecimal(itemInfo.get("RefDomains"));
 				if(!refDomians.equals(BigDecimal.ZERO)) {
 					BigDecimal percent = refDomianHome.divide(refDomians, 2, RoundingMode.HALF_UP);

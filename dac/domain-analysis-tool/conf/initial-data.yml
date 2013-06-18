@@ -1,10 +1,10 @@
 models.Permission(models_Permission_18):
  "domainManager": "true"
  
-models.User(agustina):
+models.User(admin):
  "username": "admin"
  "password": "58b1cfb378a36ae3bdef8337180a30d6"
- "name": Agustina Berraz
+ "name": Admin
  "isAdmin": "true" 
  "permission": "models_Permission_18"
  
