@@ -60,9 +60,10 @@ public class OutputResult {
 				dto.setSite(itemInfo.get("Item"));
 				dto.setPr(new BigDecimal(pr.getPR(itemInfo.get("Item"))));
 				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "Yes" : "No");
-				//dto.setInGoogle(true ? "Yes" : "No");
-				dto.setWww("Y");//TODO: FALTA CALCULAR
-				BigDecimal refDomianHome = new BigDecimal(1);//TODO: FALTA CALCULAR
+				Map<String,String>backLinks = MajesticSEOConnector.getBackLinks(itemInfo.get("Item"));
+				dto.setWww(backLinks.get("www"));
+				BigDecimal refDomianHome = new BigDecimal(backLinks.get("refDomianHome"));
+				MajesticSEOConnector.getBackLinks(itemInfo.get("Item"));
 				BigDecimal refDomians = new BigDecimal(itemInfo.get("RefDomains"));
 				if(!refDomians.equals(BigDecimal.ZERO)) {
 					BigDecimal percent = refDomianHome.divide(refDomians, 2, RoundingMode.HALF_UP);

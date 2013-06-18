@@ -11,14 +11,26 @@ import com.majesticseo.external.rpc.Response;
 
 public class MajesticSEOConnector {
 
-	public static List<Map<String, String>> getBackLinks() {
+	public static Map<String , String> getBackLinks(String domain) {
 		Map parameters = new HashMap();
-		parameters.put("item", "www.majesticseo.com");
+		parameters.put("item", domain);
 
 		APIService service = new APIService("94E7D8E2D627A278CE7B07FA5AF06A5D", "http://developer.majesticseo.com/api_command");
 		Response response = service.executeCommand("GetBackLinkData", parameters);
-		
-		return response.getTableForName("BackLinks").getTableRows();
+		List<Map<String, String>> backLinks = response.getTableForName("BackLinks").getTableRows();
+		int refDomianHome = 0;
+		String www = "N";
+		for (Map mapa : backLinks){
+			String targetURL = (String)mapa.get("TargetURL");
+			if (targetURL.endsWith(domain))
+				refDomianHome++;
+			if (targetURL.toLowerCase().contains("www"))
+				www = "Y";
+		}
+		Map<String , String> result = new HashMap<String, String>();
+		result.put("refDomianHome", String.valueOf(refDomianHome));
+		result.put("www", www);
+		return result;
 	}
 	
 	public static List<Map<String, String>> getIndexItemInfo(List<Domain> domains) {
