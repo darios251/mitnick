@@ -62,10 +62,10 @@ public class OutputResult {
 		for(Map<String, String> itemInfo : indexItemInfo) {
 				OutputDTO dto = new OutputDTO();
 				dto.setSite(itemInfo.get("Item"));
-				dto.setPr(new BigDecimal(1));
-				dto.setInGoogle("YES");
-				dto.setWww("Y");
-				BigDecimal refDomianHome = new BigDecimal(112);
+				dto.setPr(new BigDecimal(1));//TODO: FALTA CALCULAR
+				dto.setInGoogle("YES");//TODO: FALTA CALCULAR
+				dto.setWww("Y");//TODO: FALTA CALCULAR
+				BigDecimal refDomianHome = new BigDecimal(112);//TODO: FALTA CALCULAR
 				BigDecimal refDomians = new BigDecimal(itemInfo.get("RefDomains"));
 				if(!refDomians.equals(BigDecimal.ZERO)) {
 					BigDecimal percent = refDomianHome.divide(refDomians, 2, RoundingMode.HALF_UP);
