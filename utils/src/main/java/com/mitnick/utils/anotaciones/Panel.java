@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 * It is typically used in combination with annotated handler methods based on the
 * {@link org.springframework.web.bind.annotation.RequestMapping} annotation.
 *
-* @author Lucas GarcÃ­a
+* @author Lucas García
 * @since 1.0
 * @see Component
 * @see org.springframework.web.bind.annotation.RequestMapping

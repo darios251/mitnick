@@ -64,7 +64,7 @@ public class ClientePanel extends BasePanel<ClienteController> {
 	public ClientePanel(boolean modoDisenio) {
 		initializeComponents();
 
-		throw new PresentationException("error.unknow",	"este constructor es solo parar el plugin de diseÃ±o");
+		throw new PresentationException("error.unknow",	"este constructor es solo parar el plugin de diseño");
 	}
 
 	@Override

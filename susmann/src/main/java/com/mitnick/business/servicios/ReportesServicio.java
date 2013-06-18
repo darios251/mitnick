@@ -770,8 +770,8 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	}
 
 	@SuppressWarnings("unchecked")
-	public void consultarTransaccion(String nroTrx){
-		Venta venta = ventaDao.findTransactionByNumeroFactura(nroTrx);
+	public void consultarTransaccion(String nroTrx, String tipo, String factura){
+		Venta venta = ventaDao.findTransactionByNumeroTipoFactura(nroTrx, tipo, factura);
 		if (Validator.isNull(venta))
 			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacci�n con el n�mero ingresado");
 		try {

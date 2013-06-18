@@ -9,7 +9,7 @@ import org.apache.commons.validator.GenericValidator;
  * Esta clase tiene la responsabilidad de representar el validador que se va a utilizar
  * para realizar validaciones de datos.
  * 
- * @author Lucas GarcÃ­a
+ * @author Lucas García
  *
  */
 public class Validator extends GenericValidator{

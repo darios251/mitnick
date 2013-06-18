@@ -738,7 +738,7 @@ public class PrincipalView extends JFrame
 	}
 	private JMenuItem getMenuConfiguracion() {
 		if (menuConfiguracion == null) {
-			menuConfiguracion = new JMenuItem("ConfiguraciÃ³n");
+			menuConfiguracion = new JMenuItem("Configuración");
 			menuConfiguracion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new ConfiguracionImpresoraDialog(thisView);

@@ -211,7 +211,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		logger.info("Facturando venta con monto: " + venta.getTotal());
 		if(!ventaDto.isPrinted()) {
 			if(!printerService.imprimirTicketFactura(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "OcurriÃ³ un error durante la impresiÃ³n");
+				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		} 	
 		//las siguientes dos lineas se descomentan para probar sin impresora fiscal
 //		ventaDto.setNumeroTicket(String.valueOf(System.currentTimeMillis()));
@@ -248,7 +248,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		venta.setTipo(MitnickConstants.DEVOLUCION);
 		if(!ventaDto.isPrinted()) {
 			if(!printerService.imprimirTicketFactura(ventaDto))
-				throw new BusinessException("error.ventaServicio.facturar.impresion", "OcurriÃ³ un error durante la impresiÃ³n");
+				throw new BusinessException("error.ventaServicio.facturar.impresion", "Ocurrió un error durante la impresión");
 		}
 		
 		venta.setPrinted(true);		

@@ -62,7 +62,7 @@ public class ProveedorController extends BaseController {
 	}
 	
 	public List<ProveedorDto> getProveedorsByFilter(ConsultaProveedorDto dto) {
-		logger.debug("Entrando al mÃ©todo getProveedorByFilter con: " + dto);
+		logger.debug("Entrando al método getProveedorByFilter con: " + dto);
 		
 		
 		List<ProveedorDto> resultado = null;

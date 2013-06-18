@@ -28,6 +28,7 @@ import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -171,6 +172,24 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 		
 		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
+		criteria.add(Restrictions.eq("canceled", false));
+
+		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
+		if (ventas==null || ventas.isEmpty())
+				return null;
+		return ventas.get(0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Venta findTransactionByNumeroTipoFactura(String numeroTicket, String tipo, String factura) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
+		
+		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
+		criteria.add(Restrictions.ilike("tipoTicket", factura));
+		int tipoTrx = MitnickConstants.VENTA;
+		if (PropertiesManager.getProperty("dialog.consultarTransacciones.filter.devolucion").equals(tipo))
+			tipoTrx = MitnickConstants.DEVOLUCION;
+		criteria.add(Restrictions.eq("tipo", tipoTrx));	
 		criteria.add(Restrictions.eq("canceled", false));
 
 		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);

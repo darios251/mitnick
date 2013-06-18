@@ -74,11 +74,11 @@ public class ReporteDetalleMovimientosPanel extends BasePanel<ReporteMovimientos
 		setLayout(null);
 		setSize(new Dimension(815, 470));
 		
-		lblCdigo = new JLabel("CÃ³digo: " + producto.getCodigo());
+		lblCdigo = new JLabel("Código: " + producto.getCodigo());
 		lblCdigo.setBounds(125, 15, 100, 20);
 		add(lblCdigo);
 		
-		lblDescripcin = new JLabel("DescripciÃ³n: " + producto.getDescripcion());
+		lblDescripcin = new JLabel("Descripción: " + producto.getDescripcion());
 		lblDescripcin.setBounds(330, 15, 150, 20);
 		add(lblDescripcin);
 		

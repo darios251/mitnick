@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -467,9 +468,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	
 	protected void consultarTransaccion() {
 		try {			
-			String nroTrx = JOptionPane.showInputDialog(PropertiesManager.getProperty("reportePanel.query.numeroTransaccion"));
-			if (Validator.isNotBlankOrNull(nroTrx))
-				controller.consultarTransaccion(nroTrx);
+			new ConsultarTrxFiltersDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), controller);
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
