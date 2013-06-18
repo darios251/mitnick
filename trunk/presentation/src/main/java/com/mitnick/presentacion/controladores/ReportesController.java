@@ -80,9 +80,9 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	public void consultarTransaccion(String nroTransaccion) {
+	public void consultarTransaccion(String nroTransaccion, String tipo, String factura) {
 		try {
-			getReportesServicio().consultarTransaccion(nroTransaccion);
+			getReportesServicio().consultarTransaccion(nroTransaccion, tipo, factura);
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);

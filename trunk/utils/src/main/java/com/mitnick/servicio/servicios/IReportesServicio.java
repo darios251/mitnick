@@ -20,7 +20,7 @@ public interface IReportesServicio {
 	
 	
 	/**
-	 * Obtiene para todos los productos el resumen de movimientos para la fecha pasada por parÃ¡metro
+	 * Obtiene para todos los productos el resumen de movimientos para la fecha pasada por parámetro
 	 * @param filtro
 	 * @return
 	 */
@@ -28,7 +28,7 @@ public interface IReportesServicio {
 	public List<MovimientoProductoDto> reporteMovimientosAgrupadosPorProducto(ReporteMovimientosDto filtro);
 	
 	/**
-	 * Obtiene para el producto pasado por parÃ¡metro el detalle de movimientos para la fecha pasada por parÃ¡metro.
+	 * Obtiene para el producto pasado por parámetro el detalle de movimientos para la fecha pasada por parámetro.
 	 * @param filtro
 	 * @return
 	 */
@@ -36,7 +36,7 @@ public interface IReportesServicio {
 	public List<MovimientoDto> reporteMovimientosDeProducto(ReporteDetalleMovimientosDto filtro);
 	
 	/**
-	 * Obtiene el detalle de ingresos de pagos para la fecha pasada por parÃ¡metro.
+	 * Obtiene el detalle de ingresos de pagos para la fecha pasada por parámetro.
 	 * @param filtro
 	 * @return
 	 */
@@ -44,7 +44,7 @@ public interface IReportesServicio {
 	public void reporteIngresos(ReportesDto filtro, int tipo);
 	
 	/**
-	 * Obtiene el detalle de estado de cuentas entre las fechas pasadas por parÃ¡metro.
+	 * Obtiene el detalle de estado de cuentas entre las fechas pasadas por parámetro.
 	 * @param filtro
 	 * @return
 	 */
@@ -118,6 +118,6 @@ public interface IReportesServicio {
 	 * Obtiene un duplicado del comprobante original de la transacción.
 	 * @param nroTrx
 	 */
-	public void consultarTransaccion(String nroTrx);
+	public void consultarTransaccion(String nroTrx, String tipo, String factura);
  
 }

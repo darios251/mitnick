@@ -31,7 +31,7 @@ public class InicioView extends JDialog {
 		lblNewLabel.setIcon(imageIcon);
 		getContentPane().add(lblNewLabel, BorderLayout.CENTER);
 		
-		JLabel lblTodosLosDerechos = new JLabel("Todos los derechos de esta aplicaciÃ³n estan reservados por Mitnick - (c) 2012");
+		JLabel lblTodosLosDerechos = new JLabel("Todos los derechos de esta aplicación estan reservados por Mitnick - (c) 2012");
 		lblTodosLosDerechos.setBounds(211, 300, 400, 14);
 		getContentPane().add(lblTodosLosDerechos, BorderLayout.SOUTH);
 		progressBar = new JProgressBar();

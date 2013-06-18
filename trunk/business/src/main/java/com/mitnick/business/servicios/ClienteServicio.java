@@ -97,7 +97,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		if (clienteDto.getId() == null) {
 			throw new BusinessException(
 					"error.clienteServicio.id.nulo",
-					"Se invoca la eliminaciÃ³n de un cliente que no existe en la base de datos ya que no se brinda el ID");
+					"Se invoca la eliminación de un cliente que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
 			@SuppressWarnings("unchecked")
@@ -181,7 +181,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 		if (cuotaDto.getId() == null) {
 			throw new BusinessException(
 					"error.clienteServicio.id.nulo",
-					"Se invoca la eliminaciÃ³n de una cuota que no existe en la base de datos ya que no se brinda el ID");
+					"Se invoca la eliminación de una cuota que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
 			cuotaDao.eliminarCuota(cuotaDto);
@@ -226,7 +226,7 @@ public class ClienteServicio extends ServicioBase implements IClienteServicio {
 	public List<CuotaDto> quitarPago(PagoDto pago, List<CuotaDto> cuotas) {
 		if (pago.isComprobante())
 			throw new BusinessException(
-					"El pago ya generÃ³ comprobante de pago");
+					"El pago ya generó comprobante de pago");
 		for (int i = 0; i < cuotas.size(); i++) {
 			CuotaDto cuota = cuotas.get(i);
 			cuota.getPagos().remove(pago);

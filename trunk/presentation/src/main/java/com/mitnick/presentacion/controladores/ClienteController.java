@@ -74,7 +74,7 @@ public class ClienteController extends BaseController {
 	}
 	
 	public List<ClienteDto> obtenerClientesByFilter(ConsultaClienteDto filtroDto) {
-		logger.debug("Entrando al mÃ©todo obtenerClientesByFilter con :" + filtroDto);
+		logger.debug("Entrando al método obtenerClientesByFilter con :" + filtroDto);
 		
 		if(Validator.isNull(filtroDto))
 			throw new PresentationException("error.unknown", "El filtro para la consulta de clientes no puede ser nulo");
@@ -95,7 +95,7 @@ public class ClienteController extends BaseController {
 		if(Validator.isEmptyOrNull(clientes))
 			throw new PresentationException("error.cliente.consulta.clientes.null");
 		
-		logger.debug("Saliendo del mÃ©todo consultarClienteByFilter");
+		logger.debug("Saliendo del método consultarClienteByFilter");
 		
 		return clientes;
 	}
@@ -390,7 +390,7 @@ public class ClienteController extends BaseController {
 		
 	
 	public void quitarPago(PagoDto pagoDto) {
-		logger.debug("Entrado al mÃ©todo quitarPago, con pago: " + pagoDto);
+		logger.debug("Entrado al método quitarPago, con pago: " + pagoDto);
 		
 		try {
 			List<CuotaDto> cuotas = getClienteServicio().quitarPago(pagoDto, cuentaCorrientePagoPanel.getCuotas());
@@ -401,7 +401,7 @@ public class ClienteController extends BaseController {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el pago: " + pagoDto);
 		}
 		
-		logger.debug("Saliendo del mÃ©todo quitaPago");
+		logger.debug("Saliendo del método quitaPago");
 	}
 	
 	public void agregarPago(MedioPagoDto medioPago, String monto, String numeroNC) {
@@ -428,7 +428,7 @@ public class ClienteController extends BaseController {
 		
 		finalizarPagoCuota();
 		
-		logger.debug("Saliendo del mÃ©todo agregarPago");
+		logger.debug("Saliendo del método agregarPago");
 	}
 	
 	public void finalizarPagoCuotaParcial() {

@@ -15,7 +15,7 @@ public class DBInitialization {
 	private IConfiguracionDAO configuracionDao;
 	
 	public void initializeDB() {
-		// se hacen inserts para actualizar el nÃºmero de secuencia
+		// se hacen inserts para actualizar el número de secuencia
 		Configuracion configuracion = null;
 		
 		while (configuracion == null) {
@@ -33,7 +33,7 @@ public class DBInitialization {
 		
 		configuracionDao.remove(configuracion.getId());
 		
-		logger.info("La base de datos se ha inicializado con Ã©xito.");
+		logger.info("La base de datos se ha inicializado con éxito.");
 	}
 
 }

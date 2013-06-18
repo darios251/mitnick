@@ -124,7 +124,7 @@ public class PrinterService {
 				output.println(ITEM_DESCRIPCION); //extra 4
 				output.println("");
 				output.println(ITEM_DESCRIPCION);
-				output.println("CÃ³digo -- " + producto.getProducto().getCodigo());
+				output.println("Código -- " + producto.getProducto().getCodigo());
 
 				output.println(ITEM_CANTIDAD);
 				output.println(producto.getCantidad());
@@ -173,7 +173,7 @@ public class PrinterService {
 			output.println(FIN_TICKET_TAG);
 			
 			output.println(CLOSE_COLA);
-			output.println("Este comprobante es vÃ¡lido para");
+			output.println("Este comprobante es válido para");
 			output.println(CLOSE_COLA);
 			output.println("utilizar en devoluciones en el local");
 			output.println(CLOSE_COLA);
@@ -361,7 +361,7 @@ public class PrinterService {
 			output.println(FIN_TICKET_TAG);
 			
 			output.println(CLOSE_COLA);
-			output.println("Este comprobante es vÃ¡lido para");
+			output.println("Este comprobante es válido para");
 			output.println(CLOSE_COLA);
 			output.println("utilizar en devoluciones en el local");
 			output.println(CLOSE_COLA);
@@ -452,7 +452,7 @@ public class PrinterService {
 				output.println(ITEM_DESCRIPCION); //extra 4
 				output.println("");
 				output.println(ITEM_DESCRIPCION);
-				output.println("CÃ³digo -- " + producto.getProducto().getCodigo());
+				output.println("Código -- " + producto.getProducto().getCodigo());
 
 				output.println(ITEM_CANTIDAD);
 				output.println(producto.getCantidad());
@@ -499,7 +499,7 @@ public class PrinterService {
 			output.println(FIN_TICKET_TAG);
 			
 			output.println(CLOSE_COLA);
-			output.println("Este comprobante es vÃ¡lido para");
+			output.println("Este comprobante es válido para");
 			output.println(CLOSE_COLA);
 			output.println("utilizar en devoluciones en el local");
 			output.println(CLOSE_COLA);
@@ -1084,7 +1084,7 @@ public class PrinterService {
 	    		throw new PrinterException(line);
 	    	}
 	    	else {
-	    		logger.info("Se cancelÃ³ el tique factura nÂ°:" + line);
+	    		logger.info("Se canceló el tique factura n°:" + line);
 	    		line = input.readLine();
 	    		logger.info("y el tipo de factura:" + line);
 	    	}
@@ -1113,7 +1113,7 @@ public class PrinterService {
 	    		throw new PrinterException(line);
 	    	}
 	    	else {
-	    		logger.info("Se cancelÃ³ el tique factura nÂ°:" + line);
+	    		logger.info("Se canceló el tique factura n°:" + line);
 	    		line = input.readLine();
 	    		logger.info("y el tipo de factura:" + line);
 	    	}
@@ -1143,7 +1143,7 @@ public class PrinterService {
 	    		throw new PrinterException(line);
 	    	}
 	    	else
-	    		logger.info("Se cancelÃ³ el tique nÂ°:" + line);
+	    		logger.info("Se canceló el tique n°:" + line);
 		} 
 		catch (PrinterException ex) {
 			throw ex;

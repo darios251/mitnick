@@ -73,7 +73,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	public VentaClientePanel(boolean modoDisenio) {
 		initializeComponents();
 		
-		throw new PresentationException("error.unknow", "este constructor es solo parar el plugin de diseÃ±o");
+		throw new PresentationException("error.unknow", "este constructor es solo parar el plugin de diseño");
 	}
 
 	@Override

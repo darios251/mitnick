@@ -319,7 +319,7 @@ public class VentaController extends BaseController {
 
 		finalizarVenta();
 
-		logger.debug("Saliendo del mÃ©todo agregarPago");
+		logger.debug("Saliendo del método agregarPago");
 	}
 
 	public void finalizarVenta() {
@@ -357,7 +357,7 @@ public class VentaController extends BaseController {
 	}
 
 	public void quitarPago(PagoDto pagoDto) {
-		logger.debug("Entrado al mÃ©todo quitarPago, con pago: " + pagoDto);
+		logger.debug("Entrado al método quitarPago, con pago: " + pagoDto);
 
 		try {
 			VentaManager.setVentaActual(getVentaServicio().quitarPago(pagoDto, VentaManager.getVentaActual()));
@@ -366,11 +366,11 @@ public class VentaController extends BaseController {
 			throw new PresentationException(e.getMessage(), "Hubo un error al intentar eliminar el pago: " + pagoDto);
 		}
 
-		logger.debug("Saliendo del mÃ©todo quitaPago");
+		logger.debug("Saliendo del método quitaPago");
 	}
 
 	public void modificarCantidad(ProductoVentaDto producto, String cantidad) {
-		logger.debug("Entrado al mÃ©todo modificarCantidad, con producto: " + producto + " y cantidad: " + cantidad);
+		logger.debug("Entrado al método modificarCantidad, con producto: " + producto + " y cantidad: " + cantidad);
 
 		if (Validator.isNull(producto))
 			throw new PresentationException("error.venta.modificarCantidad.producto.null",
@@ -388,11 +388,11 @@ public class VentaController extends BaseController {
 			throw new PresentationException(e);
 		}
 
-		logger.debug("Saliendo del mÃ©todo modificarCantidad");
+		logger.debug("Saliendo del método modificarCantidad");
 	}
 
 	public void modificarPrecioUnitario(ProductoVentaDto producto, String precioUnitario) {
-		logger.debug("Entrado al mÃ©todo modificarPrecioUnitario, con producto: " + producto + " y precioUnitario: "
+		logger.debug("Entrado al método modificarPrecioUnitario, con producto: " + producto + " y precioUnitario: "
 				+ precioUnitario);
 
 		if (Validator.isNull(producto))
@@ -409,11 +409,11 @@ public class VentaController extends BaseController {
 			throw new PresentationException(e);
 		}
 
-		logger.debug("Saliendo del mÃ©todo modificarPrecioUnitario");
+		logger.debug("Saliendo del método modificarPrecioUnitario");
 	}
 
 	public List<ClienteDto> obtenerClientesByFilter(ConsultaClienteDto filtroDto) {
-		logger.debug("Entrando al mÃ©todo consultarClienteByFilter con :" + filtroDto);
+		logger.debug("Entrando al método consultarClienteByFilter con :" + filtroDto);
 
 		if (Validator.isNull(filtroDto))
 			throw new PresentationException("error.unknown", "El filtro para la consulta de clientes no puede ser nulo");
@@ -430,13 +430,13 @@ public class VentaController extends BaseController {
 		if (Validator.isEmptyOrNull(clientes))
 			throw new PresentationException("error.cliente.consulta.clientes.null");
 
-		logger.debug("Saliendo del mÃ©todo consultarClienteByFilter");
+		logger.debug("Saliendo del método consultarClienteByFilter");
 
 		return clientes;
 	}
 
 	public void quitarCliente() {
-		logger.debug("Entrando al mÃ©todo quitarCliente");
+		logger.debug("Entrando al método quitarCliente");
 
 		try {
 			ventaServicio.quitarCliente(VentaManager.getVentaActual());
@@ -444,12 +444,12 @@ public class VentaController extends BaseController {
 			throw new PresentationException(e);
 		}
 
-		logger.info("El cliente se quitÃ³ correctamente de la venta.");
-		logger.debug("Saliendo del mÃ©todo quitarCliente");
+		logger.info("El cliente se quitó correctamente de la venta.");
+		logger.debug("Saliendo del método quitarCliente");
 	}
 
 	public BigDecimal agregarCliente() {
-		logger.debug("Entrando al mÃ©todo agregarCliente");
+		logger.debug("Entrando al método agregarCliente");
 
 		ClienteDto cliente = null;
 		try {
@@ -468,8 +468,8 @@ public class VentaController extends BaseController {
 		try {
 			ventaServicio.agregarCliente(cliente, VentaManager.getVentaActual());
 
-			logger.info("El cliente : " + cliente + " se agregÃ³ correctamente a la venta.");
-			logger.debug("Saliendo del mÃ©todo agregarCliente");
+			logger.info("El cliente : " + cliente + " se agregó correctamente a la venta.");
+			logger.debug("Saliendo del método agregarCliente");
 
 			return clienteServicio.getSaldoDeudor(cliente);
 		} catch (BusinessException e) {
@@ -479,7 +479,7 @@ public class VentaController extends BaseController {
 	}
 
 	public BigDecimal getSaldoDeudor() {
-		logger.debug("Entrando al mÃ©todo getSaldoDeudor");
+		logger.debug("Entrando al método getSaldoDeudor");
 		ClienteDto cliente = VentaManager.getVentaActual().getCliente();
 		try {
 			if (Validator.isNotNull(cliente))
@@ -493,7 +493,7 @@ public class VentaController extends BaseController {
 	}
 
 	public void validarCliente() {
-		logger.debug("Entrando al mÃ©todo validarCliente");
+		logger.debug("Entrando al método validarCliente");
 
 		ClienteDto cliente = null;
 		try {
@@ -515,7 +515,7 @@ public class VentaController extends BaseController {
 			throw new PresentationException(e);
 		}
 
-		logger.debug("Saliendo del mÃ©todo validarCliente");
+		logger.debug("Saliendo del método validarCliente");
 	}
 
 	public void validarTotalVenta() {
@@ -524,7 +524,7 @@ public class VentaController extends BaseController {
 	}
 
 	public void desagregarCliente() {
-		logger.debug("Entrando al mÃ©todo desagregarCliente");
+		logger.debug("Entrando al método desagregarCliente");
 
 		try {
 			ventaServicio.desagregarCliente(VentaManager.getVentaActual());
@@ -532,7 +532,7 @@ public class VentaController extends BaseController {
 			throw new PresentationException(e);
 		}
 
-		logger.debug("Saliendo del mÃ©todo desagregarCliente");
+		logger.debug("Saliendo del método desagregarCliente");
 	}
 
 	public void setTipoResponsable(TipoCompradorDto tipoComprador) {

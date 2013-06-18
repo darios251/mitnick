@@ -67,7 +67,7 @@ public class ProductoController extends BaseController {
 	}
 	
 	public List<ProductoDto> getProductosByFilter(ConsultaProductoDto dto) {
-		logger.debug("Entrando al mÃ©todo getProductosByFilter con: " + dto);
+		logger.debug("Entrando al método getProductosByFilter con: " + dto);
 		
 		List<ProductoDto> resultado = null;
 		try {

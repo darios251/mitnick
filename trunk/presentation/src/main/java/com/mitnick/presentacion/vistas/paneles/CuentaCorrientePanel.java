@@ -72,7 +72,7 @@ public class CuentaCorrientePanel extends BasePanel<ClienteController> {
 	public CuentaCorrientePanel(boolean modoDisenio) {
 		initializeComponents();
 
-		throw new PresentationException("error.unknow",	"este constructor es solo parar el plugin de diseÃ±o");
+		throw new PresentationException("error.unknow",	"este constructor es solo parar el plugin de diseño");
 	}
 
 	@Override

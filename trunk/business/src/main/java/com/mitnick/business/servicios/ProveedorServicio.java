@@ -54,7 +54,7 @@ public class ProveedorServicio extends ServicioBase implements IProveedorServici
 	@Override
 	public void bajaProveedor(ProveedorDto proveedorDto) {
 		if (proveedorDto.getId() == null) {
-			throw new BusinessException("error.proveedorServicio.id.nulo", "Se invoca la eliminaciÃ³n de un proveedor que no existe en la base de datos ya que no se brinda el ID");
+			throw new BusinessException("error.proveedorServicio.id.nulo", "Se invoca la eliminación de un proveedor que no existe en la base de datos ya que no se brinda el ID");
 		}
 		try {
 			@SuppressWarnings("unchecked")
