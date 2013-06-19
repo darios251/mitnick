@@ -53,6 +53,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Autowired
 	protected PrinterService printerService;
 	
+	@SuppressWarnings("unchecked")
+	public VentaDto getVentaByNroFacturaTipo(String numero, String tipo){
+		Venta venta = ventaDao.findTransactionByNumeroTipoFactura(numero, PropertiesManager.getProperty("dialog.consultarTransacciones.filter.venta"), tipo);
+		if (Validator.isNotNull(venta)){
+			VentaDto ventaDto = (VentaDto) entityDTOParser.getDtoFromEntity(venta);
+			return ventaDto;
+		} 
+		return null;
+	}
 	
 	private VentaDto agregarProducto(ProductoDto producto, VentaDto venta) {
 		ProductoVentaDto productoVenta = getProductoVentaDto(producto, venta);

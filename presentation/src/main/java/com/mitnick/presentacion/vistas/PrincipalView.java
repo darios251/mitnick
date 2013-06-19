@@ -46,6 +46,7 @@ import com.mitnick.presentacion.vistas.controles.DetailPanel;
 import com.mitnick.presentacion.vistas.controles.JTabbedPaneConBoton;
 import com.mitnick.presentacion.vistas.paneles.ActualizarStockDialog;
 import com.mitnick.presentacion.vistas.paneles.ConfiguracionImpresoraDialog;
+import com.mitnick.presentacion.vistas.paneles.DevolucionFiltersDialog;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
@@ -263,62 +264,69 @@ public class PrincipalView extends JFrame
 			btnDevolucion.addMouseListener(new MouseAdapter()
 			{
 				public void mouseClicked(MouseEvent e)
-				{
-					if (VentaManager.isVentaIniciada()) {
-						if (JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"),
-							PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.CANCEL_OPTION)
-							return;	
-					}
-					
-					VentaManager.eliminarVenta();
-					ventaController.limpiarVentanasVenta();
-										
-					String nroTicket = JOptionPane.showInputDialog(PropertiesManager.getProperty("ventaPanel.devolucion.nroTicket"));
-					
-					if (nroTicket == null){
-						ventaController.crearNuevaVenta(MitnickConstants.VENTA);
-						return;
-					}
-									
-					VentaDto venta = ventaController.getVentaByNroFactura(nroTicket);
-					
-					ClienteDto cliente = null;
-					List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
-					if (Validator.isNull(venta)){
-						int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.noTicketOriginal"), "Error", JOptionPane.OK_CANCEL_OPTION);
-						if (option == JOptionPane.CANCEL_OPTION){
-							ventaController.crearNuevaVenta(MitnickConstants.VENTA);
-							return;						
-						}
-							
-					} 
-					ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
-					getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
-					if (Validator.isNotNull(venta)){
-						cliente = venta.getCliente();
-						List<PagoDto> pagos = venta.getPagos();
-						productos = VentaHelper.getProductosPrecioVendido(venta);						
-						VentaManager.getVentaActual().setCliente(cliente);
-						for (PagoDto pago : pagos){
-							pago.setId(null);
-						}
-						VentaManager.getVentaActual().setPagos(pagos);
-						VentaManager.getVentaActual().setProductos(productos);
-						VentaManager.getVentaActual().setNumeroTicketOriginal(nroTicket);
-						VentaHelper.calcularTotales(VentaManager.getVentaActual());
-					}
-					logger.info("Mostrando el panel de ventas");
-					
-					ventaController.mostrarUltimoPanelMostrado();
-					getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
-					getJTabbedPane().setVisible(true);
-					ventaController.getUltimoPanelMostrado().setVisible(true);
-					ventaController.actualizarDevolucion();
+				{					
+					devolucion();
 				}
 			});
 		}
 
 		return btnDevolucion;
+	}
+	
+	private void devolucion(){
+		if (VentaManager.isVentaIniciada()) {
+			if (JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("error.venta.pendiente"),
+				PropertiesManager.getProperty("dialog.warning.titulo"), JOptionPane.OK_CANCEL_OPTION) == JOptionPane.CANCEL_OPTION)
+				return;	
+		}
+		
+		VentaManager.eliminarVenta();
+		ventaController.limpiarVentanasVenta();
+				
+		//filtros para obtener la venta que se desea devolver
+		DevolucionFiltersDialog devolucionFilters = new DevolucionFiltersDialog(this, ventaController);
+		if (!devolucionFilters.cancelar){
+			VentaDto venta = devolucionFilters.venta;
+			
+			ClienteDto cliente = null;
+			List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
+			if (Validator.isNull(venta)){
+				int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.noTicketOriginal"), "Error", JOptionPane.OK_CANCEL_OPTION);
+				if (option == JOptionPane.CANCEL_OPTION){
+					ventaController.crearNuevaVenta(MitnickConstants.VENTA);
+					return;						
+				}
+					
+			} 
+			ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
+			getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
+			if (Validator.isNotNull(venta)){
+				cliente = venta.getCliente();
+				List<PagoDto> pagos = venta.getPagos();
+				productos = VentaHelper.getProductosPrecioVendido(venta);						
+				VentaManager.getVentaActual().setCliente(cliente);
+				for (PagoDto pago : pagos){
+					pago.setId(null);
+				}
+				VentaManager.getVentaActual().setPagos(pagos);
+				VentaManager.getVentaActual().setProductos(productos);
+				VentaManager.getVentaActual().setNumeroTicketOriginal(venta.getNumeroTicket());
+				VentaHelper.calcularTotales(VentaManager.getVentaActual());
+			}
+			logger.info("Mostrando el panel de ventas");
+			
+			ventaController.mostrarUltimoPanelMostrado();
+			getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
+			getJTabbedPane().setVisible(true);
+			ventaController.getUltimoPanelMostrado().setVisible(true);
+			ventaController.actualizarDevolucion();
+		} else {
+			ventaController.crearNuevaVenta(MitnickConstants.VENTA);
+			ventaController.mostrarVentasPanel();
+				
+			JTabbedPaneConBoton jTabbedPaneConBoton =getJTabbedPane();
+			jTabbedPaneConBoton.remove(jTabbedPaneConBoton.getSelectedIndex());	
+		}
 	}
 	
 	private JButton getBtnArticulos()
