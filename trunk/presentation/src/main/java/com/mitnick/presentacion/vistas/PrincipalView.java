@@ -315,10 +315,9 @@ public class PrincipalView extends JFrame
 			}
 			logger.info("Mostrando el panel de ventas");
 			
-			ventaController.mostrarUltimoPanelMostrado();
+			ventaController.mostrarVentasPanel();
 			getJTabbedPane().setSelectedComponent(ventaController.getVentaView());
-			getJTabbedPane().setVisible(true);
-			ventaController.getUltimoPanelMostrado().setVisible(true);
+			getJTabbedPane().setVisible(true);			
 			ventaController.actualizarDevolucion();
 		} else {
 			ventaController.crearNuevaVenta(MitnickConstants.VENTA);
@@ -761,7 +760,11 @@ public class PrincipalView extends JFrame
 			menuActualizarStock = new JMenuItem(PropertiesManager.getProperty("principalView.menu.productos.update.stock"));
 			menuActualizarStock.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					productoController.actualizarStock();					
+					try {
+						productoController.actualizarStock();
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
 				}
 			});
 		}
@@ -779,7 +782,11 @@ public class PrincipalView extends JFrame
 				public void actionPerformed(ActionEvent e) {
 					int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("principalView.dialog.confirm.resetStock"));
 					if (opcion == JOptionPane.YES_OPTION) {
-						productoController.resetearStock();
+						try {
+							productoController.resetearStock();
+						} catch (PresentationException ex) {
+							mostrarMensaje(ex);
+						}						
 					}
 				}
 			});
