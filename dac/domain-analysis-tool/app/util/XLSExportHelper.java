@@ -35,8 +35,9 @@ public class XLSExportHelper {
 	private static WritableCellFormat timesBoldUnderline;
 	private static WritableCellFormat times;
 	
-	public static void write(String inputFile, List<OutputDTO> result) throws IOException, WriteException {
-		File file = new File(inputFile + ".xls");
+	public static File write(String inputFile, List<OutputDTO> result) throws IOException, WriteException {
+		File file = File.createTempFile(inputFile, ".xls");
+		
 		WorkbookSettings wbSettings = new WorkbookSettings();
 
 		wbSettings.setLocale(new Locale("en", "EN"));
@@ -50,8 +51,7 @@ public class XLSExportHelper {
 		workbook.write();
 		workbook.close();
 
-		// abrir el archivo
-//		Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + inputFile + ".xls");
+		return file;
 	}
 
 	private static void createLabel(WritableSheet sheet) throws WriteException {

@@ -159,9 +159,8 @@ public class DomainsController extends CRUD {
 		List<OutputDTO> results = FilterResultHelper.addFilters(inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov,
 				refdomiansgov, refdomainshome, percenttoh, "site", "ASC");
 		String temporalName = String.valueOf(System.currentTimeMillis());
-		XLSExportHelper.write(temporalName, results);	
+		File file = XLSExportHelper.write(temporalName, results);	
 		
-		File file = new File(temporalName + ".xls");
 		renderBinary(file, "domainAnalisys.xls");
 	}
 	
