@@ -596,8 +596,8 @@ public class VentaController extends BaseController {
 		return clienteNuevoPanel;
 	}
 
-	public VentaDto getVentaByNroFactura(String nroTicket) {
-		return ventaServicio.getVentaByNroFactura(nroTicket);
+	public VentaDto getVentaByNroFacturaTipo(String nroTicket, String tipo) {
+		return ventaServicio.getVentaByNroFacturaTipo(nroTicket, tipo);
 	}
 
 	public void pagarCuotasNC() {
