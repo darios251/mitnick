@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.VentaDto;
 
 public class DevolucionFiltersDialog  extends BaseDialog {
@@ -133,6 +134,8 @@ public class DevolucionFiltersDialog  extends BaseDialog {
 	}
 
 	protected void keyIntro() {
+		if (Validator.isBlankOrNull(txtNroTrx.getText()))
+			return;
 		setVisible(false);
 		venta = controller.getVentaByNroFacturaTipo(txtNroTrx.getText(), cmbTipoFactura.getSelectedItem().toString());
 	}

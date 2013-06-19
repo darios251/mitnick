@@ -42,12 +42,20 @@ public class ProductoController extends BaseController {
 	
 	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void resetearStock() {
-		productoServicio.resetearMovimiento();
+		try {
+			productoServicio.resetearMovimiento();
+		} catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
 	}
 	
 	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void actualizarStock() {
-		principalView.actualizarStock();
+		try {
+			principalView.actualizarStock();
+		} catch(BusinessException e) {
+			throw new PresentationException(e);
+		}
 	}
 	
 	public void mostrarProductoNuevoPanel() {
