@@ -63,17 +63,19 @@ public class OutputResult {
 				Map<String,String>backLinks = MajesticSEOConnector.getBackLinks(itemInfo.get("Item"));
 				dto.setWww(backLinks.get("www"));
 				BigDecimal refDomianHome = new BigDecimal(backLinks.get("refDomianHome"));
-				MajesticSEOConnector.getBackLinks(itemInfo.get("Item"));
-				BigDecimal refDomians = new BigDecimal(itemInfo.get("RefDomains"));
-				if(!refDomians.equals(BigDecimal.ZERO)) {
-					BigDecimal percent = refDomianHome.divide(refDomians, 2, RoundingMode.HALF_UP);
-					percent = percent.multiply(new BigDecimal(100));
+				BigDecimal refTotals = new BigDecimal(backLinks.get("refTotals"));
+				
+				if(!refTotals.equals(BigDecimal.ZERO)) {
+					BigDecimal percent = refDomianHome.multiply(new BigDecimal(100));
+					percent = percent.divide(refTotals, 2, RoundingMode.HALF_UP);
+					
 					dto.setPercentToHome(percent);
 				}
 				else
 					dto.setPercentToHome(BigDecimal.ZERO);
 				
 				dto.setRefDomianHome(refDomianHome);
+				BigDecimal refDomians = new BigDecimal(itemInfo.get("RefDomains"));
 				dto.setRefDomians(refDomians);
 				dto.setRefIps(new BigDecimal(itemInfo.get("RefIPs")));
 				dto.setRefSubNet(new BigDecimal(itemInfo.get("RefSubNets")));

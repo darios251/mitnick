@@ -27,7 +27,9 @@ public class MajesticSEOConnector {
 			if (targetURL.toLowerCase().contains("www"))
 				www = "Y";
 		}
+		
 		Map<String , String> result = new HashMap<String, String>();
+		result.put("refTotals", String.valueOf(backLinks.size()));
 		result.put("refDomianHome", String.valueOf(refDomianHome));
 		result.put("www", www);
 		return result;
