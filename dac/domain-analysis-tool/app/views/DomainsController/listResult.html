@@ -117,7 +117,7 @@
 	</div>
 #{/form}
 </div>
-<input type="submit" value="&{'crud.generate'}" onclick="exportResult();"/>    
+<a href="@{DomainsController.createXLSFile()}">Export Result</a>   
 
 <script>
 if ('${inGoogle}'!='')

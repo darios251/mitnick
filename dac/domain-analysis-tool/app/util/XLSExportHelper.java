@@ -51,7 +51,7 @@ public class XLSExportHelper {
 		workbook.close();
 
 		// abrir el archivo
-		Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + inputFile + ".xls");
+//		Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + inputFile + ".xls");
 	}
 
 	private static void createLabel(WritableSheet sheet) throws WriteException {

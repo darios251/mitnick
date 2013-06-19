@@ -159,7 +159,10 @@ public class DomainsController extends CRUD {
 		List<OutputDTO> results = FilterResultHelper.addFilters(inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov,
 				refdomiansgov, refdomainshome, percenttoh, "site", "ASC");
 		String temporalName = String.valueOf(System.currentTimeMillis());
-		XLSExportHelper.write(temporalName, results);			
+		XLSExportHelper.write(temporalName, results);	
+		
+		File file = new File(temporalName + ".xls");
+		renderBinary(file, "domainAnalisys.xls");
 	}
 	
 	public static void delete(String orderBy, String order, String site) {
