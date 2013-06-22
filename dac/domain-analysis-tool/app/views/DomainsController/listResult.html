@@ -76,6 +76,7 @@
 	
 		<table>
 			<thead>
+				<th>Selected<input type="checkbox" id="superDelete" onclick="deleteAll()"></th>
 				<th class="sitename"><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','site')}">&{'result.label.domain'}</a></th>
 				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','pr')}">&{'result.label.pr'}</a></th>
 				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','ingoogle')}">&{'result.label.inGoogle'}</a></th>
@@ -90,11 +91,11 @@
 				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">&{'result.label.refDomainsHome'}</a></th>
 				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">&{'result.label.percentHomepage'}</a></th>	
 				<th>Good to Buy</th>		
-				<th>Delete<input type="checkbox" id="superDelete" onclick="deleteAll()"> Select All</th>			
 			</thead>
 			<tbody>
 				#{list results, as:'result'}
 				<tr>
+					  <td><input type="checkbox" id='${result.site}' class="deleted" #{if result.deleted} checked="true" #{/if} onclick="deleteItem('${result.site}');" ></td>
 					  <td>&{result.site}</td>
 					  <td>&{result.pr}</td>
 					  <td>&{result.inGoogle}</td>
@@ -109,7 +110,6 @@
 					  <td>&{result.refDomianHome}</td>
 					  <td>&{result.percentToHome}</td>
 					  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}');"></td>	
-					  <th><input type="checkbox" id='${result.site}' class="deleted" #{if result.deleted} checked="true" #{/if} onclick="deleteItem('${result.site}');" ></th>			  
 				</tr>
 				#{/list}
 			</tbody>
