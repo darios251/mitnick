@@ -81,7 +81,7 @@ public class OutputResult {
 				}
 				
 				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "YES" : "NO");
-				dto.setWww(wwwBackLinks > 0 ? "YES" : "NO");
+				dto.setWww(wwwBackLinks > noWwwBackLinks ? "YES" : "NO");
 				BigDecimal refDomianHome = new BigDecimal(wwwBackLinks + noWwwBackLinks);
 				BigDecimal refTotals = new BigDecimal(itemInfo.get("RefDomains"));
 				

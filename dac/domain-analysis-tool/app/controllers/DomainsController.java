@@ -12,6 +12,7 @@ import java.util.List;
 import models.Domain;
 import models.Domains;
 import models.OutputResult;
+import play.Play;
 import play.data.binding.Binder;
 import play.db.Model;
 import play.exceptions.TemplateNotFoundException;
@@ -69,6 +70,7 @@ public class DomainsController extends CRUD {
 				domain.name = linea.trim();
 				domainsList.add(domain);
 			}
+			entrada.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

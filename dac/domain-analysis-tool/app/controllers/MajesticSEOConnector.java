@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import play.Play;
-
 import models.Domain;
+import play.Play;
 
 import com.majesticseo.external.rpc.APIService;
 import com.majesticseo.external.rpc.Response;
@@ -60,9 +59,18 @@ public class MajesticSEOConnector {
 		parameters.put("datasource", "fresh");
 		parameters.put("items", "1");
 		parameters.put("item0", domain);
+		parameters.put("NotifyURL", "http://thomas.webfab.co:9000/notify/"+domain);
 	
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
+		
+		while("QueuedForProcessing".equals(response.getResponseAttributes().get("Code"))) {
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+			}
+			response = service.executeCommand("AnalyseIndexItem", parameters);
+		}
 		
 		return response.getTableForName("TargetURLs").getTableRows();
 	}
