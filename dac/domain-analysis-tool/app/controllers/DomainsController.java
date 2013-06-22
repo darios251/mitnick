@@ -6,9 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-
-import controllers.CRUD.ObjectType;
 
 import models.Domain;
 import models.Domains;
@@ -164,26 +163,37 @@ public class DomainsController extends CRUD {
 		renderBinary(file, "domainAnalisys.xls");
 	}
 	
-	public static void delete(String orderBy, String order, String site) {
+	public static void deleteSelection(String orderBy, String order) {
 		OutputResult outputs = OutputResult.getInstance();
 		List<OutputDTO> results = outputs.getResult();
-		OutputDTO remove = null;
-		for (OutputDTO output : results) {
-			if (site != null && site.equals(output.getSite()))
-				remove = output;
+		
+		Iterator it = results.iterator();
+		
+		while (it.hasNext()) {
+			OutputDTO output = (OutputDTO) it.next();
+			if(output.isDeleted()) {
+				it.remove();
+			}
 		}
-		if (remove != null)
-			outputs.getResult().remove(remove);
 
 		listResult(orderBy, order, true);
 	}
-
+	
 	public static void goodToBuy(String site) {
 		OutputResult outputs = OutputResult.getInstance();
 		List<OutputDTO> results = outputs.getResult();
 		for (OutputDTO output : results) {
 			if (site != null && site.equals(output.getSite()))
 				output.setGoodToBuy(!output.isGoodToBuy());
+		}
+	}
+	
+	public static void deleteItem(String site) {
+		OutputResult outputs = OutputResult.getInstance();
+		List<OutputDTO> results = outputs.getResult();
+		for (OutputDTO output : results) {
+			if (site != null && site.equals(output.getSite()))
+				output.setDeleted(!output.isDeleted());
 		}
 	}
 }

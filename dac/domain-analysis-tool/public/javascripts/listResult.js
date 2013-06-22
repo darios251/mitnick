@@ -15,3 +15,19 @@ $.ajax({
 	}).done(function( msg ) {
 	});
 }
+
+function deleteItem(site){		
+	$.ajax({
+		type: "POST",
+		url: "deleteItem",
+		data: { site: site}
+		}).done(function( msg ) {
+		});
+}
+
+function deleteAll() {
+	$('.deleted').each(function(){
+		 $(this).prop('checked', $('#superDelete').prop('checked'));
+		 deleteItem($(this)[0].id);
+	});
+}

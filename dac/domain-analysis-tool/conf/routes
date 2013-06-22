@@ -10,6 +10,8 @@ GET     /public/                                staticDir:public
 
 GET		/domainscontroller/createxlsfile    DomainsController.createXLSFile
 
+GET		/domainscontroller/deleteselection  DomainsController.deleteSelection
+
 # Administration
 GET     /?                                Admin.index
 # Import Secure routes

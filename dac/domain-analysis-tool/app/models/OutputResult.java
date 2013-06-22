@@ -3,6 +3,7 @@ package models;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,15 +56,34 @@ public class OutputResult {
 		
 		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
 		PageRankService pr = new PageRankService();
-		for(Map<String, String> itemInfo : indexItemInfo) {
+		for(int i = 0; i < indexItemInfo.size(); i++) {
+				Map<String, String> itemInfo = indexItemInfo.get(i);
 				OutputDTO dto = new OutputDTO();
 				dto.setSite(itemInfo.get("Item"));
 				dto.setPr(new BigDecimal(pr.getPR(itemInfo.get("Item"))));
-				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "Yes" : "No");
-				Map<String,String>backLinks = MajesticSEOConnector.getBackLinks(itemInfo.get("Item"));
-				dto.setWww(backLinks.get("www"));
-				BigDecimal refDomianHome = new BigDecimal(backLinks.get("refDomianHome"));
-				BigDecimal refTotals = new BigDecimal(backLinks.get("refTotals"));
+				
+				List<Map<String, String>> items = MajesticSEOConnector.analizeIndexItem(itemInfo.get("Item"));
+				
+				int wwwBackLinks = 0;
+				int noWwwBackLinks = 0;
+				for(Map<String, String> itemIndex : items) {
+					if(itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
+						if(itemIndex.get("URL").endsWith("www." + itemInfo.get("Item"))) {
+							wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+						}
+						else {
+							noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+						}
+					}
+					
+					if(wwwBackLinks > 0 && noWwwBackLinks > 0)
+						break;
+				}
+				
+				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "YES" : "NO");
+				dto.setWww(wwwBackLinks > 0 ? "YES" : "NO");
+				BigDecimal refDomianHome = new BigDecimal(wwwBackLinks + noWwwBackLinks);
+				BigDecimal refTotals = new BigDecimal(itemInfo.get("RefDomains"));
 				
 				if(!refTotals.equals(BigDecimal.ZERO)) {
 					BigDecimal percent = refDomianHome.multiply(new BigDecimal(100));

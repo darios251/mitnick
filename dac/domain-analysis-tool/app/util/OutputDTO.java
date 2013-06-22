@@ -28,6 +28,15 @@ public class OutputDTO implements Serializable {
 	private BigDecimal citationFlow;
 	private BigDecimal trustFlow;
 	private boolean goodToBuy = false;
+	private boolean deleted = false;
+	
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
 	
 	public boolean isGoodToBuy() {
 		return goodToBuy;

@@ -90,7 +90,7 @@
 				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','refdomainshome')}">&{'result.label.refDomainsHome'}</a></th>
 				<th><a href="@{listResult().add('order',(order == 'DESC' ? 'ASC' : 'DESC')).add('orderBy','percenttoh')}">&{'result.label.percentHomepage'}</a></th>	
 				<th>Good to Buy</th>		
-				<th></th>			
+				<th>Delete<input type="checkbox" id="superDelete" onclick="deleteAll()"> Select All</th>			
 			</thead>
 			<tbody>
 				#{list results, as:'result'}
@@ -109,7 +109,7 @@
 					  <td>&{result.refDomianHome}</td>
 					  <td>&{result.percentToHome}</td>
 					  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}');"></td>	
-					  <th><a href="@{delete().add('order',order).add('orderBy',orderBy).add('site', result.site)}"><img src="/public/images/delete.gif" alt="Edit"></a></th>			  
+					  <th><input type="checkbox" id='${result.site}' class="deleted" #{if result.deleted} checked="true" #{/if} onclick="deleteItem('${result.site}');" ></th>			  
 				</tr>
 				#{/list}
 			</tbody>
@@ -117,6 +117,8 @@
 	</div>
 #{/form}
 </div>
+
+<a href="@{DomainsController.deleteSelection(orderBy, order)}">Delete Selection</a>  
 <a href="@{DomainsController.createXLSFile()}">Export Result</a>   
 
 <script>
