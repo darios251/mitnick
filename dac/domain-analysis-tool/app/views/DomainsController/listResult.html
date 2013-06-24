@@ -98,7 +98,7 @@
 					  <td><input type="checkbox" id='${result.site}' class="deleted" #{if result.deleted} checked="true" #{/if} onclick="deleteItem('${result.site}');" ></td>
 					  <td>&{result.site}</td>
 					  <td>&{result.pr}</td>
-					  <td>&{result.inGoogle}</td>
+					  <td>#{if result.inGoogle == 'NO'}<a href='http://www.google.com/search?q=site:${result.site}' target="_blank"><img src="/public/images/search-icon.png" alt='Search In Google'></a>#{/if}#{else}&{result.inGoogle}#{/else}</td>
 					  <td>&{result.www}</td>
 					  <td>&{result.refDomians}</td>
 					  <td>&{result.refIps}</td>

@@ -1,11 +1,27 @@
 package controllers;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.dom4j.dom.DOMDocument;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import models.Domain;
 import play.Play;
+import play.libs.*;
 
 import com.majesticseo.external.rpc.APIService;
 import com.majesticseo.external.rpc.Response;
@@ -53,18 +69,44 @@ public class MajesticSEOConnector {
 		return response.getTableForName("Results").getTableRows();
 	}
 	
+	public static List<Map<String, String>> analizeIndexItems(List<Domain> domains) {
+		Map parameters = new HashMap();
+	
+		parameters.put("datasource", "fresh");
+		parameters.put("items", domains.size() + "");
+		
+		for(int i = 0; i < domains.size(); i++) {
+			parameters.put("item" + i, domains.get(i).name);
+		}
+	
+		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		Response response = service.executeCommand("AnalyseIndexItem", parameters);
+		
+		while(!"OK".equals(response.getResponseAttributes().get("Code")) && !"JobDoneCheckDownloads".equals(response.getResponseAttributes().get("Code"))) {
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+			}
+			response = service.executeCommand("AnalyseIndexItem", parameters);
+		}
+		
+		if("JobDoneCheckDownloads".equals(response.getResponseAttributes().get("Code")))
+			return getDownloadsList(response.getParamForName("JobID"));
+		
+		return response.getTableForName("TargetURLs").getTableRows();
+	}
+	
 	public static List<Map<String, String>> analizeIndexItem(String domain) {
 		Map parameters = new HashMap();
 	
 		parameters.put("datasource", "fresh");
 		parameters.put("items", "1");
 		parameters.put("item0", domain);
-		parameters.put("NotifyURL", "http://thomas.webfab.co:9000/notify/"+domain);
 	
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
 		
-		while("QueuedForProcessing".equals(response.getResponseAttributes().get("Code"))) {
+		while(!"OK".equals(response.getResponseAttributes().get("Code"))) {
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
@@ -73,5 +115,76 @@ public class MajesticSEOConnector {
 		}
 		
 		return response.getTableForName("TargetURLs").getTableRows();
+	}
+	
+	public static List<Map<String, String>> getDownloadsList(String jobID) {
+		List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+		
+		Map parameters = new HashMap();
+		
+		parameters.put("datasource", "fresh");
+		parameters.put("DownloadJobID", jobID);
+	
+		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		Response response = service.executeCommand("GetDownloadsList", parameters);
+		
+		List<Map<String, String>> tableRows = response.getTableForName("Downloads").getTableRows();
+		
+		while(tableRows.size() == 0) {
+			response = service.executeCommand("GetDownloadsList", parameters);
+			tableRows = response.getTableForName("Downloads").getTableRows();
+		}
+		
+		Map<String, String> map = tableRows.get(0);
+		String location = map.get("PublicDownloadLocation");
+		
+		try {
+			URL url = new URL(location);
+			URLConnection con = url.openConnection();
+			GZIPInputStream in = new GZIPInputStream (con.getInputStream());
+			
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+		    factory.setNamespaceAware(true);
+		    DocumentBuilder builder = factory.newDocumentBuilder();
+		    
+		    FileOutputStream out = new FileOutputStream(jobID + ".xml");
+		    
+		    int i = 0;
+		    byte[] bytesIn = new byte[3000000];
+		    while ((i = in.read(bytesIn)) >= 0) {
+		        out.write(bytesIn, 0, i);
+		    }
+		    out.close();
+		    in.close();
+		    FileInputStream input = new FileInputStream(jobID + ".xml");
+		    
+		    Document xmlDoc = builder.parse(input);
+		    
+		    for(Node dataTable : XPath.selectNodes("/Result/DataTables/DataTable[@Name=\"TargetURLs\"]", xmlDoc)) {
+		    	String headers = dataTable.getAttributes().getNamedItem("Headers").getTextContent();
+		    	
+		    	String[] headersSplited = headers.split("\\|");
+		    	
+		    	for(Node row : XPath.selectNodes("/Result/DataTables/DataTable[@Name=\"TargetURLs\"]/Row", xmlDoc)) {
+		    		Map<String, String> resultMap = new HashMap<String, String>();
+		    		
+		    		String content = dataTable.getTextContent();
+		    		String[] contentSplited = content.split("\\|");
+		    		
+		    		for(int index = 0; index < headersSplited.length; index++) {
+		    			resultMap.put(headersSplited[index].trim(), contentSplited[index].trim());
+		    		}
+		    		
+		    		result.add(resultMap);
+		    	}
+		    }
+		    
+//		    
+		} catch (Exception e) {
+		}
+	    
+		
+		return result;
 	}
 }

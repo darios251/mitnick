@@ -53,6 +53,7 @@ public class OutputResult {
 
 	private static List<OutputDTO> getOutputs(List<Domain> domains){
 		List<Map<String, String>> indexItemInfo = MajesticSEOConnector.getIndexItemInfo(domains);
+		List<Map<String, String>> items = MajesticSEOConnector.analizeIndexItems(domains);
 		
 		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
 		PageRankService pr = new PageRankService();
@@ -62,22 +63,25 @@ public class OutputResult {
 				dto.setSite(itemInfo.get("Item"));
 				dto.setPr(new BigDecimal(pr.getPR(itemInfo.get("Item"))));
 				
-				List<Map<String, String>> items = MajesticSEOConnector.analizeIndexItem(itemInfo.get("Item"));
-				
 				int wwwBackLinks = 0;
 				int noWwwBackLinks = 0;
 				for(Map<String, String> itemIndex : items) {
-					if(itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
-						if(itemIndex.get("URL").endsWith("www." + itemInfo.get("Item"))) {
-							wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+					if(i == Integer.parseInt(itemIndex.get("ItemNum"))) {
+						if(itemIndex.get("URL")!= null && itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
+							if(itemIndex.get("URL").endsWith("www." + itemInfo.get("Item"))) {
+								wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+							}
+							else {
+								noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+							}
 						}
-						else {
-							noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
-						}
+						
+						if(wwwBackLinks > 0 && noWwwBackLinks > 0)
+							break;
 					}
-					
-					if(wwwBackLinks > 0 && noWwwBackLinks > 0)
+					else if(i < Integer.parseInt(itemIndex.get("ItemNum"))) {
 						break;
+					}
 				}
 				
 				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "YES" : "NO");
