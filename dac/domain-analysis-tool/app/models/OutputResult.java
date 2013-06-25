@@ -72,14 +72,17 @@ public class OutputResult {
 				
 				int wwwBackLinks = 0;
 				int noWwwBackLinks = 0;
+				String currentDomain = itemInfo.get("Item").trim();
+				String currentIndexDomain = null;
 				for(Map<String, String> itemIndex : MajesticSEOConnector.getTopPages(itemInfo.get("Item"))) {
-					if(itemIndex.get("URL")!= null && itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
-						if(itemIndex.get("URL").endsWith("://www." + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("://www." + itemInfo.get("Item") + "/")) {
-							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains") + " - wwwBackLink", new Object[]{});
+					currentIndexDomain = itemIndex.get("URL").trim();
+					if(currentIndexDomain!= null && (currentIndexDomain.endsWith(currentDomain) || itemIndex.get("URL").trim().endsWith(currentDomain + "/"))) {
+						if(currentIndexDomain.endsWith("://www." + currentDomain) || currentIndexDomain.endsWith("://www." + currentDomain + "/")) {
+							Logger.debug("domain: " + currentIndexDomain + " - refDomain: " + itemIndex.get("RefDomains") + " - wwwBackLink", new Object[]{});
 							wwwBackLinks += Integer.parseInt(itemIndex.get("RefDomains"));
 						}
-						else if(itemIndex.get("URL").endsWith("://" + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("://" + itemInfo.get("Item") + "/" )){
-							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains")  + " - NoWwwBackLink", new Object[]{});
+						else if(currentIndexDomain.endsWith("://" + currentDomain) || currentIndexDomain.endsWith("://" + currentDomain + "/" )){
+							Logger.debug("domain: " + currentIndexDomain + " - refDomain: " + itemIndex.get("RefDomains")  + " - NoWwwBackLink", new Object[]{});
 							noWwwBackLinks += Integer.parseInt(itemIndex.get("RefDomains"));
 						}
 					}
@@ -110,6 +113,15 @@ public class OutputResult {
 				dto.setRefDomainsGov(new BigDecimal(itemInfo.get("RefDomainsGOV")));
 				dto.setCitationFlow(new BigDecimal(itemInfo.get("CitationFlow")));
 				dto.setTrustFlow(new BigDecimal(itemInfo.get("TrustFlow")));
+				
+				if("MAYBE".equals(isInGoogle)) {
+					Boolean isInGoogleBl = GoogleSearchAPIConnector.isInGoogle2(itemInfo.get("Item"));
+					
+					if(isInGoogleBl != null) {
+						dto.setInGoogle(isInGoogleBl ? "YES" : "NO");
+					}
+				}
+				
 				outputs.add(dto);
 		}
 		return outputs;

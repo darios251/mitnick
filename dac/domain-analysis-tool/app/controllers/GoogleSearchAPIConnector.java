@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
 
+import play.Logger;
+
 public class GoogleSearchAPIConnector {
 
 	public static boolean isInGoogle(String queryStr) {
@@ -80,11 +82,10 @@ public class GoogleSearchAPIConnector {
 			if(found)
 				result = Boolean.FALSE;
 			
-			
 			input.close();
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e, "Error trying to determinate if the domain " + domain + "is already indexed by Google", new Object[]{});
 		}
 		
 		return result;
