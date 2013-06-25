@@ -83,6 +83,31 @@ public class MajesticSEOConnector {
 		return response.getTableForName("Results").getTableRows();
 	}
 	
+	public static List<Map<String, String>> getTopPages(String domain) {
+		Map parameters = new HashMap();
+	
+		parameters.put("datasource", "fresh");
+		parameters.put("Query", domain);
+		parameters.put("Count", "5");
+	
+		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		Response response = service.executeCommand("GetTopPages", parameters);
+		
+		int limit = 1000;
+		while(!"OK".equals(response.getResponseAttributes().get("Code")) || response.getTableForName("Matches").getTableRows().size() == 0) {
+			limit--;
+			if(limit <= 0)
+				break;
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+			}
+			response = service.executeCommand("GetTopPages", parameters);
+		}
+		
+		return response.getTableForName("Matches").getTableRows();
+	}
+	
 	public static List<Map<String, String>> analizeIndexItems(List<Domain> domains) {
 		Map parameters = new HashMap();
 	

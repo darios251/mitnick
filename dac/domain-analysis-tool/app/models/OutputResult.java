@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import play.Logger;
+
 import util.OutputDTO;
 
 import controllers.GoogleSearchAPIConnector;
@@ -53,35 +55,31 @@ public class OutputResult {
 
 	private static List<OutputDTO> getOutputs(List<Domain> domains){
 		List<Map<String, String>> indexItemInfo = MajesticSEOConnector.getIndexItemInfo(domains);
-		List<Map<String, String>> items = MajesticSEOConnector.analizeIndexItems(domains);
 		
 		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
 		PageRankService pr = new PageRankService();
 		for(int i = 0; i < indexItemInfo.size(); i++) {
 				Map<String, String> itemInfo = indexItemInfo.get(i);
+				Logger.debug("Analysing domain:" + itemInfo.get("Item"), new Object[]{});
 				OutputDTO dto = new OutputDTO();
 				dto.setSite(itemInfo.get("Item"));
 				dto.setPr(new BigDecimal(pr.getPR(itemInfo.get("Item"))));
 				
 				int wwwBackLinks = 0;
 				int noWwwBackLinks = 0;
-				for(Map<String, String> itemIndex : items) {
-					if(i == Integer.parseInt(itemIndex.get("ItemNum"))) {
-						if(itemIndex.get("URL")!= null && itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
-							if(itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item") + "/")) {
-								wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
-							}
-							else if(itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item") + "/" )){
-								noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
-							}
+				for(Map<String, String> itemIndex : MajesticSEOConnector.getTopPages(itemInfo.get("Item"))) {
+					if(itemIndex.get("URL")!= null && itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
+						if(itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item") + "/")) {
+							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains") + " - wwwBackLink", new Object[]{});
+							wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
 						}
-						
-						if(wwwBackLinks > 0 && noWwwBackLinks > 0)
-							break;
+						else if(itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item") + "/" )){
+							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains")  + " - NoWwwBackLink", new Object[]{});
+							noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+						}
 					}
-					else if(i < Integer.parseInt(itemIndex.get("ItemNum"))) {
+					if(wwwBackLinks > 0 && noWwwBackLinks > 0)
 						break;
-					}
 				}
 				
 				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "YES" : "NO");
