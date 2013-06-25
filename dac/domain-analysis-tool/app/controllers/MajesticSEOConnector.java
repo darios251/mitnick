@@ -72,7 +72,7 @@ public class MajesticSEOConnector {
 			if(limit <=0 )
 				break;
 			try {
-				Thread.sleep(150);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 			}
 			
@@ -102,7 +102,7 @@ public class MajesticSEOConnector {
 			if(limit <= 0)
 				break;
 			try {
-				Thread.sleep(150);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 			}
 			response = service.executeCommand("AnalyseIndexItem", parameters);
@@ -130,7 +130,7 @@ public class MajesticSEOConnector {
 			if(limit <= 0)
 				break;
 			try {
-				Thread.sleep(150);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 			}
 			response = service.executeCommand("AnalyseIndexItem", parameters);
@@ -158,7 +158,7 @@ public class MajesticSEOConnector {
 			if(limit <= 0)
 				break;
 			try {
-				Thread.sleep(150);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 			}
 			response = service.executeCommand("GetDownloadsList", parameters);
