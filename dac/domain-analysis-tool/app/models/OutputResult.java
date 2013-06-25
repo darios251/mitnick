@@ -68,10 +68,10 @@ public class OutputResult {
 				for(Map<String, String> itemIndex : items) {
 					if(i == Integer.parseInt(itemIndex.get("ItemNum"))) {
 						if(itemIndex.get("URL")!= null && itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
-							if(itemIndex.get("URL").endsWith("www." + itemInfo.get("Item"))) {
+							if(itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item") + "/")) {
 								wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
 							}
-							else {
+							else if(itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item") + "/" )){
 								noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
 							}
 						}

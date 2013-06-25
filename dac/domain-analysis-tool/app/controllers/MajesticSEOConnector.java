@@ -66,6 +66,20 @@ public class MajesticSEOConnector {
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetIndexItemInfo", parameters);
 		
+		int limit = 1000;
+		while(!"OK".equals(response.getResponseAttributes().get("Code")) || response.getTableForName("Results").getTableRows().size() == 0) {
+			limit--;
+			if(limit <=0 )
+				break;
+			try {
+				Thread.sleep(150);
+			} catch (InterruptedException e) {
+			}
+			
+			response = service.executeCommand("GetIndexItemInfo", parameters);
+		}
+		
+		
 		return response.getTableForName("Results").getTableRows();
 	}
 	
@@ -82,9 +96,13 @@ public class MajesticSEOConnector {
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
 		
-		while(!"OK".equals(response.getResponseAttributes().get("Code")) && !"JobDoneCheckDownloads".equals(response.getResponseAttributes().get("Code"))) {
+		int limit = 1000;
+		while((!"OK".equals(response.getResponseAttributes().get("Code")) && !"JobDoneCheckDownloads".equals(response.getResponseAttributes().get("Code"))) || ("OK".equals(response.getResponseAttributes().get("Code")) && response.getTableForName("TargetURLs").getTableRows().size() == 0)) {
+			limit--;
+			if(limit <= 0)
+				break;
 			try {
-				Thread.sleep(300);
+				Thread.sleep(150);
 			} catch (InterruptedException e) {
 			}
 			response = service.executeCommand("AnalyseIndexItem", parameters);
@@ -106,9 +124,13 @@ public class MajesticSEOConnector {
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
 		
+		int limit = 1000;
 		while(!"OK".equals(response.getResponseAttributes().get("Code"))) {
+			limit--;
+			if(limit <= 0)
+				break;
 			try {
-				Thread.sleep(200);
+				Thread.sleep(150);
 			} catch (InterruptedException e) {
 			}
 			response = service.executeCommand("AnalyseIndexItem", parameters);
@@ -130,7 +152,15 @@ public class MajesticSEOConnector {
 		
 		List<Map<String, String>> tableRows = response.getTableForName("Downloads").getTableRows();
 		
-		while(tableRows.size() == 0) {
+		int limit = 1000;
+		while(!"OK".equals(response.getResponseAttributes().get("Code")) || tableRows.size() == 0) {
+			limit--;
+			if(limit <= 0)
+				break;
+			try {
+				Thread.sleep(150);
+			} catch (InterruptedException e) {
+			}
 			response = service.executeCommand("GetDownloadsList", parameters);
 			tableRows = response.getTableForName("Downloads").getTableRows();
 		}
@@ -148,18 +178,7 @@ public class MajesticSEOConnector {
 		    factory.setNamespaceAware(true);
 		    DocumentBuilder builder = factory.newDocumentBuilder();
 		    
-		    FileOutputStream out = new FileOutputStream(jobID + ".xml");
-		    
-		    int i = 0;
-		    byte[] bytesIn = new byte[3000000];
-		    while ((i = in.read(bytesIn)) >= 0) {
-		        out.write(bytesIn, 0, i);
-		    }
-		    out.close();
-		    in.close();
-		    FileInputStream input = new FileInputStream(jobID + ".xml");
-		    
-		    Document xmlDoc = builder.parse(input);
+		    Document xmlDoc = builder.parse(in);
 		    
 		    for(Node dataTable : XPath.selectNodes("/Result/DataTables/DataTable[@Name=\"TargetURLs\"]", xmlDoc)) {
 		    	String headers = dataTable.getAttributes().getNamedItem("Headers").getTextContent();
@@ -169,7 +188,7 @@ public class MajesticSEOConnector {
 		    	for(Node row : XPath.selectNodes("/Result/DataTables/DataTable[@Name=\"TargetURLs\"]/Row", xmlDoc)) {
 		    		Map<String, String> resultMap = new HashMap<String, String>();
 		    		
-		    		String content = dataTable.getTextContent();
+		    		String content = row.getTextContent();
 		    		String[] contentSplited = content.split("\\|");
 		    		
 		    		for(int index = 0; index < headersSplited.length; index++) {
