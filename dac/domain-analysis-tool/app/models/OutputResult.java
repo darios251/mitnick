@@ -61,7 +61,12 @@ public class OutputResult {
 		for(int i = 0; i < indexItemInfo.size(); i++) {
 				Map<String, String> itemInfo = indexItemInfo.get(i);
 				Logger.debug("Analysing domain:" + itemInfo.get("Item"), new Object[]{});
+				
 				OutputDTO dto = new OutputDTO();
+				
+				String isInGoogle = GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "YES" : "MAYBE";
+				dto.setInGoogle(isInGoogle);
+				
 				dto.setSite(itemInfo.get("Item"));
 				dto.setPr(new BigDecimal(pr.getPR(itemInfo.get("Item"))));
 				
@@ -71,18 +76,15 @@ public class OutputResult {
 					if(itemIndex.get("URL")!= null && itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
 						if(itemIndex.get("URL").endsWith("://www." + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("://www." + itemInfo.get("Item") + "/")) {
 							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains") + " - wwwBackLink", new Object[]{});
-							wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+							wwwBackLinks += Integer.parseInt(itemIndex.get("RefDomains"));
 						}
 						else if(itemIndex.get("URL").endsWith("://" + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("://" + itemInfo.get("Item") + "/" )){
 							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains")  + " - NoWwwBackLink", new Object[]{});
-							noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
+							noWwwBackLinks += Integer.parseInt(itemIndex.get("RefDomains"));
 						}
 					}
-					if(wwwBackLinks > 0 && noWwwBackLinks > 0)
-						break;
 				}
 				
-				dto.setInGoogle(GoogleSearchAPIConnector.isInGoogle(itemInfo.get("Item")) ? "YES" : "NO");
 				dto.setWww(wwwBackLinks > noWwwBackLinks ? "YES" : "NO");
 				BigDecimal refDomianHome = new BigDecimal(wwwBackLinks + noWwwBackLinks);
 				BigDecimal refTotals = new BigDecimal(itemInfo.get("RefDomains"));

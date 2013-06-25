@@ -207,41 +207,4 @@ public class DomainsController extends CRUD {
 		}
 	}
 	
-	public static void searchInGoogle(String domain) {
-		try {
-//			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("193.160.225.13", 8081));
-			URL url = new URL("http://www.google.com/search?q=site:" + domain);
-			HttpURLConnection uc = (HttpURLConnection)url.openConnection();
-			uc.setRequestMethod("GET");
-			uc.setRequestProperty("Connection", "keep-alive");
-			uc.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-			uc.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36");
-			uc.setRequestProperty("Accept-Encoding", "utf8");
-			uc.setRequestProperty("Accept-Language", "en-US,en;q=0.8");
-			uc.connect();
-			
-			InputStream input = uc.getInputStream();
-			
-			byte[] buffer = new byte[3000];
-			boolean found = false; 
-			while(input.read(buffer) > 0) {
-				String line = new String(buffer);
-				
-				if(line.contains("id=resultStats")) {
-					found = true;
-				}
-			}
-			
-			String result = "Not Found";
-			if(found)
-				result = "Found";
-			
-			render(result, domain);
-			
-			input.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
