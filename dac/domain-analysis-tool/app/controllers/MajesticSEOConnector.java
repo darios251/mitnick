@@ -88,7 +88,7 @@ public class MajesticSEOConnector {
 	
 		parameters.put("datasource", "fresh");
 		parameters.put("Query", domain);
-		parameters.put("Count", "5");
+		parameters.put("Count", "100");
 	
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetTopPages", parameters);

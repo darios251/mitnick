@@ -223,9 +223,8 @@ public class DomainsController extends CRUD {
 			InputStream input = uc.getInputStream();
 			
 			byte[] buffer = new byte[3000];
-			int read = 0;
 			boolean found = false; 
-			while((read = input.read(buffer)) > 0) {
+			while(input.read(buffer) > 0) {
 				String line = new String(buffer);
 				
 				if(line.contains("id=resultStats")) {
