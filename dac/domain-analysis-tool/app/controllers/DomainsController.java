@@ -233,9 +233,9 @@ public class DomainsController extends CRUD {
 				}
 			}
 			
-			String result = "No Encontrado";
+			String result = "Not Found";
 			if(found)
-				result = "Encontrado";
+				result = "Found";
 			
 			render(result, domain);
 			
