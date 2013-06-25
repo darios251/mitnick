@@ -12,6 +12,8 @@ GET		/domainscontroller/createxlsfile    DomainsController.createXLSFile
 
 GET		/domainscontroller/deleteselection  DomainsController.deleteSelection
 
+GET		/domainscontroller/searchInGoogle/{domain}  DomainsController.searchInGoogle
+
 # Administration
 GET     /?                                Admin.index
 # Import Secure routes

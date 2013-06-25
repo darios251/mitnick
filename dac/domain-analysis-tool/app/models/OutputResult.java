@@ -69,11 +69,11 @@ public class OutputResult {
 				int noWwwBackLinks = 0;
 				for(Map<String, String> itemIndex : MajesticSEOConnector.getTopPages(itemInfo.get("Item"))) {
 					if(itemIndex.get("URL")!= null && itemIndex.get("URL").endsWith(itemInfo.get("Item"))) {
-						if(itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://www." + itemInfo.get("Item") + "/")) {
+						if(itemIndex.get("URL").endsWith("://www." + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("://www." + itemInfo.get("Item") + "/")) {
 							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains") + " - wwwBackLink", new Object[]{});
 							wwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
 						}
-						else if(itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("http://" + itemInfo.get("Item") + "/" )){
+						else if(itemIndex.get("URL").endsWith("://" + itemInfo.get("Item")) || itemIndex.get("URL").endsWith("://" + itemInfo.get("Item") + "/" )){
 							Logger.debug("domain: " + itemIndex.get("URL") + " - refDomain: " + itemIndex.get("RefDomains")  + " - NoWwwBackLink", new Object[]{});
 							noWwwBackLinks = Integer.parseInt(itemIndex.get("RefDomains"));
 						}
