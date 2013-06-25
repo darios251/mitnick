@@ -80,7 +80,7 @@ public class GoogleSearchAPIConnector {
 			
 			result = Boolean.FALSE;
 			if(found)
-				result = Boolean.FALSE;
+				result = Boolean.TRUE;
 			
 			input.close();
 			

@@ -76,7 +76,7 @@ public class OutputResult {
 				String currentIndexDomain = null;
 				for(Map<String, String> itemIndex : MajesticSEOConnector.getTopPages(itemInfo.get("Item"))) {
 					currentIndexDomain = itemIndex.get("URL").trim();
-					if(currentIndexDomain!= null && (currentIndexDomain.endsWith(currentDomain) || itemIndex.get("URL").trim().endsWith(currentDomain + "/"))) {
+					if(currentIndexDomain!= null && (currentIndexDomain.endsWith(currentDomain) || currentIndexDomain.endsWith(currentDomain + "/"))) {
 						if(currentIndexDomain.endsWith("://www." + currentDomain) || currentIndexDomain.endsWith("://www." + currentDomain + "/")) {
 							Logger.debug("domain: " + currentIndexDomain + " - refDomain: " + itemIndex.get("RefDomains") + " - wwwBackLink", new Object[]{});
 							wwwBackLinks += Integer.parseInt(itemIndex.get("RefDomains"));
