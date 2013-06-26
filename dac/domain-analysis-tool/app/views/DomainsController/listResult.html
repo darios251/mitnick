@@ -113,7 +113,7 @@
 				<tr>
 					  <td><input type="checkbox" id='${result.site}' class="deleted" #{if result.deleted} checked="true" #{/if} onclick="deleteItem('${result.site}');" ></td>
 					  <td>${result.site}</td>
-					  <td>${result.pr}</td>
+					  <td>#{if result.pr == -1}N/A#{/if}#{else}${result.pr}#{/else}</td>
 					  <td>
 					  	#{if result.inGoogle == 'MAYBE'}
 					  		<select id='domain_${result_index}' onchange="setInGoogle('${result.site}', $('#domain_${result_index} :selected').val())">

@@ -66,7 +66,7 @@ public class MajesticSEOConnector {
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetIndexItemInfo", parameters);
 		
-		int limit = 1000;
+		int limit = 100;
 		while(!"OK".equals(response.getResponseAttributes().get("Code")) || response.getTableForName("Results").getTableRows().size() == 0) {
 			limit--;
 			if(limit <=0 )
@@ -93,8 +93,8 @@ public class MajesticSEOConnector {
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetTopPages", parameters);
 		
-		int limit = 1000;
-		while(!"OK".equals(response.getResponseAttributes().get("Code")) || response.getTableForName("Matches").getTableRows().size() == 0) {
+		int limit = 100;
+		while(!"OK".equals(response.getResponseAttributes().get("Code"))) {
 			limit--;
 			if(limit <= 0)
 				break;
@@ -121,7 +121,7 @@ public class MajesticSEOConnector {
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
 		
-		int limit = 1000;
+		int limit = 100;
 		while((!"OK".equals(response.getResponseAttributes().get("Code")) && !"JobDoneCheckDownloads".equals(response.getResponseAttributes().get("Code"))) || ("OK".equals(response.getResponseAttributes().get("Code")) && response.getTableForName("TargetURLs").getTableRows().size() == 0)) {
 			limit--;
 			if(limit <= 0)
@@ -149,7 +149,7 @@ public class MajesticSEOConnector {
 		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
 		
-		int limit = 1000;
+		int limit = 100;
 		while(!"OK".equals(response.getResponseAttributes().get("Code"))) {
 			limit--;
 			if(limit <= 0)
@@ -177,7 +177,7 @@ public class MajesticSEOConnector {
 		
 		List<Map<String, String>> tableRows = response.getTableForName("Downloads").getTableRows();
 		
-		int limit = 1000;
+		int limit = 100;
 		while(!"OK".equals(response.getResponseAttributes().get("Code")) || tableRows.size() == 0) {
 			limit--;
 			if(limit <= 0)
