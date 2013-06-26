@@ -114,13 +114,13 @@ public class OutputResult {
 				dto.setCitationFlow(new BigDecimal(itemInfo.get("CitationFlow")));
 				dto.setTrustFlow(new BigDecimal(itemInfo.get("TrustFlow")));
 				
-				if("MAYBE".equals(isInGoogle)) {
-					Boolean isInGoogleBl = GoogleSearchAPIConnector.isInGoogle2(itemInfo.get("Item"));
-					
-					if(isInGoogleBl != null) {
-						dto.setInGoogle(isInGoogleBl ? "YES" : "NO");
-					}
-				}
+//				if("MAYBE".equals(isInGoogle)) {
+//					Boolean isInGoogleBl = GoogleSearchAPIConnector.isInGoogle2(itemInfo.get("Item"));
+//					
+//					if(isInGoogleBl != null) {
+//						dto.setInGoogle(isInGoogleBl ? "YES" : "NO");
+//					}
+//				}
 				
 				outputs.add(dto);
 		}
