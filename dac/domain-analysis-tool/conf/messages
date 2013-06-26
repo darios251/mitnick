@@ -47,3 +47,5 @@ result.label.leyend.example=Search using filters < and >, for example: "<99 >10"
 result.label.domain=Domain
 
 result.label.tittle=Domain Analysis Result
+
+needAuthentication=Need Authentication?

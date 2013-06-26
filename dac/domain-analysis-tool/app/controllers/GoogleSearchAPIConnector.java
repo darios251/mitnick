@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
 
+import com.google.api.client.util.Base64;
+
 import play.Logger;
 
 public class GoogleSearchAPIConnector {
@@ -93,14 +95,20 @@ public class GoogleSearchAPIConnector {
 		return result;
 	}
 	
-	public static Boolean isInGoogle(String domain, String proxyIp, int proxyPort) {
+	public static Boolean isInGoogle(String domain, models.Proxy currentProxy) {
 		Boolean result = null;
 		try {
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyIp, proxyPort));
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(currentProxy.ip, currentProxy.port));
 			URL url = new URL("http://www.google.com/search?q=site:" + domain);
 			HttpURLConnection uc = (HttpURLConnection)url.openConnection(proxy);
 			uc.setRequestMethod("GET");
-			uc.setRequestProperty("Connection", "keep-alive");
+			uc.setRequestProperty("Proxy-Connection","Keep-Alive");
+			
+			if(currentProxy.needAuthentication) {
+				String auth = new String(Base64.encodeBase64(new String(currentProxy.username + ":" + currentProxy.password).getBytes()));
+			    auth = "Basic " + auth;
+			    uc.setRequestProperty("Proxy-Authorization",auth);
+			}
 			uc.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 			uc.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36");
 			uc.setRequestProperty("Accept-Encoding", "utf8");

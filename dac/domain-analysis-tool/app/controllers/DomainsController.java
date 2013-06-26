@@ -225,7 +225,7 @@ public class DomainsController extends CRUD {
 		List<OutputDTO> results = outputs.getResult();
 		for (OutputDTO output : results) {
 			if("MAYBE".equals(output.getInGoogle())) {
-				Boolean inGoogle = GoogleSearchAPIConnector.isInGoogle(output.getSite(), proxy.ip, proxy.port);
+				Boolean inGoogle = GoogleSearchAPIConnector.isInGoogle(output.getSite(), proxy);
 				
 				if(inGoogle != null)
 					output.setInGoogle(inGoogle ? "YES" : "NO");
