@@ -73,10 +73,12 @@ public class DomainsController extends CRUD {
 			entrada = new BufferedReader(new FileReader(f));
 			String linea;
 			while (entrada.ready()) {
-				linea = entrada.readLine();
-				Domain domain = new Domain();
-				domain.name = linea.trim();
-				domainsList.add(domain);
+				linea = entrada.readLine().trim();
+				if(!"".equals(linea)) {
+					Domain domain = new Domain();
+					domain.name = linea.trim();
+					domainsList.add(domain);
+				}
 			}
 			entrada.close();
 		} catch (IOException e) {
