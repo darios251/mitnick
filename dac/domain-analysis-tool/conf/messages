@@ -28,6 +28,7 @@ domainFile=Select Domain File
 result.filter.selectOption=Select the option
 result.filter.yes=YES
 result.filter.no=NO
+result.filter.maybe=MAYBE
 result.filter.y=YES
 result.filter.n=NO
 result.label.inGoogle=In Google

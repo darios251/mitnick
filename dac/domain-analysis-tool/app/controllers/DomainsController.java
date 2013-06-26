@@ -11,7 +11,6 @@ import java.lang.reflect.Constructor;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +19,7 @@ import java.util.List;
 import models.Domain;
 import models.Domains;
 import models.OutputResult;
+import models.Proxy;
 import play.Play;
 import play.data.binding.Binder;
 import play.db.Model;
@@ -148,7 +148,9 @@ public class DomainsController extends CRUD {
 		List<OutputDTO> results = FilterResultHelper.addFilters(inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov,
 				refdomiansgov, refdomainshome, percenttoh, orderBy, order);
 		
-		render(results, orderBy, order, inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov, refdomiansgov, refdomainshome, percenttoh);
+		List<Proxy> proxies = Proxy.findAll();
+		
+		render(results, orderBy, order, inGoogle, www, pr, refDomians, refips, refsubnet, extlinksedu, refdomainedu, extbacklinksgov, refdomiansgov, refdomainshome, percenttoh, proxies);
 	}
 
 	public static void createXLSFile() throws Exception {
@@ -205,6 +207,32 @@ public class DomainsController extends CRUD {
 			if (site != null && site.equals(output.getSite()))
 				output.setDeleted(!output.isDeleted());
 		}
+	}
+	
+	public static void setInGoogle(String site, String inGoogle) {
+		OutputResult outputs = OutputResult.getInstance();
+		List<OutputDTO> results = outputs.getResult();
+		for (OutputDTO output : results) {
+			if (site != null && site.equals(output.getSite()))
+				output.setInGoogle(inGoogle);
+		}
+	}
+	
+	public static void searchWithProxy() {
+		Proxy proxy = Proxy.findById(Long.parseLong(params.get("proxy")));
+		
+		OutputResult outputs = OutputResult.getInstance();
+		List<OutputDTO> results = outputs.getResult();
+		for (OutputDTO output : results) {
+			if("MAYBE".equals(output.getInGoogle())) {
+				Boolean inGoogle = GoogleSearchAPIConnector.isInGoogle(output.getSite(), proxy.ip, proxy.port);
+				
+				if(inGoogle != null)
+					output.setInGoogle(inGoogle ? "YES" : "NO");
+			}
+		}
+		
+		listResult(params.get("orderBy"), params.get("order"), false);
 	}
 	
 }

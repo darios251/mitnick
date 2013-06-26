@@ -7,6 +7,15 @@ $.ajax({
 	});
 }
 
+function setInGoogle(site, inGoogle){		
+	$.ajax({
+		type: "POST",
+		url: "setInGoogle",
+		data: { site: site, inGoogle: inGoogle}
+		}).done(function( msg ) {
+		});
+	}
+
 function exportResult(){		
 $.ajax({
 	type: "POST",

@@ -19,6 +19,7 @@
 				  <option value="&{'result.filter.selectOption'}">&{'result.filter.selectOption'}</option>
 				  <option value="&{'result.filter.yes'}">&{'result.filter.yes'}</option>
 				  <option value="&{'result.filter.no'}">&{'result.filter.no'}</option>
+				  <option value="&{'result.filter.maybe'}">&{'result.filter.maybe'}</option>
 				</select>
 			</label>
 			<label>&{'result.label.www'}: 
@@ -69,6 +70,21 @@
 		
 		<input type="submit" value="&{'crud.search'}" /> &{'result.label.leyend.example'}	
 	</div>
+	#{/form}
+	
+	<div style="clear: left">
+		#{form action:@searchWithProxy(), enctype:'multipart/form-data', method:'POST'}
+			Proxies 
+			<select name="proxy">
+				#{list proxies, as:'proxy'}
+					<option value="${proxy.id}">${proxy}</option>
+				#{/list}
+			</select> 
+			<input type="hidden" name="order" value="${order}">
+			<input type="hidden" name="orderBy" value="${orderBy}">
+			<input type="submit" name="submit" value="search in Google">
+		#{/form}
+	</div>
 	
 	<div id="resultList" class="result">
 	
@@ -96,33 +112,36 @@
 				#{list results, as:'result'}
 				<tr>
 					  <td><input type="checkbox" id='${result.site}' class="deleted" #{if result.deleted} checked="true" #{/if} onclick="deleteItem('${result.site}');" ></td>
-					  <td>&{result.site}</td>
-					  <td>&{result.pr}</td>
+					  <td>${result.site}</td>
+					  <td>${result.pr}</td>
 					  <td>
-					  	<select>
+					  	#{if result.inGoogle == 'MAYBE'}
+					  		<select id='domain_${result_index}' onchange="setInGoogle('${result.site}', $('#domain_${result_index} :selected').val())">
 					  			<option #{if result.inGoogle == 'YES'}selected#{/if}>YES</option>
 					  			<option #{if result.inGoogle == 'NO'}selected#{/if}>NO</option>
 					  			<option #{if result.inGoogle == 'MAYBE'}selected#{/if}>MAYBE</option>
 					  		</select>
-					 	 #{if result.inGoogle == 'MAYBE'}<a href='http://www.google.com/search?q=site:${result.site}' target="_blank"><img src="/public/images/search-icon.png" alt='Search In Google'></a>#{/if}
+					 	 <a href='http://www.google.com/search?q=site:${result.site}' target="_blank"><img src="/public/images/search-icon.png" alt='Search In Google'></a>#{/if}
+					 	 #{else}
+					 	 	${result.inGoogle}
+					 	 #{/else}
 					  </td>
-					  <td>&{result.www}</td>
-					  <td>&{result.refDomians}</td>
-					  <td>&{result.refIps}</td>
-					  <td>&{result.refSubNet}</td>
-					  <td>&{result.extBackLnksEdu}</td>
-					  <td>&{result.refDomainsEdu}</td>
-					  <td>&{result.extBackLinksGov}</td>
-					  <td>&{result.refDomainsGov}</td>				  
-					  <td>&{result.refDomianHome}</td>
-					  <td>&{result.percentToHome}</td>
+					  <td>${result.www}</td>
+					  <td>${result.refDomians}</td>
+					  <td>${result.refIps}</td>
+					  <td>${result.refSubNet}</td>
+					  <td>${result.extBackLnksEdu}</td>
+					  <td>${result.refDomainsEdu}</td>
+					  <td>${result.extBackLinksGov}</td>
+					  <td>${result.refDomainsGov}</td>				  
+					  <td>${result.refDomianHome}</td>
+					  <td>${result.percentToHome}</td>
 					  <td><input type="checkbox" #{if result.goodToBuy}  checked="true" #{/if} onclick="goodToBuy('${result.site}');"></td>	
 				</tr>
 				#{/list}
 			</tbody>
 		</table>
 	</div>
-#{/form}
 </div>
 
 <a href="@{DomainsController.deleteSelection(orderBy, order)}">Delete Selection</a>  
