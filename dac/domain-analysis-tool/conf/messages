@@ -49,3 +49,7 @@ result.label.domain=Domain
 result.label.tittle=Domain Analysis Result
 
 needAuthentication=Need Authentication?
+ip=IP
+port=Port
+username=Username
+password=Password
