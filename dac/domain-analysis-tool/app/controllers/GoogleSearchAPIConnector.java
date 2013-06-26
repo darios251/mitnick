@@ -105,8 +105,7 @@ public class GoogleSearchAPIConnector {
 			uc.setRequestProperty("Proxy-Connection","Keep-Alive");
 			
 			if(currentProxy.needAuthentication) {
-				String auth = new String(Base64.encodeBase64(new String(currentProxy.username + ":" + currentProxy.password).getBytes()));
-			    auth = "Basic " + auth;
+				String auth = "Basic " + new String(Base64.encodeBase64(new String(currentProxy.username + ":" + currentProxy.password).getBytes()));
 			    uc.setRequestProperty("Proxy-Authorization",auth);
 			}
 			uc.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
