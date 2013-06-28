@@ -20,6 +20,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import models.Domain;
+import models.MajesticSeoKey;
 import play.Play;
 import play.libs.*;
 
@@ -32,8 +33,10 @@ public class MajesticSEOConnector {
 		Map parameters = new HashMap();
 		parameters.put("item", domain);
 		parameters.put("datasource", "fresh");
+		
+		MajesticSeoKey apikey = (MajesticSeoKey) MajesticSeoKey.findAll().get(0);
 
-		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		APIService service = new APIService(apikey.apiKey, Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetBackLinkData", parameters);
 		List<Map<String, String>> backLinks = response.getTableForName("BackLinks").getTableRows();
 		int refDomianHome = 0;
@@ -53,21 +56,27 @@ public class MajesticSEOConnector {
 		return result;
 	}
 	
-	public static List<Map<String, String>> getIndexItemInfo(List<Domain> domains) {
+	public static List<Map<String, String>> getIndexItemInfo(List<Domain> domains) throws Exception {
 		Map parameters = new HashMap();
 		
 		parameters.put("datasource", "fresh");
 		parameters.put("items", domains.size() + "");
 		
+		MajesticSeoKey apikey = (MajesticSeoKey) MajesticSeoKey.findAll().get(0);
+		
 		for(int i = 0; i < domains.size(); i++) {
 			parameters.put("item" + i, domains.get(i).name);
 		}
 
-		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		APIService service = new APIService(apikey.apiKey, Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetIndexItemInfo", parameters);
 		
 		int limit = 100;
 		while(!"OK".equals(response.getResponseAttributes().get("Code")) || response.getTableForName("Results").getTableRows().size() == 0) {
+			
+			if("IndexQueryResponse".equals(response.getResponseAttributes().get("Code")))
+				throw new Exception(response.getErrorMessage());
+			
 			limit--;
 			if(limit <=0 )
 				break;
@@ -89,8 +98,10 @@ public class MajesticSEOConnector {
 		parameters.put("datasource", "fresh");
 		parameters.put("Query", domain);
 		parameters.put("Count", "100");
+		
+		MajesticSeoKey apikey = (MajesticSeoKey) MajesticSeoKey.findAll().get(0);
 	
-		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		APIService service = new APIService(apikey.apiKey, Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetTopPages", parameters);
 		
 		int limit = 100;
@@ -118,7 +129,9 @@ public class MajesticSEOConnector {
 			parameters.put("item" + i, domains.get(i).name);
 		}
 	
-		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		MajesticSeoKey apikey = (MajesticSeoKey) MajesticSeoKey.findAll().get(0);
+		
+		APIService service = new APIService(apikey.apiKey, Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
 		
 		int limit = 100;
@@ -146,7 +159,9 @@ public class MajesticSEOConnector {
 		parameters.put("items", "1");
 		parameters.put("item0", domain);
 	
-		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		MajesticSeoKey apikey = (MajesticSeoKey) MajesticSeoKey.findAll().get(0);
+		
+		APIService service = new APIService(apikey.apiKey, Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("AnalyseIndexItem", parameters);
 		
 		int limit = 100;
@@ -172,7 +187,9 @@ public class MajesticSEOConnector {
 		parameters.put("datasource", "fresh");
 		parameters.put("DownloadJobID", jobID);
 	
-		APIService service = new APIService(Play.configuration.getProperty("majesticseoapi.key"), Play.configuration.getProperty("majesticseoapi.url"));
+		MajesticSeoKey apikey = (MajesticSeoKey) MajesticSeoKey.findAll().get(0);
+		
+		APIService service = new APIService(apikey.apiKey, Play.configuration.getProperty("majesticseoapi.url"));
 		Response response = service.executeCommand("GetDownloadsList", parameters);
 		
 		List<Map<String, String>> tableRows = response.getTableForName("Downloads").getTableRows();

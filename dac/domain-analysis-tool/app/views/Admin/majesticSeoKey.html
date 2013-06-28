@@ -1,0 +1,18 @@
+#{extends 'admin.html' /}
+#{set title:messages.get('crud.title') /}
+
+<div id="crudIndex">
+	<div><h3>Welcome ${user}!</h3></div>
+
+ #{form action:@saveMajesticSeoKey(), enctype:'multipart/form-data'}
+    <table>
+        <thead>
+        </thead>
+        <tbody>
+			MajesticSeo Key&nbsp;
+			<input type="text" name="apiKey" value="${apikey}" style="width: 300px"><br>
+			<input type="submit" name="submit" value="Change">
+        </tbody>
+    </table>
+#{/form}
+</div>

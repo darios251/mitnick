@@ -7,5 +7,9 @@ models.User(admin):
  "name": Admin
  "isAdmin": "true" 
  "permission": "models_Permission_18"
+
+
+models.MajesticSeoKey(userKey):
+ "apiKey": "94E7D8E2D627A278CE7B07FA5AF06A5D"
  
  

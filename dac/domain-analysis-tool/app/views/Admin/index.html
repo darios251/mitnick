@@ -20,11 +20,17 @@
 		                    <a href="${type.listAction}">&{type.name}</a>
 		                </td>
 		                <td class="crudNew" >
-		                    <a href="${type.blankAction}">#{if type.name == "DomainsController"}&{'domian.importFile'}#{/if}#{else}New Proxy#{/else}</a>
+		                    #{if type.name == "Users"}#{/if}#{else}<a href="${type.blankAction}">#{if type.name == "DomainsController"}&{'domian.importFile'}#{/if}#{else}New Proxy#{/else}</a>#{/else}
 		                </td>
 		            </tr>
        #{/secure.check}
 #{/crud.types}
+					<tr>
+	             	    <td>
+		                    <a href="@{Admin.majesticSeoKey()}">MajesticSeo Key</a>
+		                </td>
+		                <td></td>
+		            </tr>
 
         </tbody>
     </table>

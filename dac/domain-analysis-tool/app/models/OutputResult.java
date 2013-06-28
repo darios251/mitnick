@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import play.Logger;
+import play.mvc.Scope.Flash;
+import play.mvc.Scope.RenderArgs;
 
 import util.OutputDTO;
 
@@ -54,7 +56,13 @@ public class OutputResult {
 	}
 
 	private static List<OutputDTO> getOutputs(List<Domain> domains){
-		List<Map<String, String>> indexItemInfo = MajesticSEOConnector.getIndexItemInfo(domains);
+		List<Map<String, String>> indexItemInfo;
+		try {
+			indexItemInfo = MajesticSEOConnector.getIndexItemInfo(domains);
+		} catch (Exception e) {
+			Flash.current().put("error", e.getMessage());
+			return new ArrayList();
+		}
 		
 		List<OutputDTO> outputs = new ArrayList<OutputDTO>();
 		PageRankService pr = new PageRankService();

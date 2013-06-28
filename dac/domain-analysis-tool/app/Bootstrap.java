@@ -16,8 +16,8 @@ import models.*;
 public class Bootstrap extends Job {
  
     public void doJob() {
-//    	Fixtures.deleteDatabase();
-//    	Fixtures.loadModels("initial-data.yml");
+    	if(User.findAll().size() == 0)
+    		Fixtures.loadModels("initial-data.yml");
     }
  
 }
