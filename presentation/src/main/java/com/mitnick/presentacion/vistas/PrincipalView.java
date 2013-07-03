@@ -40,6 +40,7 @@ import com.mitnick.presentacion.controladores.ProductoController;
 import com.mitnick.presentacion.controladores.ProveedorController;
 import com.mitnick.presentacion.controladores.ReporteMovimientosController;
 import com.mitnick.presentacion.controladores.ReportesController;
+import com.mitnick.presentacion.controladores.VendedorController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.presentacion.vistas.controles.DetailPanel;
@@ -77,6 +78,8 @@ public class PrincipalView extends JFrame
 	@Autowired
 	private ProveedorController proveedorController;
 	@Autowired
+	private VendedorController vendedorController;
+	@Autowired
 	private LoginView loginView;
 	@Autowired
 	private PrinterService printerService;
@@ -97,6 +100,7 @@ public class PrincipalView extends JFrame
 	private JButton btnClientes;
 	private JButton btnReporte;
 	private JButton btnProveedores;
+	private JButton btnVendedores;
 	private JButton btnMovimientos;
 
 	private JMenuBar menuBar;
@@ -471,6 +475,41 @@ public class PrincipalView extends JFrame
 		return btnProveedores;
 	}
 	
+	private JButton getBtnVendedores()
+	{
+		if(btnVendedores == null)
+		{
+			btnVendedores = new JButton();
+			btnVendedores.setSize(new Dimension(MitnickConstants.ACCESS_BAR_BUTTON_WIDTH, MitnickConstants.ACCESS_BAR_BUTTON_HEIGHT));
+			
+			btnVendedores.setText(PropertiesManager.getProperty("principalView.button.vendedores"));
+			
+			ImageIcon iconoOriginal = new ImageIcon(this.getClass().getResource("/img/vendedor.png"));
+			btnVendedores.setIcon(iconoOriginal);
+			
+			btnVendedores.setHorizontalTextPosition( SwingConstants.CENTER );
+			btnVendedores.setVerticalTextPosition( SwingConstants.BOTTOM );
+			btnVendedores.setMargin(new Insets(-1, -1, -1, -1));
+			
+			btnVendedores.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e)	{
+					if (getJTabbedPane().indexOfComponent(vendedorController.getVendedorView()) == -1) {
+						logger.info("Agregando el panel de vendedores al tabbedPane");
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("vendedorPanel.label.vededores"), vendedorController.getVendedorView());
+					}
+					logger.info("Mostrando el panel de vendedores");
+					
+					vendedorController.mostrarVendedorPanel();
+					getJTabbedPane().setSelectedComponent(vendedorController.getVendedorView());
+					getJTabbedPane().setVisible(true);
+					vendedorController.getUltimoPanelMostrado().setVisible(true);
+				}
+			});
+		}
+
+		return btnVendedores;
+	}
+	
 	private JButton getBtnClientes()
 	{
 		if(btnClientes == null)
@@ -638,6 +677,11 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());
 			tlbQuickAccess.add(getBtnProveedores());
+			boolean vendedor = PropertiesManager.getPropertyAsBoolean("application.venta.vendedor");
+			if (vendedor){
+				tlbQuickAccess.add(getBtnVendedores());	
+			}
+			
 			tlbQuickAccess.add(getBtnMovimientos());
 			
 			tlbQuickAccess.setFloatable(false);
@@ -684,6 +728,8 @@ public class PrincipalView extends JFrame
 		getBtnReporte().setVisible(show);
 		getBtnArticulos().setVisible(show);
 		getBtnProveedores().setVisible(show);
+		boolean vendedor = PropertiesManager.getPropertyAsBoolean("application.venta.vendedor");
+		getBtnVendedores().setVisible(vendedor);
 		getBtnClientes().setVisible(show);
 		getBtnMovimientos().setVisible(show);
 	}

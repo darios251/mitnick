@@ -57,6 +57,8 @@ public class VentaDto extends BaseDto {
 	
 	private Date fecha;
 	
+	private VendedorDto vendedor;
+	
 	public Date getFecha() {
 		return fecha;
 	}
@@ -281,7 +283,8 @@ public class VentaDto extends BaseDto {
 				+ ", pagado=" + pagado + ", totalPagado=" + totalPagado + ", faltaPagar=" + faltaPagar + ", vuelto=" + vuelto
 				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket + ", numeroTicketOriginal=" + numeroTicketOriginal
 				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa + ", cancelada=" + cancelada + ", printed=" + printed
-				+ ", tipoResponsabilidad=" + tipoResponsabilidad + ", tipo=" + tipo + ", fecha=" + fecha + "]";
+				+ ", tipoResponsabilidad=" + tipoResponsabilidad + ", tipo=" + tipo + ", fecha=" + fecha + ", vendedor="
+				+ vendedor + "]";
 	}
 
 	public boolean isPrinted() {
@@ -317,6 +320,7 @@ public class VentaDto extends BaseDto {
 		result = prime * result + ((tipoTicket == null) ? 0 : tipoTicket.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		result = prime * result + ((totalPagado == null) ? 0 : totalPagado.hashCode());
+		result = prime * result + ((vendedor == null) ? 0 : vendedor.hashCode());
 		result = prime * result + ((vuelto == null) ? 0 : vuelto.hashCode());
 		return result;
 	}
@@ -460,6 +464,13 @@ public class VentaDto extends BaseDto {
 		} else if (!totalPagado.equals(other.totalPagado)) {
 			return false;
 		}
+		if (vendedor == null) {
+			if (other.vendedor != null) {
+				return false;
+			}
+		} else if (!vendedor.equals(other.vendedor)) {
+			return false;
+		}
 		if (vuelto == null) {
 			if (other.vuelto != null) {
 				return false;
@@ -468,6 +479,14 @@ public class VentaDto extends BaseDto {
 			return false;
 		}
 		return true;
+	}
+
+	public VendedorDto getVendedor() {
+		return vendedor;
+	}
+
+	public void setVendedor(VendedorDto vendedor) {
+		this.vendedor = vendedor;
 	}
 	
 }

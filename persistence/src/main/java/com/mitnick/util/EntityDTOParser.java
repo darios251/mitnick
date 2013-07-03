@@ -34,6 +34,7 @@ import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Proveedor;
 import com.mitnick.persistence.entities.Provincia;
 import com.mitnick.persistence.entities.Tipo;
+import com.mitnick.persistence.entities.Vendedor;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.DateHelper;
@@ -57,6 +58,7 @@ import com.mitnick.utils.dtos.ProveedorDto;
 import com.mitnick.utils.dtos.ProvinciaDto;
 import com.mitnick.utils.dtos.TipoCompradorDto;
 import com.mitnick.utils.dtos.TipoDto;
+import com.mitnick.utils.dtos.VendedorDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Scope
@@ -127,6 +129,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (D) getDtoFromEntity((Credito) entity);
 		else if(entity instanceof ProductoVenta)
 			return (D) getDtoFromEntity((ProductoVenta) entity);
+		else if(entity instanceof Vendedor)
+			return (D) getDtoFromEntity((Vendedor) entity);
 		else return null;
 	}
 
@@ -157,6 +161,8 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			return (E) getEntityFromDto((CuotaDto) dto);
 		else if(dto instanceof PagoDto)
 			return (E) getEntityFromDto((PagoDto) dto);
+		else if(dto instanceof VendedorDto)
+			return (E) getEntityFromDto((VendedorDto) dto);
 		else return null;
 	}
 	
@@ -510,6 +516,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setAjusteRedondeo(venta.getAjusteRedondeo());
 		ventaDto.setTipoResponsabilidad(new TipoCompradorDto(venta.getDiscriminacionIVA().getCodigo(), venta.getDiscriminacionIVA().getDescripcion()));
 		
+		if (Validator.isNotNull(venta.getVendedor()))
+			ventaDto.setVendedor(getDtoFromEntity(venta.getVendedor()));
+		
 		return ventaDto;
 	}
 	
@@ -568,6 +577,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		venta.setPrinted(ventaDto.isImpresa());
 		venta.setAjusteRedondeo(ventaDto.getAjusteRedondeo());
 
+		if (Validator.isNotNull(ventaDto.getVendedor()))
+			venta.setVendedor(getEntityFromDto(ventaDto.getVendedor()));		
+		
 		return venta;
 	}
 	
@@ -665,6 +677,22 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		medioPago.setId(medioPagoDto.getId());
 		medioPago.setCodigo(medioPagoDto.getCodigo());
 		return medioPago;
+	}
+	
+	private Vendedor getEntityFromDto(VendedorDto vendedorDto) {
+		Vendedor vendedor = new Vendedor();
+		vendedor.setId(vendedorDto.getId());
+		vendedor.setCodigo(vendedorDto.getCodigo());
+		vendedor.setNombre(vendedorDto.getNombre());
+		return vendedor;
+	}
+	
+	private VendedorDto getDtoFromEntity(Vendedor vendedor) {
+		VendedorDto vendedorDto = new VendedorDto();
+		vendedorDto.setId(vendedor.getId());
+		vendedorDto.setCodigo(vendedor.getCodigo());
+		vendedorDto.setNombre(vendedor.getNombre());
+		return vendedorDto;
 	}
 
 }
