@@ -15,6 +15,7 @@
 		<module>./presentation</module>
     	<module>./susmann</module>
     <module>la-isla</module>
+    <module>demo</module>
   </modules>
 
     <prerequisites>
