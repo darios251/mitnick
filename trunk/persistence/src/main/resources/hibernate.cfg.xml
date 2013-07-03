@@ -29,5 +29,6 @@
         <mapping class="com.mitnick.persistence.entities.Comprobante"/>
         <mapping class="com.mitnick.persistence.entities.Credito"/>
         <mapping class="com.mitnick.persistence.entities.CierreZ"/>
+        <mapping class="com.mitnick.persistence.entities.Vendedor"/>
     </session-factory>
 </hibernate-configuration>
