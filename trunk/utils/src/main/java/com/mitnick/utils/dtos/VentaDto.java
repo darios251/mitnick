@@ -59,6 +59,16 @@ public class VentaDto extends BaseDto {
 	
 	private VendedorDto vendedor;
 	
+	private int numeroCaja;
+	
+	public int getNumeroCaja() {
+		return numeroCaja;
+	}
+
+	public void setNumeroCaja(int numeroCaja) {
+		this.numeroCaja = numeroCaja;
+	}
+
 	public Date getFecha() {
 		return fecha;
 	}
@@ -284,7 +294,7 @@ public class VentaDto extends BaseDto {
 				+ ", cuotas=" + cuotas + ", numeroTicket=" + numeroTicket + ", numeroTicketOriginal=" + numeroTicketOriginal
 				+ ", tipoTicket=" + tipoTicket + ", impresa=" + impresa + ", cancelada=" + cancelada + ", printed=" + printed
 				+ ", tipoResponsabilidad=" + tipoResponsabilidad + ", tipo=" + tipo + ", fecha=" + fecha + ", vendedor="
-				+ vendedor + "]";
+				+ vendedor + ", numeroCaja=" + numeroCaja + "]";
 	}
 
 	public boolean isPrinted() {
@@ -308,6 +318,7 @@ public class VentaDto extends BaseDto {
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + (impresa ? 1231 : 1237);
 		result = prime * result + ((impuesto == null) ? 0 : impuesto.hashCode());
+		result = prime * result + numeroCaja;
 		result = prime * result + ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
 		result = prime * result + ((numeroTicketOriginal == null) ? 0 : numeroTicketOriginal.hashCode());
 		result = prime * result + (pagado ? 1231 : 1237);
@@ -390,6 +401,9 @@ public class VentaDto extends BaseDto {
 				return false;
 			}
 		} else if (!impuesto.equals(other.impuesto)) {
+			return false;
+		}
+		if (numeroCaja != other.numeroCaja) {
 			return false;
 		}
 		if (numeroTicket == null) {

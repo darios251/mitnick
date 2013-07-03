@@ -1,5 +1,6 @@
 package com.mitnick.presentacion.utils;
 
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.VentaDto;
 
@@ -9,6 +10,7 @@ public class VentaManager {
 	
 	public static VentaDto crearNuevaVenta(int tipo) {
 		ventaActual = new VentaDto();
+		ventaActual.setNumeroCaja(PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 		ventaActual.setTipo(tipo);
 		return ventaActual;
 	}

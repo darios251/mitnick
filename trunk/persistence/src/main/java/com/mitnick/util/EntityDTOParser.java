@@ -495,6 +495,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setImpuesto(venta.getImpuesto());
 		ventaDto.setFecha(venta.getFecha());
 		ventaDto.setPrinted(venta.isPrinted());
+		ventaDto.setNumeroCaja(venta.getNumeroCaja());
 		
 		//el descuento se toma por monto para reportes aun cuando fue por porcentaje
 		DescuentoDto descuento = new DescuentoDto();
@@ -551,6 +552,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			}
 		}
 		venta.setId(ventaDto.getId());
+		venta.setNumeroCaja(ventaDto.getNumeroCaja());
 		venta.setPrinted(ventaDto.isPrinted());
 		venta.setDescuento(VentaHelper.getDescuentoTotal(ventaDto));
 		venta.setFecha(new Date());

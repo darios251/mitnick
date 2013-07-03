@@ -92,6 +92,9 @@ public class Venta extends BaseObject implements Serializable {
 	@PrimaryKeyJoinColumn(name = "vendedor_id")
 	private Vendedor vendedor;
 	
+	@Column(name= "numeroCaja", nullable = false)
+	private int numeroCaja;
+	
 	public Vendedor getVendedor() {
 		return vendedor;
 	}
@@ -269,6 +272,7 @@ public class Venta extends BaseObject implements Serializable {
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((impuesto == null) ? 0 : impuesto.hashCode());
+		result = prime * result + numeroCaja;
 		result = prime * result + ((numeroTicket == null) ? 0 : numeroTicket.hashCode());
 		result = prime * result + ((numeroTicketOriginal == null) ? 0 : numeroTicketOriginal.hashCode());
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
@@ -353,6 +357,9 @@ public class Venta extends BaseObject implements Serializable {
 		} else if (!impuesto.equals(other.impuesto)) {
 			return false;
 		}
+		if (numeroCaja != other.numeroCaja) {
+			return false;
+		}
 		if (numeroTicket == null) {
 			if (other.numeroTicket != null) {
 				return false;
@@ -424,7 +431,8 @@ public class Venta extends BaseObject implements Serializable {
 				+ subtotal + ", descuento=" + descuento + ", ajusteRedondeo=" + ajusteRedondeo + ", impuesto=" + impuesto
 				+ ", total=" + total + ", cliente=" + cliente + ", cuotas=" + cuotas + ", discriminacionIVA=" + discriminacionIVA
 				+ ", printed=" + printed + ", numeroTicket=" + numeroTicket + ", tipoTicket=" + tipoTicket + ", canceled="
-				+ canceled + ", tipo=" + tipo + ", numeroTicketOriginal=" + numeroTicketOriginal + ", vendedor=" + vendedor + "]";
+				+ canceled + ", tipo=" + tipo + ", numeroTicketOriginal=" + numeroTicketOriginal + ", vendedor=" + vendedor
+				+ ", numeroCaja=" + numeroCaja + "]";
 	}
 	
 	public BigDecimal getPagoContado(){
@@ -458,6 +466,14 @@ public class Venta extends BaseObject implements Serializable {
 				total = total.add(pago.getPago());			
 		}		
 		return total;
+	}
+
+	public int getNumeroCaja() {
+		return numeroCaja;
+	}
+
+	public void setNumeroCaja(int numeroCaja) {
+		this.numeroCaja = numeroCaja;
 	}
 	
 }
