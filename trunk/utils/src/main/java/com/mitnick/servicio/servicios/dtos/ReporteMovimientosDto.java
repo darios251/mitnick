@@ -21,6 +21,17 @@ public class ReporteMovimientosDto extends ServicioBaseDto {
 	
 	private TipoDto tipo;
 	
+	private boolean agrupadoMes=false; 
+	
+	private boolean agrupadoProducto=false; 
+	
+	public boolean isAgrupadoMes() {
+		return agrupadoMes;
+	}
+
+	public void setAgrupadoMes(boolean agrupadoMes) {
+		this.agrupadoMes = agrupadoMes;
+	}
 
 	public Date getFechaInicio() {
 		return fechaInicio;
@@ -70,12 +81,19 @@ public class ReporteMovimientosDto extends ServicioBaseDto {
 		this.tipo = tipo;
 	}
 
+	public boolean isAgrupadoProducto() {
+		return agrupadoProducto;
+	}
+
+	public void setAgrupadoProducto(boolean agrupadoProducto) {
+		this.agrupadoProducto = agrupadoProducto;
+	}
+
 	@Override
 	public String toString() {
-		return "ReporteMovimientosDto [fechaInicio=" + fechaInicio
-				+ ", fechaFin=" + fechaFin + ", descripcion=" + descripcion
-				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo
-				+ "]";
+		return "ReporteMovimientosDto [fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", descripcion=" + descripcion
+				+ ", codigo=" + codigo + ", marca=" + marca + ", tipo=" + tipo + ", agrupadoMes=" + agrupadoMes
+				+ ", agrupadoProducto=" + agrupadoProducto + "]";
 	}
 	
 }

@@ -21,6 +21,7 @@ public class CierreZServicio extends ServicioBase implements ICierreZServicio {
 		CierreZ cierreZ = new CierreZ();
 		cierreZ.setNumero(Integer.parseInt(cierreZDto.getNumero()));
 		cierreZ.setFecha(cierreZDto.getFecha());
+		cierreZ.setNumeroCaja(cierreZDto.getNumeroCaja());
 		
 		cierreZDao.save(cierreZ);
 	}

@@ -5,9 +5,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mitnick.exceptions.BusinessException;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.daos.ICuotaDao;
+import com.mitnick.persistence.daos.IEmpresaDao;
 import com.mitnick.persistence.daos.IMovimientoDao;
 import com.mitnick.persistence.daos.IProductoDAO;
 import com.mitnick.persistence.daos.IVentaDAO;
+import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
@@ -49,13 +61,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	protected IMovimientoDao movimientoDao;
 	@Autowired
 	protected ICuotaDao cuotaDao;
+	@Autowired
+	protected IEmpresaDao empresaDao;
 	
 	@Autowired
 	protected PrinterService printerService;
 	
 	@SuppressWarnings("unchecked")
-	public VentaDto getVentaByNroFacturaTipo(String numero, String tipo){
-		Venta venta = ventaDao.findTransactionByNumeroTipoFactura(numero, PropertiesManager.getProperty("dialog.consultarTransacciones.filter.venta"), tipo);
+	public VentaDto getVentaByNroFacturaTipo(String numero, String tipo, int numeroCaja){
+		Venta venta = ventaDao.findTransactionByNumeroTipoFactura(numero, PropertiesManager.getProperty("dialog.consultarTransacciones.filter.venta"), tipo, numeroCaja);
 		if (Validator.isNotNull(venta)){
 			VentaDto ventaDto = (VentaDto) entityDTOParser.getDtoFromEntity(venta);
 			return ventaDto;
@@ -441,7 +455,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	
 	@SuppressWarnings("unchecked")
 	public VentaDto getVentaByNroFactura(String nroTicket){
-		Venta venta = ventaDao.findByNumeroFactura(nroTicket);
+		Venta venta = ventaDao.findByNumeroFactura(nroTicket, PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 		if (venta!=null)
 			return (VentaDto) entityDTOParser.getDtoFromEntity(venta);
 		return null;
@@ -456,5 +470,110 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		return (CreditoDto) entityDTOParser.getDtoFromEntity(ventaDao.getCredito(nroNC));
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void consultarTransaccion(String nroTrx, String tipo, String factura, int numeroCaja) {
+		Venta venta = ventaDao.findTransactionByNumeroTipoFactura(nroTrx, tipo, factura, numeroCaja);
+		if (Validator.isNull(venta))
+			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacciï¿½n con el nï¿½mero ingresado");
+		try {
+			VentaDto ventaDto = (VentaDto) entityDTOParser.getDtoFromEntity(venta);
+			generarReporteFactura(ventaDto, true);
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar obtener el comprobante de la transacciï¿½n");
+		}
+	}
+	
+	/**
+	 * 
+	 * Genera un reporte con los datos de la venta recibida por parametro.
+	 * Si duplicado es true la factura tiene la leyenda de duplicado.
+	 * @param venta
+	 * @param duplicado
+	 */
+	public void generarReporteFactura(VentaDto venta, boolean duplicado) {
+		try {
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/facturaDuplicado.jasper"));
+			
+			Empresa empresa = empresaDao.getEmpresa();
+			
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("nombreEmpresa", empresa.getNombre());
+			parameters.put("empresaDireccion", empresa.getDireccion().getDomicilio() + "(" + empresa.getDireccion().getCodigoPostal() + ")" 
+					+ empresa.getDireccion().getCiudad().getDescripcion() + "\n Tel" + empresa.getTelefono());
+			parameters.put("tipoResponsable", empresa.getTipoResponsable());
+			String nroFactura = StringUtils.leftPad(venta.getNumeroCaja() + "", 4, "0"); 
+			nroFactura = nroFactura.concat("-");
+			nroFactura = nroFactura.concat(StringUtils.leftPad(venta.getNumeroTicket()+ "", 8, "0"));
+			
+			parameters.put("nroFactura", nroFactura);
+			parameters.put("cuitEmpresa", empresa.getCuit());
+			parameters.put("ingBrutos", empresa.getIngBrutos());
+			parameters.put("fechaInicioActividadEmpresa", empresa.getFechaInicioActividad());
+			
+			parameters.put("tipoIva", venta.getTipoResponsabilidad().getDescripcion());
+			
+			if (Validator.isNotNull(venta.getFecha()))
+				parameters.put("fechaTrx", DateHelper.getFecha(venta.getFecha()));
+			else
+				parameters.put("fechaTrx", DateHelper.getFecha(new Date()));
+			
+			if (duplicado)
+				parameters.put("leyenda", "Comprobante no válido como Factura");
+			else
+				parameters.put("leyenda", "");
+			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador().equals(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL);
+			String nombre = "";
+			String direccion = "";
+			String cuit = "";
+			if (Validator.isNotNull(venta.getCliente())){
+				nombre = venta.getCliente().getNombre();
+				if (Validator.isNotNull(venta.getCliente().getDireccion())){
+					direccion = venta.getCliente().getDireccion().getDomicilio();
+					if (Validator.isNotNull(venta.getCliente().getDireccion().getCiudad()))
+						direccion = direccion.concat(" ").concat(venta.getCliente().getDireccion().getCiudad().getDescripcion());
+				}
+				if (Validator.isNotNull(venta.getCliente().getCuit()))
+					cuit =  venta.getCliente().getCuit().replaceAll("-", "").trim();	
+				if (Validator.isNotBlankOrNull(cuit)) 
+					cuit = venta.getCliente().getCuit();
+				else if (Validator.isNotBlankOrNull(venta.getCliente().getDocumento()))
+					cuit = venta.getCliente().getDocumento();
+			}
+			parameters.put("nombreCliente", nombre);
+			parameters.put("direccionCliente", direccion);
+			parameters.put("cuitCliente", cuit);
+			String leyenda = "Factura";
+			
+			if (consumidorFinal){
+				venta.setTipoTicket("B");
+				parameters.put("tipoLetra", "B");
+			} else {
+				venta.setTipoTicket("A");
+				parameters.put("tipoLetra", "A");
+			}
+
+			List<ProductoVentaDto> productos = null;
+			if (venta.isDevolucion())
+				leyenda = "Nota de Crédito";
+			
+			if (duplicado){
+				leyenda = "Duplicado - ".concat(leyenda).concat(" - ").concat("No válido");
+				productos = VentaHelper.getProductosPrecioVendido(venta);				
+			} else
+				productos = venta.getProductos();
+				
+			parameters.put("leyenda", leyenda);
+			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			parameters.put("pagos", venta.getPagos());
+			JRDataSource dr = new JRBeanCollectionDataSource(productos);
+										
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,parameters, dr);
+			JasperViewer.viewReport(jasperPrint,false);
+
+		} catch (Exception e1) {
+			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
+		}	
+	}
 }
 

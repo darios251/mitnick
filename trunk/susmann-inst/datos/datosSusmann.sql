@@ -10,8 +10,8 @@ INSERT INTO direccion(id, domicilio, codigopostal, ciudad_id) VALUES ('1', 'Av. 
 -- ----------------------------
 -- Records of empresa cliente
 -- ----------------------------
-INSERT INTO empresa(id, nombre, fechaInicioActividad, cuit, ingBrutos, telefono, email, tipoResponsable, prefijoFactura, numeroFacturaActual, direccion_id) 
-VALUES ('1', 'SUSMANN LIVIO VICTOR JUAN', '99-99-9999', '20-10338232-8', 'Responable Inscripto', '3424743704', 'susmannlivio@hotmail.com', 'Responsable Inscripto', '0001', '00000001', '1');
+INSERT INTO empresa(id, nombre, fechaInicioActividad, cuit, ingBrutos, telefono, email, tipoResponsable, numeroFacturaActual, direccion_id) 
+VALUES ('1', 'SUSMANN LIVIO VICTOR JUAN', '99-99-9999', '20-10338232-8', 'Responable Inscripto', '3424743704', 'susmannlivio@hotmail.com', 'Responsable Inscripto', '00000001', '1');
 
 -- ----------------------------
 -- Records of tipo de productos

@@ -17,9 +17,10 @@ public class CierreZDao extends GenericDaoHibernate<CierreZ, Long>  implements I
 		super(CierreZ.class);
 	}
 	
-	public CierreZ findByFecha(Date fecha){
+	public CierreZ findByFecha(Date fecha, int numeroCaja){
 		DetachedCriteria criteria = DetachedCriteria.forClass(CierreZ.class);
 		criteria.add(Restrictions.eq("fecha", fecha));
+		criteria.add(Restrictions.eq("numeroCaja", numeroCaja));
 		@SuppressWarnings("unchecked")
 		List<CierreZ> cierres = getHibernateTemplate().findByCriteria(criteria);
 		if (cierres!=null && !cierres.isEmpty())

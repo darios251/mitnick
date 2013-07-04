@@ -7,7 +7,6 @@ import org.appfuse.dao.GenericDao;
 
 import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Cuota;
-import com.mitnick.persistence.entities.Pago;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.dtos.CuotaDto;
 
@@ -25,8 +24,6 @@ public interface ICuotaDao extends GenericDao<Cuota, Long>{
 	
 	public List<Cuota> getCuotaByClient(Long cliente);
 	
-	public List<Pago> getPagosCuotas(ReportesDto filtro);
-	
-	public List<Comprobante> getComprobantes(ReportesDto filtro);
+	public List<Comprobante> getComprobantes(ReportesDto filtro, int numeroCaja);
 
 }

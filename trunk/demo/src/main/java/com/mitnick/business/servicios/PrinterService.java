@@ -7,8 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mitnick.exceptions.PersistenceException;
+import com.mitnick.persistence.daos.IEmpresaDao;
 import com.mitnick.persistence.daos.IVentaDAO;
+import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.servicio.servicios.ICierreZServicio;
+import com.mitnick.servicio.servicios.IVentaServicio;
+import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
 import com.mitnick.utils.dtos.VentaDto;
@@ -22,6 +27,13 @@ public class PrinterService {
 	private ICierreZServicio cierreZServicio;
 	
 	@Autowired
+	private IVentaServicio ventaServicio;
+	
+	@Autowired
+	private IEmpresaDao empresaDao;
+	
+	
+	@Autowired
 	protected IVentaDAO ventaDao;
 	
 	public boolean imprimirTicket(VentaDto venta) {
@@ -29,8 +41,20 @@ public class PrinterService {
 	}
 	
 	public boolean imprimirTicketFactura(VentaDto venta) {
-		try{			
-			ventaDao.generarFactura(venta, false);
+		try{		
+			Empresa empresa = empresaDao.getEmpresa();
+			int nroFactActual = empresa.getNumeroFacturaActual();			
+			String nroTRX = venta.getNumeroTicket();			
+			if (Validator.isBlankOrNull(nroTRX)){
+				nroFactActual = nroFactActual + 1;
+				nroTRX = Integer.toString(nroFactActual);
+				empresa.setNumeroFacturaActual(nroFactActual);
+				empresaDao.saveOrUpdate(empresa);				
+			}			
+					
+			venta.setNumeroTicket(String.valueOf(nroFactActual));
+			
+			ventaServicio.generarReporteFactura(venta, true);
 		} catch (Exception e1) {
 			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
 		}	
@@ -48,6 +72,7 @@ public class PrinterService {
 		CierreZDto cierreZ = new CierreZDto();
 		cierreZ.setNumero(cierreNro);
 		cierreZ.setFecha(new Date());
+		cierreZ.setNumeroCaja(PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 		cierreZServicio.guardarCierre(cierreZ);
 		return true;
 	}

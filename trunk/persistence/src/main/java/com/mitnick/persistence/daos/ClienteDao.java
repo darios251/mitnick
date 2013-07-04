@@ -1,25 +1,11 @@
 package com.mitnick.persistence.daos;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.FetchMode;
@@ -32,15 +18,10 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
-import com.mitnick.persistence.entities.Empresa;
-import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
-import com.mitnick.servicio.servicios.dtos.ReporteMovimientoClienteDto;
 import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
-import com.mitnick.utils.dtos.CuotaDto;
-import com.mitnick.utils.dtos.PagoDto;
 
 /**
  * Esta clase tiene la responsabilidad de representar el administrador de
@@ -185,95 +166,6 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		return cliente;
 	}
 
-	public Comprobante generarComprobante(List<CuotaDto> cuotas) {
-		ClienteDto cliente = cuotas.get(0).getClienteDto();
-		List<PagoDto> pagosComprobante = new ArrayList<PagoDto>();
-		BigDecimal pagoComprobante = new BigDecimal(0);
-
-		for (int i = 0; i < cuotas.size(); i++) {
-			pagosComprobante.addAll(cuotas.get(i).getPagosComprobante());
-			pagoComprobante = pagoComprobante.add(cuotas.get(i)
-					.getPagoComprobante());
-		}
-
-		if (Validator.isEmptyOrNull(pagosComprobante))
-			throw new PersistenceException("error.cuota.comprobante.sinPagos");
-		try {
-			DetachedCriteria criteria = DetachedCriteria
-					.forClass(Empresa.class);
-			criteria.add(Restrictions.idEq(new Long(1)));
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
-					.getClass().getResourceAsStream(
-							"/reports/comprobante.jasper"));
-			JRDataSource dr = new JRBeanCollectionDataSource(
-					clean(pagosComprobante));
-
-			Empresa empresa = (Empresa) getHibernateTemplate().findByCriteria(
-					criteria).get(0);
-
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("nombreEmpresa", empresa.getNombre());
-			parameters.put("empresaDireccion", empresa.getDireccion()
-					.getDomicilio()
-					+ "("
-					+ empresa.getDireccion().getCodigoPostal()
-					+ ")"
-					+ empresa.getDireccion().getCiudad().getDescripcion()
-					+ "\n Tel" + empresa.getTelefono());
-			parameters.put("tipoResponsable", empresa.getTipoResponsable());
-			parameters.put("cuitEmpresa", empresa.getCuit());
-			parameters.put("ingBrutos", empresa.getIngBrutos());
-			parameters.put("fechaInicioActividadEmpresa",
-					empresa.getFechaInicioActividad());
-			parameters.put("tipoIva", "Consumidor Final");
-			parameters.put("nombreCliente", cliente.getNombre());
-			parameters.put("codigo", cliente.getId().toString());
-			String direccion = "";
-
-			if (Validator.isNotNull(cliente.getDireccion())) {
-				direccion = direccion.concat(cliente.getDireccion()
-						.getDomicilio());
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad()))
-					direccion = direccion.concat(" ")
-							.concat(cliente.getDireccion().getCiudad()
-									.getDescripcion());
-			}
-
-			parameters.put("direccionCliente", direccion);
-			BigDecimal saldoTotal = getSaldoDeudor(cliente);
-
-			BigDecimal saldoPendiente = saldoTotal.subtract(pagoComprobante);
-
-			parameters.put("saldoTotal", saldoTotal.toString());
-			parameters.put("total", pagoComprobante.toString());
-			parameters.put("saldoPendiente", saldoPendiente.toString());
-
-			Comprobante comprobante = new Comprobante();
-			String id = String.valueOf(cliente.getId()).concat(
-					String.valueOf(cliente.getCantidadComprobantes()));
-			comprobante.setId(id);
-			comprobante.setFecha(new Date());
-			comprobante.setTotal(pagoComprobante);
-			Cliente clienteObject = findById(cliente.getId());
-			comprobante.setCliente(clienteObject);
-			clienteObject.addComprobante(comprobante);
-			clienteObject = saveOrUpdate(clienteObject);
-			super.getHibernateTemplate().flush();
-			parameters.put("nroComprobante", id);
-
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
-					parameters, dr);
-
-			JasperViewer.viewReport(jasperPrint, false);
-
-			return comprobante;
-
-		} catch (Exception e1) {
-			throw new PersistenceException("error.comprobante.Cliente",
-					"Error al generar el comprobante de pago del cliente.", e1);
-		}
-	}
-
 	public void eliminarComprobante(Comprobante comprobante) {
 		try {
 			getHibernateTemplate().delete(comprobante);
@@ -289,124 +181,15 @@ public class ClienteDao extends GenericDaoHibernate<Cliente, Long> implements
 		return comprobante;
 	}
 
-	private List<PagoDto> clean(List<PagoDto> pagos) {
-		List<PagoDto> pagosLimpios = new ArrayList<PagoDto>();
-		Iterator<PagoDto> pagosIt = pagos.iterator();
-		while (pagosIt.hasNext()) {
-			PagoDto pago = pagosIt.next();
-			PagoDto auxiliar = new PagoDto();
-			auxiliar.setMedioPago(pago.getMedioPago());
-			auxiliar.setMonto(pago.getMonto());
-			PagoDto pagoDto = getPagoMedioPago(pagosLimpios, auxiliar);
-			if (pagoDto == null)
-				pagosLimpios.add(auxiliar);
-			else
-				pagoDto.setMonto(pagoDto.getMonto().add(pago.getMonto()));
-		}
-		return pagosLimpios;
-	}
-
-	private PagoDto getPagoMedioPago(List<PagoDto> pagos, PagoDto pago) {
-		for (int i = 0; i < pagos.size(); i++) {
-			if (pagos.get(i).getMedioPago().getCodigo()
-					.equals(pago.getMedioPago().getCodigo()))
-				return pagos.get(i);
-		}
-		return null;
-	}
-
 	public BigDecimal getSaldoDeudor(ClienteDto cliente) {
 
 		return cuotaDao.getSaldoPendiente(cliente.getId());
 	}
 
-	public void reporteMovimientosCliente(ClienteDto cliente) {
-		try {
-			List<Venta> ventas = ventaDao.findByClient(cliente.getId());
-			List<ReporteMovimientoClienteDto> movimientos = new ArrayList<ReporteMovimientoClienteDto>();
-			for (int i = 0; i < ventas.size(); i++) {
-				Venta venta = ventas.get(i);
-				ReporteMovimientoClienteDto movimiento = new ReporteMovimientoClienteDto();
-				movimiento.setMonto(venta.getTotal());
-				String nro = venta.getNumeroTicket();
-				movimiento.setFecha(venta.getFecha());
-				if (venta.isVenta()) {
-					movimiento.setNroComprobante("F" + venta.getTipoTicket()
-							+ "-" + nro);
-					movimiento.setDebe(venta.getPagoCuenta());
-					BigDecimal pago = venta.getPagoContado();
-					pago = pago.add(venta.getPagoNC());
-					movimiento.setHaber(pago);
-				} else {
-					movimiento.setNroComprobante("NC" + venta.getTipoTicket()
-							+ "-" + nro);
-					movimiento.setDebe(new BigDecimal(0));
-					movimiento.setHaber(venta.getTotal());
-				}
-				movimientos.add(movimiento);
-			}
-			List<Comprobante> comprobantes = findComprobantesByClienteId(cliente
-					.getId());
-			for (int j = 0; j < comprobantes.size(); j++) {
-				Comprobante comprobante = comprobantes.get(j);
-				ReporteMovimientoClienteDto movimiento = new ReporteMovimientoClienteDto();
-				movimiento.setMonto(comprobante.getTotal());
-				String nro = comprobante.getId().toString();
-				movimiento.setNroComprobante("Comp-" + nro);
-				movimiento.setFecha(comprobante.getFecha());
-				movimiento.setDebe(new BigDecimal(0));
-				movimiento.setHaber(comprobante.getTotal());
-				movimientos.add(movimiento);
-			}
-
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
-					.getClass().getResourceAsStream(
-							"/reports/movimientosCliente.jasper"));
-
-			JRDataSource dr = new JRBeanCollectionDataSource(
-					orderByDate(movimientos));
-
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("saldoDeudor", getSaldoDeudor(cliente).toString());			
-			parameters.put("nombreCliente", cliente.getNombre());
-			String direccion = "";
-			if (Validator.isNotNull(cliente.getDireccion())) {
-				direccion = direccion.concat(cliente.getDireccion()
-						.getDomicilio());
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad()))
-					direccion = direccion.concat(" ")
-							.concat(cliente.getDireccion().getCiudad()
-									.getDescripcion());
-			}
-
-			parameters.put("direccionCliente", direccion);
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
-					parameters, dr);
-
-			JasperViewer.viewReport(jasperPrint, false);
-
-		} catch (Exception e1) {
-			throw new PersistenceException("error.reporte.movimientos.Cliente",
-					"Error al generar el reporte de movimientos del cliente.",
-					e1);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<ReporteMovimientoClienteDto> orderByDate(
-			List<ReporteMovimientoClienteDto> movimientos) {
-		// ordenamos la lista por fecha
-		Collections.sort(movimientos, new Comparator() {
-
-			public int compare(Object o1, Object o2) {
-				ReporteMovimientoClienteDto e1 = (ReporteMovimientoClienteDto) o1;
-				ReporteMovimientoClienteDto e2 = (ReporteMovimientoClienteDto) o2;
-				return e1.getFecha().compareTo(e2.getFecha());
-			}
-		});
-		return movimientos;
-	}
-
+	/**
+	 * Este método se creo para mantener compatibilidad hacia atras con version anterior del proyecto.
+	 * Migracion de datos.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Cliente> findAllWithComprobantes() {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Cliente.class);

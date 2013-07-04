@@ -604,6 +604,7 @@ public class PrinterService {
 			cierreNro = cierreNro.split(":")[1];
 			
 			CierreZDto cierreZ = new CierreZDto();
+			cierreZ.setNumeroCaja(PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 			cierreZ.setNumero(cierreNro);
 			cierreZ.setFecha(new Date());
 			cierreZServicio.guardarCierre(cierreZ);

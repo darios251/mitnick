@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Cuota;
-import com.mitnick.persistence.entities.Pago;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.ConstraintValidationHelper;
 import com.mitnick.utils.Validator;
@@ -60,24 +59,7 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 	}	
 
 	@SuppressWarnings("unchecked")
-	public List<Pago> getPagosCuotas(ReportesDto filtro){
-		DetachedCriteria criteria = DetachedCriteria.forClass(Pago.class);
-
-		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
-			criteria.add(Restrictions.ge("fecha", filtro.getFechaInicio()));
-		}
-		if(Validator.isNotNull(filtro.getFechaFin())){
-			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
-		}
-		
-		criteria.add(Restrictions.isNotNull("cuota"));
-		criteria.addOrder(Order.desc("fecha"));
-		
-		return getHibernateTemplate().findByCriteria(criteria);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Comprobante> getComprobantes(ReportesDto filtro){
+	public List<Comprobante> getComprobantes(ReportesDto filtro, int numeroCaja){
 		DetachedCriteria criteria = DetachedCriteria.forClass(Comprobante.class);
 
 		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
@@ -87,6 +69,7 @@ public class CuotaDao extends GenericDaoHibernate<Cuota, Long>  implements ICuot
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
 				
+		criteria.add(Restrictions.eq("numeroCaja", numeroCaja));
 		criteria.addOrder(Order.desc("fecha"));
 				
 		return getHibernateTemplate().findByCriteria(criteria);

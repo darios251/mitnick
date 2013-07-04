@@ -27,6 +27,9 @@ public class CierreZ extends BaseObject {
 	@Column(name = "fecha", nullable = false)
 	private Date fecha;
 	
+	@Column(name= "numeroCaja", nullable = false)
+	private int numeroCaja;
+	
 	public Long getId() {
 		return id;
 	}
@@ -54,40 +57,60 @@ public class CierreZ extends BaseObject {
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		result = prime * result + numeroCaja;
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (!(obj instanceof CierreZ)) {
 			return false;
+		}
 		CierreZ other = (CierreZ) obj;
 		if (fecha == null) {
-			if (other.fecha != null)
+			if (other.fecha != null) {
 				return false;
-		} else if (!fecha.equals(other.fecha))
+			}
+		} else if (!fecha.equals(other.fecha)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (numero == null) {
-			if (other.numero != null)
+			if (other.numero != null) {
 				return false;
-		} else if (!numero.equals(other.numero))
+			}
+		} else if (!numero.equals(other.numero)) {
 			return false;
+		}
+		if (numeroCaja != other.numeroCaja) {
+			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "CierreZ [id=" + id + ", numero=" + numero + ", fecha=" + fecha
-				+ "]";
+		return "CierreZ [id=" + id + ", numero=" + numero + ", fecha=" + fecha + ", numeroCaja=" + numeroCaja + "]";
+	}
+
+	public int getNumeroCaja() {
+		return numeroCaja;
+	}
+
+	public void setNumeroCaja(int numeroCaja) {
+		this.numeroCaja = numeroCaja;
 	}
 	
 }

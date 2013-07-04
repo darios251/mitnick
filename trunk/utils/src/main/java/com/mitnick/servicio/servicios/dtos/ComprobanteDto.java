@@ -11,6 +11,16 @@ public class ComprobanteDto extends ServicioBaseDto {
 	private String cliente;
 	
 	private BigDecimal monto = new BigDecimal(0);
+	
+	private int numeroCaja;
+
+	public int getNumeroCaja() {
+		return numeroCaja;
+	}
+
+	public void setNumeroCaja(int numeroCaja) {
+		this.numeroCaja = numeroCaja;
+	}
 
 	public String getCliente() {
 		return cliente;
@@ -41,9 +51,9 @@ public class ComprobanteDto extends ServicioBaseDto {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-		result = prime * result
-				+ ((idCliente == null) ? 0 : idCliente.hashCode());
+		result = prime * result + ((idCliente == null) ? 0 : idCliente.hashCode());
 		result = prime * result + ((monto == null) ? 0 : monto.hashCode());
+		result = prime * result + numeroCaja;
 		return result;
 	}
 
@@ -80,13 +90,16 @@ public class ComprobanteDto extends ServicioBaseDto {
 		} else if (!monto.equals(other.monto)) {
 			return false;
 		}
+		if (numeroCaja != other.numeroCaja) {
+			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "ComprobanteDto [idCliente=" + idCliente + ", cliente="
-				+ cliente + ", monto=" + monto + "]";
+		return "ComprobanteDto [idCliente=" + idCliente + ", cliente=" + cliente + ", monto=" + monto + ", numeroCaja="
+				+ numeroCaja + "]";
 	}
 
 }

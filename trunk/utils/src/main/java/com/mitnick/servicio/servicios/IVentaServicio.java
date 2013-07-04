@@ -82,6 +82,12 @@ public interface IVentaServicio {
 	public void cancelarVenta(VentaDto ventaDto);
 
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
-	public VentaDto getVentaByNroFacturaTipo(String numero, String tipo);
+	public VentaDto getVentaByNroFacturaTipo(String numero, String tipo, int numeroCaja);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public void generarReporteFactura(VentaDto venta, boolean duplicado);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public void consultarTransaccion(String nroTrx, String tipo, String factura, int numeroCaja);
 	
 }

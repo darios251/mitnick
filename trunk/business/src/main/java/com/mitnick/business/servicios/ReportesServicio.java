@@ -36,6 +36,7 @@ import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
+import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ComprobanteDto;
@@ -49,13 +50,13 @@ import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
-import com.mitnick.utils.dtos.VentaDto;
 
 @SuppressWarnings("rawtypes")
 @Service("reportesServicio")
@@ -228,7 +229,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	@Override
 	public void reporteFacturas(ReportesDto filtro) {
 		try {
-			List<Venta> ventas = ventaDao.findByFiltro(filtro);
+			List<Venta> ventas = ventaDao.findByFiltro(filtro, PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 			List<ReporteFacturasDto> reportes = new ArrayList<ReporteFacturasDto>();
 
 			for (Venta venta : ventas) {
@@ -300,7 +301,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	}
 
 	private ReporteFacturasDto getCorte(Date fecha, List<ReporteFacturasDto> reportes){
-		CierreZ cierre = cierreDao.findByFecha(fecha);
+		CierreZ cierre = cierreDao.findByFecha(fecha, PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 		int corte = -1;
 		if (Validator.isNotNull(cierre))
 			corte = cierre.getNumero().intValue();
@@ -339,7 +340,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		BigDecimal totalDev = new BigDecimal(0);
 		BigDecimal total = new BigDecimal(0);
 		try {
-			List<Venta> ventas = ventaDao.findByFiltro(filtro);
+			List<Venta> ventas = ventaDao.findByFiltro(filtro, PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 			for (Venta venta : ventas) {
 				ReporteVentasResultadoDTO dto = null;
 				if (TRANSACCIONAL == tipo) {
@@ -461,7 +462,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		BigDecimal totalDevolucion = new BigDecimal(0);
 		
 		try {
-			List<Venta> ventas = ventaDao.findByFiltro(filtro);
+			List<Venta> ventas = ventaDao.findByFiltro(filtro, PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 			for (Venta venta : ventas) {
 				if (venta.isVenta()) {
 					for (Pago pago : venta.getPagos()) {
@@ -481,7 +482,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			}
 			
 			//nueva funcionalidad (04062013)
-			List<Comprobante> recibosNew = cuotaDao.getComprobantes(filtro);
+			List<Comprobante> recibosNew = cuotaDao.getComprobantes(filtro, PropertiesManager.getPropertyAsInteger("application.caja.numero"));
 			for (Comprobante recibo: recibosNew) {
 				if (Validator.isNotNull(recibo.getCliente()) ){
 					ComprobanteDto comprobante = getComprobanteCliente(comprobantes, recibo.getCliente());
@@ -573,8 +574,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	 * @param fecha
 	 * @return
 	 */
-	private ReporteVentasResultadoDTO getDTOMes(
-			List<ReporteVentasResultadoDTO> ingresos, Date fecha) {
+	private ReporteVentasResultadoDTO getDTOMes(List<ReporteVentasResultadoDTO> ingresos, Date fecha) {
 		Calendar calendario = Calendar.getInstance();
 		calendario.setTime(fecha);
 		int month = calendario.get(Calendar.MONTH);
@@ -719,15 +719,55 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	public void consultarVentaPorArticulo(ReporteMovimientosDto dto) {
 
 		try {
-			List<ReporteVentaArticuloDTO> articulos = reporteDao
-					.consultarVentaPorArticulo(dto);
+			
+			int cantidadTotal = 0;
+			
+			List<ProductoVenta> productos = reporteDao.consultarVentaPorArticulo(dto); 
+			List<ReporteVentaArticuloDTO> resultado = new ArrayList<ReporteVentaArticuloDTO>();
+			for (ProductoVenta producto: productos){
+				cantidadTotal = cantidadTotal + producto.getCantidad();
+				ReporteVentaArticuloDTO repdto = null;
+				
+				if (dto.isAgrupadoMes() && dto.isAgrupadoProducto())
+					repdto = getDTOProductoMes(resultado, producto);
+				else if (!dto.isAgrupadoMes() && dto.isAgrupadoProducto())
+					repdto = getDTOProductoFecha(resultado, producto);
+				else if (dto.isAgrupadoMes() && !dto.isAgrupadoProducto())
+					repdto = getDTOMes(resultado, producto);
+				else if (!dto.isAgrupadoMes() && !dto.isAgrupadoProducto())
+					repdto = getDTOFecha(resultado, producto);
+				
+				int cantidad = repdto .getCantidad();
+				repdto.setCantidad(cantidad + producto.getCantidad());
+				BigDecimal total = repdto .getTotal();
+				repdto.setTotal(total.add(producto.getPrecio().subtract(producto.getDescuento())));
+				BigDecimal descuento = repdto .getDescuento();
+				repdto.setDescuento(descuento.add(producto.getDescuento()));
+				if (Validator.isNotNull(producto.getProducto().getMarca()) && dto.isAgrupadoProducto())
+					repdto.setProductoMarca(producto.getProducto().getMarca().getDescripcion());
+				else
+					repdto.setProductoMarca("");		
+				if (producto.getProducto().getTalle()==null)
+					repdto.setTalle("");
+				else
+					repdto.setTalle(producto.getProducto().getTalle());
+			}
 
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
-					.getClass().getResourceAsStream(
-							"/reports/VentasProducto.jasper"));
+			JasperReport reporte = null;
+			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+				reporte = (JasperReport) JRLoader.loadObject(this
+						.getClass().getResourceAsStream(
+								"/reports/VentasProductoDescuentos.jasper"));
+			} else {
+				reporte = (JasperReport) JRLoader.loadObject(this
+						.getClass().getResourceAsStream(
+								"/reports/VentasProducto.jasper"));	
+			}
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
-
-			JRDataSource dr = new JRBeanCollectionDataSource(articulos);
+			parameters.put("desde", DateHelper.getFecha(dto.getFechaInicio()));
+			parameters.put("hasta", DateHelper.getFecha(dto.getFechaFin()));
+			parameters.put("cantidadTotal", String.valueOf(cantidadTotal));
+			JRDataSource dr = new JRBeanCollectionDataSource(resultado);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
 					parameters, dr);
@@ -743,6 +783,97 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		}
 	}
 
+	private ReporteVentaArticuloDTO getDTOFecha(List<ReporteVentaArticuloDTO> items, ProductoVenta producto){
+		for (ReporteVentaArticuloDTO dto: items){
+			String fecha = DateHelper.getFecha(producto.getVenta().getFecha());
+			if (dto.getFecha().equals(fecha))
+				return dto;
+		}		
+		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
+		dto.setProductoCodigo("Varios");
+		dto.setProductoDescripcion("Varios");
+		dto.setCantidad(0);
+		dto.setTotal(new BigDecimal(0));
+		dto.setDescuento(new BigDecimal(0));
+		dto.setFecha(DateHelper.getFecha(producto.getVenta().getFecha()));
+		items.add(dto);
+		return dto;
+	}
+	
+	/**
+	 * dto.getFecha format: mes - a�o (Enero-2012)
+	 * @param ingresos
+	 * @param fecha
+	 * @return
+	 */
+	private ReporteVentaArticuloDTO getDTOMes(List<ReporteVentaArticuloDTO> items, ProductoVenta producto) {
+		Calendar calendario = Calendar.getInstance();
+		calendario.setTime(producto.getVenta().getFecha());
+		int month = calendario.get(Calendar.MONTH);
+		int year = calendario.get(Calendar.YEAR);
+		String mes = DateHelper.getMes(month);
+		String ano = String.valueOf(year);
+		for (ReporteVentaArticuloDTO dto : items) {
+			String[] fechaDto = dto.getFecha().split("-");
+			if (fechaDto[0].equals(mes) && fechaDto[1].equals(ano))
+				return dto;
+		}
+		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
+		dto.setProductoCodigo("Varios");
+		dto.setProductoDescripcion("Varios");
+		dto.setCantidad(0);
+		dto.setTotal(new BigDecimal(0));
+		dto.setDescuento(new BigDecimal(0));
+		dto.setFecha(mes.concat("-").concat(ano));		
+		items.add(dto);
+		return dto;
+	}
+	
+	private ReporteVentaArticuloDTO getDTOProductoFecha(List<ReporteVentaArticuloDTO> items, ProductoVenta producto){
+		for (ReporteVentaArticuloDTO dto: items){
+			if (dto.getFecha().equals(producto.getVenta().getFecha()) && dto.getProductoCodigo().equals(producto.getProducto().getCodigo()))
+				return dto;
+		}		
+		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
+		dto.setProductoCodigo(producto.getProducto().getCodigo());
+		dto.setProductoDescripcion(producto.getProducto().getDescripcion());
+		dto.setCantidad(0);
+		dto.setTotal(new BigDecimal(0));
+		dto.setDescuento(new BigDecimal(0));
+		dto.setFecha(DateHelper.getFecha(producto.getVenta().getFecha()));
+		items.add(dto);
+		return dto;
+	}
+	
+	/**
+	 * dto.getFecha format: mes - a�o (Enero-2012)
+	 * @param ingresos
+	 * @param fecha
+	 * @return
+	 */
+	private ReporteVentaArticuloDTO getDTOProductoMes(List<ReporteVentaArticuloDTO> items, ProductoVenta producto) {
+		Calendar calendario = Calendar.getInstance();
+		calendario.setTime(producto.getVenta().getFecha());
+		int month = calendario.get(Calendar.MONTH);
+		int year = calendario.get(Calendar.YEAR);
+		String mes = DateHelper.getMes(month);
+		String ano = String.valueOf(year);
+		for (ReporteVentaArticuloDTO dto : items) {
+			String[] fechaDto = dto.getFecha().split("-");
+			if (fechaDto[0].equals(mes) && fechaDto[1].equals(ano) && dto.getProductoCodigo().equals(producto.getProducto().getCodigo()))
+				return dto;
+		}
+		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
+		dto.setProductoCodigo(producto.getProducto().getCodigo());
+		dto.setProductoDescripcion(producto.getProducto().getDescripcion());
+		dto.setCantidad(0);
+		dto.setTotal(new BigDecimal(0));
+		dto.setDescuento(new BigDecimal(0));
+		dto.setFecha(mes.concat("-").concat(ano));		
+		items.add(dto);
+		return dto;
+	}
+	
 	public void exportarCompraSugerida(ReporteMovimientosDto dto) {
 		try {
 			List<ReporteCompraSugeridaDTO> articulos = reporteDao
@@ -766,20 +897,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		} catch (JRException e) {
 			throw new BusinessException(
 					"Error al intentar obtener el reporte de ventas", e);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void consultarTransaccion(String nroTrx, String tipo, String factura){
-		Venta venta = ventaDao.findTransactionByNumeroTipoFactura(nroTrx, tipo, factura);
-		if (Validator.isNull(venta))
-			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacci�n con el n�mero ingresado");
-		try {
-			VentaDto ventaDto = (VentaDto) entityDTOParser.getDtoFromEntity(venta);
-			ventaDao.generarFactura(ventaDto, true);
-		} catch (PersistenceException e) {
-			throw new BusinessException(e,
-					"Error al intentar obtener el comprobante de la transacci�n");
 		}
 	}
 	

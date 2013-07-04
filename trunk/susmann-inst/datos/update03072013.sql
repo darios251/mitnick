@@ -16,7 +16,13 @@ ADD CONSTRAINT fk4eb7a2c21caf2d8 FOREIGN KEY (vendedor_id)
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE Venta
-ADD COLUMN numerocaja integer NOT NULL default 4;
+ADD COLUMN numerocaja integer NOT NULL default 6;
+
+ALTER TABLE Comprobante
+ADD COLUMN numerocaja integer NOT NULL default 6;
+
+ALTER TABLE CierreZ
+ADD COLUMN numerocaja integer NOT NULL default 6;
 
 ALTER TABLE producto_venta
 ADD COLUMN

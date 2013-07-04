@@ -274,6 +274,7 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 		return defaultFocusField;
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected void cleanErrors(){
 		for (Component component : getComponents()) {
 			if (component instanceof JTextField){

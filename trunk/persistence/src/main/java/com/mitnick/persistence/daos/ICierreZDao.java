@@ -9,5 +9,5 @@ import com.mitnick.persistence.entities.CierreZ;
 
 public interface ICierreZDao extends GenericDao<CierreZ, Long>{
 	
-	public CierreZ findByFecha(Date fecha);
+	public CierreZ findByFecha(Date fecha, int numeroCaja);
 }

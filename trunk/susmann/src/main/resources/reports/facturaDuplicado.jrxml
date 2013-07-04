@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDuplicado" pageWidth="651" pageHeight="878" whenNoDataType="AllSectionsNoDetail" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="1.0000000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="4"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -79,6 +79,10 @@
 	<parameter name="tipoLetra" class="java.lang.String"/>
 	<parameter name="leyenda" class="java.lang.String"/>
 	<parameter name="fechaTrx" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pagos" class="java.util.List"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -179,7 +183,7 @@
 				<textFieldExpression><![CDATA[$P{fechaInicioActividadEmpresa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="25324953-5795-41a6-a596-739bc0fcd07e" x="464" y="25" width="133" height="20"/>
+				<reportElement uuid="25324953-5795-41a6-a596-739bc0fcd07e" x="465" y="24" width="133" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{nroFactura}]]></textFieldExpression>
 			</textField>
@@ -191,14 +195,14 @@
 				<textFieldExpression><![CDATA[$P{tipoLetra}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="99ddfb65-d76f-40ef-abd8-5ac84ef7416a" x="387" y="5" width="209" height="20"/>
+				<reportElement uuid="99ddfb65-d76f-40ef-abd8-5ac84ef7416a" x="388" y="5" width="209" height="20"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{leyenda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c023d929-25dd-4555-a028-163f6950efb5" x="504" y="44" width="100" height="20"/>
+				<reportElement uuid="c023d929-25dd-4555-a028-163f6950efb5" x="504" y="44" width="95" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{fechaTrx}]]></textFieldExpression>
 			</textField>
@@ -344,6 +348,13 @@
 				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
 			</textField>
 		</band>
+		<band height="50">
+			<subreport>
+				<reportElement uuid="80194e6c-90e4-4bf5-b6c7-3cced39b5811" x="0" y="27" width="611" height="23"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{pagos})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detallePagos.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
 	<pageFooter>
 		<band height="28" splitType="Stretch">
@@ -360,7 +371,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[TOTAL $]]></text>
+				<text><![CDATA[TOTAL $ ]]></text>
 			</staticText>
 		</band>
 	</pageFooter>

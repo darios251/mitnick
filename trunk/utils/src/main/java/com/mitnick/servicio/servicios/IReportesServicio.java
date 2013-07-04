@@ -114,10 +114,4 @@ public interface IReportesServicio {
 	 */
 	public void reporteCajero(ReportesDto filtro);
 	
-	/**
-	 * Obtiene un duplicado del comprobante original de la transacción.
-	 * @param nroTrx
-	 */
-	public void consultarTransaccion(String nroTrx, String tipo, String factura);
- 
 }

@@ -13,15 +13,13 @@ import com.mitnick.utils.dtos.VentaDto;
 
 public interface IVentaDAO extends GenericDao<Venta, Long>{
 
-	List<Venta> findByFiltro(ReportesDto filtro);
+	List<Venta> findByFiltro(ReportesDto filtro, int numeroCaja);
 	
 	Venta saveOrUpdate(Venta venta);
 	
-	void generarFactura(VentaDto venta, boolean duplicado);
-	
 	List<Venta> findByClient(Long cliente);
 	
-	public Venta findByNumeroFactura(String numeroTicket);
+	public Venta findByNumeroFactura(String numeroTicket, int numeroCaja);
 	
 	public void usarCredito(String nroCredito, BigDecimal montoUsado);
 	
@@ -31,9 +29,9 @@ public interface IVentaDAO extends GenericDao<Venta, Long>{
 	
 	public void actualizarCreditos(List<CuotaDto> cuotas);
 	
-	public Venta findTransactionByNumeroFactura(String numeroTicket);
+	public Venta findTransactionByNumeroFactura(String numeroTicket, int numeroCaja);
 	
 	public Venta findLastByClient(Long cliente);
 	
-	public Venta findTransactionByNumeroTipoFactura(String numeroTicket, String tipo, String factura);
+	public Venta findTransactionByNumeroTipoFactura(String numeroTicket, String tipo, String factura, int numeroCaja);
 }
