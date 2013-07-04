@@ -153,8 +153,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			
 			TipoCompradorDto tipoComprador = (TipoCompradorDto) cmbTipoComprador.getSelectedItem();
 			
-			boolean vendedor = PropertiesManager.getPropertyAsBoolean("application.venta.vendedor");
-			if (vendedor){
+			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) {
 				VendedorDialog vendedorDialog = new VendedorDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), vendedorController);
 				if (Validator.isNotNull(vendedorDialog.getSelected()))
 						VentaManager.getVentaActual().setVendedor(vendedorDialog.getSelected());

@@ -23,6 +23,7 @@ import com.mitnick.servicio.servicios.IMedioPagoServicio;
 import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
+import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
@@ -256,6 +257,42 @@ public class VentaController extends BaseController {
 		}
 	}
 
+	public void agregarDescuento(DescuentoDto descuento, VentaDto venta, ProductoVentaDto producto) {
+		if (Validator.isNull(descuento) || Validator.isNull(venta))
+			throw new PresentationException("error.venta.agregarDescuento");
+
+		try {
+			if (Validator.isNotNull(producto))
+				VentaManager.setVentaActual(ventaServicio.agregarDescuento(descuento, venta, producto));
+			else
+				VentaManager.setVentaActual(ventaServicio.agregarDescuento(descuento, venta));
+					
+		} catch (BusinessException be) {
+			throw new PresentationException("error.venta.agregarDescuento");
+		}
+
+		ventaPanel.actualizarPantalla();
+	
+	}
+	
+	public void quitarDescuento(VentaDto venta, ProductoVentaDto producto) {
+		if (Validator.isNull(venta))
+			throw new PresentationException("error.venta.quitarDescuento");
+
+		try {
+			if (Validator.isNotNull(producto))
+				VentaManager.setVentaActual(ventaServicio.quitarDescuento(venta, producto));
+			else
+				VentaManager.setVentaActual(ventaServicio.quitarDescuento(venta));
+					
+		} catch (BusinessException be) {
+			throw new PresentationException("error.venta.quitarDescuento");
+		}
+
+		ventaPanel.actualizarPantalla();
+	
+	}
+	
 	public void quitarProductoVentaDto() {
 		try {
 			int index = ventaPanel.getTable().getSelectedRow();

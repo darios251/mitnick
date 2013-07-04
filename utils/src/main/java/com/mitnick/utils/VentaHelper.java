@@ -18,18 +18,32 @@ public class VentaHelper {
 		DescuentoDto descuento = ventaDto.getDescuento();
 		BigDecimal monto = BigDecimal.ZERO;
 		if (Validator.isNotNull(descuento)) {
-			if (descuento.getTipo() == DescuentoDto.MONTO)
-				monto = descuento.getDescuento();
-			else {
-				BigDecimal perc = descuento.getDescuento();
-				perc = perc.divide(new BigDecimal(100));
-				BigDecimal subtotal = ventaDto.getSubTotal();
-				monto = subtotal.multiply(perc);
-			}
+			return descuento.getDescuento();
 		}
 		return monto;
 	}
 
+	public static BigDecimal getDescuentoTotal(List<ProductoVentaDto> productos) {
+		BigDecimal monto = BigDecimal.ZERO;
+		for (ProductoVentaDto producto : productos){
+			if (Validator.isNotNull(producto.getDescuento())){
+				DescuentoDto descuento = producto.getDescuento();
+				monto = monto.add(descuento.getDescuento());
+			}
+		}
+		return monto;
+	}
+	
+	public static BigDecimal getDescuentoTotal(ProductoVentaDto productoVentaDto) {
+		DescuentoDto descuento = productoVentaDto.getDescuento();
+		BigDecimal monto = BigDecimal.ZERO;
+		if (Validator.isNotNull(descuento)) {
+			return descuento.getDescuento();
+		}
+		return monto;
+
+	}
+	
 	public static List<ProductoVentaDto> getProductosPrecioVendido(VentaDto ventaDto) {
 		List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
 		for(ProductoVentaDto productoVenta : ventaDto.getProductos()) {
@@ -58,9 +72,13 @@ public class VentaHelper {
 		for(ProductoVentaDto producto : ventaDto.getProductos()) {
 			BigDecimal precioCantidad = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
 			BigDecimal precioFinal = calcularPrecioFinal(precioCantidad);
+			
 			BigDecimal iva = precioFinal.subtract(precioCantidad);
-			producto.setPrecioTotal(precioFinal);
+			
 			subTotal = subTotal.add(precioFinal);
+			
+			producto.setPrecioTotal(precioFinal);
+			
 			producto.setIva(iva);
 			impuestos = impuestos.add(producto.getIva());
 		}
@@ -71,6 +89,7 @@ public class VentaHelper {
 		ventaDto.setImpuesto(impuestos);
 		
 		BigDecimal descuentos = VentaHelper.getDescuentoTotal(ventaDto);
+		descuentos = descuentos.add(VentaHelper.getDescuentoTotal(ventaDto.getProductos()));
 		BigDecimal total = subTotal.subtract(descuentos);
 		
 		ventaDto.setTotal(total);

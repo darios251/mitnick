@@ -677,8 +677,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());
 			tlbQuickAccess.add(getBtnProveedores());
-			boolean vendedor = PropertiesManager.getPropertyAsBoolean("application.venta.vendedor");
-			if (vendedor){
+			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) {
 				tlbQuickAccess.add(getBtnVendedores());	
 			}
 			
@@ -728,7 +727,9 @@ public class PrincipalView extends JFrame
 		getBtnReporte().setVisible(show);
 		getBtnArticulos().setVisible(show);
 		getBtnProveedores().setVisible(show);
-		boolean vendedor = PropertiesManager.getPropertyAsBoolean("application.venta.vendedor");
+		boolean vendedor = false;
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) 
+			vendedor = true;
 		getBtnVendedores().setVisible(vendedor);
 		getBtnClientes().setVisible(show);
 		getBtnMovimientos().setVisible(show);

@@ -10,6 +10,7 @@ import javax.swing.table.TableModel;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.utils.VentaManager;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.locator.BeanLocator;
 
@@ -29,6 +30,9 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 		columnNames.add(PropertiesManager.getProperty("ventaTableModel.descripcion"));
 		columnNames.add(PropertiesManager.getProperty("ventaTableModel.precioUnitario"));
 		columnNames.add(PropertiesManager.getProperty("ventaTableModel.cantidad"));
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+			columnNames.add(PropertiesManager.getProperty("ventaTableModel.descuento"));			
+		}
 		columnNames.add(PropertiesManager.getProperty("ventaTableModel.precioFinal"));
 		data = new ArrayList<ProductoVentaDto>();
 	}
@@ -106,17 +110,34 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		ProductoVentaDto fila = VentaManager.getVentaActual().getProductos().get(rowIndex);//data.get(rowIndex);
+		
+		BigDecimal total = fila.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP);
+		if (Validator.isNotNull(fila.getDescuento()))
+			total = total.subtract(fila.getDescuento().getDescuento()).setScale(2, BigDecimal.ROUND_HALF_UP);
+		
 		switch(columnIndex) {
 		case 0: 
 			return fila.getProducto().getCodigo();
 		case 1:
 			return fila.getDescripcion();
 		case 2:
-			return fila.getProducto().getPrecioVentaConIva().setScale (2, BigDecimal.ROUND_HALF_UP);
+			return fila.getProducto().getPrecioVentaConIva().setScale (2, BigDecimal.ROUND_HALF_UP);	
 		case 3:
 			return fila.getCantidad();
-		case 4:
-			return fila.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP);
+		case 4:{
+			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+				BigDecimal descuento = BigDecimal.ZERO;
+				if (Validator.isNotNull(fila.getDescuento()))
+					descuento = fila.getDescuento().getDescuento();
+				return descuento.setScale(2, BigDecimal.ROUND_HALF_UP);
+			} else {				
+				return total;
+			}
+		}
+		case 5: {
+			return total;
+		}
+			
 		}
 		return data.get(-1);
 	}
@@ -139,7 +160,15 @@ public class VentaTableModel extends AbstractTableModel implements TableModel{
 			case 3:
 				ventaController.modificarCantidad(fila, nuevoValor);
 				break;
-			case 4:
+			case 4: {
+				if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+					//no se puede modificar el descuento desde la tabla
+				} else {
+					fila.setPrecioTotal(new BigDecimal(nuevoValor));
+					break;
+				}
+			}
+			case 5:
 				fila.setPrecioTotal(new BigDecimal(nuevoValor));
 				break;
 		}

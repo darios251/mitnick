@@ -98,8 +98,38 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	}
 
 	@Override
-	public VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta) {
+	public VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta) {		
+		if (Validator.isNotNull(descuento)) {
+			if (descuento.getTipo() == DescuentoDto.PORCENTAJE){
+				BigDecimal monto = BigDecimal.ZERO;
+				BigDecimal perc = descuento.getDescuento();
+				perc = perc.divide(new BigDecimal(100));
+				BigDecimal subtotal = venta.getSubTotal();
+				monto = subtotal.multiply(perc);
+				descuento.setTipo(DescuentoDto.MONTO);
+				descuento.setDescuento(monto);
+			}
+		}
 		venta.setDescuento(descuento);
+		VentaHelper.calcularTotales(venta);
+		
+		return venta;
+	}
+	
+	@Override
+	public VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta, ProductoVentaDto productoVenta) {
+		if (Validator.isNotNull(descuento)) {
+			if (descuento.getTipo() == DescuentoDto.PORCENTAJE){
+				BigDecimal monto = BigDecimal.ZERO;
+				BigDecimal perc = descuento.getDescuento();
+				perc = perc.divide(new BigDecimal(100));
+				BigDecimal subtotal = productoVenta.getPrecioTotal();
+				monto = subtotal.multiply(perc);
+				descuento.setTipo(DescuentoDto.MONTO);
+				descuento.setDescuento(monto);
+			}
+		}
+		productoVenta.setDescuento(descuento);
 		VentaHelper.calcularTotales(venta);
 		
 		return venta;
@@ -113,6 +143,14 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		return venta;
 	}
 
+	@Override
+	public VentaDto quitarDescuento(VentaDto venta, ProductoVentaDto productoVenta) {
+		productoVenta.setDescuento(null);
+		VentaHelper.calcularTotales(venta);
+		
+		return venta;
+	}
+	
 	@Override
 	public VentaDto modificarCantidad(ProductoVentaDto productoVenta, int cantidad, VentaDto venta) {
 		productoVenta.setCantidad(cantidad);

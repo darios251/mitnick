@@ -592,6 +592,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoVenta.setIva(productoVentaDto.getIva());
 		productoVenta.setDescripcion(productoVentaDto.getDescripcion());
 		productoVenta.setPrecio(productoVentaDto.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP));
+		productoVenta.setDescuento(VentaHelper.getDescuentoTotal(productoVentaDto));
 		return productoVenta;
 	}
 	
@@ -602,6 +603,15 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoVentaDto.setIva(productoVenta.getIva());
 		productoVentaDto.setPrecioTotal(productoVenta.getPrecio());
 		productoVentaDto.setDescripcion(productoVenta.getDescripcion());
+		
+		//el descuento se toma por monto para reportes aun cuando fue por porcentaje
+		if (Validator.isNotNull(productoVenta.getDescuento())) {
+			DescuentoDto descuento = new DescuentoDto();
+			descuento.setTipo(DescuentoDto.MONTO);
+			descuento.setDescuento(productoVenta.getDescuento());
+			productoVentaDto.setDescuento(descuento);
+		}
+		
 		return productoVentaDto;
 	}
 	

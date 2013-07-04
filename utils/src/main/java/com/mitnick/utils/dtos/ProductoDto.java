@@ -22,8 +22,6 @@ public class ProductoDto extends BaseDto {
 	
 	private BigDecimal precioCompra;
 	
-	private BigDecimal descuento;
-	
 	private int stock;
 	
 	private int stockMinimo=-1;
@@ -98,14 +96,6 @@ public class ProductoDto extends BaseDto {
 		this.precioCompra = precioCompra;
 	}
 
-	public BigDecimal getDescuento() {
-		return descuento;
-	}
-
-	public void setDescuento(BigDecimal descuento) {
-		this.descuento = descuento;
-	}
-
 	public int getStock() {
 		return stock;
 	}
@@ -148,7 +138,7 @@ public class ProductoDto extends BaseDto {
 		int result = 1;
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
-		result = prime * result + ((descuento == null) ? 0 : descuento.hashCode());
+		result = prime * result + ((iva == null) ? 0 : iva.hashCode());
 		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
 		result = prime * result + ((precioCompra == null) ? 0 : precioCompra.hashCode());
 		result = prime * result + ((precioVenta == null) ? 0 : precioVenta.hashCode());
@@ -187,11 +177,11 @@ public class ProductoDto extends BaseDto {
 		} else if (!descripcion.equals(other.descripcion)) {
 			return false;
 		}
-		if (descuento == null) {
-			if (other.descuento != null) {
+		if (iva == null) {
+			if (other.iva != null) {
 				return false;
 			}
-		} else if (!descuento.equals(other.descuento)) {
+		} else if (!iva.equals(other.iva)) {
 			return false;
 		}
 		if (marca == null) {
@@ -251,9 +241,9 @@ public class ProductoDto extends BaseDto {
 	@Override
 	public String toString() {
 		return "ProductoDto [codigo=" + codigo + ", descripcion=" + descripcion + ", tipo=" + tipo + ", talle=" + talle
-				+ ", marca=" + marca + ", precioVenta=" + precioVenta + ", precioCompra=" + precioCompra + ", descuento="
-				+ descuento + ", stock=" + stock + ", stockMinimo=" + stockMinimo + ", stockCompra=" + stockCompra
-				+ ", proveedor=" + proveedor + "]";
+				+ ", marca=" + marca + ", precioVenta=" + precioVenta + ", precioCompra=" + precioCompra + ", stock=" + stock
+				+ ", stockMinimo=" + stockMinimo + ", stockCompra=" + stockCompra + ", proveedor=" + proveedor + ", iva=" + iva
+				+ "]";
 	}
 
 }

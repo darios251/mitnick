@@ -25,7 +25,13 @@ public interface IVentaServicio {
 	VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta);
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta, ProductoVentaDto productoVenta);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	VentaDto quitarDescuento(VentaDto venta);
+	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	VentaDto quitarDescuento(VentaDto venta, ProductoVentaDto productoVenta);
 	
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	VentaDto modificarCantidad(ProductoVentaDto producto, int cantidad, VentaDto venta);
