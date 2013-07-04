@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -44,20 +45,24 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	private JTable table;
 	private VentaTableModel model;
 
+	private JLabel lblDescuentos;
+	
 	private JLabel lblTotal;
 	private JLabel lblVenta;
 	private JLabel lblCdigo;
-	private JLabel lblTotalValor;
 	private JLabel lblSutotal;
-	private JLabel lblSubtotalValor;
 	private JLabel lblTeclasAccesoRapido;
 
 	private JButton btnContinuar;
 	private JButton btnQuitar;
 	private JButton btnBuscar;
 	private JButton btnAgregar;
+	private JButton btnDescuentoVenta;
+	private JButton btnDescuentoProducto;
 
 	private JTextField txtCodigo;
+	
+	private int subtotalX = 300;	
 
 	/**
 	 * @wbp.parser.constructor
@@ -96,10 +101,15 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		add(getBtnQuitar());
 		add(getLblVenta());
 		add(getBtnContinuar());
-		add(getLblSutotal());
-		add(getLblSubtotalValor());
+		
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+			subtotalX = 150;
+			add(getBtnDescuentoVenta());
+			add(getBtnDescuentoProducto());
+			add(getLblDescuentos());
+		}
+		add(getLblSutotal());		
 		add(getLblTotal());
-		add(getLblTotalValor());
 		add(getBtnAgregar());
 		add(getLblTeclasAccesoRapido());
 		
@@ -132,8 +142,13 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	}
 	
 	private void actualizarTotales() {
-		getLblTotalValor().setText(	VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		getLblSubtotalValor().setText(VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		getLblTotal().setText(PropertiesManager.getProperty("ventaPanel.etiqueta.total", new Object[]{VentaManager.getVentaActual().getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString()}));
+		getLblSutotal().setText(PropertiesManager.getProperty("ventaPanel.etiqueta.subtotal", new Object[]{VentaManager.getVentaActual().getSubTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString()}));
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+			getLblDescuentos().setText(PropertiesManager.getProperty("ventaPanel.etiqueta.descuentos", new Object[]{
+				VentaManager.getVentaActual().getDescuentoVenta().setScale(2, BigDecimal.ROUND_HALF_UP).toString(), 
+				VentaManager.getVentaActual().getDescuentoProductos().setScale(2, BigDecimal.ROUND_HALF_UP).toString()}));
+		}
 	}
 
 	
@@ -187,7 +202,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		if (lblTotal == null) {
 			lblTotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.total"));
 			lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTotal.setBounds(475, 441, 88, 20);
+			lblTotal.setBounds(475, 441, 170, 20);
 		}
 		return lblTotal;
 	}
@@ -208,32 +223,24 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		return lblCdigo;
 	}
 
-	public JLabel getLblTotalValor() {
-		if (lblTotalValor == null) {
-			lblTotalValor = new JLabel("<< total >>");
-			lblTotalValor.setBounds(625, 441, 88, 20);
+	public JLabel getLblDescuentos() {
+		if (lblDescuentos == null) {
+			lblDescuentos= new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.descuentos"));
+			lblDescuentos.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblDescuentos.setBounds(250, 441, 300, 20);
 		}
-		return lblTotalValor;
+		return lblDescuentos;
 	}
-
+	
 	public JLabel getLblSutotal() {
 		if (lblSutotal == null) {
 			lblSutotal = new JLabel(PropertiesManager.getProperty("ventaPanel.etiqueta.subtotal"));
 			lblSutotal.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblSutotal.setBounds(279, 441, 88, 20);
+			lblSutotal.setBounds(subtotalX, 441, 130, 20);
 		}
 		return lblSutotal;
 	}
 
-	public JLabel getLblSubtotalValor() {
-		if (lblSubtotalValor == null) {
-			lblSubtotalValor = new JLabel("<< subtotal >>");
-			lblSubtotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblSubtotalValor.setBounds(377, 441, 88, 20);
-		}
-		return lblSubtotalValor;
-	}
-	
 	public JLabel getLblTeclasAccesoRapido() {
 		if (lblTeclasAccesoRapido == null) {
 			lblTeclasAccesoRapido = new JLabel("F3: Buscar | F5: Siguiente | F6: Cambiar Precio | F7: Cambia Cantidad | F8: Cambiar Descripcion ");
@@ -253,7 +260,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 			btnContinuar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnContinuar.setMargin(new Insets(-1, -1, -1, -1));
 			btnContinuar.setBounds(735, 185, 60, 60);
-
+									
 			btnContinuar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					keyF5();
@@ -263,6 +270,84 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		return btnContinuar;
 	}
 
+	public JButton getBtnDescuentoVenta() {
+		if (btnDescuentoVenta == null) {
+			btnDescuentoVenta = new JButton(PropertiesManager.getProperty("ventaPanel.button.descuentoVenta"));
+			btnDescuentoVenta.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.descuentoVenta"));
+
+			btnDescuentoVenta.setIcon(new ImageIcon(this.getClass().getResource("/img/descuento.png")));
+			btnDescuentoVenta.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnDescuentoVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnDescuentoVenta.setMargin(new Insets(-1, -1, -1, -1));
+			btnDescuentoVenta.setBounds(735, 255, 60, 60);
+
+			btnDescuentoVenta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					agregarDescuento(null);
+				}
+			});
+		}
+		return btnDescuentoVenta;
+	}
+
+	public JButton getBtnDescuentoProducto() {
+		if (btnDescuentoProducto == null) {
+			btnDescuentoProducto = new JButton(PropertiesManager.getProperty("ventaPanel.button.descuentoProducto"));
+			btnDescuentoProducto.setToolTipText(PropertiesManager.getProperty("ventaPanel.tooltip.descuentoProducto"));
+
+			btnDescuentoProducto.setIcon(new ImageIcon(this.getClass().getResource("/img/descuento_producto.gif")));
+			btnDescuentoProducto.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnDescuentoProducto.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnDescuentoProducto.setMargin(new Insets(-1, -1, -1, -1));
+			btnDescuentoProducto.setBounds(735, 325, 60, 60);
+
+			btnDescuentoProducto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {					
+					try {
+						int index = getTable().getSelectedRow();
+						if (index > -1)
+							index = getTable().convertRowIndexToModel(index);
+						ProductoVentaDto productoVentaDto = getModel().getProductosVenta(index);
+						agregarDescuento(productoVentaDto);
+					} catch (IndexOutOfBoundsException exception) {
+						if (getModel().getRowCount() == 0) {
+							mostrarMensaje(new PresentationException("ventaPanel.dialog.warning.emptyModel"));
+						} else {
+							mostrarMensaje(new PresentationException("ventaPanel.dialog.warning.noRowSelected"));
+						}
+					} 
+				}
+			});
+		}
+		return btnDescuentoProducto;
+	}
+
+	/**
+	 * Este metodo agrega o elimina descuentos a venta y a productos.
+	 * Si la venta o el producto seleccionado ya tienen descuentos lo elimina.
+	 * @param producto
+	 */
+	public void agregarDescuento(ProductoVentaDto producto){
+		if (Validator.isNotNull(producto) && Validator.isNotNull(producto.getDescuento())){
+			//eliminar descuento
+			int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.eliminarDescuentoProducto"));
+			if (opcion == JOptionPane.YES_OPTION) {
+				controller.quitarDescuento(VentaManager.getVentaActual(), producto);
+			}
+			return;
+		} else {
+			if (Validator.isNull(producto) && Validator.isNotNull(VentaManager.getVentaActual().getDescuento())) {
+				//eliminar descuento
+				int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.eliminarDescuentoVenta"));
+				if (opcion == JOptionPane.YES_OPTION) {
+					controller.quitarDescuento(VentaManager.getVentaActual(), null);
+				}
+				return;
+			}
+		}
+		new AgregarDescuentoDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), controller, producto);
+	}
+	
 	protected void keyF5() {
 		logger.debug("Inicio de una venta: " + VentaManager.getVentaActual());
 		try {

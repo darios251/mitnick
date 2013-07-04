@@ -16,8 +16,10 @@ ADD CONSTRAINT fk4eb7a2c21caf2d8 FOREIGN KEY (vendedor_id)
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE Venta
-ADD COLUMN numerocaja integer NULL;
-UPDATE Venta SET numerocaja=4;
-ALTER TABLE Venta ALTER COLUMN numerocaja SET NOT NULL;
+ADD COLUMN numerocaja integer NOT NULL default 4;
+
+ALTER TABLE producto_venta
+ADD COLUMN
+descuento numeric(19,2) NOT NULL default 0;
 	  
 	  

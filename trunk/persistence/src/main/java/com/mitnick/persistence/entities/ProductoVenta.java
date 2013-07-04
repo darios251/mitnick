@@ -38,6 +38,17 @@ public class ProductoVenta extends BaseObject implements Serializable {
 	
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
+	
+	@Column(name = "descuento", nullable = false)
+	private BigDecimal descuento;
+
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
+	}
 
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "venta_id")
@@ -107,14 +118,12 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + cantidad;
-		getDescripcion();
-		result = prime * result
-				+ ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + ((descuento == null) ? 0 : descuento.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((iva == null) ? 0 : iva.hashCode());
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
-		result = prime * result
-				+ ((producto == null) ? 0 : producto.hashCode());
+		result = prime * result + ((producto == null) ? 0 : producto.hashCode());
 		result = prime * result + ((venta == null) ? 0 : venta.hashCode());
 		return result;
 	}
@@ -130,11 +139,7 @@ public class ProductoVenta extends BaseObject implements Serializable {
 		if (!(obj instanceof ProductoVenta)) {
 			return false;
 		}
-		
 		ProductoVenta other = (ProductoVenta) obj;
-		
-		getDescripcion();
-		other.getDescripcion();
 		if (cantidad != other.cantidad) {
 			return false;
 		}
@@ -143,6 +148,13 @@ public class ProductoVenta extends BaseObject implements Serializable {
 				return false;
 			}
 		} else if (!descripcion.equals(other.descripcion)) {
+			return false;
+		}
+		if (descuento == null) {
+			if (other.descuento != null) {
+				return false;
+			}
+		} else if (!descuento.equals(other.descuento)) {
 			return false;
 		}
 		if (id == null) {
@@ -185,9 +197,8 @@ public class ProductoVenta extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProductoVenta [id=" + id + ", descripcion=" + descripcion
-				+ ", producto=" + producto + ", precio=" + precio + ", iva="
-				+ iva + ", cantidad=" + cantidad + ", venta=" + venta + "]";
+		return "ProductoVenta [id=" + id + ", descripcion=" + descripcion + ", producto=" + producto + ", precio=" + precio
+				+ ", iva=" + iva + ", cantidad=" + cantidad + ", descuento=" + descuento + ", venta=" + venta + "]";
 	}
 
 	

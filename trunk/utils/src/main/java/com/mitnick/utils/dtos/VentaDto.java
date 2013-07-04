@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.VentaHelper;
 
 public class VentaDto extends BaseDto {
 	
@@ -165,8 +166,20 @@ public class VentaDto extends BaseDto {
 		this.faltaPagar = faltaPagar;
 	}
 
-	public DescuentoDto getDescuento() {
+	public DescuentoDto getDescuento() {		
 		return descuento;
+	}
+
+	public BigDecimal getDescuentoTotal(){
+		return getDescuentoVenta().add(getDescuentoProductos());
+	}
+	
+	public BigDecimal getDescuentoVenta(){
+		return VentaHelper.getDescuentoTotal(this);
+	}
+	
+	public BigDecimal getDescuentoProductos(){
+		return VentaHelper.getDescuentoTotal(this.getProductos());
 	}
 
 	public void setDescuento(DescuentoDto descuento) {

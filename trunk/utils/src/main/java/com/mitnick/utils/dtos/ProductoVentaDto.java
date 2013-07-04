@@ -2,6 +2,8 @@ package com.mitnick.utils.dtos;
 
 import java.math.BigDecimal;
 
+import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+
 public class ProductoVentaDto extends BaseDto {
 
 	private static final long serialVersionUID = 1L;
@@ -16,6 +18,8 @@ public class ProductoVentaDto extends BaseDto {
 	private BigDecimal precioTotal;
 
 	private BigDecimal iva;
+	
+	private DescuentoDto descuento;
 
 	public ProductoDto getProducto() {
 		return producto;
@@ -55,6 +59,14 @@ public class ProductoVentaDto extends BaseDto {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public DescuentoDto getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(DescuentoDto descuento) {
+		this.descuento = descuento;
 	}
 
 	@Override
