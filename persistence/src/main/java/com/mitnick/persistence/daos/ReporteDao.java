@@ -1,10 +1,7 @@
 package com.mitnick.persistence.daos;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -18,7 +15,6 @@ import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.servicio.servicios.dtos.ReporteCompraSugeridaDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
-import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 
@@ -30,7 +26,7 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ReporteVentaArticuloDTO> consultarVentaPorArticulo(ReporteMovimientosDto dto) {
+	public List<ProductoVenta> consultarVentaPorArticulo(ReporteMovimientosDto dto) {
 		
 		DetachedCriteria criteria = DetachedCriteria.forClass(ProductoVenta.class);
 
@@ -63,49 +59,9 @@ public class ReporteDao extends GenericDaoHibernate<BaseObject, Serializable> im
 		criteria.add(Restrictions.eq("v.canceled", false));
 		
 		List<ProductoVenta> productos = getHibernateTemplate().findByCriteria(criteria); 
-		List<ReporteVentaArticuloDTO> resultado = new ArrayList<ReporteVentaArticuloDTO>();
-		for (ProductoVenta producto: productos){
-			ReporteVentaArticuloDTO repdto = getDTOFecha(resultado, producto);
-			int cantidad = repdto .getCantidad();
-			repdto.setCantidad(cantidad + producto.getCantidad());
-			BigDecimal total = repdto .getTotal();
-			repdto.setTotal(total.add(producto.getPrecio()));
-			if (Validator.isNotNull(producto.getProducto().getMarca()))
-				repdto.setProductoMarca(producto.getProducto().getMarca().getDescripcion());
-			else
-				repdto.setProductoMarca("");		
-			if (producto.getProducto().getTalle()==null)
-				repdto.setTalle("");
-			else
-				repdto.setTalle(producto.getProducto().getTalle());
-		}
-		 //ordenamos la lista por nombre de empleado  
-        Collections.sort(resultado, new Comparator() {  
-  
-            public int compare(Object o1, Object o2) {  
-            	ReporteVentaArticuloDTO e1 = (ReporteVentaArticuloDTO) o1;  
-            	ReporteVentaArticuloDTO e2 = (ReporteVentaArticuloDTO) o2;  
-                return e1.getFecha().compareTo(e2.getFecha());  
-            }  
-        }); 
-        
-		return resultado;
+		
+		return productos;
 	}	
-	
-	private ReporteVentaArticuloDTO getDTOFecha(List<ReporteVentaArticuloDTO> items, ProductoVenta producto){
-		for (ReporteVentaArticuloDTO dto: items){
-			if (dto.getFecha().equals(producto.getVenta().getFecha()) && dto.getProductoCodigo().equals(producto.getProducto().getCodigo()))
-				return dto;
-		}		
-		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();
-		dto.setProductoCodigo(producto.getProducto().getCodigo());
-		dto.setProductoDescripcion(producto.getProducto().getDescripcion());
-		dto.setCantidad(0);
-		dto.setTotal(new BigDecimal(0));
-		dto.setFecha(producto.getVenta().getFecha());
-		items.add(dto);
-		return dto;
-	}
 	
 	@SuppressWarnings("unchecked")
 	public List<ReporteCompraSugeridaDTO> consultarCompraSugerida(ReporteMovimientosDto dto) {

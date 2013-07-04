@@ -52,10 +52,6 @@ public class Empresa extends BaseObject implements Serializable {
 	private String ingBrutos;
 
 	@NotNull
-	@Column(name = "prefijoFactura", length = 4, nullable = false)
-	private int numeroPrefijo;
-	
-	@NotNull
 	@Column(name = "numeroFacturaActual", length = 8, nullable = false)
 	private int numeroFacturaActual;
 	
@@ -127,14 +123,6 @@ public class Empresa extends BaseObject implements Serializable {
 		this.tipoResponsable = tipoResponsable;
 	}
 
-	public int getNumeroPrefijo() {
-		return numeroPrefijo;
-	}
-
-	public void setNumeroPrefijo(int numeroPrefijo) {
-		this.numeroPrefijo = numeroPrefijo;
-	}
-
 	public int getNumeroFacturaActual() {
 		return numeroFacturaActual;
 	}
@@ -156,23 +144,15 @@ public class Empresa extends BaseObject implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cuit == null) ? 0 : cuit.hashCode());
-		result = prime * result
-				+ ((direccion == null) ? 0 : direccion.hashCode());
+		result = prime * result + ((direccion == null) ? 0 : direccion.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime
-				* result
-				+ ((fechaInicioActividad == null) ? 0 : fechaInicioActividad
-						.hashCode());
+		result = prime * result + ((fechaInicioActividad == null) ? 0 : fechaInicioActividad.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((ingBrutos == null) ? 0 : ingBrutos.hashCode());
+		result = prime * result + ((ingBrutos == null) ? 0 : ingBrutos.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + numeroFacturaActual;
-		result = prime * result + numeroPrefijo;
-		result = prime * result
-				+ ((telefono == null) ? 0 : telefono.hashCode());
-		result = prime * result
-				+ ((tipoResponsable == null) ? 0 : tipoResponsable.hashCode());
+		result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
+		result = prime * result + ((tipoResponsable == null) ? 0 : tipoResponsable.hashCode());
 		return result;
 	}
 
@@ -240,9 +220,6 @@ public class Empresa extends BaseObject implements Serializable {
 		if (numeroFacturaActual != other.numeroFacturaActual) {
 			return false;
 		}
-		if (numeroPrefijo != other.numeroPrefijo) {
-			return false;
-		}
 		if (telefono == null) {
 			if (other.telefono != null) {
 				return false;
@@ -262,13 +239,9 @@ public class Empresa extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Empresa [id=" + id + ", nombre=" + nombre + ", cuit=" + cuit
-				+ ", telefono=" + telefono + ", email=" + email
-				+ ", fechaInicioActividad=" + fechaInicioActividad
-				+ ", tipoResponsable=" + tipoResponsable + ", ingBrutos="
-				+ ingBrutos + ", numeroPrefijo=" + numeroPrefijo
-				+ ", numeroFacturaActual=" + numeroFacturaActual
-				+ ", direccion=" + direccion + "]";
+		return "Empresa [id=" + id + ", nombre=" + nombre + ", cuit=" + cuit + ", telefono=" + telefono + ", email=" + email
+				+ ", fechaInicioActividad=" + fechaInicioActividad + ", tipoResponsable=" + tipoResponsable + ", ingBrutos="
+				+ ingBrutos + ", numeroFacturaActual=" + numeroFacturaActual + ", direccion=" + direccion + "]";
 	}
 
 }

@@ -633,8 +633,8 @@ public class VentaController extends BaseController {
 		return clienteNuevoPanel;
 	}
 
-	public VentaDto getVentaByNroFacturaTipo(String nroTicket, String tipo) {
-		return ventaServicio.getVentaByNroFacturaTipo(nroTicket, tipo);
+	public VentaDto getVentaByNroFacturaTipo(String nroTicket, String tipo, int numeroCaja) {
+		return ventaServicio.getVentaByNroFacturaTipo(nroTicket, tipo, numeroCaja);
 	}
 
 	public void pagarCuotasNC() {

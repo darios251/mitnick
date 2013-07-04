@@ -15,15 +15,20 @@ import javax.swing.text.PlainDocument;
 
 import com.mitnick.presentacion.modelos.MitnickComboBoxModel;
 
+@SuppressWarnings("rawtypes")
 public class AutoCompleteComboBox extends JComboBox	implements JComboBox.KeySelectionManager
 {
+	private static final long serialVersionUID = 1L;
 	private String searchFor;
 	private long lap;
 	
 	private Object elementSelected;
 	
+	
 	public class CBDocument extends PlainDocument
-	{
+	{		
+		private static final long serialVersionUID = 1L;
+
 		public void insertString(int offset, String str, AttributeSet a) throws BadLocationException
 		{
 			if (str==null) return;
@@ -31,6 +36,7 @@ public class AutoCompleteComboBox extends JComboBox	implements JComboBox.KeySele
 			if(!isPopupVisible() && str.length() != 0) fireActionEvent();
 		}
 	}
+	
 	public AutoCompleteComboBox(List items)
 	{
 		MitnickComboBoxModel model = new MitnickComboBoxModel<>();

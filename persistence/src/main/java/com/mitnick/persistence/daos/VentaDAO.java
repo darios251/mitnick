@@ -2,38 +2,23 @@ package com.mitnick.persistence.daos;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
-
-import org.apache.commons.lang.StringUtils;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.mitnick.exceptions.PersistenceException;
 import com.mitnick.persistence.entities.Credito;
-import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
-import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
-import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CuotaDto;
 import com.mitnick.utils.dtos.PagoDto;
-import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Repository("ventaDao")
@@ -45,7 +30,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Venta> findByFiltro(ReportesDto filtro) {
+	public List<Venta> findByFiltro(ReportesDto filtro, int numeroCaja) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 
 		if(Validator.isNotNull(Validator.isNotNull(filtro.getFechaInicio()))){
@@ -55,6 +40,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 			criteria.add(Restrictions.le("fecha", filtro.getFechaFin()));
 		}
 
+		criteria.add(Restrictions.eq("numeroCaja", numeroCaja));
 		criteria.add(Restrictions.eq("canceled", false));
 		
 		criteria.addOrder(Order.desc("fecha"));
@@ -154,13 +140,14 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 	
 	
 	@SuppressWarnings("unchecked")
-	public Venta findByNumeroFactura(String numeroTicket) {
+	public Venta findByNumeroFactura(String numeroTicket, int numeroCaja) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 		
 		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
 		criteria.add(Restrictions.eq("canceled", false));
 		criteria.add(Restrictions.eq("tipo", MitnickConstants.VENTA));
-
+		criteria.add(Restrictions.eq("numeroCaja", numeroCaja));
+		
 		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
 		if (ventas==null || ventas.isEmpty())
 				return null;
@@ -168,10 +155,11 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Venta findTransactionByNumeroFactura(String numeroTicket) {
+	public Venta findTransactionByNumeroFactura(String numeroTicket, int numeroCaja) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 		
 		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
+		criteria.add(Restrictions.eq("numeroCaja", numeroCaja));
 		criteria.add(Restrictions.eq("canceled", false));
 
 		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
@@ -181,7 +169,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Venta findTransactionByNumeroTipoFactura(String numeroTicket, String tipo, String factura) {
+	public Venta findTransactionByNumeroTipoFactura(String numeroTicket, String tipo, String factura, int numeroCaja) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Venta.class);
 		
 		criteria.add(Restrictions.ilike("numeroTicket", numeroTicket));	
@@ -190,6 +178,7 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 		if (PropertiesManager.getProperty("dialog.consultarTransacciones.filter.devolucion").equals(tipo))
 			tipoTrx = MitnickConstants.DEVOLUCION;
 		criteria.add(Restrictions.eq("tipo", tipoTrx));	
+		criteria.add(Restrictions.eq("numeroCaja", numeroCaja));
 		criteria.add(Restrictions.eq("canceled", false));
 
 		List<Venta> ventas = getHibernateTemplate().findByCriteria(criteria);
@@ -197,101 +186,5 @@ public class VentaDAO extends GenericDaoHibernate<Venta, Long>  implements IVent
 				return null;
 		return ventas.get(0);
 	}
-	
-	public void generarFactura(VentaDto venta, boolean duplicado) {
-		try {
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/facturaDuplicado.jasper"));
-			DetachedCriteria criteria = DetachedCriteria.forClass(Empresa.class);
-			criteria.add(Restrictions.idEq(new Long(1)));
-			
-			Empresa empresa = (Empresa) getHibernateTemplate().findByCriteria(criteria).get(0);
-			int nroFactActual = empresa.getNumeroFacturaActual();
-			boolean valido = true;
-			String nroTRX = venta.getNumeroTicket();
-			String nroFactura = StringUtils.leftPad(empresa.getNumeroPrefijo() + "", 4, "0"); 
-			if (Validator.isBlankOrNull(nroTRX)){
-				nroFactActual = nroFactActual + 1;
-				nroTRX = Integer.toString(nroFactActual);
-				empresa.setNumeroFacturaActual(nroFactActual);
-				getHibernateTemplate().save(empresa);
-				valido = false;
-			}
-			nroFactura = nroFactura.concat("-");
-			nroFactura = nroFactura.concat(StringUtils.leftPad(nroTRX+ "", 8, "0"));
-					
-			venta.setNumeroTicket(String.valueOf(nroFactActual));
-			
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("nombreEmpresa", empresa.getNombre());
-			parameters.put("empresaDireccion", empresa.getDireccion().getDomicilio() + "(" + empresa.getDireccion().getCodigoPostal() + ")" 
-					+ empresa.getDireccion().getCiudad().getDescripcion() + "\n Tel" + empresa.getTelefono());
-			parameters.put("tipoResponsable", empresa.getTipoResponsable());
-			parameters.put("nroFactura", nroFactura);
-			parameters.put("cuitEmpresa", empresa.getCuit());
-			parameters.put("ingBrutos", empresa.getIngBrutos());
-			parameters.put("fechaInicioActividadEmpresa", empresa.getFechaInicioActividad());
-			
-			parameters.put("tipoIva", venta.getTipoResponsabilidad().getDescripcion());
-			
-			if (Validator.isNotNull(venta.getFecha()))
-				parameters.put("fechaTrx", DateHelper.getFecha(venta.getFecha()));
-			else
-				parameters.put("fechaTrx", DateHelper.getFecha(new Date()));
-			
-			if (!valido)
-				parameters.put("leyenda", "Comprobante no válido como Factura");
-			else
-				parameters.put("leyenda", "");
-			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador().equals(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL);
-			String nombre = "";
-			String direccion = "";
-			String cuit = "";
-			if (Validator.isNotNull(venta.getCliente())){
-				nombre = venta.getCliente().getNombre();
-				if (Validator.isNotNull(venta.getCliente().getDireccion())){
-					direccion = venta.getCliente().getDireccion().getDomicilio();
-					if (Validator.isNotNull(venta.getCliente().getDireccion().getCiudad()))
-						direccion = direccion.concat(" ").concat(venta.getCliente().getDireccion().getCiudad().getDescripcion());
-				}
-				if (Validator.isNotNull(venta.getCliente().getCuit()))
-					cuit =  venta.getCliente().getCuit().replaceAll("-", "").trim();	
-				if (Validator.isNotBlankOrNull(cuit)) 
-					cuit = venta.getCliente().getCuit();
-				else if (Validator.isNotBlankOrNull(venta.getCliente().getDocumento()))
-					cuit = venta.getCliente().getDocumento();
-			}
-			parameters.put("nombreCliente", nombre);
-			parameters.put("direccionCliente", direccion);
-			parameters.put("cuitCliente", cuit);
-			String leyenda = "Factura";
-			
-			if (consumidorFinal){
-				venta.setTipoTicket("B");
-				parameters.put("tipoLetra", "B");
-			} else {
-				venta.setTipoTicket("A");
-				parameters.put("tipoLetra", "A");
-			}
-
-			List<ProductoVentaDto> productos = null;
-			if (venta.isDevolucion())
-				leyenda = "Nota de Crédito";
-			
-			if (duplicado){
-				leyenda = "Duplicado - ".concat(leyenda).concat(" - ").concat("No válido");
-				productos = VentaHelper.getProductosPrecioVendido(venta);				
-			} else
-				productos = venta.getProductos();
-				
-			parameters.put("leyenda", leyenda);
-			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			JRDataSource dr = new JRBeanCollectionDataSource(productos);
-										
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,parameters, dr);
-			JasperViewer.viewReport(jasperPrint,false);
-
-		} catch (Exception e1) {
-			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
-		}	
-	}
+		
 }

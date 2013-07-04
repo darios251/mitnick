@@ -44,13 +44,28 @@ public class Comprobante extends BaseObject implements Serializable {
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "cliente_id")
 	private Cliente cliente;
+	
+	@Column(name= "numeroCaja", nullable = false)
+	private int numeroCaja;
 
+	public Comprobante(){
+		
+	}
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public int getNumeroCaja() {
+		return numeroCaja;
+	}
+
+	public void setNumeroCaja(int numeroCaja) {
+		this.numeroCaja = numeroCaja;
 	}
 
 	public String getId() {
@@ -125,6 +140,7 @@ public class Comprobante extends BaseObject implements Serializable {
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + numeroCaja;
 		result = prime * result + ((pagos == null) ? 0 : pagos.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
@@ -163,6 +179,9 @@ public class Comprobante extends BaseObject implements Serializable {
 		} else if (!id.equals(other.id)) {
 			return false;
 		}
+		if (numeroCaja != other.numeroCaja) {
+			return false;
+		}
 		if (pagos == null) {
 			if (other.pagos != null) {
 				return false;
@@ -182,8 +201,8 @@ public class Comprobante extends BaseObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Comprobante [id=" + id + ", fecha=" + fecha + ", total="
-				+ total + ", pagos=" + pagos + ", cliente=" + cliente + "]";
+		return "Comprobante [id=" + id + ", fecha=" + fecha + ", total=" + total + ", pagos=" + pagos + ", cliente=" + cliente
+				+ ", numeroCaja=" + numeroCaja + "]";
 	}
 	
 

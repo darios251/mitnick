@@ -8,6 +8,7 @@ import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.vistas.ReportesView;
 import com.mitnick.presentacion.vistas.paneles.ReportesPanel;
 import com.mitnick.servicio.servicios.IReportesServicio;
+import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.anotaciones.AuthorizationRequired;
@@ -17,6 +18,9 @@ public class ReportesController extends BaseController {
 	
 	@Autowired
 	private	IReportesServicio reportesServicio;
+	
+	@Autowired
+	private	IVentaServicio ventaServicio;
 	
 	@Autowired
 	private ReportesView reportesView;
@@ -80,9 +84,9 @@ public class ReportesController extends BaseController {
 		}
 	}
 	
-	public void consultarTransaccion(String nroTransaccion, String tipo, String factura) {
+	public void consultarTransaccion(String nroTransaccion, String tipo, String factura, int numeroCaja) {
 		try {
-			getReportesServicio().consultarTransaccion(nroTransaccion, tipo, factura);
+			ventaServicio.consultarTransaccion(nroTransaccion, tipo, factura, numeroCaja);
 		}
 		catch(BusinessException e) {
 			throw new PresentationException(e);

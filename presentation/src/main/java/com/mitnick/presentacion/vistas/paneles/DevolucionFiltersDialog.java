@@ -30,6 +30,9 @@ public class DevolucionFiltersDialog  extends BaseDialog {
 	private JLabel lblTipoFactura;
 	private JComboBox<String> cmbTipoFactura;  
 	
+	private JLabel lblCaja; 
+	private JTextField txtCaja; 
+	
 	private VentaController controller;
 	
 	public VentaDto venta = null;
@@ -50,6 +53,8 @@ public class DevolucionFiltersDialog  extends BaseDialog {
 		getContentPane().add(getTxtNroTrx());
 		getContentPane().add(getLblTipoFactura());
 		getContentPane().add(getCmbTipoFactura());
+		getContentPane().add(getLblCaja());
+		getContentPane().add(getTxtCaja());		
 		getContentPane().add(getBtnAceptar());
 		getContentPane().add(getBtnCancelar());
 
@@ -74,6 +79,14 @@ public class DevolucionFiltersDialog  extends BaseDialog {
 		return lblTipoFactura ;
 	}
 	
+	public JLabel getLblCaja() {
+		if (lblCaja == null) {
+			lblCaja = new JLabel(PropertiesManager.getProperty("dialog.consultarTransacciones.label.caja"));
+			lblCaja.setBounds(110, 90, 120, 20);
+		}
+		return lblCaja;
+	}
+	
 	public JTextField getTxtNroTrx() {
 		if (txtNroTrx== null) {
 			txtNroTrx =  new JTextField();	
@@ -89,6 +102,16 @@ public class DevolucionFiltersDialog  extends BaseDialog {
 		cmbTipoFactura.setBounds(230, 60, 110, 20);
 		cmbTipoFactura.insertItemAt(null, 0);
 		return cmbTipoFactura;
+	}
+	
+	public JTextField getTxtCaja() {
+		if (txtCaja == null) {
+			txtCaja =  new JTextField();	
+			txtCaja.setColumns(10);
+			txtCaja.setBounds(230, 90, 110, 20);
+		}
+		txtCaja.setText(PropertiesManager.getPropertyAsInteger("application.caja.numero").toString());
+		return txtCaja;
 	}
 	
 	public JButton getBtnAceptar() {
@@ -137,7 +160,17 @@ public class DevolucionFiltersDialog  extends BaseDialog {
 		if (Validator.isBlankOrNull(txtNroTrx.getText()))
 			return;
 		setVisible(false);
-		venta = controller.getVentaByNroFacturaTipo(txtNroTrx.getText(), cmbTipoFactura.getSelectedItem().toString());
+		int numeroCaja = 0;
+		if (Validator.isBlankOrNull(txtCaja.getText()))
+			numeroCaja = PropertiesManager.getPropertyAsInteger("application.caja.numero");
+		else {
+			try {
+				numeroCaja = Integer.parseInt(txtCaja.getText());
+			} catch (NumberFormatException e) {
+				numeroCaja = PropertiesManager.getPropertyAsInteger("application.caja.numero");
+			}
+		}
+		venta = controller.getVentaByNroFacturaTipo(txtNroTrx.getText(), cmbTipoFactura.getSelectedItem().toString(), numeroCaja);
 	}
 	
 	protected void keyEscape() {	

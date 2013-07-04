@@ -70,8 +70,11 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	private JButton btnDetalleMovimientos;
 	private JButton btnCompra;
 	
-	private JButton btnReporteVenta;
-	
+	private JLabel lblReportesDescripcion;
+	private JButton btnReporteProductoVentaDiario;
+	private JButton btnReporteProductoVentaMensual;
+	private JButton btnReporteVentaDiario;
+	private JButton btnReporteVentaMensual;
 	
 	private boolean mostrarError = false;
 
@@ -105,7 +108,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	protected void initializeComponents() {
 
 		setLayout(null);
-		setSize(new Dimension(815, 470));
+		setSize(new Dimension(815, 520));
 
 		add(getLblCdigo());
 		add(getLblDescripcin());
@@ -125,10 +128,15 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		add(getScrollPane());
 
 		add(getBtnBuscar());
-		add(getBtnReporteVenta());
 		add(getBtnCompra());
 		add(getBtnDetalleMovimientos());
 		add(getBtnExportar());
+
+		add(getLblReportesDescripcion());
+		add(getBtnReporteProductoVentaDiario());
+		add(getBtnReporteProductoVentaMensual());
+		add(getBtnReporteVentaDiario());
+		add(getBtnReporteVentaMensual());
 
 		setFocusTraversalPolicy();
 		this.actualizarPantalla();
@@ -288,40 +296,124 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	}
 
 
+	public JLabel getLblReportesDescripcion() {
+		if (lblReportesDescripcion == null) {
+			lblReportesDescripcion = new JLabel(
+					PropertiesManager.getProperty("productoPanel.label.reportesDescripcion"));
+			lblReportesDescripcion.setBounds(20, 460, 200, 20);
+		}
+		return lblReportesDescripcion;
+	}
+	
+	public JButton getBtnReporteProductoVentaDiario() {
+		if (btnReporteProductoVentaDiario == null) {
+			btnReporteProductoVentaDiario = new JButton(PropertiesManager
+					.getProperty("movmientosPanel.label.producto.reporteProductoVentaDiario"));
+			btnReporteProductoVentaDiario.setToolTipText(PropertiesManager
+					.getProperty("movmientosPanel.tooltip.producto.reporteProductoVentaDiario"));
 
-	public JButton getBtnReporteVenta() {
-		if (btnReporteVenta == null) {
-			btnReporteVenta = new JButton(PropertiesManager
-					.getProperty("movmientosPanel.label.producto.reporteVenta"));
-			btnReporteVenta.setToolTipText(PropertiesManager
-					.getProperty("movmientosPanel.tooltip.producto.reporteVenta"));
+			btnReporteProductoVentaDiario.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteProductoVentaDiario.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteProductoVentaDiario.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteProductoVentaDiario.setMargin(new Insets(-1, -1, -1, -1));
 
-			btnReporteVenta.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
-			btnReporteVenta.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnReporteVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnReporteVenta.setMargin(new Insets(-1, -1, -1, -1));
-
-			btnReporteVenta.addActionListener(new ActionListener() {
+			btnReporteProductoVentaDiario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ReporteMovimientosDto dto = new ReporteMovimientosDto();
-					dto.setCodigo(getTxtProductoCodigo().getText());
-					dto.setDescripcion(getTxtProductoDescripcion().getText());
-					dto.setFechaInicio(getFechaInicio());
-					dto.setFechaFin(getFechaFinal());
-					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
-					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
-					try{
-						controller.consultarVentaPorArticulo(dto);	
-					} catch (PresentationException ex) {
-						mostrarMensaje(ex);
-					}
+					reporteVentaProducto(true, false);
+					
+				}
+			});
+			
+			btnReporteProductoVentaDiario.setBounds(250, 460, 60, 60);
+		}
+		return btnReporteProductoVentaDiario;
+	}
+	
+	public JButton getBtnReporteProductoVentaMensual() {
+		if (btnReporteProductoVentaMensual == null) {
+			btnReporteProductoVentaMensual = new JButton(PropertiesManager
+					.getProperty("movmientosPanel.label.producto.reporteProductoVentaMensual"));
+			btnReporteProductoVentaMensual.setToolTipText(PropertiesManager
+					.getProperty("movmientosPanel.tooltip.producto.reporteProductoVentaMensual"));
+
+			btnReporteProductoVentaMensual.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteProductoVentaMensual.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteProductoVentaMensual.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteProductoVentaMensual.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteProductoVentaMensual.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					reporteVentaProducto(true, true);
 					
 				}
 			});
 
-			btnReporteVenta.setBounds(735, 160, 60, 60);
+			btnReporteProductoVentaMensual.setBounds(350, 460, 60, 60);
 		}
-		return btnReporteVenta;
+		return btnReporteProductoVentaMensual;
+	}
+	
+	public JButton getBtnReporteVentaDiario() {
+		if (btnReporteVentaDiario == null) {
+			btnReporteVentaDiario = new JButton(PropertiesManager
+					.getProperty("movmientosPanel.label.producto.reporteVentaDiario"));
+			btnReporteVentaDiario.setToolTipText(PropertiesManager
+					.getProperty("movmientosPanel.tooltip.producto.reporteVentaDiario"));
+
+			btnReporteVentaDiario.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteVentaDiario.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVentaDiario.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVentaDiario.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVentaDiario.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					reporteVentaProducto(false, false);
+				}
+			});
+			
+			btnReporteVentaDiario.setBounds(450, 460, 60, 60);
+		}
+		return btnReporteVentaDiario;
+	}
+	
+	public JButton getBtnReporteVentaMensual() {
+		if (btnReporteVentaMensual == null) {
+			btnReporteVentaMensual = new JButton(PropertiesManager
+					.getProperty("movmientosPanel.label.producto.reporteVentaMensual"));
+			btnReporteVentaMensual.setToolTipText(PropertiesManager
+					.getProperty("movmientosPanel.tooltip.producto.reporteVentaMensual"));
+
+			btnReporteVentaMensual.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteVentaMensual.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVentaMensual.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVentaMensual.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVentaMensual.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					reporteVentaProducto(false, true);					
+				}
+			});
+
+			btnReporteVentaMensual.setBounds(550, 460, 60, 60);
+		}
+		return btnReporteVentaMensual;
+	}
+	
+	private void reporteVentaProducto(boolean agrupadoProducto, boolean agrupadoMes){
+		ReporteMovimientosDto dto = new ReporteMovimientosDto();
+		dto.setCodigo(getTxtProductoCodigo().getText());
+		dto.setDescripcion(getTxtProductoDescripcion().getText());
+		dto.setFechaInicio(getFechaInicio());
+		dto.setFechaFin(getFechaFinal());
+		dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
+		dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
+		dto.setAgrupadoMes(agrupadoMes);
+		dto.setAgrupadoProducto(agrupadoProducto);
+		try{
+			controller.consultarVentaPorArticulo(dto);	
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
 	}
 	
 	public JButton getBtnCompra() {

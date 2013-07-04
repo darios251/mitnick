@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import com.mitnick.exceptions.PresentationException;
 import com.mitnick.presentacion.controladores.ReportesController;
 import com.mitnick.utils.PropertiesManager;
+import com.mitnick.utils.Validator;
 
 public class ConsultarTrxFiltersDialog  extends BaseDialog {
 	
@@ -30,6 +31,9 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 	private JLabel lblTipoFactura;
 	private JComboBox<String> cmbTipoFactura;  
 	
+	private JLabel lblCaja; 
+	private JTextField txtCaja; 
+	
 	private ReportesController controller;
 	
 	public ConsultarTrxFiltersDialog(JFrame frame, ReportesController reportesController) {
@@ -37,7 +41,7 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 		this.controller = reportesController;
 		
 		getContentPane().setLayout(null);
-		setSize(450, 245);
+		setSize(450, 300);
 		
 		setLocationRelativeTo(null);
 				
@@ -47,6 +51,9 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 		getContentPane().add(getCmbTipoTrx());
 		getContentPane().add(getLblTipoFactura());
 		getContentPane().add(getCmbTipoFactura());
+		getContentPane().add(getLblCaja());
+		getContentPane().add(getTxtCaja());		
+
 		getContentPane().add(getBtnAceptar());
 		getContentPane().add(getBtnCancelar());
 
@@ -79,6 +86,14 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 		return lblTipoFactura ;
 	}
 	
+	public JLabel getLblCaja() {
+		if (lblCaja == null) {
+			lblCaja = new JLabel(PropertiesManager.getProperty("dialog.consultarTransacciones.label.caja"));
+			lblCaja.setBounds(110, 120, 120, 20);
+		}
+		return lblCaja;
+	}
+	
 	public JTextField getTxtNroTrx() {
 		if (txtNroTrx== null) {
 			txtNroTrx =  new JTextField();	
@@ -104,6 +119,16 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 		return cmbTipoFactura;
 	}
 	
+	public JTextField getTxtCaja() {
+		if (txtCaja == null) {
+			txtCaja =  new JTextField();	
+			txtCaja.setColumns(10);
+			txtCaja.setBounds(230, 120, 110, 20);
+		}
+		txtCaja.setText(PropertiesManager.getPropertyAsInteger("application.caja.numero").toString());
+		return txtCaja;
+	}
+	
 	public JButton getBtnAceptar() {
 		if(btnAceptar == null) {
 			btnAceptar = new JButton(PropertiesManager.getProperty("dialog.consultarTransacciones.button.aceptar"));;
@@ -111,7 +136,7 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 			btnAceptar.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnAceptar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnAceptar.setMargin(new Insets(-1, -1, -1, -1));
-			btnAceptar.setBounds(95, 140, 60, 60);
+			btnAceptar.setBounds(95, 160, 60, 60);
 			
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
@@ -135,7 +160,7 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 			btnCancelar.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnCancelar.setMargin(new Insets(-1, -1, -1, -1));
 
-			btnCancelar.setBounds(275, 140, 60, 60);
+			btnCancelar.setBounds(275, 160, 60, 60);
 			btnCancelar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					keyEscape();
@@ -148,7 +173,17 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 
 	protected void keyIntro() {
 		setVisible(false);
-		controller.consultarTransaccion(txtNroTrx.getText(), cmbTipoTrx.getSelectedItem().toString(), cmbTipoFactura.getSelectedItem().toString());
+		int numeroCaja = 0;
+		if (Validator.isBlankOrNull(txtCaja.getText()))
+			numeroCaja = PropertiesManager.getPropertyAsInteger("application.caja.numero");
+		else {
+			try {
+				numeroCaja = Integer.parseInt(txtCaja.getText());
+			} catch (NumberFormatException e) {
+				numeroCaja = PropertiesManager.getPropertyAsInteger("application.caja.numero");
+			}
+		}
+		controller.consultarTransaccion(txtNroTrx.getText(), cmbTipoTrx.getSelectedItem().toString(), cmbTipoFactura.getSelectedItem().toString(), numeroCaja);
 	}
 	
 	protected void keyEscape() {	

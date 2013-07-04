@@ -1,26 +1,20 @@
 package com.mitnick.servicio.servicios.dtos;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Date fecha;
+	private String fecha;
 	private String productoDescripcion;
 	private String productoMarca;
 	private String productoCodigo;
 	private int cantidad;
+	private BigDecimal descuento;
 	private BigDecimal total;
 	private String talle;
-	
-	public Date getFecha() {
-		return fecha;
-	}
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
+		
 	public String getProductoDescripcion() {
 		return productoDescripcion;
 	}
@@ -29,6 +23,18 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 	}
 	public String getProductoCodigo() {
 		return productoCodigo;
+	}
+	public String getFecha() {
+		return fecha;
+	}
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
 	}
 	public String getTalle() {
 		return talle;
@@ -60,26 +66,20 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 	}
 	@Override
 	public String toString() {
-		return "ReporteVentaArticuloDTO [fecha=" + fecha
-				+ ", productoDescripcion=" + productoDescripcion
-				+ ", productoMarca=" + productoMarca + ", productoCodigo="
-				+ productoCodigo + ", cantidad=" + cantidad + ", total="
-				+ total + ", talle=" + talle + "]";
+		return "ReporteVentaArticuloDTO [fecha=" + fecha + ", productoDescripcion=" + productoDescripcion + ", productoMarca="
+				+ productoMarca + ", productoCodigo=" + productoCodigo + ", cantidad=" + cantidad + ", descuento=" + descuento
+				+ ", total=" + total + ", talle=" + talle + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + cantidad;
+		result = prime * result + ((descuento == null) ? 0 : descuento.hashCode());
 		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
-		result = prime * result
-				+ ((productoCodigo == null) ? 0 : productoCodigo.hashCode());
-		result = prime
-				* result
-				+ ((productoDescripcion == null) ? 0 : productoDescripcion
-						.hashCode());
-		result = prime * result
-				+ ((productoMarca == null) ? 0 : productoMarca.hashCode());
+		result = prime * result + ((productoCodigo == null) ? 0 : productoCodigo.hashCode());
+		result = prime * result + ((productoDescripcion == null) ? 0 : productoDescripcion.hashCode());
+		result = prime * result + ((productoMarca == null) ? 0 : productoMarca.hashCode());
 		result = prime * result + ((talle == null) ? 0 : talle.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
@@ -97,6 +97,13 @@ public class ReporteVentaArticuloDTO extends ServicioBaseDto {
 		}
 		ReporteVentaArticuloDTO other = (ReporteVentaArticuloDTO) obj;
 		if (cantidad != other.cantidad) {
+			return false;
+		}
+		if (descuento == null) {
+			if (other.descuento != null) {
+				return false;
+			}
+		} else if (!descuento.equals(other.descuento)) {
 			return false;
 		}
 		if (fecha == null) {

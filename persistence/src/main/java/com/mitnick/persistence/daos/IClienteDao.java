@@ -9,7 +9,6 @@ import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.utils.dtos.ClienteDto;
-import com.mitnick.utils.dtos.CuotaDto;
 
 public interface IClienteDao extends GenericDao<Cliente, Long>{
 
@@ -19,10 +18,6 @@ public interface IClienteDao extends GenericDao<Cliente, Long>{
 	
 	Cliente saveOrUpdate(Cliente cliente);
 
-	Comprobante generarComprobante(List<CuotaDto> cuotas);
-	
-	void reporteMovimientosCliente(ClienteDto cliente);
-	
 	Comprobante saveOrUpdate(Comprobante comprobante);
 	
 	Cliente findByDocumentoEq(String documento);
