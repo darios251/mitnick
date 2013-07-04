@@ -348,13 +348,6 @@
 				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="50">
-			<subreport>
-				<reportElement uuid="80194e6c-90e4-4bf5-b6c7-3cced39b5811" x="0" y="27" width="611" height="23"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{pagos})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detallePagos.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
 	</detail>
 	<pageFooter>
 		<band height="28" splitType="Stretch">
@@ -375,4 +368,13 @@
 			</staticText>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="50">
+			<subreport>
+				<reportElement uuid="80194e6c-90e4-4bf5-b6c7-3cced39b5811" x="0" y="27" width="611" height="23"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{pagos})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detallePagos.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
 </jasperReport>
