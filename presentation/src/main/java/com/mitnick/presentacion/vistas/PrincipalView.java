@@ -677,7 +677,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());
 			tlbQuickAccess.add(getBtnProveedores());
-			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) {
+			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue()) {
 				tlbQuickAccess.add(getBtnVendedores());	
 			}
 			

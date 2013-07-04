@@ -406,7 +406,7 @@ public class PrinterService {
 	}
 	
 	private String getVendedor(VentaDto venta){
-		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) {
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue()) {
 			if (Validator.isNotNull(venta.getVendedor())){
 				return PropertiesManager.getProperty("vendedor.leyenda",  new Object[]{venta.getVendedor().getNombre()});
 			}
