@@ -644,4 +644,8 @@ public class VentaController extends BaseController {
 	public CreditoDto obtenerCredito(String nroNC) {
 		return ventaServicio.obtenerCredito(nroNC);
 	}
+	
+	public void getDevolucionFromVenta(VentaDto venta, VentaDto devolucion) {
+		ventaServicio.getDevolucionFromVenta(venta, devolucion);
+	}
 }

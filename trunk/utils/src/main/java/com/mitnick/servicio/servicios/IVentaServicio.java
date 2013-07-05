@@ -90,4 +90,7 @@ public interface IVentaServicio {
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	public void consultarTransaccion(String nroTrx, String tipo, String factura, int numeroCaja);
 	
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
+	public void getDevolucionFromVenta(VentaDto venta, VentaDto devolucion);
+	
 }
