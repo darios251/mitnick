@@ -575,5 +575,22 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			throw new PersistenceException("error.reporte.factura.Cliente","Error al generar la factura del cliente.",e1);
 		}	
 	}
+	
+	@Override
+	public void getDevolucionFromVenta(VentaDto venta, VentaDto devolucion) {
+		ClienteDto cliente = venta.getCliente();
+		List<PagoDto> pagos = venta.getPagos();
+		List<ProductoVentaDto> productos = VentaHelper.getProductosPrecioVendido(venta);						
+		devolucion.setCliente(cliente);
+		for (PagoDto pago : pagos){
+			pago.setId(null);
+		}
+		devolucion.setPagos(pagos);
+		devolucion.setProductos(productos);
+		devolucion.setNumeroTicketOriginal(venta.getNumeroTicket());
+		devolucion.setDescuento(venta.getDescuento());
+		
+		VentaHelper.calcularTotales(devolucion);
+	}
 }
 

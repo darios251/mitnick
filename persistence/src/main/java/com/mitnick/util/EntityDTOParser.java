@@ -498,10 +498,12 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setNumeroCaja(venta.getNumeroCaja());
 		
 		//el descuento se toma por monto para reportes aun cuando fue por porcentaje
-		DescuentoDto descuento = new DescuentoDto();
-		descuento.setTipo(DescuentoDto.MONTO);
-		descuento.setDescuento(venta.getDescuento());
-		ventaDto.setDescuento(descuento);
+		if (Validator.isNotNull(venta.getDescuento()) && Validator.isMoreThanZero(venta.getDescuento())){
+			DescuentoDto descuento = new DescuentoDto();
+			descuento.setTipo(DescuentoDto.MONTO);
+			descuento.setDescuento(venta.getDescuento());
+			ventaDto.setDescuento(descuento);			
+		}
 		
 		ventaDto.setPagos((List<PagoDto>) getDtosFromEntities((List<E>) venta.getPagos()));
 		if (Validator.isNotNull(venta.getCliente()))
@@ -605,7 +607,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		productoVentaDto.setDescripcion(productoVenta.getDescripcion());
 		
 		//el descuento se toma por monto para reportes aun cuando fue por porcentaje
-		if (Validator.isNotNull(productoVenta.getDescuento())) {
+		if (Validator.isNotNull(productoVenta.getDescuento()) && Validator.isMoreThanZero(productoVenta.getDescuento())) {
 			DescuentoDto descuento = new DescuentoDto();
 			descuento.setTipo(DescuentoDto.MONTO);
 			descuento.setDescuento(productoVenta.getDescuento());

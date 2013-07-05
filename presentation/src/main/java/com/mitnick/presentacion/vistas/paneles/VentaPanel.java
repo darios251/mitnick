@@ -330,7 +330,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 	public void agregarDescuento(ProductoVentaDto producto){
 		if (Validator.isNotNull(producto) && Validator.isNotNull(producto.getDescuento())){
 			//eliminar descuento
-			int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.eliminarDescuentoProducto"));
+			int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("ventaPanel.dialog.confirm.eliminarDescuentoProducto"));
 			if (opcion == JOptionPane.YES_OPTION) {
 				controller.quitarDescuento(VentaManager.getVentaActual(), producto);
 			}
@@ -338,7 +338,7 @@ public class VentaPanel extends BasePanel<VentaController> implements KeyEventDi
 		} else {
 			if (Validator.isNull(producto) && Validator.isNotNull(VentaManager.getVentaActual().getDescuento())) {
 				//eliminar descuento
-				int opcion = mostrarMensajeAdvertencia(PropertiesManager.getProperty("ventaPanel.dialog.confirm.eliminarDescuentoVenta"));
+				int opcion = mostrarMensajeConsulta(PropertiesManager.getProperty("ventaPanel.dialog.confirm.eliminarDescuentoVenta"));
 				if (opcion == JOptionPane.YES_OPTION) {
 					controller.quitarDescuento(VentaManager.getVentaActual(), null);
 				}

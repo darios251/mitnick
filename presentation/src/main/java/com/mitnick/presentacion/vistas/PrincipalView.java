@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -51,11 +49,7 @@ import com.mitnick.presentacion.vistas.paneles.DevolucionFiltersDialog;
 import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
-import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.anotaciones.View;
-import com.mitnick.utils.dtos.ClienteDto;
-import com.mitnick.utils.dtos.PagoDto;
-import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @View("principalView")
@@ -106,6 +100,7 @@ public class PrincipalView extends JFrame
 	private JMenuBar menuBar;
 	private JMenu menuProductos;
 	private JMenu menuArchivo;
+	private JMenu menuProveedor;
 	private JMenu menuAyuda;
 
 	private JLabel lblArrow;
@@ -119,7 +114,7 @@ public class PrincipalView extends JFrame
 	private JMenuItem menuResetearStock;
 	private JMenuItem menuActualizarStock;
 	private JMenuItem menuNuevaMarca;
-	private JMenuItem menuNuevoTipo;
+	private JMenuItem menuNuevoTipo;	
 	private JMenuItem menuAcercade;	
 	
 	public PrincipalView()
@@ -144,6 +139,7 @@ public class PrincipalView extends JFrame
 			menuBar = new JMenuBar();
 			menuBar.add(getMenuArchivo());
 			menuBar.add(getMenuArticulo());
+			menuBar.add(getMenuProveedor());
 			menuBar.add(getMenuImpresora());
 			menuBar.add(getMenuAyuda());
 		}
@@ -211,6 +207,33 @@ public class PrincipalView extends JFrame
 			menuArchivo.add(item);
 		}
 		return menuArchivo;
+	}
+	
+	private JMenu getMenuProveedor() {
+		if (menuProveedor == null)
+		{
+			menuProveedor = new JMenu();
+			menuProveedor.setText(PropertiesManager.getProperty("principalView.menu.proveedores"));
+			JMenuItem item = new JMenuItem();
+			item.setText(PropertiesManager.getProperty("principalView.menu.proveedores.administrar"));
+			item.addActionListener(new ActionListener() {
+				@Override public void actionPerformed(ActionEvent e) {
+					if (getJTabbedPane().indexOfComponent(proveedorController.getProveedorView()) == -1) {
+						logger.info("Agregando el panel de proveedoresal tabbedPane");
+						jTabbedPaneConBoton.addTab(PropertiesManager.getProperty("proveedorPanel.label.proveedores"), proveedorController.getProveedorView());
+					}
+					logger.info("Mostrando el panel de proveedores");
+					
+					proveedorController.mostrarProveedorPanel();
+					getJTabbedPane().setSelectedComponent(proveedorController.getProveedorView());
+					getJTabbedPane().setVisible(true);
+					proveedorController.getUltimoPanelMostrado().setVisible(true);
+				}
+			});
+			menuProveedor.add(item);
+						
+		}
+		return menuProveedor;
 	}
 
 	private JButton getBtnVentas()
@@ -291,9 +314,6 @@ public class PrincipalView extends JFrame
 		DevolucionFiltersDialog devolucionFilters = new DevolucionFiltersDialog(this, ventaController);
 		if (!devolucionFilters.cancelar){
 			VentaDto venta = devolucionFilters.venta;
-			
-			ClienteDto cliente = null;
-			List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
 			if (Validator.isNull(venta)){
 				int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaPanel.devolucion.noTicketOriginal"), "Error", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.CANCEL_OPTION){
@@ -305,17 +325,7 @@ public class PrincipalView extends JFrame
 			ventaController.crearNuevaVenta(MitnickConstants.DEVOLUCION);
 			getJTabbedPane().addTab(PropertiesManager.getProperty("devolucion.titulo"), ventaController.getVentaView());
 			if (Validator.isNotNull(venta)){
-				cliente = venta.getCliente();
-				List<PagoDto> pagos = venta.getPagos();
-				productos = VentaHelper.getProductosPrecioVendido(venta);						
-				VentaManager.getVentaActual().setCliente(cliente);
-				for (PagoDto pago : pagos){
-					pago.setId(null);
-				}
-				VentaManager.getVentaActual().setPagos(pagos);
-				VentaManager.getVentaActual().setProductos(productos);
-				VentaManager.getVentaActual().setNumeroTicketOriginal(venta.getNumeroTicket());
-				VentaHelper.calcularTotales(VentaManager.getVentaActual());
+				ventaController.getDevolucionFromVenta(venta, VentaManager.getVentaActual());
 			}
 			logger.info("Mostrando el panel de ventas");
 			
@@ -602,6 +612,7 @@ public class PrincipalView extends JFrame
 			pnlToolBar = new DetailPanel();
 			pnlToolBar.setLayout(new BorderLayout());
 			pnlToolBar.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+			
 			pnlToolBar.add(getQuickAccessBar());
 		}
 		return pnlToolBar;
@@ -676,7 +687,7 @@ public class PrincipalView extends JFrame
 			tlbQuickAccess.add(getBtnArticulos());
 			tlbQuickAccess.add(getBtnClientes());
 			tlbQuickAccess.add(getBtnReporte());
-			tlbQuickAccess.add(getBtnProveedores());
+//			tlbQuickAccess.add(getBtnProveedores());
 			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue()) {
 				tlbQuickAccess.add(getBtnVendedores());	
 			}
