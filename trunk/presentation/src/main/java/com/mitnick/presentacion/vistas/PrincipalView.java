@@ -739,7 +739,7 @@ public class PrincipalView extends JFrame
 		getBtnArticulos().setVisible(show);
 		getBtnProveedores().setVisible(show);
 		boolean vendedor = false;
-		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) 
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue()) 
 			vendedor = true;
 		getBtnVendedores().setVisible(vendedor);
 		getBtnClientes().setVisible(show);

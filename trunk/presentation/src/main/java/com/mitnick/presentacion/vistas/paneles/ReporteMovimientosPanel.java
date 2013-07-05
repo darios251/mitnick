@@ -131,7 +131,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		add(getBtnBuscar());
 		add(getBtnCompra());
 		
-		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue()))
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())
 			add(getBtnVendedor());
 		
 		add(getBtnDetalleMovimientos());

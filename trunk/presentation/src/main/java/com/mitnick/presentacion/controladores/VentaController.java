@@ -363,7 +363,7 @@ public class VentaController extends BaseController {
 
 	private void getVendedor(){
 		
-		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) {
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue()) {
 			VendedorDialog vendedorDialog = new VendedorDialog(this.getPrincipalView(), this.getPrincipalView().vendedorController);
 			if (Validator.isNotNull(vendedorDialog.getSelected()))
 					VentaManager.getVentaActual().setVendedor(vendedorDialog.getSelected());
