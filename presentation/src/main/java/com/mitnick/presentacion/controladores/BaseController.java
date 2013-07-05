@@ -22,7 +22,7 @@ import com.mitnick.utils.dtos.BaseDto;
  * Esta clase tiene la responsabilidad de representar la clase base
  * de la cual deben extender los controllers.
  * 
- * @author Lucas Garcï¿½a
+ * @author Lucas García
  *
  */
 public abstract class BaseController {

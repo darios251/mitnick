@@ -916,14 +916,14 @@ public class PrincipalView extends JFrame
 	}
 	
 	protected int mostrarMensajeConsulta( String message ) {
-		//Primero despliego un mensaje para confirmar la operaciï¿½n
+		//Primero despliego un mensaje para confirmar la operación
 	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ), PropertiesManager.getProperty( "dialog.info.cancelbutton" ) };
 	     
 	     return JOptionPane.showOptionDialog(this, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected int mostrarMensajeInformativo ( String message ) {
-		//Primero despliego un mensaje para confirmar la operaciï¿½n
+		//Primero despliego un mensaje para confirmar la operación
 	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ) };
 	     
 	     return JOptionPane.showOptionDialog(this, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );

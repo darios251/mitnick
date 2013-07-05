@@ -3,10 +3,10 @@ package com.mitnick.exceptions;
 
 
 /**
- * Esta clase tiene la responsabilidad de representar la excepciï¿½n por defecto
+ * Esta clase tiene la responsabilidad de representar la excepción por defecto
  * que debe lanzarse en la capa de persistencia.
  * 
- * @author Lucas Garcï¿½a
+ * @author Lucas García
  *
  */
 public class PersistenceException extends BaseException {

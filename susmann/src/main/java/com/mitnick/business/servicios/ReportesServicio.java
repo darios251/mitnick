@@ -571,7 +571,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	}
 
 	/**
-	 * dto.getFecha format: mes - aï¿½o (Enero-2012)
+	 * dto.getFecha format: mes - año (Enero-2012)
 	 * @param ingresos
 	 * @param fecha
 	 * @return
@@ -877,7 +877,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	}
 	
 	/**
-	 * dto.getFecha format: mes - aï¿½o (Enero-2012)
+	 * dto.getFecha format: mes - año (Enero-2012)
 	 * @param ingresos
 	 * @param fecha
 	 * @return
@@ -922,7 +922,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	}
 	
 	/**
-	 * dto.getFecha format: mes - aï¿½o (Enero-2012)
+	 * dto.getFecha format: mes - año (Enero-2012)
 	 * @param ingresos
 	 * @param fecha
 	 * @return

@@ -17,7 +17,7 @@ public class Runner {
 	public static void main(String[] args) {
 		InicioView inicio = InicioView.getInstance();
 		inicio.setVisible(true);
-		logger.info("Iniciando la aplicación: Applicación del proyecto mitnick...");
+		logger.info("Iniciando la aplicaciÃ³n: ApplicaciÃ³n del proyecto mitnick...");
 		logger.info("Inicializando el propertiesManager...");
 		BeanLocator.getBean("propertiesManager");
 		
