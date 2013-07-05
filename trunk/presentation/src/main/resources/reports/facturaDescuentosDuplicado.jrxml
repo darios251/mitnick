@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDuplicado" pageWidth="651" pageHeight="878" whenNoDataType="AllSectionsNoDetail" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaDescuentosDuplicado" pageWidth="651" pageHeight="878" whenNoDataType="AllSectionsNoDetail" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="1.0000000000000009"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -83,6 +83,8 @@
 		<defaultValueExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\reports\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="pagos" class="java.util.List"/>
+	<parameter name="ventaDescuentos" class="java.lang.String"/>
+	<parameter name="prodDescuentos" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -97,6 +99,9 @@
 	</field>
 	<field name="iva" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[iva]]></fieldDescription>
+	</field>
+	<field name="descuento" class="com.mitnick.servicio.servicios.dtos.DescuentoDto">
+		<fieldDescription><![CDATA[descuento]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -286,7 +291,7 @@
 				<text><![CDATA[DETALLE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="347" y="3" width="56" height="20"/>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="301" y="3" width="56" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -300,7 +305,7 @@
 				<text><![CDATA[TOTALES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="423" y="3" width="56" height="20"/>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="378" y="3" width="56" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -313,6 +318,13 @@
 				</textElement>
 				<text><![CDATA[CODIGO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="0d39c9ae-be65-4546-a604-b09e25743442" x="437" y="3" width="56" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[DESC.]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -323,7 +335,7 @@
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="68d32d7e-d05c-4425-a375-46a2d3614d7a" x="134" y="2" width="202" height="20"/>
+				<reportElement uuid="68d32d7e-d05c-4425-a375-46a2d3614d7a" x="134" y="2" width="156" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{producto}.getDescripcion()]]></textFieldExpression>
 			</textField>
@@ -333,7 +345,7 @@
 				<textFieldExpression><![CDATA[$F{precioTotal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="65af191d-749f-4a0a-a7a0-bbfd3f316511" x="348" y="2" width="75" height="20"/>
+				<reportElement uuid="65af191d-749f-4a0a-a7a0-bbfd3f316511" x="302" y="2" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{producto}.getPrecioVenta()]]></textFieldExpression>
 			</textField>
@@ -343,34 +355,69 @@
 				<textFieldExpression><![CDATA[$F{producto}.getCodigo()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="214f6dfe-b158-4008-99b1-501fef4b609d" x="423" y="2" width="56" height="20"/>
+				<reportElement uuid="214f6dfe-b158-4008-99b1-501fef4b609d" x="378" y="2" width="56" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="41594f30-5903-442a-bbf6-06f89177fd2d" x="437" y="2" width="63" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["-"+$F{descuento}.getDescuento()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
-		<band height="57">
+		<band height="108">
 			<subreport>
-				<reportElement uuid="80194e6c-90e4-4bf5-b6c7-3cced39b5811" x="0" y="30" width="611" height="23"/>
+				<reportElement uuid="80194e6c-90e4-4bf5-b6c7-3cced39b5811" x="2" y="72" width="611" height="23"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{pagos})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "detallePagos.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement uuid="70d7e7c2-e298-429c-a5a6-0492bfddabc8" x="509" y="6" width="90" height="20"/>
+				<reportElement uuid="3698cd7a-7003-478d-8731-241755f78c05" x="509" y="26" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"+$P{ventaDescuentos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b7c6557c-e0b7-4a81-9d5e-fd904fc624a3" x="399" y="27" width="100" height="20"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Desc Venta $ ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="70d7e7c2-e298-429c-a5a6-0492bfddabc8" x="509" y="46" width="100" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalVenta}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="b7c6557c-e0b7-4a81-9d5e-fd904fc624a3" x="354" y="6" width="100" height="20"/>
+				<reportElement uuid="b7c6557c-e0b7-4a81-9d5e-fd904fc624a3" x="399" y="46" width="100" height="20"/>
 				<box leftPadding="5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL $ ]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="b7c6557c-e0b7-4a81-9d5e-fd904fc624a3" x="388" y="7" width="111" height="20"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Desc. Productos $ ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1c173234-1ac9-4c82-87d2-10a4d96d462b" x="510" y="7" width="99" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"+$P{prodDescuentos}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

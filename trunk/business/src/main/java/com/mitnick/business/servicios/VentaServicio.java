@@ -493,8 +493,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	 */
 	public void generarReporteFactura(VentaDto venta, boolean duplicado) {
 		try {
-			JasperReport reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/facturaDuplicado.jasper"));
 			
+			JasperReport reporte = null;
+			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+				reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/facturaDescuentosDuplicado.jasper"));
+			} else {
+				reporte = (JasperReport) JRLoader.loadObject(this.getClass().getResourceAsStream("/reports/facturaDuplicado.jasper"));
+			}
+				
+				
 			Empresa empresa = empresaDao.getEmpresa();
 			
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
@@ -563,6 +570,9 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			} else
 				productos = venta.getProductos();
 				
+			parameters.put("ventaDescuentos", venta.getDescuentoVenta().toString());
+			parameters.put("prodDescuentos", venta.getDescuentoProductos().toString());
+			
 			parameters.put("leyenda", leyenda);
 			parameters.put("totalVenta", venta.getTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			parameters.put("pagos", venta.getPagos());
