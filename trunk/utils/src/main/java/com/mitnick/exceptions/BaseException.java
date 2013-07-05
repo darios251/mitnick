@@ -10,10 +10,10 @@ import org.apache.log4j.Logger;
 import com.mitnick.utils.PropertiesManager;
 
 /**
- * Esta clase tiene la responsabilidad de representar la excepciï¿½n base
- * que todas las demï¿½s excepciones deberï¿½an extender.
+ * Esta clase tiene la responsabilidad de representar la excepción base
+ * que todas las demás excepciones deberían extender.
  * 
- * @author Lucas Garcï¿½a
+ * @author Lucas García
  *
  */
 public class BaseException extends RuntimeException {

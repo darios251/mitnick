@@ -474,13 +474,13 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	public void consultarTransaccion(String nroTrx, String tipo, String factura, int numeroCaja) {
 		Venta venta = ventaDao.findTransactionByNumeroTipoFactura(nroTrx, tipo, factura, numeroCaja);
 		if (Validator.isNull(venta))
-			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacciï¿½n con el nï¿½mero ingresado");
+			throw new BusinessException("error.consultarTransaccion.noExiste","No se encuentra una transacción con el número ingresado");
 		try {
 			VentaDto ventaDto = (VentaDto) entityDTOParser.getDtoFromEntity(venta);
 			generarReporteFactura(ventaDto, true);
 		} catch (PersistenceException e) {
 			throw new BusinessException(e,
-					"Error al intentar obtener el comprobante de la transacciï¿½n");
+					"Error al intentar obtener el comprobante de la transacción");
 		}
 	}
 	

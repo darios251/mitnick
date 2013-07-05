@@ -154,14 +154,14 @@ public abstract class BasePanel<T extends BaseController> extends JPanel {
 	}
 	
 	protected int mostrarMensajeConsulta( String message ) {
-		//Primero despliego un mensaje para confirmar la operaciï¿½n
+		//Primero despliego un mensaje para confirmar la operación
 	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ), PropertiesManager.getProperty( "dialog.info.cancelbutton" ) };
 	     
 	     return JOptionPane.showOptionDialog(currentView, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );
 	}
 	
 	protected int mostrarMensajeInformativo ( String message ) {
-		//Primero despliego un mensaje para confirmar la operaciï¿½n
+		//Primero despliego un mensaje para confirmar la operación
 	     Object[] options = { PropertiesManager.getProperty( "dialog.info.okbutton" ) };
 	     
 	     return JOptionPane.showOptionDialog(currentView, message, PropertiesManager.getProperty( "dialog.info.titulo" ), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[ 0 ] );

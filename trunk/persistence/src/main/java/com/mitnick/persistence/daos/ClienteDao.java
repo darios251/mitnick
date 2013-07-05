@@ -27,7 +27,7 @@ import com.mitnick.utils.dtos.ClienteDto;
  * Esta clase tiene la responsabilidad de representar el administrador de
  * accesos a datos persistentes de clientes.
  * 
- * @author Lucas Garcï¿½a
+ * @author Lucas García
  * 
  */
 @Repository("clienteDao")

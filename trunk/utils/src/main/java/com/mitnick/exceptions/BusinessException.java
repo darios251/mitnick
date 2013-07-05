@@ -6,10 +6,10 @@ import javax.validation.ConstraintViolation;
 
 
 /**
- * Esta clase tiene la responsabilidad de representar la excepciï¿½n por defecto
+ * Esta clase tiene la responsabilidad de representar la excepción por defecto
  * que debe lanzarse en la capa de negocios.
  * 
- * @author Lucas Garcï¿½a
+ * @author Lucas García
  *
  */
 public class BusinessException extends BaseException {

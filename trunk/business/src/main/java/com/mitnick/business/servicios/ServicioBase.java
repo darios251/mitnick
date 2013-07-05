@@ -17,10 +17,10 @@ import com.mitnick.util.EntityDTOParser;
 import com.mitnick.utils.dtos.BaseDto;
 
 /**
- * Esta clase es el administrador de negocios genï¿½rico de cual deben
+ * Esta clase es el administrador de negocios genérico de cual deben
  * extender el resto.
  * 
- * @author Lucas Garcï¿½a
+ * @author Lucas García
  *
  */
 public class ServicioBase<E extends BaseObject, D extends BaseDto> {

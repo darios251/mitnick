@@ -27,7 +27,7 @@ import com.mitnick.utils.PropertiesManager;
 /**
  * Esta clase extiende a la clase JTabbedPane y ademas implementa MouseListener
  * Este clase simplemente no permite agregar un icocno de cerrar en cada
- * pestaï¿½a y poder agregarle al mismo un evento para poder manejarlo
+ * pestaña y poder agregarle al mismo un evento para poder manejarlo
  * 
  * A esta clase la sacamos de internet, asi que tambien dejamos los comentarios
  * originales (que estan en ingles)
@@ -36,7 +36,7 @@ import com.mitnick.utils.PropertiesManager;
  * operaciones necesarias, identicas a cuando se hace click en el menu item
  * "Cerrar"
  * 
- * @author Grupo Nï¿½ 15
+ * @author 
  */
 public class JTabbedPaneConBoton extends JTabbedPane implements MouseListener {
 
