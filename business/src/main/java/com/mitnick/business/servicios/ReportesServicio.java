@@ -831,7 +831,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	
 	private ReporteVentaArticuloDTO getDTOProductoFecha(List<ReporteVentaArticuloDTO> items, ProductoVenta producto){
 		for (ReporteVentaArticuloDTO dto: items){
-			if (dto.getFecha().equals(producto.getVenta().getFecha()) && dto.getProductoCodigo().equals(producto.getProducto().getCodigo()))
+			if (dto.getFecha().equals(DateHelper.getFecha(producto.getVenta().getFecha())) && dto.getProductoCodigo().equals(producto.getProducto().getCodigo()))
 				return dto;
 		}		
 		ReporteVentaArticuloDTO dto = new ReporteVentaArticuloDTO();

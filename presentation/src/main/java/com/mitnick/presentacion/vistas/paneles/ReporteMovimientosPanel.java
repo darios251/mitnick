@@ -312,7 +312,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			btnReporteProductoVentaDiario.setToolTipText(PropertiesManager
 					.getProperty("movmientosPanel.tooltip.producto.reporteProductoVentaDiario"));
 
-			btnReporteProductoVentaDiario.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteProductoVentaDiario.setIcon(new ImageIcon(this.getClass().getResource("/img/reporte_prod_dias.png")));
 			btnReporteProductoVentaDiario.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteProductoVentaDiario.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReporteProductoVentaDiario.setMargin(new Insets(-1, -1, -1, -1));
@@ -336,7 +336,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			btnReporteProductoVentaMensual.setToolTipText(PropertiesManager
 					.getProperty("movmientosPanel.tooltip.producto.reporteProductoVentaMensual"));
 
-			btnReporteProductoVentaMensual.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteProductoVentaMensual.setIcon(new ImageIcon(this.getClass().getResource("/img/reporte_prod_mes.png")));
 			btnReporteProductoVentaMensual.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteProductoVentaMensual.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReporteProductoVentaMensual.setMargin(new Insets(-1, -1, -1, -1));
@@ -360,7 +360,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			btnReporteVentaDiario.setToolTipText(PropertiesManager
 					.getProperty("movmientosPanel.tooltip.producto.reporteVentaDiario"));
 
-			btnReporteVentaDiario.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteVentaDiario.setIcon(new ImageIcon(this.getClass().getResource("/img/reporte_cantidad_dias.png")));
 			btnReporteVentaDiario.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteVentaDiario.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReporteVentaDiario.setMargin(new Insets(-1, -1, -1, -1));
@@ -383,7 +383,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 			btnReporteVentaMensual.setToolTipText(PropertiesManager
 					.getProperty("movmientosPanel.tooltip.producto.reporteVentaMensual"));
 
-			btnReporteVentaMensual.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteCompraProds.png")));
+			btnReporteVentaMensual.setIcon(new ImageIcon(this.getClass().getResource("/img/reporte_cantidad_mes.png")));
 			btnReporteVentaMensual.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnReporteVentaMensual.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReporteVentaMensual.setMargin(new Insets(-1, -1, -1, -1));
