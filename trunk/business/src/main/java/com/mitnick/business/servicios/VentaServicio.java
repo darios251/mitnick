@@ -529,6 +529,12 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				parameters.put("leyenda", "Comprobante no válido como Factura");
 			else
 				parameters.put("leyenda", "");
+			
+			if (Validator.isNotNull(venta.getVendedor()))
+				parameters.put("vendedor", PropertiesManager.getProperty("vendedor.leyenda",  new Object[]{venta.getVendedor().getNombre()}));
+			else
+				parameters.put("vendedor", "");
+			
 			boolean consumidorFinal = venta.getTipoResponsabilidad().getTipoComprador().equals(MitnickConstants.TipoComprador.CONSUMIDOR_FINAL);
 			String nombre = "";
 			String direccion = "";

@@ -48,6 +48,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 	private JButton btnReporteVentasMensual;
 	private JButton btnReporteVentasAnual;
 	
+	private JButton btnReporteVendedor;
 
 	private JButton btnReporteDeEstado;
 	private JButton btnReporteDeEstadoPorCliente;
@@ -100,6 +101,9 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getBtnReporteVentasMensual());
 		add(getBtnReporteVentasAnual());
 						
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())
+			add(getBtnReporteVendedor());
+		
 		add(getBtnReporteDeEstado());
 		add(getBtnReporteDeEstadoPorCliente());
 		
@@ -228,6 +232,26 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 			btnReporteVentasAnual.setBounds(200, 270, 330, 20);
 		}
 		return btnReporteVentasAnual;
+	}
+	
+	public JButton getBtnReporteVendedor() {
+		if (btnReporteVendedor == null) {
+			btnReporteVendedor = new JButton();
+			btnReporteVendedor.setText(PropertiesManager.getProperty("reportePanel.label.reporteVendedor"));
+			btnReporteVendedor.setToolTipText(PropertiesManager.getProperty("reportePanel.tooltip.reporteVendedor"));
+
+			btnReporteVendedor.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnReporteVendedor.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnReporteVendedor.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnReporteVendedor.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evento) {
+					reporteVendedor();
+				}
+			});
+			btnReporteVendedor.setBounds(200, 300, 330, 20);
+		}
+		return btnReporteVendedor;
 	}
 	
 	private JButton getBtnReporteDeEstado() {
@@ -433,6 +457,17 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		}
 	}
 		
+	protected void reporteVendedor() {
+		try {
+			ReportesDto dto = new ReportesDto();
+			dto.setFechaInicio(getFechaInicio());
+			dto.setFechaFin(getFechaFinal());
+			controller.reporteVendedor(dto);
+		} catch (PresentationException ex) {
+			mostrarMensaje(ex);
+		}
+	}	
+	
 	protected void consultarEstadoCuentas() {
 		try {
 			ReportesDto dto = new ReportesDto();

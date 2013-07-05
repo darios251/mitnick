@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -64,12 +63,9 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	private JLabel lblTipoComprador;
 	private JComboBox<TipoCompradorDto> cmbTipoComprador;
 	
-	private VendedorController vendedorController;
-	
 	@Autowired(required = true)
 	public VentaClientePanel(@Qualifier("ventaController") VentaController ventaController, @Qualifier("vendedorController") VendedorController vendedorController) {
 		controller = ventaController;
-		this.vendedorController = vendedorController;
 	}
 	
 	/**
@@ -152,15 +148,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			controller.validarTotalVenta();
 			
 			TipoCompradorDto tipoComprador = (TipoCompradorDto) cmbTipoComprador.getSelectedItem();
-			
-			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) {
-				VendedorDialog vendedorDialog = new VendedorDialog((JFrame) this.getParent().getParent().getParent().getParent().getParent().getParent().getParent(), vendedorController);
-				if (Validator.isNotNull(vendedorDialog.getSelected()))
-						VentaManager.getVentaActual().setVendedor(vendedorDialog.getSelected());
-				else
-					return;
-			}
-			
+								
 			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
 				controller.validarCliente();
 				mensajeCuentaPendiente(controller.agregarCliente());

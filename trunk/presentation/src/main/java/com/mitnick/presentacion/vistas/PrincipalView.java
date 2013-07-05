@@ -72,7 +72,7 @@ public class PrincipalView extends JFrame
 	@Autowired
 	private ProveedorController proveedorController;
 	@Autowired
-	private VendedorController vendedorController;
+	public VendedorController vendedorController;
 	@Autowired
 	private LoginView loginView;
 	@Autowired

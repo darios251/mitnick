@@ -40,7 +40,7 @@
 					<font fontName="Baskerville Old Face" size="24" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Reporte de Caja]]></text>
+				<text><![CDATA[Reporte de Caja prueba]]></text>
 			</staticText>
 			<image>
 				<reportElement uuid="0650bc17-c078-48aa-bcbc-f9a66359f65c" x="10" y="3" width="128" height="50"/>

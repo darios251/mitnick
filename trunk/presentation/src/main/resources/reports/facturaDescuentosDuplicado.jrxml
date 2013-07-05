@@ -85,6 +85,7 @@
 	<parameter name="pagos" class="java.util.List"/>
 	<parameter name="ventaDescuentos" class="java.lang.String"/>
 	<parameter name="prodDescuentos" class="java.lang.String"/>
+	<parameter name="vendedor" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -107,7 +108,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="111" splitType="Stretch">
+		<band height="141" splitType="Stretch">
 			<rectangle>
 				<reportElement uuid="de7aed4c-dfc3-4779-a80e-bf5f540edd86" x="262" y="0" width="60" height="55"/>
 			</rectangle>
@@ -210,6 +211,11 @@
 				<reportElement uuid="c023d929-25dd-4555-a028-163f6950efb5" x="504" y="44" width="95" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{fechaTrx}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="afb9cddb-614c-4d27-99af-ebe6df6351fe" x="258" y="118" width="339" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{vendedor}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

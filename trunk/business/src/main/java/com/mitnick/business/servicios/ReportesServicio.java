@@ -37,6 +37,7 @@ import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
 import com.mitnick.persistence.entities.ProductoVenta;
+import com.mitnick.persistence.entities.Vendedor;
 import com.mitnick.persistence.entities.Venta;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ComprobanteDto;
@@ -45,6 +46,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteCompraSugeridaDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteFacturasDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
+import com.mitnick.servicio.servicios.dtos.ReporteVendedorDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
 import com.mitnick.servicio.servicios.dtos.ReportesDto;
@@ -647,7 +649,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			throw new BusinessException(
 					"Error al intentar obtener el reporte de ventas", e);
 		}
-	}
+	}		
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
@@ -712,6 +714,80 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			cuotas.add(cuota);						
 		}			
 		return retorno;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public void reporteVendedor(ReportesDto filtro) {
+		List<ReporteVendedorDto> vendedores = new ArrayList<ReporteVendedorDto>();
+		try {
+
+			List<Venta> ventas = ventaDao.findByFiltro(filtro, PropertiesManager.getPropertyAsInteger("application.caja.numero"));
+			for (Venta venta : ventas) {
+				if (Validator.isNotNull(venta.getVendedor())){
+					int cantidad = 0;
+					for (ProductoVenta producto: venta.getProductos()){
+						cantidad = cantidad + (producto.getCantidad());
+					}
+					ReporteVendedorDto dto = getDto(venta.getVendedor(), vendedores);
+					if (venta.isDevolucion()){
+						dto.setCantidadDevoluciones(dto.getCantidadDevoluciones()+1);
+						dto.setCantidadProductosDevueltos(dto.getCantidadProductosDevueltos()+cantidad);						
+					} else {
+						dto.setCantidadVentas(dto.getCantidadVentas()+1);
+						dto.setCantidadProductosVendidos(dto.getCantidadProductosVendidos()+cantidad);
+					}					
+				}
+			}
+			
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
+			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+					.getClass().getResourceAsStream(
+							"/reports/reporteVendedores.jasper"));
+
+			JRDataSource dr = new JRBeanCollectionDataSource(vendedores);
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
+					parameters, dr);
+
+			JasperViewer.viewReport(jasperPrint, false);
+
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException(
+					"Error al intentar obtener el reporte de ventas", e);
+		}
+	}
+	
+	/**
+	 * Obtiene de la lista el dto que representa al vendedor pasado por parametro.
+	 * @param vendedor
+	 * @param vendedores
+	 * @return
+	 */
+	private ReporteVendedorDto getDto(Vendedor vendedor, List<ReporteVendedorDto> vendedores){
+		ReporteVendedorDto retorno=null;
+		for (ReporteVendedorDto dto: vendedores){
+			if (dto.getCodigo().equals(vendedor.getCodigo()))
+					return dto;
+		}
+		if (Validator.isNull(retorno)){
+			retorno = new ReporteVendedorDto();
+			retorno.setCodigo(vendedor.getCodigo());
+			retorno.setNombre(vendedor.getNombre());
+			retorno.setCantidadDevoluciones(0);
+			retorno.setCantidadProductosVendidos(0);
+			retorno.setCantidadProductosDevueltos(0);
+			retorno.setCantidadVentas(0);
+		}
+		vendedores.add(retorno);
+		return retorno;
+		
 	}
 	
 	@Transactional(readOnly = true)
