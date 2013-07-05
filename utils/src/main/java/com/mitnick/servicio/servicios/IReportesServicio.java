@@ -119,5 +119,11 @@ public interface IReportesServicio {
 	 * @param filtro
 	 */
 	public void reporteVendedor(ReportesDto filtro);
+
+	/**
+	 * Obtiene el reporte de ventas realizada por los vendedores, discriminado por productos.
+	 * @param filtro
+	 */
+	public void reporteProductoVendedor(ReporteMovimientosDto filtro);
 	
 }

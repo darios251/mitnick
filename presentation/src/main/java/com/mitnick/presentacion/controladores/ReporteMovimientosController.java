@@ -80,6 +80,17 @@ public class ReporteMovimientosController extends BaseController {
 		reporteDetalleMovimientosPanel.actualizarPantalla();
 	}
 
+	
+	public void mostrarReporteVendedor(ReporteMovimientosDto dto) {
+		logger.info("Mostrando el reporte de vendedores");
+		try {
+			reporteServicio.reporteProductoVendedor(dto);
+		}
+		catch(BusinessException e) {
+			throw new PresentationException("error.exportar.producto.reporteVendedor",e);
+		}		
+	}
+	
 	public void mostrarCompraSugerida(ReporteMovimientosDto dto) {
 		logger.info("Mostrando el reporte de compra sugerida");
 		try {

@@ -46,6 +46,7 @@ import com.mitnick.servicio.servicios.dtos.ReporteCompraSugeridaDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteFacturasDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
+import com.mitnick.servicio.servicios.dtos.ReporteProductoVendedorDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVendedorDto;
 import com.mitnick.servicio.servicios.dtos.ReporteVentaArticuloDTO;
 import com.mitnick.servicio.servicios.dtos.ReporteVentasResultadoDTO;
@@ -764,7 +765,74 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas", e);
 		}
 	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public void reporteProductoVendedor(ReporteMovimientosDto filtro) {
+		List<ReporteProductoVendedorDto> vendedores = new ArrayList<ReporteProductoVendedorDto>();
+		try {
+
+			List<ProductoVenta> productos = reporteDao.consultarVentaPorArticulo(filtro); 
+			for (ProductoVenta producto : productos) {
+				if (Validator.isNotNull(producto.getVenta().getVendedor())){
+					int cantidad = producto.getCantidad();
+					ReporteProductoVendedorDto dto = getDto(producto.getVenta().getVendedor(), producto, vendedores);
+					if (producto.getVenta().isDevolucion())
+						dto.setCantidadDevuelta(dto.getCantidadDevuelta()+cantidad);
+					else 
+						dto.setCantidadVendida(dto.getCantidadVendida()+cantidad);
+				}
+			}
+			
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
+			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
+					.getClass().getResourceAsStream(
+							"/reports/reporteProductosVendedor.jasper"));
+
+			JRDataSource dr = new JRBeanCollectionDataSource(vendedores);
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte,
+					parameters, dr);
+
+			JasperViewer.viewReport(jasperPrint, false);
+
+		} catch (PersistenceException e) {
+			throw new BusinessException(e,
+					"Error al intentar obtener el reporte de ventas");
+		} catch (JRException e) {
+			throw new BusinessException(
+					"Error al intentar obtener el reporte de ventas", e);
+		}
+	}
 	
+	/**
+	 * Obtiene de la lista el dto que representa al vendedor pasado por parametro.
+	 * @param vendedor
+	 * @param vendedores
+	 * @return
+	 */
+	private ReporteProductoVendedorDto getDto(Vendedor vendedor, ProductoVenta producto, List<ReporteProductoVendedorDto> vendedores){
+		ReporteProductoVendedorDto retorno=null;
+		for (ReporteProductoVendedorDto dto: vendedores){
+			if (dto.getCodigo().equals(vendedor.getCodigo()) && dto.getProductoCodigo().equals(producto.getProducto().getCodigo()))
+					return dto;
+		}
+		if (Validator.isNull(retorno)){
+			retorno = new ReporteProductoVendedorDto();
+			retorno.setCodigo(vendedor.getCodigo());
+			retorno.setNombre(vendedor.getNombre());
+			retorno.setCantidadDevuelta(0);
+			retorno.setCantidadVendida(0);
+			retorno.setProducto(producto.getProducto().getDescripcion());
+			retorno.setProductoCodigo(producto.getProducto().getCodigo());
+		}
+		vendedores.add(retorno);
+		return retorno;
+		
+	}
 	/**
 	 * Obtiene de la lista el dto que representa al vendedor pasado por parametro.
 	 * @param vendedor

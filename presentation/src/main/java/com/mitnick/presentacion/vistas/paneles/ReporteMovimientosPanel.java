@@ -69,6 +69,7 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 	private MovimientoTableModel model;
 	private JButton btnDetalleMovimientos;
 	private JButton btnCompra;
+	private JButton btnVendedor;
 	
 	private JLabel lblReportesDescripcion;
 	private JButton btnReporteProductoVentaDiario;
@@ -129,6 +130,10 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 
 		add(getBtnBuscar());
 		add(getBtnCompra());
+		
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue()))
+			add(getBtnVendedor());
+		
 		add(getBtnDetalleMovimientos());
 		add(getBtnExportar());
 
@@ -414,6 +419,43 @@ public class ReporteMovimientosPanel extends BasePanel<ReporteMovimientosControl
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
+	}
+	
+	public JButton getBtnVendedor() {
+		if (btnVendedor == null) {
+			btnVendedor = new JButton(PropertiesManager
+					.getProperty("productoPanel.button.reporteVendedor"));
+			btnVendedor.setToolTipText(PropertiesManager
+					.getProperty("productoPanel.tooltip.reporteVendedor"));
+
+
+			btnVendedor.setIcon(new ImageIcon(this.getClass().getResource("/img/reporteVendedor.png")));
+			btnVendedor.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnVendedor.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnVendedor.setMargin(new Insets(-1, -1, -1, -1));
+
+			btnVendedor.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ReporteMovimientosDto dto = new ReporteMovimientosDto();
+					dto.setCodigo(getTxtProductoCodigo().getText());
+					dto.setDescripcion(getTxtProductoDescripcion().getText());
+					dto.setFechaInicio(getFechaInicio());
+					dto.setFechaFin(getFechaFinal());
+					dto.setMarca((MarcaDto) getCmbMarca().getSelectedItem());
+					dto.setTipo((TipoDto) getCmbTipo().getSelectedItem());
+					
+					try {
+						controller.mostrarReporteVendedor(dto);
+					} catch (PresentationException ex) {
+						mostrarMensaje(ex);
+					}
+					
+				}
+			});
+
+			btnVendedor.setBounds(735, 160, 60, 60);
+		}
+		return btnVendedor;
 	}
 	
 	public JButton getBtnCompra() {
