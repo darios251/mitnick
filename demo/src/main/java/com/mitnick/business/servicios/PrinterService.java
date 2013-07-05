@@ -1,5 +1,6 @@
 package com.mitnick.business.servicios;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import com.mitnick.persistence.daos.IVentaDAO;
 import com.mitnick.persistence.entities.Empresa;
 import com.mitnick.servicio.servicios.ICierreZServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
+import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.CierreZDto;
@@ -66,8 +68,11 @@ public class PrinterService {
 	}
 	
 	public boolean imprimirCierreZ() {
-		String cierreNro = "";
-		cierreNro = cierreNro.split(":")[1];
+		Calendar calendario = Calendar.getInstance();
+		calendario.setTime(new Date());
+		int month = calendario.get(Calendar.DAY_OF_YEAR);
+		
+		String cierreNro = String.valueOf(month);		
 		
 		CierreZDto cierreZ = new CierreZDto();
 		cierreZ.setNumero(cierreNro);

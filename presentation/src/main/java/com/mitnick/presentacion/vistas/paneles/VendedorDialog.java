@@ -36,6 +36,8 @@ public class VendedorDialog  extends BaseDialog {
 	
 	private VendedorDto selected;
 	
+	private boolean init = false;
+	
 	public VendedorDialog(JFrame frame, VendedorController vendedorController) {
 		super(frame, true);
 		
@@ -82,6 +84,7 @@ public class VendedorDialog  extends BaseDialog {
 			btnAceptar.addActionListener(new ActionListener() {
 				@Override public void actionPerformed(ActionEvent e) {
 					try {
+						init = true;
 						keyIntro();
 					} catch (PresentationException ex) {
 						mostrarMensaje(ex);
@@ -113,8 +116,11 @@ public class VendedorDialog  extends BaseDialog {
 	}
 
 	protected void keyIntro() {
-		selected = (VendedorDto)cmbVendedor.getSelectedItem();
-		setVisible(false);
+		if (init){
+			selected = (VendedorDto)cmbVendedor.getSelectedItem();
+			setVisible(false);
+		} else
+			init = true;
 	}
 	
 	protected void keyEscape() {

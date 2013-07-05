@@ -114,4 +114,10 @@ public interface IReportesServicio {
 	 */
 	public void reporteCajero(ReportesDto filtro);
 	
+	/**
+	 * Obtiene el reporte de ventas realizada por los vendedores.
+	 * @param filtro
+	 */
+	public void reporteVendedor(ReportesDto filtro);
+	
 }

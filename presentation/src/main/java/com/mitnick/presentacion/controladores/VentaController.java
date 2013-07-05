@@ -16,6 +16,7 @@ import com.mitnick.presentacion.vistas.paneles.BuscarProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.ClienteNuevoPanel;
 import com.mitnick.presentacion.vistas.paneles.DetalleProductoPanel;
 import com.mitnick.presentacion.vistas.paneles.PagoPanel;
+import com.mitnick.presentacion.vistas.paneles.VendedorDialog;
 import com.mitnick.presentacion.vistas.paneles.VentaClientePanel;
 import com.mitnick.presentacion.vistas.paneles.VentaPanel;
 import com.mitnick.servicio.servicios.IClienteServicio;
@@ -24,6 +25,7 @@ import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
@@ -66,7 +68,7 @@ public class VentaController extends BaseController {
 
 	@Autowired
 	private IClienteServicio clienteServicio;
-
+	
 	public VentaController() {
 
 	}
@@ -359,9 +361,21 @@ public class VentaController extends BaseController {
 		logger.debug("Saliendo del método agregarPago");
 	}
 
+	private void getVendedor(){
+		
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor") && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())) {
+			VendedorDialog vendedorDialog = new VendedorDialog(this.getPrincipalView(), this.getPrincipalView().vendedorController);
+			if (Validator.isNotNull(vendedorDialog.getSelected()))
+					VentaManager.getVentaActual().setVendedor(vendedorDialog.getSelected());
+			else
+				getVendedor();
+		}
+	}
+	
 	public void finalizarVenta() {
 		if (checkFinalizarVenta()) {
 			try {
+				getVendedor();
 				getVentaServicio().facturar(VentaManager.getVentaActual());
 			} catch (BusinessException e) {
 				int opcion = getPagoPanel().mostrarMensajeReintentar(e.getMessage());
