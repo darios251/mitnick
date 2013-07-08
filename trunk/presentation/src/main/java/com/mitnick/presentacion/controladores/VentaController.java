@@ -505,9 +505,14 @@ public class VentaController extends BaseController {
 		ClienteDto cliente = null;
 		try {
 			int index = getVentaClientePanel().getTable().getSelectedRow();
-			if (index > -1)
+			if (index > -1) {
 				index = getVentaClientePanel().getTable().convertRowIndexToModel(index);
-			cliente = getVentaClientePanel().getModel().getCliente(index);
+				cliente = getVentaClientePanel().getModel().getCliente(index);	
+				logger.info("El cliente : " + cliente + " se agregó correctamente a la venta.");
+				ventaServicio.agregarCliente(cliente, VentaManager.getVentaActual());
+			} else
+				cliente = VentaManager.getVentaActual().getCliente();
+			
 		} catch (IndexOutOfBoundsException exception) {
 			if (getVentaClientePanel().getModel().getRowCount() == 0) {
 				throw new PresentationException("error.ventaClientePanel.clientes.vacio");
@@ -517,12 +522,12 @@ public class VentaController extends BaseController {
 		}
 
 		try {
-			ventaServicio.agregarCliente(cliente, VentaManager.getVentaActual());
-
-			logger.info("El cliente : " + cliente + " se agregó correctamente a la venta.");
+			
 			logger.debug("Saliendo del método agregarCliente");
-
-			return clienteServicio.getSaldoDeudor(cliente);
+			if (Validator.isNotNull(cliente))
+				return clienteServicio.getSaldoDeudor(cliente);
+			else
+				return new BigDecimal(0);
 		} catch (BusinessException e) {
 			throw new PresentationException(e);
 		}

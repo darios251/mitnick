@@ -481,7 +481,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 							totalContado = totalContado.add(pago.getPago());
 					}
 				} else
-					totalDevolucion = totalDevolucion.add(venta.getTotal());
+					totalDevolucion = totalDevolucion.add(venta.getTotal());			
 			}
 			
 			//nueva funcionalidad (04062013)
@@ -510,7 +510,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			parameters.put("totalCredito", totalCredito.toString());
 			parameters.put("totalDebito", totalDebito.toString());
 			parameters.put("totalEfectivo", totalEfectivo.toString());
-			parameters.put("totalDevolucion", totalDevolucion.toString());			
+			parameters.put("totalDevolucion", totalDevolucion.toString());		
 			parameters.put("total", total.toString());
 			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
 			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));
@@ -577,8 +577,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	 * @param fecha
 	 * @return
 	 */
-	private ReporteVentasResultadoDTO getDTOMes(
-			List<ReporteVentasResultadoDTO> ingresos, Date fecha) {
+	private ReporteVentasResultadoDTO getDTOMes(List<ReporteVentasResultadoDTO> ingresos, Date fecha) {
 		Calendar calendario = Calendar.getInstance();
 		calendario.setTime(fecha);
 		int month = calendario.get(Calendar.MONTH);
@@ -651,7 +650,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			throw new BusinessException(
 					"Error al intentar obtener el reporte de ventas", e);
 		}
-	}
+	}		
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
@@ -738,10 +737,10 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					} else {
 						dto.setCantidadVentas(dto.getCantidadVentas()+1);
 						dto.setCantidadProductosVendidos(dto.getCantidadProductosVendidos()+cantidad);
-					}	
+					}					
 				}
 			}
-
+			
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("desde", DateHelper.getFecha(filtro.getFechaInicio()));
 			parameters.put("hasta", DateHelper.getFecha(filtro.getFechaFin()));
@@ -765,7 +764,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					"Error al intentar obtener el reporte de ventas", e);
 		}
 	}
-
+	
 	@Transactional(readOnly = true)
 	@Override
 	public void reporteProductoVendedor(ReporteMovimientosDto filtro) {
@@ -833,6 +832,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		return retorno;
 		
 	}
+	
 	/**
 	 * Obtiene de la lista el dto que representa al vendedor pasado por parametro.
 	 * @param vendedor
@@ -854,6 +854,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			retorno.setCantidadProductosDevueltos(0);
 			retorno.setCantidadVentas(0);
 		}
+		vendedores.add(retorno);
 		return retorno;
 		
 	}
@@ -896,6 +897,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				else
 					repdto.setTalle(producto.getProducto().getTalle());
 			}
+
 			JasperReport reporte = null;
 			if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
 				reporte = (JasperReport) JRLoader.loadObject(this
@@ -906,7 +908,6 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						.getClass().getResourceAsStream(
 								"/reports/VentasProducto.jasper"));	
 			}
-			
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("desde", DateHelper.getFecha(dto.getFechaInicio()));
 			parameters.put("hasta", DateHelper.getFecha(dto.getFechaFin()));
@@ -1017,7 +1018,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		items.add(dto);
 		return dto;
 	}
-
+	
 	public void exportarCompraSugerida(ReporteMovimientosDto dto) {
 		try {
 			List<ReporteCompraSugeridaDTO> articulos = reporteDao

@@ -100,7 +100,7 @@ public class ReportesPanel extends BasePanel<ReportesController> {
 		add(getBtnReporteVentasDiario());
 		add(getBtnReporteVentasMensual());
 		add(getBtnReporteVentasAnual());
-						
+		
 		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.venta.vendedor")) && PropertiesManager.getPropertyAsBoolean("application.venta.vendedor").booleanValue())
 			add(getBtnReporteVendedor());
 		

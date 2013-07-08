@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VentasVendedores" pageWidth="651" pageHeight="878" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="332100bd-0bc1-49f7-9f8e-51824b1cf3dd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cantidadTotal" class="java.lang.String"/>
+	<parameter name="desde" class="java.lang.String"/>
+	<parameter name="hasta" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cantidadDevoluciones" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidadDevoluciones]]></fieldDescription>
+	</field>
+	<field name="cantidadVentas" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidadVentas]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[codigo]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="cantidadProductosDevueltos" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidadProductosDevueltos]]></fieldDescription>
+	</field>
+	<field name="cantidadProductosVendidos" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidadProductosVendidos]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="fd3c662f-6430-4d59-b46a-cc8a59f73fca" mode="Transparent" x="149" y="3" width="406" height="32" forecolor="#000099" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Baskerville Old Face" size="24" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Ventas de Vendedores]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="146047e8-757f-4f40-a3fc-31eeabc090b9" x="0" y="2" width="128" height="50"/>
+				<imageExpression><![CDATA[".\\img\\logoReporte.png"]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy h:mm a">
+				<reportElement uuid="6eb9051e-c927-450d-bd30-c85dd719911d" x="456" y="35" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3d8cdde0-2dc3-4dac-b974-ed3b4eb51c10" x="149" y="35" width="51" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Desde]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="2cf6d401-5251-4bba-ad97-68be8bfd26f6" x="200" y="35" width="100" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{desde}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3d8cdde0-2dc3-4dac-b974-ed3b4eb51c10" x="300" y="35" width="51" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Hasta]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="339d5205-b198-4650-ac15-c02d4925c55c" x="351" y="35" width="100" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c0835e53-dd78-438b-813d-92e439338ecb" x="0" y="0" width="59" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3d8cdde0-2dc3-4dac-b974-ed3b4eb51c10" x="80" y="1" width="69" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Vendedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="215" y="0" width="99" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Prod. Vendidos]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="60b0d7c8-9ff0-4bb9-a6eb-e5bbdb50fe40" x="3" y="21" width="601" height="1" forecolor="#000099"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="437" y="2" width="51" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ventas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="499" y="2" width="83" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Devoluciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d8deda7-774c-4b02-bf5a-434313c89a7c" x="324" y="1" width="99" height="20" forecolor="#000099"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Prod. Devueltos]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="de1ef6f4-61d4-4862-a926-282c42934384" x="3" y="1" width="66" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="78f28283-7f98-45eb-8884-c2cb77cb35e4" x="82" y="1" width="133" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4cec8313-91c3-404a-9d86-92464a77e9be" x="437" y="1" width="51" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cantidadVentas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="809a960d-3b13-4d22-b139-c247c99cf975" x="499" y="1" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cantidadDevoluciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0da96a91-867f-4dd4-bf92-e1af5409a0a4" x="324" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cantidadProductosDevueltos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9d46cccd-86ea-4184-ba60-1e9c29180f15" x="215" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cantidadProductosVendidos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<textField>
+				<reportElement uuid="aafa9e37-acd7-49b2-aa1d-63f790d9780f" x="408" y="10" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="1becaa9e-e2e7-41c5-a358-1f5fe67a51df" x="488" y="10" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="26" y="10" width="556" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

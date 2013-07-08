@@ -83,6 +83,7 @@
 		<defaultValueExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\reports\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="pagos" class="java.util.List"/>
+	<parameter name="vendedor" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -102,7 +103,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="111" splitType="Stretch">
+		<band height="139" splitType="Stretch">
 			<rectangle>
 				<reportElement uuid="de7aed4c-dfc3-4779-a80e-bf5f540edd86" x="262" y="0" width="60" height="55"/>
 			</rectangle>
@@ -205,6 +206,11 @@
 				<reportElement uuid="c023d929-25dd-4555-a028-163f6950efb5" x="504" y="44" width="95" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{fechaTrx}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bf53772d-1620-4958-928d-2321362a6a13" x="247" y="119" width="350" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{vendedor}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
