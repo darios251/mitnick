@@ -68,6 +68,9 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 	private JLabel lblAPagarValor;
 	private JLabel lblTotalAPagar;
 	private JLabel lblTeclasAccesoRapido;
+	
+	private JLabel lblDescuentos;
+	private JLabel lblDescuentosValor;
 
 	private JComboBox<MedioPagoDto> cmbMedioPago;
 
@@ -130,6 +133,10 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		add(getPnlCliente());
 		add(getLblCliente());
 		add(getLblTeclasAccesoRapido());
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+			add(getLblDescuentos());
+			add(getLblDescuentosValor());
+		}
 
 		setFocusTraversalPolicy();
 	}
@@ -206,7 +213,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		if (lbl_T == null) {
 			lbl_T = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.total"));
 			lbl_T.setHorizontalAlignment(SwingConstants.RIGHT);
-			lbl_T.setBounds(269, 340, 88, 20);
+			lbl_T.setBounds(269, 380, 88, 20);
 		}
 		return lbl_T;
 	}
@@ -224,7 +231,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		if (lbl_TP == null) {
 			lbl_TP = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalPagado"));
 			lbl_TP.setHorizontalAlignment(SwingConstants.RIGHT);
-			lbl_TP.setBounds(269, 380, 88, 20);
+			lbl_TP.setBounds(269, 420, 88, 20);
 		}
 		return lbl_TP;
 	}
@@ -251,7 +258,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		if (lblTotalValor == null) {
 			lblTotalValor = new JLabel();
 			lblTotalValor.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTotalValor.setBounds(396, 340, 88, 20);
+			lblTotalValor.setBounds(396, 380, 88, 20);
 		}
 		return lblTotalValor;
 	}
@@ -260,7 +267,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		if (lblTotalPagadoValor == null) {
 			lblTotalPagadoValor = new JLabel();
 			lblTotalPagadoValor.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTotalPagadoValor.setBounds(396, 380, 88, 20);
+			lblTotalPagadoValor.setBounds(396, 420, 88, 20);
 		}
 		return lblTotalPagadoValor;
 	}
@@ -387,7 +394,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		if (lblAPagarValor == null) {
 			lblAPagarValor = new JLabel();
 			lblAPagarValor.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblAPagarValor.setBounds(396, 420, 88, 20);
+			lblAPagarValor.setBounds(396, 460, 88, 20);
 		}
 		return lblAPagarValor;
 	}
@@ -396,11 +403,28 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		if (lblTotalAPagar == null) {
 			lblTotalAPagar = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.totalAPagar"));
 			lblTotalAPagar.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblTotalAPagar.setBounds(269, 420, 88, 20);
+			lblTotalAPagar.setBounds(269, 460, 88, 20);
 		}
 		return lblTotalAPagar;
 	}
 
+	public JLabel getLblDescuentos() {
+		if (lblDescuentos == null) {
+			lblDescuentos = new JLabel(PropertiesManager.getProperty("pagoPanel.etiqueta.descuentos"));
+			lblDescuentos.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblDescuentos.setBounds(269, 340, 88, 20);
+		}
+		return lblDescuentos;
+	}
+	public JLabel getLblDescuentosValor() {
+		if (lblDescuentosValor == null) {
+			lblDescuentosValor = new JLabel();
+			lblDescuentosValor.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblDescuentosValor.setBounds(396, 340, 88, 20);
+		}
+		return lblDescuentosValor;
+	}
+	
 	public PagoTableModel getModel() {
 		if (model == null) {
 			model = new PagoTableModel();
@@ -455,7 +479,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 				((VentaController) controller).agregarPago(pago, txtMonto.getText(), null);
 			//se selecciona cuenta corriente del combo y foco en monto
 			txtMonto.requestFocus();
-			cmbMedioPago.setSelectedIndex(3);
+			cmbMedioPago.setSelectedIndex(3);//AGREGADO POR SUSMANN
 		} catch (PresentationException ex) {
 			mostrarMensaje(ex);
 		}
@@ -478,6 +502,9 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 			lblTotalPagadoValor.setText(VentaManager.getVentaActual().getTotalPagado().toString());
 		if (Validator.isNotNull(lblAPagarValor))
 			lblAPagarValor.setText(VentaManager.getVentaActual().getFaltaPagar().toString());
+		if (Validator.isNotNull(PropertiesManager.getPropertyAsBoolean("application.discount")) && PropertiesManager.getPropertyAsBoolean("application.discount").booleanValue()) {
+			lblDescuentosValor.setText("-".concat(VentaManager.getVentaActual().getDescuentoTotal().toString()));
+		}
 		if (Validator.isNotNull(cmbMedioPago)) {
 			List<MedioPagoDto> medioPagoList = new ArrayList<MedioPagoDto>();
 
@@ -514,6 +541,7 @@ public class PagoPanel extends BasePanel<VentaController> implements KeyEventDis
 		}
 	}
 
+	
 	public void finalizarVenta() {
 		try {
 			if (VentaManager.getVentaActual().isVenta()){

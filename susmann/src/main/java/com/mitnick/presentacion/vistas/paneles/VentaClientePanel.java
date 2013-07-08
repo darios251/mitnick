@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mitnick.exceptions.PresentationException;
+import com.mitnick.presentacion.controladores.VendedorController;
 import com.mitnick.presentacion.controladores.VentaController;
 import com.mitnick.presentacion.modelos.ClienteTableModel;
 import com.mitnick.presentacion.utils.VentaManager;
@@ -63,7 +64,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	private JComboBox<TipoCompradorDto> cmbTipoComprador;
 	
 	@Autowired(required = true)
-	public VentaClientePanel(@Qualifier("ventaController") VentaController ventaController) {
+	public VentaClientePanel(@Qualifier("ventaController") VentaController ventaController, @Qualifier("vendedorController") VendedorController vendedorController) {
 		controller = ventaController;
 	}
 	
@@ -148,7 +149,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			controller.validarTotalVenta();
 			
 			TipoCompradorDto tipoComprador = (TipoCompradorDto) cmbTipoComprador.getSelectedItem();
-			
+								
 			if(tipoComprador.getTipoComprador() != MitnickConstants.TipoComprador.CONSUMIDOR_FINAL) {
 				controller.validarCliente();
 				mensajeCuentaPendiente(controller.agregarCliente());
@@ -158,7 +159,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 				
 			} else {
 				int index = getTable().getSelectedRow();
-				if (index>-1){
+				if (index>-1 || Validator.isNotNull(VentaManager.getVentaActual().getCliente())){
 					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.consulta.agregar"), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.YES_NO_CANCEL_OPTION);
 					if (option == JOptionPane.YES_OPTION)
 						mensajeCuentaPendiente(controller.agregarCliente());

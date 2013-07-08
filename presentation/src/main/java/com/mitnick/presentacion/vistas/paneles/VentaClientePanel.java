@@ -144,6 +144,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 	
 	protected void continuar() {
+		logger.debug("Entrando a continuar con la venta: " + VentaManager.getVentaActual());
 		try {
 			controller.validarTotalVenta();
 			
@@ -158,7 +159,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 				
 			} else {
 				int index = getTable().getSelectedRow();
-				if (index>-1){
+				if (index>-1 || Validator.isNotNull(VentaManager.getVentaActual().getCliente())){
 					int option = JOptionPane.showConfirmDialog((java.awt.Component) null, PropertiesManager.getProperty("ventaClientePanel.cliente.consulta.agregar"), PropertiesManager.getProperty("dialog.info.titulo"), JOptionPane.YES_NO_CANCEL_OPTION);
 					if (option == JOptionPane.YES_OPTION)
 						mensajeCuentaPendiente(controller.agregarCliente());
@@ -396,6 +397,7 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 	}
 
 	protected void consultarClientes() {
+		logger.debug("Entrando a la consulta de clientes");
 		try {
 			ConsultaClienteDto filtroDto = new ConsultaClienteDto();
 			filtroDto.setDocumento(getTxtNumeroDocumento().getText());
