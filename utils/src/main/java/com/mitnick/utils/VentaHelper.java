@@ -20,7 +20,7 @@ public class VentaHelper {
 		if (Validator.isNotNull(descuento)) {
 			return descuento.getDescuento();
 		}
-		return monto;
+		return monto.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public static BigDecimal getDescuentoTotal(List<ProductoVentaDto> productos) {
@@ -31,7 +31,7 @@ public class VentaHelper {
 				monto = monto.add(descuento.getDescuento());
 			}
 		}
-		return monto;
+		return monto.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 	
 	public static BigDecimal getDescuentoTotal(ProductoVentaDto productoVentaDto) {
@@ -40,7 +40,7 @@ public class VentaHelper {
 		if (Validator.isNotNull(descuento)) {
 			return descuento.getDescuento();
 		}
-		return monto;
+		return monto.setScale(2, BigDecimal.ROUND_HALF_UP);
 
 	}
 	
