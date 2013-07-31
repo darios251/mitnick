@@ -747,7 +747,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(this
 					.getClass().getResourceAsStream(
-							"/reports/reporteVendedores.jasper"));
+							"/reports/ReporteVendedores.jasper"));
 
 			JRDataSource dr = new JRBeanCollectionDataSource(vendedores);
 

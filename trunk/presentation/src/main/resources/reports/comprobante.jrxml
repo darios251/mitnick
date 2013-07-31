@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comprobante" pageWidth="651" pageHeight="439" whenNoDataType="AllSectionsNoDetail" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="1.1000000000000014"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="15"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -114,11 +114,11 @@ WHERE
 	<title>
 		<band height="93" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="d63b836b-ae19-4138-841d-62e04fda1fea" x="339" y="10" width="90" height="25"/>
+				<reportElement uuid="d63b836b-ae19-4138-841d-62e04fda1fea" x="292" y="10" width="305" height="25"/>
 				<textElement>
 					<font size="16" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Recibo [x]]]></text>
+				<text><![CDATA[Recibo [x] - No válido como Factura]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="fcfcfcfc-7381-46db-a22d-53152e647577" x="0" y="19" width="247" height="36"/>
@@ -133,22 +133,22 @@ WHERE
 				<textFieldExpression><![CDATA[$P{empresaDireccion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="339" y="55" width="100" height="20"/>
+				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="292" y="55" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="18c9bd72-e01a-47a1-a947-710054b40e60" x="391" y="55" width="100" height="20"/>
+				<reportElement uuid="18c9bd72-e01a-47a1-a947-710054b40e60" x="344" y="55" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="339" y="35" width="100" height="20"/>
+				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="292" y="35" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Nro Comprobante:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="30e7dcab-c21d-4abb-9e3f-dca864bb7345" x="438" y="35" width="145" height="20"/>
+				<reportElement uuid="30e7dcab-c21d-4abb-9e3f-dca864bb7345" x="391" y="35" width="145" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
