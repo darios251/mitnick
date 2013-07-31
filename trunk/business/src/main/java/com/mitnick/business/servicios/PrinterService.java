@@ -159,6 +159,13 @@ public class PrinterService {
 				output.println(venta.getAjusteRedondeo().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
 			}
 			
+			//se aplican los descuentos sobre el total de la venta
+			if(Validator.isMoreThanZero(venta.getDescuentoTotal())) {
+				output.println(DESCUENTO);
+				output.println("Descuentos:");
+				output.println(venta.getDescuentoTotal().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+			}			
+			
 			checkStatus();
 			
 			for(PagoDto pago : venta.getPagos()) {
@@ -217,62 +224,6 @@ public class PrinterService {
 		return true;
 	}
 	
-	
-	private void datosComprador(VentaDto venta){
-		ClienteDto cliente = venta.getCliente();
-		String direccionClienteL1 = "";
-		String direccionClienteL2 = "";
-		String clienteNombre = "";
-		String cuitDni = "";
-		String tipoDT = "";
-		if (Validator.isNotNull(cliente)){
-			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getNombre()))
-				clienteNombre = cliente.getNombre();
-			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getDomicilio()))
-				direccionClienteL1 = cliente.getDireccion().getDomicilio();
-			
-			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion())){
-				if (Validator.isNotNull(cliente.getDireccion().getCodigoPostal()))
-					direccionClienteL2 = direccionClienteL2.concat(cliente.getDireccion().getCodigoPostal());
-
-				if (Validator.isNotNull(cliente.getDireccion().getCiudad())) {
-					if (Validator.isNotNull(cliente.getDireccion().getCiudad().getDescripcion()))
-						direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getDescripcion() );
-					if (Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia())
-						&& Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion()))
-							direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion() );
-				}
-			}
-			String cuit = "";
-			if (Validator.isNotNull(cliente.getCuit())){
-				cuit =  cliente.getCuit().replaceAll("-", "").trim();	
-			}
-			
-			if (Validator.isNotBlankOrNull(cuit)) {
-				cuitDni = cuit;
-				tipoDT = "T";
-			} else if (Validator.isNotBlankOrNull(cliente.getDocumento())) {
-				cuitDni = cliente.getDocumento();
-				tipoDT = "D";
-			}
-		}
-		
-		output.println(NOMBRE_COMPRADOR);
-		output.println(clienteNombre);
-		output.println(NOMBRE_COMPRADOR);
-		output.println("");
-		output.println(DIRECCION_COMPRADOR);
-		output.println(direccionClienteL1);
-		output.println(DIRECCION_COMPRADOR);
-		output.println(direccionClienteL2);
-		output.println(DIRECCION_COMPRADOR);
-		output.println("");
-		output.println(TIPO_DOCUMENTO_COMPRADOR);
-		output.println(tipoDT);
-		output.println(NUMERO_DOCUMENTO_COMPRADOR);
-		output.println(cuitDni);
-		
-	}
 	
 	@SuppressWarnings("deprecation")
 	public boolean imprimirTicketFactura(VentaDto venta) {
@@ -346,6 +297,13 @@ public class PrinterService {
 				output.println("Ajuste por redondeo");
 				output.println(venta.getAjusteRedondeo().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
 			}
+			
+			//se aplican los descuentos sobre el total de la venta
+			if(Validator.isMoreThanZero(venta.getDescuentoTotal())) {
+				output.println(DESCUENTO);
+				output.println("Descuentos:");
+				output.println(venta.getDescuentoTotal().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+			}	
 			
 			checkStatus();
 			
@@ -494,6 +452,13 @@ public class PrinterService {
 				output.println("Ajuste por redondeo");
 				output.println(venta.getAjusteRedondeo().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
 			}
+			
+			//se aplican los descuentos sobre el total de la venta
+			if(Validator.isMoreThanZero(venta.getDescuentoTotal())) {
+				output.println(DESCUENTO);
+				output.println("Descuentos:");
+				output.println(venta.getDescuentoTotal().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+			}	
 			
 			checkStatus();
 			
@@ -1206,6 +1171,62 @@ public class PrinterService {
 			
 		}
 		return true;
+	}
+	
+	private void datosComprador(VentaDto venta){
+		ClienteDto cliente = venta.getCliente();
+		String direccionClienteL1 = "";
+		String direccionClienteL2 = "";
+		String clienteNombre = "";
+		String cuitDni = "";
+		String tipoDT = "";
+		if (Validator.isNotNull(cliente)){
+			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getNombre()))
+				clienteNombre = cliente.getNombre();
+			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion()) && Validator.isNotNull(cliente.getDireccion().getDomicilio()))
+				direccionClienteL1 = cliente.getDireccion().getDomicilio();
+			
+			if (Validator.isNotNull(cliente) && Validator.isNotNull(cliente.getDireccion())){
+				if (Validator.isNotNull(cliente.getDireccion().getCodigoPostal()))
+					direccionClienteL2 = direccionClienteL2.concat(cliente.getDireccion().getCodigoPostal());
+
+				if (Validator.isNotNull(cliente.getDireccion().getCiudad())) {
+					if (Validator.isNotNull(cliente.getDireccion().getCiudad().getDescripcion()))
+						direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getDescripcion() );
+					if (Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia())
+						&& Validator.isNotNull(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion()))
+							direccionClienteL2 = direccionClienteL2.concat(" - ").concat(cliente.getDireccion().getCiudad().getPrinvincia().getDescripcion() );
+				}
+			}
+			String cuit = "";
+			if (Validator.isNotNull(cliente.getCuit())){
+				cuit =  cliente.getCuit().replaceAll("-", "").trim();	
+			}
+			
+			if (Validator.isNotBlankOrNull(cuit)) {
+				cuitDni = cuit;
+				tipoDT = "T";
+			} else if (Validator.isNotBlankOrNull(cliente.getDocumento())) {
+				cuitDni = cliente.getDocumento();
+				tipoDT = "D";
+			}
+		}
+		
+		output.println(NOMBRE_COMPRADOR);
+		output.println(clienteNombre);
+		output.println(NOMBRE_COMPRADOR);
+		output.println("");
+		output.println(DIRECCION_COMPRADOR);
+		output.println(direccionClienteL1);
+		output.println(DIRECCION_COMPRADOR);
+		output.println(direccionClienteL2);
+		output.println(DIRECCION_COMPRADOR);
+		output.println("");
+		output.println(TIPO_DOCUMENTO_COMPRADOR);
+		output.println(tipoDT);
+		output.println(NUMERO_DOCUMENTO_COMPRADOR);
+		output.println(cuitDni);
+		
 	}
 	
 }
