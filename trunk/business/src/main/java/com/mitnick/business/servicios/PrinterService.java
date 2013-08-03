@@ -20,6 +20,7 @@ import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.servicio.servicios.ICierreZServicio;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
@@ -124,7 +125,11 @@ public class PrinterService {
 				output.println(ITEM_DESCRIPCION); //extra 2
 				output.println("");
 				output.println(ITEM_DESCRIPCION); //extra 3
-				output.println("");
+				String extra3 = "";
+				if (Validator.isNotNull(producto.getDescuento())){
+					extra3 = "Descuento: " + producto.getDescuento().getDescuento().toString();
+				}
+				output.println(extra3);				
 				output.println(ITEM_DESCRIPCION); //extra 4
 				output.println("");
 				output.println(ITEM_DESCRIPCION);
@@ -160,10 +165,10 @@ public class PrinterService {
 			}
 			
 			//se aplican los descuentos sobre el total de la venta
-			if(Validator.isMoreThanZero(venta.getDescuentoTotal())) {
+			if(Validator.isMoreThanZero(venta.getDescuentoVenta())) {
 				output.println(DESCUENTO);
 				output.println("Descuentos:");
-				output.println(venta.getDescuentoTotal().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+				output.println(venta.getDescuentoVenta().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
 			}			
 			
 			checkStatus();
@@ -213,7 +218,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			String errorLine = readErrorLine();
+			String errorLine = readErrorLine(e);
 			cancelarTicket(venta, true);
 			throw new PrinterException(errorLine);
 		}
@@ -263,7 +268,11 @@ public class PrinterService {
 				output.println(ITEM_DESCRIPCION); //extra 2
 				output.println("");
 				output.println(ITEM_DESCRIPCION); //extra 3
-				output.println("");
+				String extra3 = "";
+				if (Validator.isNotNull(producto.getDescuento())){
+					extra3 = "Descuento: " + producto.getDescuento().getDescuento().toString();
+				}
+				output.println(extra3);
 				output.println(ITEM_DESCRIPCION); //extra 4
 				output.println("");
 				output.println(ITEM_DESCRIPCION);
@@ -299,10 +308,10 @@ public class PrinterService {
 			}
 			
 			//se aplican los descuentos sobre el total de la venta
-			if(Validator.isMoreThanZero(venta.getDescuentoTotal())) {
+			if(Validator.isMoreThanZero(venta.getDescuentoVenta())) {
 				output.println(DESCUENTO);
 				output.println("Descuentos:");
-				output.println(venta.getDescuentoTotal().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+				output.println(venta.getDescuentoVenta().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
 			}	
 			
 			checkStatus();
@@ -352,7 +361,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			String errorLine = readErrorLine();
+			String errorLine = readErrorLine(e);
 			cancelarTicketFactura(venta, true);
 			throw new PrinterException(errorLine);
 		}
@@ -505,7 +514,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			String errorLine = readErrorLine();
+			String errorLine = readErrorLine(e);
 			cancelarNotaCredito(venta, true);
 			throw new PrinterException(errorLine);
 		}
@@ -552,6 +561,7 @@ public class PrinterService {
 	@SuppressWarnings("deprecation")
 	public boolean imprimirCierreZ() {
 		try {
+			logger.debug("Ejecutando: cierre Z");
 			connect();
 			
 			output.println(CIERRE_Z_TAG);
@@ -563,17 +573,31 @@ public class PrinterService {
 			checkStatus();
 			
 			String cierreNro = "";
-			while(!(cierreNro = input.readLine()).startsWith("[CIERRE-NUMERO]:"));
-			logger.info("cirre Nro: " + cierreNro);
+			logger.debug("Esperando el número de cierre");
+			try{
+			if (Validator.isNotNull(input))
+				while(!(cierreNro = input.readLine()).startsWith("[CIERRE-NUMERO]:"));
+				cierreNro = cierreNro.split(":")[1];
+			} catch (Exception e){
+				logger.error(e);
+				cierreNro = "0";
+			}
+			logger.info("cierre Nro: " + cierreNro);
 			
-			cierreNro = cierreNro.split(":")[1];
 			
-			CierreZDto cierreZ = new CierreZDto();
-			cierreZ.setNumeroCaja(PropertiesManager.getPropertyAsInteger("application.caja.numero"));
-			cierreZ.setNumero(cierreNro);
-			cierreZ.setFecha(new Date());
-			cierreZServicio.guardarCierre(cierreZ);
 			
+			try {
+				logger.debug("Se guarda el cierre Z - caja: " + PropertiesManager.getPropertyAsInteger("application.caja.numero"));
+				logger.debug("Numero de cierre: " + cierreNro);
+				
+				CierreZDto cierreZ = new CierreZDto();
+				cierreZ.setNumeroCaja(PropertiesManager.getPropertyAsInteger("application.caja.numero"));
+				cierreZ.setNumero(cierreNro);
+				cierreZ.setFecha(new Date());
+				cierreZServicio.guardarCierre(cierreZ);
+			} catch (Exception e) {
+				logger.error("Error al guardar el cierre Z: " + e);
+			}
 			String line = "";
 			    
 		    while(!(line = input.readLine()).equals("<FIN DE IMPRESION>")) {
@@ -589,7 +613,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		finally {
 			closeConnection();
@@ -623,7 +647,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		finally {
 			closeConnection();
@@ -656,7 +680,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		
 		finally {
@@ -667,10 +691,11 @@ public class PrinterService {
 	}
 	
 	private void checkStatus() throws Exception {
+		logger.debug("Check Printer Input: " + input);
 		if(input.available() > 0) {
 			@SuppressWarnings("deprecation")
 			String line = input.readLine();
-			
+			logger.debug("Check Printer Status: " + line);
 			if("[OK]".equals(line))
 				return;
 			else if("[ERROR]".equals(line))
@@ -679,7 +704,8 @@ public class PrinterService {
 	}
 
 	@SuppressWarnings("deprecation")
-	private String readErrorLine() {
+	private String readErrorLine(Exception e) {
+		logger.error(e);
 		try {
 			String line = "";
 			if(input.available() > 0)
@@ -696,7 +722,8 @@ public class PrinterService {
 		catch (PrinterException ex) {
 			throw ex;
 		}
-		catch(Exception e) {
+		catch(Exception ex2) {
+			logger.error(ex2);
 			return "Hubo un error con la impresora";
 		}
 	}
@@ -805,7 +832,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		finally {
 			closeConnection();
@@ -899,7 +926,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine(), e);
+			throw new PrinterException(readErrorLine(e), e);
 		}
 		finally {
 			closeConnection();
@@ -950,7 +977,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		
 		return true;
@@ -998,7 +1025,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		
 		return true;
@@ -1042,7 +1069,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		
 		return true;
@@ -1071,7 +1098,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		
 		return true;
@@ -1100,7 +1127,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		
 		return true;
@@ -1127,7 +1154,7 @@ public class PrinterService {
 			throw ex;
 		}
 		catch (Exception e) {
-			throw new PrinterException(readErrorLine());
+			throw new PrinterException(readErrorLine(e));
 		}
 		return true;
 	}
@@ -1140,17 +1167,23 @@ public class PrinterService {
 	}
 	
 	protected Socket connect() throws UnknownHostException, IOException {
+		logger.debug("Conectando....");
+		logger.debug("ipaddress: " + PropertiesManager.getProperty("application.printerService.ipaddress"));
+		logger.debug("portaddress: " + PropertiesManager.getPropertyAsInteger("application.printerService.portaddress"));
+		logger.debug("timeout: " + PropertiesManager.getPropertyAsInteger("application.printerService.openConnectionTimeOut"));
 		SocketAddress sockaddr = new InetSocketAddress(PropertiesManager.getProperty("application.printerService.ipaddress"), PropertiesManager.getPropertyAsInteger("application.printerService.portaddress"));
 		currentConnection = new Socket();
 		currentConnection.connect(sockaddr, PropertiesManager.getPropertyAsInteger("application.printerService.openConnectionTimeOut"));
 		currentConnection.setSoTimeout(PropertiesManager.getPropertyAsInteger("application.printerService.connectionTimeOut"));
 		output = new PrintStream(currentConnection.getOutputStream());
 		input = new DataInputStream(currentConnection.getInputStream());
+		logger.debug("Input?? " + input);
 		return currentConnection;
 	}
 	
 	protected boolean closeConnection() {
 		try {
+			logger.debug("Input close");
 			input.close();
 			output.close();
 			currentConnection.close();
@@ -1159,6 +1192,7 @@ public class PrinterService {
 		catch(Exception e) {
 			try {
 				logger.error(e);
+				logger.debug("Input close");
 				input.close();
 				output.close();
 				currentConnection.close();

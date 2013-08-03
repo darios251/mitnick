@@ -63,6 +63,49 @@ public class VentaHelper {
 		return productos;
 	}
 	
+	
+	private static void calcularTotalesB(VentaDto ventaDto) {
+		BigDecimal subTotal = BigDecimal.ZERO;
+		BigDecimal impuestos = BigDecimal.ZERO;
+		
+		for(ProductoVentaDto producto : ventaDto.getProductos()) {
+
+			//sin iva (BI Base Imponible)
+			BigDecimal precioCantidad = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
+
+			//precio * 1.21 - (PVP precio venta publico)
+			BigDecimal precioFinal = calcularPrecioFinal(precioCantidad);
+			
+			//final - base
+			BigDecimal iva = precioFinal.subtract(precioCantidad);
+			
+			//precio de venta con iva
+			producto.setPrecioTotal(precioFinal);			
+			producto.setIva(iva);
+			
+			//suma de totales
+			subTotal = subTotal.add(precioFinal);
+			impuestos = impuestos.add(iva);
+		}
+
+		// se incluyen los impuestos
+		ventaDto.setSubTotal(subTotal);
+		
+		ventaDto.setImpuesto(impuestos);
+		
+		BigDecimal descuentos = VentaHelper.getDescuentoTotal(ventaDto);
+		descuentos = descuentos.add(VentaHelper.getDescuentoTotal(ventaDto.getProductos()));
+		BigDecimal total = subTotal.subtract(descuentos);
+		
+		ventaDto.setTotal(total);
+		ventaDto.setAjusteRedondeo(new BigDecimal(0));
+	}
+
+	private static void calcularTotalesA(VentaDto ventaDto) {
+		
+	}
+
+	
 	public static void calcularTotales(VentaDto ventaDto) {
 
 		// suma de todos los productos

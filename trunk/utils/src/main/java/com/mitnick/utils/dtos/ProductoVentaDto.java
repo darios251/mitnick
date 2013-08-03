@@ -13,6 +13,9 @@ public class ProductoVentaDto extends BaseDto {
 	private int cantidad;
 
 	private String descripcion;
+
+	/** Contiene el precio original del producto. */
+	private BigDecimal precioOriginal;
 	
 	/** Contiene el precio total del producto, contempla la cantidad y el iva. */
 	private BigDecimal precioTotal;
@@ -27,6 +30,14 @@ public class ProductoVentaDto extends BaseDto {
 
 	public void setProducto(ProductoDto producto) {
 		this.producto = producto;
+	}
+
+	public BigDecimal getPrecioOriginal() {
+		return precioOriginal;
+	}
+
+	public void setPrecioOriginal(BigDecimal precioOriginal) {
+		this.precioOriginal = precioOriginal;
 	}
 
 	public int getCantidad() {

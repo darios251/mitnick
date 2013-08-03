@@ -1,5 +1,7 @@
 package com.mitnick.business.servicios;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,8 +18,10 @@ import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.utils.DateHelper;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
+import com.mitnick.utils.dtos.ProductoVentaDto;
 import com.mitnick.utils.dtos.VentaDto;
 
 @Component(value="printerService")
@@ -44,6 +48,20 @@ public class PrinterService {
 	
 	public boolean imprimirTicketFactura(VentaDto venta) {
 		try{		
+			for(ProductoVentaDto producto : venta.getProductos()) {
+				
+				BigDecimal precioVenta = producto.getProducto().getPrecioVenta();
+				if (Validator.isNotNull(producto.getDescuento())){
+					//obtener el precio de cada producto con descuento
+					BigDecimal total = producto.getPrecioTotal();
+					total = total.subtract(producto.getDescuento().getDescuento());
+					total = total.divide(new BigDecimal(producto.getCantidad())).setScale(2, RoundingMode.HALF_UP);
+					precioVenta = VentaHelper.calcularPrecioSinIva(total);
+				}
+				System.out.println(precioVenta);
+				
+			}
+			
 			Empresa empresa = empresaDao.getEmpresa();
 			int nroFactActual = empresa.getNumeroFacturaActual();			
 			String nroTRX = venta.getNumeroTicket();			

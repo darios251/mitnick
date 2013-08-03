@@ -143,6 +143,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				descuento.setDescuento(monto);
 			}
 		}
+
 		productoVenta.setDescuento(descuento);
 		VentaHelper.calcularTotales(venta);
 		

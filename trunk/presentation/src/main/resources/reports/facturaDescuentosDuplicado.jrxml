@@ -80,7 +80,7 @@
 	<parameter name="leyenda" class="java.lang.String"/>
 	<parameter name="fechaTrx" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\project\\mitnick\\presentation\\src\\main\\resources\\reports\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[".\\reports\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="pagos" class="java.util.List"/>
 	<parameter name="ventaDescuentos" class="java.lang.String"/>
