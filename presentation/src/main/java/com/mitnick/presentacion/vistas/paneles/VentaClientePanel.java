@@ -375,7 +375,6 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			cmbTipoComprador.setEnabled(false);
 			controller.setTipoResponsable(tipo);
 		} else{
-			cmbTipoComprador.setSelectedIndex(0);
 			cmbTipoComprador.setEnabled(true);
 		}
 			

@@ -27,6 +27,7 @@ import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
+import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CreditoDto;
 import com.mitnick.utils.dtos.CuotaDto;
@@ -592,8 +593,12 @@ public class VentaController extends BaseController {
 	}
 
 	public void setTipoResponsable(TipoCompradorDto tipoComprador) {
-		if (Validator.isNotNull(VentaManager.getVentaActual()))
+		if (Validator.isNotNull(VentaManager.getVentaActual())){
 			VentaManager.getVentaActual().setTipoResponsabilidad(tipoComprador);
+			//los totales varian segun el tipo de facturacion ya que el impuesto se calcula diferente
+			VentaHelper.calcularTotales(VentaManager.getVentaActual());
+		}
+			
 	}
 
 	public VentaView getVentaView() {
