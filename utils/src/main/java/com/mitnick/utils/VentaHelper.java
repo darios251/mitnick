@@ -61,7 +61,7 @@ public class VentaHelper {
 		return monto.setScale(2, BigDecimal.ROUND_HALF_UP);
 
 	}
-	
+
 	public static List<ProductoVentaDto> getProductosPrecioVendido(VentaDto ventaDto) {
 		List<ProductoVentaDto> productos = new ArrayList<ProductoVentaDto>();
 		for(ProductoVentaDto productoVenta : ventaDto.getProductos()) {
@@ -75,7 +75,7 @@ public class VentaHelper {
 				productoVenta.getProducto().setPrecioVenta(precioUnitarioSinIva);
 				BigDecimal precioUnitarioConIva = calcularPrecioFinal(precioUnitarioSinIva);
 				productoVenta.getProducto().setIva(precioUnitarioConIva.subtract(precioUnitarioSinIva));
-			}
+			}				
 			productos.add(productoVenta);
 		}
 		return productos;
@@ -151,10 +151,10 @@ public class VentaHelper {
 
 	public static void calcularTotales(VentaDto ventaDto) {
 
-		String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.consumidorFinal");
+		String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.responsableInscripto");
 		if (!Validator.isBlankOrNull(tipoFactura))
-			tipoFactura = "F";
-		if (Validator.isNotNull(ventaDto.getTipoResponsabilidad()) && !tipoFactura.equals(ventaDto.getTipoResponsabilidad().getTipoComprador()))
+			tipoFactura = "I";
+		if (Validator.isNotNull(ventaDto.getTipoResponsabilidad()) && tipoFactura.equals(ventaDto.getTipoResponsabilidad().getTipoComprador()))
 			calcularTotalesA(ventaDto);
 		else
 			calcularTotalesB(ventaDto);

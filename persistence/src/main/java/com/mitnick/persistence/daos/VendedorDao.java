@@ -43,7 +43,8 @@ public class VendedorDao extends GenericDaoHibernate<Vendedor, Long>  implements
 		}
 		
 		if(Validator.isNotBlankOrNull(filtro.getNombre())){
-			criteria.add(Restrictions.ilike("nombre", filtro.getNombre()));
+			criteria.add(Restrictions.ilike("nombre", "%"
+					+ filtro.getNombre().trim() + "%"));
 		}
 		
 		criteria.add(Restrictions.eq("eliminado", false));
