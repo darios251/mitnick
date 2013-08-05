@@ -611,6 +611,7 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		for (PagoDto pago : pagos){
 			pago.setId(null);
 		}
+		devolucion.setTipoResponsabilidad(venta.getTipoResponsabilidad());
 		devolucion.setPagos(pagos);
 		devolucion.setProductos(productos);
 		devolucion.setNumeroTicketOriginal(venta.getNumeroTicket());

@@ -356,12 +356,10 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		return cmbTipoComprador;
 	}
 
-	public void setTipoComprador(ClienteDto cliente){
+	public void setTipoComprador(TipoCompradorDto tipo){
 		getCmbTipoComprador();
 		
-		TipoCompradorDto tipo = null;
-		if (Validator.isNotNull(cliente) && Validator.isNotBlankOrNull(cliente.getTipoComprador())){
-			tipo = TipoCompradorDto.getTipoCompradorDto(cliente.getTipoComprador());
+		if (Validator.isNotNull(tipo)){
 			cmbTipoComprador.getModel().setSelectedItem(tipo);
 		}
 		if (Validator.isNotNull(tipo)
@@ -369,7 +367,6 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 			cmbTipoComprador.setEnabled(false);
 			controller.setTipoResponsable(tipo);
 		} else{
-			cmbTipoComprador.setSelectedIndex(0);
 			cmbTipoComprador.setEnabled(true);
 		}
 			
@@ -420,9 +417,10 @@ public class VentaClientePanel extends BasePanel<VentaController> implements Key
 		        	int index = table.getSelectedRow();
 					if (index>-1){
 						index = table.convertRowIndexToModel(index);
-					ClienteDto cliente = getModel().getCliente(index);
-					if (Validator.isNotNull(cliente))
-						setTipoComprador(cliente);
+						ClienteDto cliente = getModel().getCliente(index);
+						if (Validator.isNotNull(cliente) && Validator.isNotBlankOrNull(cliente.getTipoComprador())){							
+							setTipoComprador(TipoCompradorDto.getTipoCompradorDto(cliente.getTipoComprador()));
+						}
 		        	} else
 		        		setTipoComprador(null);
 		        }

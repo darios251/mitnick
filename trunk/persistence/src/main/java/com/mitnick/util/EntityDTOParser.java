@@ -502,6 +502,10 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			DescuentoDto descuento = new DescuentoDto();
 			descuento.setTipo(DescuentoDto.MONTO);
 			descuento.setDescuento(venta.getDescuento());
+			// se calcula el descuento sin el iva
+			BigDecimal descuentoSinIva = VentaHelper.calcularPrecioSinIva(venta.getDescuento());
+			descuento.setDescuentoSinIva(descuentoSinIva);
+			descuento.setIva(venta.getDescuento().subtract(descuentoSinIva));
 			ventaDto.setDescuento(descuento);			
 		}
 		
@@ -611,6 +615,9 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 			DescuentoDto descuento = new DescuentoDto();
 			descuento.setTipo(DescuentoDto.MONTO);
 			descuento.setDescuento(productoVenta.getDescuento());
+			BigDecimal descuentoSinIva = VentaHelper.calcularPrecioSinIva(productoVenta.getDescuento());
+			descuento.setDescuentoSinIva(descuentoSinIva);
+			descuento.setIva(productoVenta.getDescuento().subtract(descuentoSinIva));
 			productoVentaDto.setDescuento(descuento);
 		}
 		

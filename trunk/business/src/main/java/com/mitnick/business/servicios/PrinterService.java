@@ -20,7 +20,6 @@ import com.mitnick.persistence.daos.IClienteDao;
 import com.mitnick.servicio.servicios.ICierreZServicio;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
-import com.mitnick.utils.VentaHelper;
 import com.mitnick.utils.dtos.CierreZDto;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.ConfiguracionImpresoraDto;
@@ -166,10 +165,10 @@ public class PrinterService {
 			
 			//se aplican los descuentos sobre el total de la venta
 			BigDecimal descuentos = BigDecimal.ZERO;
-			String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.consumidorFinal");
+			String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.responsableInscripto");
 			if (!Validator.isBlankOrNull(tipoFactura))
-				tipoFactura = "F";
-			if (Validator.isNotNull(venta.getTipoResponsabilidad()) && !tipoFactura.equals(venta.getTipoResponsabilidad().getTipoComprador()))
+				tipoFactura = "I";
+			if (Validator.isNotNull(venta.getTipoResponsabilidad()) && tipoFactura.equals(venta.getTipoResponsabilidad().getTipoComprador()))
 				descuentos = venta.getDescuentoTotalSinIva();
 			else
 				descuentos = venta.getDescuentoTotal();
@@ -317,10 +316,10 @@ public class PrinterService {
 			
 			//se aplican los descuentos sobre el total de la venta
 			BigDecimal descuentos = BigDecimal.ZERO;
-			String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.consumidorFinal");
+			String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.responsableInscripto");
 			if (!Validator.isBlankOrNull(tipoFactura))
-				tipoFactura = "F";
-			if (Validator.isNotNull(venta.getTipoResponsabilidad()) && !tipoFactura.equals(venta.getTipoResponsabilidad().getTipoComprador()))
+				tipoFactura = "I";
+			if (Validator.isNotNull(venta.getTipoResponsabilidad()) && tipoFactura.equals(venta.getTipoResponsabilidad().getTipoComprador()))
 				descuentos = venta.getDescuentoTotalSinIva();
 			else
 				descuentos = venta.getDescuentoTotal();
@@ -328,7 +327,7 @@ public class PrinterService {
 				output.println(DESCUENTO);
 				output.println("Descuentos:");
 				output.println(descuentos.abs().setScale (2, BigDecimal.ROUND_HALF_UP));
-			}	
+			}						
 			
 			checkStatus();
 			
@@ -443,7 +442,11 @@ public class PrinterService {
 				output.println(ITEM_DESCRIPCION); //extra 2
 				output.println("");
 				output.println(ITEM_DESCRIPCION); //extra 3
-				output.println("");
+				String extra3 = "";
+				if (Validator.isNotNull(producto.getDescuento())){
+					extra3 = "Descuento: " + producto.getDescuento().getDescuento().toString();
+				}
+				output.println(extra3);				
 				output.println(ITEM_DESCRIPCION); //extra 4
 				output.println("");
 				output.println(ITEM_DESCRIPCION);
@@ -479,11 +482,19 @@ public class PrinterService {
 			}
 			
 			//se aplican los descuentos sobre el total de la venta
-			if(Validator.isMoreThanZero(venta.getDescuentoTotal())) {
+			BigDecimal descuentos = BigDecimal.ZERO;
+			String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.responsableInscripto");
+			if (!Validator.isBlankOrNull(tipoFactura))
+				tipoFactura = "I";
+			if (Validator.isNotNull(venta.getTipoResponsabilidad()) && tipoFactura.equals(venta.getTipoResponsabilidad().getTipoComprador()))
+				descuentos = venta.getDescuentoTotalSinIva();
+			else
+				descuentos = venta.getDescuentoTotal();
+			if(Validator.isMoreThanZero(descuentos)) {
 				output.println(DESCUENTO);
 				output.println("Descuentos:");
-				output.println(venta.getDescuentoTotal().abs().setScale (2, BigDecimal.ROUND_HALF_UP));
-			}	
+				output.println(descuentos.abs().setScale (2, BigDecimal.ROUND_HALF_UP));
+			}						
 			
 			checkStatus();
 			

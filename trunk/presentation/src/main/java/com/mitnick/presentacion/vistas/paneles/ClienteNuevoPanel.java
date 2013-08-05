@@ -626,7 +626,9 @@ public class ClienteNuevoPanel extends BasePanel<ClienteController> implements K
 		else {
 			this.setVisible(false);
 			if (panelRetorno instanceof VentaClientePanel){
-				((VentaClientePanel)panelRetorno).setTipoComprador(cliente);
+				if (Validator.isNotNull(cliente) && Validator.isNotBlankOrNull(cliente.getTipoComprador())){							
+					((VentaClientePanel)panelRetorno).setTipoComprador(TipoCompradorDto.getTipoCompradorDto(cliente.getTipoComprador()));
+				}				
 			}
 			panelRetorno.setVisible(true);
 		}
