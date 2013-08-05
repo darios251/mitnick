@@ -393,7 +393,7 @@ public class PrinterService {
 				return PropertiesManager.getProperty("vendedor.leyenda",  new Object[]{venta.getVendedor().getNombre()});
 			}
 		}
-		 return "";
+		 return "............";
 	}
 	private String getSaldoDeudor(ClienteDto cliente){
 		if (Validator.isNotNull(cliente)){
