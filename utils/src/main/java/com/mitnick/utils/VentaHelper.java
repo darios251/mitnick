@@ -63,105 +63,106 @@ public class VentaHelper {
 		return productos;
 	}
 	
-	
+	/**
+	 * la impresora fiscal calcula de este modo:
+	 * precioprod * 1.21
+	 * suma de todos los precios prod
+	 * @param ventaDto
+	 */
 	private static void calcularTotalesB(VentaDto ventaDto) {
 		BigDecimal subTotal = BigDecimal.ZERO;
 		BigDecimal impuestos = BigDecimal.ZERO;
+		BigDecimal total = BigDecimal.ZERO;
 		
 		for(ProductoVentaDto producto : ventaDto.getProductos()) {
-
-			//sin iva (BI Base Imponible)
 			BigDecimal precioCantidad = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
-
-			//precio * 1.21 - (PVP precio venta publico)
 			BigDecimal precioFinal = calcularPrecioFinal(precioCantidad);
-			
-			//final - base
 			BigDecimal iva = precioFinal.subtract(precioCantidad);
-			
-			//precio de venta con iva
-			producto.setPrecioTotal(precioFinal);			
-			producto.setIva(iva);
-			
-			//suma de totales
+			producto.setPrecioTotal(precioFinal);
 			subTotal = subTotal.add(precioFinal);
-			impuestos = impuestos.add(iva);
+			producto.setIva(iva);
+			impuestos = impuestos.add(producto.getIva());
 		}
-
+		total = subTotal;
+		
 		// se incluyen los impuestos
 		ventaDto.setSubTotal(subTotal);
-		
 		ventaDto.setImpuesto(impuestos);
-		
-		BigDecimal descuentos = VentaHelper.getDescuentoTotal(ventaDto);
-		descuentos = descuentos.add(VentaHelper.getDescuentoTotal(ventaDto.getProductos()));
-		BigDecimal total = subTotal.subtract(descuentos);
-		
+		// se incluyen los impuestos
 		ventaDto.setTotal(total);
 		ventaDto.setAjusteRedondeo(new BigDecimal(0));
 	}
 
+	/**
+	 * la impresora fiscal calcula de este modo:
+	 * suma de todos los precios prod 
+	 * suma total obtenida * 1.21
+	 * @param ventaDto
+	 */
 	private static void calcularTotalesA(VentaDto ventaDto) {
-		
-	}
-
-	
-	public static void calcularTotales(VentaDto ventaDto) {
-
-		// suma de todos los productos
 		BigDecimal subTotal = BigDecimal.ZERO;
 		BigDecimal impuestos = BigDecimal.ZERO;
+		BigDecimal total = BigDecimal.ZERO;
 		
 		for(ProductoVentaDto producto : ventaDto.getProductos()) {
 			BigDecimal precioCantidad = producto.getProducto().getPrecioVenta().multiply(new BigDecimal(producto.getCantidad()));
+			
+			subTotal = subTotal.add(precioCantidad);
+			
 			BigDecimal precioFinal = calcularPrecioFinal(precioCantidad);
-			
 			BigDecimal iva = precioFinal.subtract(precioCantidad);
-			
-			subTotal = subTotal.add(precioFinal);
-			
 			producto.setPrecioTotal(precioFinal);
 			
 			producto.setIva(iva);
 			impuestos = impuestos.add(producto.getIva());
 		}
-
+		
+		
 		// se incluyen los impuestos
+		subTotal = calcularPrecioFinal(subTotal);
+		total = subTotal;
+		
 		ventaDto.setSubTotal(subTotal);
-		
 		ventaDto.setImpuesto(impuestos);
-		
-		BigDecimal descuentos = VentaHelper.getDescuentoTotal(ventaDto);
-		descuentos = descuentos.add(VentaHelper.getDescuentoTotal(ventaDto.getProductos()));
-		BigDecimal total = subTotal.subtract(descuentos);
-		
+		// se incluyen los impuestos
 		ventaDto.setTotal(total);
 		ventaDto.setAjusteRedondeo(new BigDecimal(0));
+	}
+
+	public static void calcularTotales(VentaDto ventaDto) {
+
+		String tipoFactura = PropertiesManager.getProperty("application.tipoComprador.consumidorFinal");
+		if (!Validator.isBlankOrNull(tipoFactura))
+			tipoFactura = "F";
+		if (Validator.isNotNull(ventaDto.getTipoResponsabilidad()) && !tipoFactura.equals(ventaDto.getTipoResponsabilidad().getTipoComprador()))
+			calcularTotalesA(ventaDto);
+		else
+			calcularTotalesB(ventaDto);
 		
+		// suma de todos los pagos
 		if (ventaDto.isVenta()){
-			// suma de todos los pagos
 			BigDecimal montoPagado = BigDecimal.ZERO;
 			Iterator<PagoDto> pagos = ventaDto.getPagos().iterator();
 			while (pagos.hasNext()) {
 				montoPagado = montoPagado.add(pagos.next().getMonto());
 			}
 
-			boolean pagado = montoPagado.compareTo(total) >= 0;
+			boolean pagado = montoPagado.compareTo(ventaDto.getTotal()) >= 0;
 			ventaDto.setPagado(pagado);
 
 			ventaDto.setTotalPagado(montoPagado);
 
 			if (pagado) {
 				ventaDto.setFaltaPagar(BigDecimal.ZERO);
-				ventaDto.setVuelto(montoPagado.subtract(total));
+				ventaDto.setVuelto(montoPagado.subtract(ventaDto.getTotal()));
 			} else {
-				ventaDto.setFaltaPagar(total.subtract(montoPagado));
+				ventaDto.setFaltaPagar(ventaDto.getTotal().subtract(montoPagado));
 				ventaDto.setVuelto(null);
 			}			
 		}
 
 	}
-
+	
 	/**
 	 * El calculo del precio final se hace sobre el precio base del producto sin iva.
 	 * @param precioProducto
