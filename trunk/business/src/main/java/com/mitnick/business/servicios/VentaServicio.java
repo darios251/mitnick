@@ -114,8 +114,8 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Override
 	public VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta) {		
 		if (Validator.isNotNull(descuento)) {
+			BigDecimal monto = descuento.getDescuento();
 			if (descuento.getTipo() == DescuentoDto.PORCENTAJE){
-				BigDecimal monto = BigDecimal.ZERO;
 				BigDecimal perc = descuento.getDescuento();
 				perc = perc.divide(new BigDecimal(100));
 				BigDecimal subtotal = venta.getSubTotal();
@@ -123,7 +123,12 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 				descuento.setTipo(DescuentoDto.MONTO);
 				descuento.setDescuento(monto);
 			}
+			// se calcula el descuento sin el iva
+			BigDecimal descuentoSinIva = VentaHelper.calcularPrecioSinIva(monto);
+			descuento.setDescuentoSinIva(descuentoSinIva);
+			descuento.setIva(monto.subtract(descuentoSinIva));
 		}
+
 		venta.setDescuento(descuento);
 		VentaHelper.calcularTotales(venta);
 		
@@ -133,15 +138,19 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 	@Override
 	public VentaDto agregarDescuento(DescuentoDto descuento, VentaDto venta, ProductoVentaDto productoVenta) {
 		if (Validator.isNotNull(descuento)) {
+			BigDecimal monto = descuento.getDescuento();
 			if (descuento.getTipo() == DescuentoDto.PORCENTAJE){
-				BigDecimal monto = BigDecimal.ZERO;
 				BigDecimal perc = descuento.getDescuento();
 				perc = perc.divide(new BigDecimal(100));
 				BigDecimal subtotal = productoVenta.getPrecioTotal();
 				monto = subtotal.multiply(perc);
 				descuento.setTipo(DescuentoDto.MONTO);
 				descuento.setDescuento(monto);
-			}
+			} 
+			// se calcula el descuento sin el iva
+			BigDecimal descuentoSinIva = VentaHelper.calcularPrecioSinIva(monto);
+			descuento.setDescuentoSinIva(descuentoSinIva);
+			descuento.setIva(monto.subtract(descuentoSinIva));
 		}
 
 		productoVenta.setDescuento(descuento);
