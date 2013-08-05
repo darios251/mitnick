@@ -13,6 +13,26 @@ public class DescuentoDto extends ServicioBaseDto {
 	
 	private int tipo;
 	
+	private BigDecimal descuentoSinIva;
+	
+	private BigDecimal iva;
+	
+	public BigDecimal getIva() {
+		return iva;
+	}
+
+	public void setIva(BigDecimal iva) {
+		this.iva = iva;
+	}
+
+	public BigDecimal getDescuentoSinIva() {
+		return descuentoSinIva;
+	}
+
+	public void setDescuentoSinIva(BigDecimal descuentoSinIva) {
+		this.descuentoSinIva = descuentoSinIva;
+	}
+
 	private BigDecimal descuento;
 
 	public int getTipo() {

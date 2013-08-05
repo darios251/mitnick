@@ -14,13 +14,31 @@ import com.mitnick.utils.dtos.VentaDto;
 
 public class VentaHelper {
 
+	public static BigDecimal getDescuentoTotalSinIva(VentaDto ventaDto) {
+		DescuentoDto descuento = ventaDto.getDescuento();
+		if (Validator.isNotNull(descuento)) {
+			return descuento.getDescuentoSinIva();
+		}
+		return BigDecimal.ZERO;
+	}
+
+	public static BigDecimal getDescuentoTotalSinIva(List<ProductoVentaDto> productos) {
+		BigDecimal monto = BigDecimal.ZERO;
+		for (ProductoVentaDto producto : productos){
+			if (Validator.isNotNull(producto.getDescuento())){
+				DescuentoDto descuento = producto.getDescuento();
+				monto = monto.add(descuento.getDescuentoSinIva());
+			}
+		}
+		return monto;
+	}
+	
 	public static BigDecimal getDescuentoTotal(VentaDto ventaDto) {
 		DescuentoDto descuento = ventaDto.getDescuento();
-		BigDecimal monto = BigDecimal.ZERO;
 		if (Validator.isNotNull(descuento)) {
 			return descuento.getDescuento();
 		}
-		return monto.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return BigDecimal.ZERO;
 	}
 
 	public static BigDecimal getDescuentoTotal(List<ProductoVentaDto> productos) {
@@ -31,7 +49,7 @@ public class VentaHelper {
 				monto = monto.add(descuento.getDescuento());
 			}
 		}
-		return monto.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return monto;
 	}
 	
 	public static BigDecimal getDescuentoTotal(ProductoVentaDto productoVentaDto) {
@@ -84,7 +102,8 @@ public class VentaHelper {
 			impuestos = impuestos.add(producto.getIva());
 		}
 		total = subTotal;
-		
+		BigDecimal descuentos = ventaDto.getDescuentoTotal().setScale (2, BigDecimal.ROUND_HALF_UP);
+		total = total.subtract(descuentos);
 		// se incluyen los impuestos
 		ventaDto.setSubTotal(subTotal);
 		ventaDto.setImpuesto(impuestos);
@@ -117,10 +136,11 @@ public class VentaHelper {
 			impuestos = impuestos.add(producto.getIva());
 		}
 		
-		
 		// se incluyen los impuestos
+		BigDecimal descuentos = ventaDto.getDescuentoTotalSinIva().setScale (2, BigDecimal.ROUND_HALF_UP);
+		total = subTotal.subtract(descuentos);
+		total = calcularPrecioFinal(total);
 		subTotal = calcularPrecioFinal(subTotal);
-		total = subTotal;
 		
 		ventaDto.setSubTotal(subTotal);
 		ventaDto.setImpuesto(impuestos);

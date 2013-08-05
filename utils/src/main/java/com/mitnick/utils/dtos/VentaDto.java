@@ -170,8 +170,20 @@ public class VentaDto extends BaseDto {
 		return descuento;
 	}
 
+	public BigDecimal getDescuentoTotalSinIva(){
+		return getDescuentoVentaSinIva().add(getDescuentoProductosSinIva());
+	}
+	
 	public BigDecimal getDescuentoTotal(){
 		return getDescuentoVenta().add(getDescuentoProductos());
+	}
+	
+	public BigDecimal getDescuentoVentaSinIva(){
+		return VentaHelper.getDescuentoTotalSinIva(this);
+	}
+	
+	public BigDecimal getDescuentoProductosSinIva(){
+		return VentaHelper.getDescuentoTotalSinIva(this.getProductos());
 	}
 	
 	public BigDecimal getDescuentoVenta(){
