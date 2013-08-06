@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportefacturas" pageWidth="651" pageHeight="878" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ccf0a3b-9b1c-40f4-ae3b-d20c0d2f94d6">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportefacturas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ccf0a3b-9b1c-40f4-ae3b-d20c0d2f94d6">
 	<property name="ireport.zoom" value="1.0000000000000002"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -205,7 +205,7 @@
 				<text><![CDATA[Totales]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="00f551ee-885d-4fcf-ac1c-5370d0559b68" x="21" y="0" width="590" height="1"/>
+				<reportElement uuid="00f551ee-885d-4fcf-ac1c-5370d0559b68" x="21" y="0" width="505" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
@@ -218,7 +218,7 @@
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="0" y="117" width="601" height="1"/>
+				<reportElement uuid="9d114a7b-77c8-43ba-a7b9-c96676dd6861" x="0" y="117" width="550" height="1"/>
 				<graphicElement>
 					<pen lineStyle="Double"/>
 				</graphicElement>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimientosCliente" pageWidth="651" pageHeight="878" whenNoDataType="AllSectionsNoDetail" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimientosCliente" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -177,7 +177,7 @@ WHERE
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="21" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="12c80d67-2873-485d-b65d-8c47737f7ff1" x="2" y="0" width="100" height="20"/>
 				<textElement>
@@ -193,21 +193,21 @@ WHERE
 				<text><![CDATA[Nro Comprobante]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="20d03ca2-eeaa-410c-9139-40905df0f35c" x="303" y="0" width="100" height="20"/>
+				<reportElement uuid="20d03ca2-eeaa-410c-9139-40905df0f35c" x="275" y="0" width="100" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Monto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9d50c750-39ff-4dbb-af8f-a3dfee7b18dd" x="403" y="0" width="100" height="20"/>
+				<reportElement uuid="9d50c750-39ff-4dbb-af8f-a3dfee7b18dd" x="375" y="0" width="100" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Haber]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7bee31e8-6c5b-453a-b1f5-d37228efef4c" x="503" y="0" width="75" height="20"/>
+				<reportElement uuid="7bee31e8-6c5b-453a-b1f5-d37228efef4c" x="475" y="0" width="75" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -228,17 +228,17 @@ WHERE
 				<textFieldExpression><![CDATA[$F{nroComprobante}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="4df1d5aa-6621-4db7-ab94-36857080027e" x="303" y="1" width="100" height="20"/>
+				<reportElement uuid="4df1d5aa-6621-4db7-ab94-36857080027e" x="275" y="1" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f4cf990b-0d5a-4fa8-8772-b20326200472" x="403" y="1" width="100" height="20"/>
+				<reportElement uuid="f4cf990b-0d5a-4fa8-8772-b20326200472" x="375" y="1" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="24926b54-aeb0-44c0-9081-bee0d243e53b" x="503" y="1" width="75" height="20"/>
+				<reportElement uuid="24926b54-aeb0-44c0-9081-bee0d243e53b" x="475" y="1" width="75" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
 			</textField>

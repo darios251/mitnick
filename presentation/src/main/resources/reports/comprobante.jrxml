@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comprobante" pageWidth="651" pageHeight="439" whenNoDataType="AllSectionsNoDetail" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comprobante" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="f8aecb19-9c4c-4a6b-93e3-1468d84a6502">
 	<property name="ireport.zoom" value="1.1000000000000014"/>
-	<property name="ireport.x" value="15"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -114,7 +114,7 @@ WHERE
 	<title>
 		<band height="93" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="d63b836b-ae19-4138-841d-62e04fda1fea" x="292" y="10" width="305" height="25"/>
+				<reportElement uuid="d63b836b-ae19-4138-841d-62e04fda1fea" x="246" y="10" width="305" height="25"/>
 				<textElement>
 					<font size="16" isBold="false"/>
 				</textElement>
@@ -133,22 +133,22 @@ WHERE
 				<textFieldExpression><![CDATA[$P{empresaDireccion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="292" y="55" width="100" height="20"/>
+				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="246" y="55" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="18c9bd72-e01a-47a1-a947-710054b40e60" x="344" y="55" width="100" height="20"/>
+				<reportElement uuid="18c9bd72-e01a-47a1-a947-710054b40e60" x="298" y="55" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="292" y="35" width="100" height="20"/>
+				<reportElement uuid="7f6b75a1-0bef-41d0-8526-fa5950f3f814" x="246" y="35" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Nro Comprobante:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="30e7dcab-c21d-4abb-9e3f-dca864bb7345" x="391" y="35" width="145" height="20"/>
+				<reportElement uuid="30e7dcab-c21d-4abb-9e3f-dca864bb7345" x="345" y="35" width="145" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -167,19 +167,19 @@ WHERE
 				<text><![CDATA[Sr. (es):]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="791afea8-8152-442e-b1d3-69f6dce46f69" x="52" y="5" width="412" height="20"/>
+				<reportElement uuid="791afea8-8152-442e-b1d3-69f6dce46f69" x="52" y="5" width="367" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombreCliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="3a5e4a19-67e1-452e-b61c-18ba74cb18e3" x="513" y="5" width="84" height="20"/>
+				<reportElement uuid="3a5e4a19-67e1-452e-b61c-18ba74cb18e3" x="468" y="5" width="84" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{codigo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="380d33b6-41b0-4892-b2a1-1ecc0b7a0ca3" x="464" y="5" width="49" height="20"/>
+				<reportElement uuid="380d33b6-41b0-4892-b2a1-1ecc0b7a0ca3" x="419" y="5" width="49" height="20"/>
 				<box leftPadding="3"/>
 				<textElement>
 					<font size="12"/>
