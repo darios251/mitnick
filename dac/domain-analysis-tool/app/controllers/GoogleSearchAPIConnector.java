@@ -77,7 +77,7 @@ public class GoogleSearchAPIConnector {
 			while(input.read(buffer) > 0) {
 				String line = new String(buffer);
 				
-				if(line.contains("id=resultStats")) {
+				if(line.contains("id=resultStats") || line.contains("id=\"resultStats\"")) {
 					found = true;
 				}
 			}
