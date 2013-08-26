@@ -39,3 +39,5 @@ Notas Adicionales:
 El archivo datos BKP.bat se debe utilizar para que el cliente realice backups diarios de su base de datos.
 Editarlo y copiarlo en el escritorio del cliente.
 El cliente debe ejecutar este archivo todos los dias, luego de hacer el cierre Z y cerrar la apliación.
+Para iniciar le VM de la printer automaticamente al iniciar el equipo:
+startPrinterService.vbs - agregar un acceso directo a este archivo en el menú de inicio
