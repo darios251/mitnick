@@ -241,20 +241,41 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 				BigDecimal netoVenta = venta.getNeto();
 				
 				ReporteFacturasDto diarioDto = getCorte(venta.getFecha(), reportes);				
-				if ("A".equals(venta.getTipoTicket())){
+				if ("A".equals(venta.getTipoTicket()) || venta.isDevolucion()){
 					String nroFactura = venta.getNumeroTicket();
 					FacturaDto factura = new FacturaDto();
-					factura.setCliente(venta.getCliente().getNombre());
-					factura.setCondicion(venta.getDiscriminacionIVA().getDescripcionCorta());
-					factura.setCuit(venta.getCliente().getCuit());
-					factura.setNeto(venta.getNeto());
-					factura.setIva(venta.getImpuesto());
-					
-					if (venta.isDevolucion()){
-						nroFactura = "NC-".concat(nroFactura);
-						diarioDto.setIvaNA(diarioDto.getIvaNA().add(impuestoVenta));
-						diarioDto.setNetoNA(diarioDto.getNetoNA().add(netoVenta));
-						diarioDto.setTotalNA(diarioDto.getTotalNA().add(totalVenta));
+					if (Validator.isNotNull(venta.getCliente())){
+						factura.setCliente(venta.getCliente().getNombre());
+						factura.setCondicion(venta.getDiscriminacionIVA().getDescripcionCorta());
+						factura.setCuit("");
+						if (Validator.isNotNull(venta.getCliente().getCuit()))
+							factura.setCuit(venta.getCliente().getCuit());
+						
+					} else {
+						factura.setCliente("");
+						factura.setCondicion("");
+						factura.setCuit("");
+					}
+					if ("A".equals(venta.getTipoTicket())){
+						factura.setNeto(venta.getNeto());
+						factura.setIva(venta.getImpuesto());
+					} else {
+						factura.setNeto(new BigDecimal(0));
+						factura.setIva(new BigDecimal(0));
+					}
+					if (venta.isDevolucion()){						
+						if ("A".equals(venta.getTipoTicket())) {
+							nroFactura = "NCA-".concat(nroFactura);
+							diarioDto.setIvaNA(diarioDto.getIvaNA().add(impuestoVenta));
+							diarioDto.setNetoNA(diarioDto.getNetoNA().add(netoVenta));
+							
+							diarioDto.setTotalNA(diarioDto.getTotalNA().add(totalVenta));
+						} else {
+							nroFactura = "NCB-".concat(nroFactura);							
+							
+							diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
+
+						}
 					} else {
 						nroFactura = "F-".concat(nroFactura);
 						diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
@@ -269,12 +290,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 					diarioDto.addfactura(factura);
 					
 				} else {
-					if (venta.isDevolucion()){
-						diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
-					} else {
-						diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));	
-					}
-											
+					diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));	
 				}
 			}
 			for (ReporteFacturasDto diario: reportes){
