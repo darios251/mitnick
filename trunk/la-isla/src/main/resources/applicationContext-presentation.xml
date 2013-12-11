@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
+       default-lazy-init="true" default-autowire="byName">
+
+    <!-- Activates scanning of @Autowired -->
+    <context:annotation-config/>
+    
+    <aop:aspectj-autoproxy/>
+
+    <!-- Activates scanning of @Repository and @Service -->
+    <context:component-scan base-package="com.mitnick.presentacion"/>
+    <context:component-scan base-package="com.mitnick.utils"/>
+    
+    <security:global-method-security secured-annotations="enabled" />
+    
+    <bean id="passwordEncoderBean" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+        <constructor-arg value="256" />
+    </bean>
+    
+    <security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider>
+			<security:password-encoder ref="passwordEncoderBean" hash="sha-256">
+				<security:salt-source user-property='username'/>
+			</security:password-encoder>
+			<security:user-service>
+				<security:user name="admin" password="86a524910287eec281c87fe7d37430dcf9b0ef059ee2abb9a9f6c825d18eaf1b" authorities="ROLE_ADMIN"/>
+				<security:user name="user" password="86a524910287eec281c87fe7d37430dcf9b0ef059ee2abb9a9f6c825d18eaf1b" authorities="ROLE_USER"/>
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	    
+    <bean id="log4jInitialization"	class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+		<property name="targetMethod" value="initLogging" />
+		<property name="arguments">
+			<list>
+				<value>src/main/resources/log4j.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+ 	<!-- Add new Views here -->
+ 	
+ 	<!-- Add new Controllers here -->
+ 	
+</beans>

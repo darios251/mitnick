@@ -27,6 +27,7 @@ import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.LaIslaUtil;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
@@ -379,8 +380,8 @@ public class VentaController extends BaseController {
 		int option = JOptionPane.showConfirmDialog((java.awt.Component) null, "Desea imprimir la factura?", "Información", JOptionPane.YES_NO_OPTION);	
 		if (option == JOptionPane.NO_OPTION){
 			VentaManager.getVentaActual().setPrinted(true);
-			VentaManager.getVentaActual().setNumeroTicket("ME");
-			VentaManager.getVentaActual().setTipoTicket("E");
+			VentaManager.getVentaActual().setNumeroTicket(LaIslaUtil.MODO_ENTRENAMIENTO);
+			VentaManager.getVentaActual().setTipoTicket(LaIslaUtil.MODO_ENTRENAMIENTO_TIPO);
 		}
 	}
 	
