@@ -57,6 +57,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
+import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -178,14 +179,17 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	private List<MovimientoProductoDto> agruparPorProducto(
 			List<Movimiento> movimientos) {
 		List<MovimientoProductoDto> productos = new ArrayList<MovimientoProductoDto>();
+		int totalStock=0;
+		int totalAjustes=0;
+		int totalVentas=0;		
 		for (Movimiento movimiento : movimientos) {
 			MovimientoProductoDto movimientoDto = getDetallePorProducto(
 					movimiento, productos);
 			if (movimiento.getTipo() == Movimiento.CREACION) {
-				movimientoDto.setStockOriginal(movimiento.getCantidad());
+				movimientoDto.setStockOriginal(movimiento.getCantidad());				
 			}else if (movimiento.getTipo() == Movimiento.AJUSTE) {
 				movimientoDto.setAjustes(movimientoDto.getAjustes()
-						+ movimiento.getCantidad());
+						+ movimiento.getCantidad());				
 			} else if (movimiento.getTipo() == Movimiento.VENTA) {
 				movimientoDto.setVentas(movimientoDto.getVentas()
 						- movimiento.getCantidad());
@@ -194,6 +198,38 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						+ movimiento.getCantidad());
 			}
 		}
+		BigDecimal precioTotal = new BigDecimal(0);
+		BigDecimal costoTotal = new BigDecimal(0);
+		for (MovimientoProductoDto dto: productos){
+			if (Validator.isNotNull(dto.getProducto())){
+				dto.setPrecioTotal(dto.getProducto().getPrecioVenta().multiply(new BigDecimal(dto.getStockFinal())));
+				BigDecimal pc = dto.getProducto().getPrecioCompra();
+				if (pc == null){
+					pc = new BigDecimal(0);
+				}
+				dto.setCostoTotal(pc.multiply(new BigDecimal(dto.getStockFinal())));
+				precioTotal = precioTotal.add(dto.getPrecioTotal());
+				costoTotal = costoTotal.add(dto.getCostoTotal());
+			}			
+			totalStock = totalStock + dto.getStockOriginal();
+			totalAjustes = totalAjustes + dto.getAjustes();
+			totalVentas = totalVentas + dto.getVentas();			
+		}
+		MovimientoProductoDto totales = new MovimientoProductoDto();
+		totales.setAjustes(totalAjustes);
+		totales.setVentas(totalVentas);
+		totales.setStockOriginal(totalStock);
+		totales.setProducto(null);	
+		totales.setPrecioTotal(precioTotal);
+		totales.setCostoTotal(costoTotal);
+		ProductoDto prodTemporal = new ProductoDto();
+		prodTemporal.setDescripcion("Totales");
+		prodTemporal.setCodigo("");
+		MarcaDto marca = new MarcaDto();
+		marca.setDescripcion("");
+		prodTemporal.setMarca(marca);
+		totales.setProducto(prodTemporal);
+		productos.add(totales);
 		return productos;
 	}
 

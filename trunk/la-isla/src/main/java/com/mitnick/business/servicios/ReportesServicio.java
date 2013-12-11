@@ -36,7 +36,6 @@ import com.mitnick.persistence.entities.Cliente;
 import com.mitnick.persistence.entities.Comprobante;
 import com.mitnick.persistence.entities.Movimiento;
 import com.mitnick.persistence.entities.Pago;
-import com.mitnick.persistence.entities.Producto;
 import com.mitnick.persistence.entities.ProductoVenta;
 import com.mitnick.persistence.entities.Vendedor;
 import com.mitnick.persistence.entities.Venta;
