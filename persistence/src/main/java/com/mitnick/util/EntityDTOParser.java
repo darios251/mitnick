@@ -522,6 +522,7 @@ public class EntityDTOParser<E extends BaseObject, D extends BaseDto> {
 		ventaDto.setCancelada(venta.isCanceled());
 		ventaDto.setAjusteRedondeo(venta.getAjusteRedondeo());
 		ventaDto.setTipoResponsabilidad(new TipoCompradorDto(venta.getDiscriminacionIVA().getCodigo(), venta.getDiscriminacionIVA().getDescripcion()));
+		ventaDto.setTipoTicket(venta.getTipoTicket());
 		
 		if (Validator.isNotNull(venta.getVendedor()))
 			ventaDto.setVendedor(getDtoFromEntity(venta.getVendedor()));

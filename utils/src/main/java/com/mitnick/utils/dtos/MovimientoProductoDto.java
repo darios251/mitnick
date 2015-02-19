@@ -1,5 +1,7 @@
 package com.mitnick.utils.dtos;
 
+import java.math.BigDecimal;
+
 
 public class MovimientoProductoDto extends BaseDto {
 
@@ -12,7 +14,11 @@ private static final long serialVersionUID = 1L;
 	private int ajustes;
 	
 	private ProductoDto producto;
-
+	
+	private BigDecimal costoTotal;
+	
+	private BigDecimal precioTotal;
+	
 	public int getStockOriginal() {
 		return stockOriginal;
 	}
@@ -35,6 +41,22 @@ private static final long serialVersionUID = 1L;
 
 	public void setAjustes(int ajustes) {
 		this.ajustes = ajustes;
+	}
+
+	public BigDecimal getCostoTotal() {
+		return costoTotal;
+	}
+
+	public BigDecimal getPrecioTotal() {
+		return precioTotal;
+	}
+
+	public void setCostoTotal(BigDecimal costoTotal) {
+		this.costoTotal = costoTotal;
+	}
+
+	public void setPrecioTotal(BigDecimal precioTotal) {
+		this.precioTotal = precioTotal;
 	}
 
 	public ProductoDto getProducto() {

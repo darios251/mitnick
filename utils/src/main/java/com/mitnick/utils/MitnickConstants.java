@@ -30,7 +30,8 @@ public class MitnickConstants {
 	
 	public static int VENTA = 1;
 	public static int DEVOLUCION = 2;
-
+	public static String MODO_ENTRENAMIENTO_TIPO="E";
+	
 	public class Role {
 		public static final String ADMIN = "ROLE_ADMIN";
 		

@@ -112,7 +112,7 @@ public class ConsultarTrxFiltersDialog  extends BaseDialog {
 	}
 	
 	public JComboBox<String> getCmbTipoFactura() {
-		String[] tipos = {PropertiesManager.getProperty("dialog.consultarTransacciones.filter.b"), PropertiesManager.getProperty("dialog.consultarTransacciones.filter.a")};
+		String[] tipos = {PropertiesManager.getProperty("dialog.consultarTransacciones.filter.b"), PropertiesManager.getProperty("dialog.consultarTransacciones.filter.a"), PropertiesManager.getProperty("dialog.consultarTransacciones.filter.none")};
 		cmbTipoFactura = new JComboBox<String>(tipos);
 		cmbTipoFactura.setBounds(230, 90, 110, 20);
 		cmbTipoFactura.insertItemAt(null, 0);

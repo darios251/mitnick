@@ -301,7 +301,15 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 		if (venta.isVenta())
 			ventaDao.actualizarCreditos(ventaDto);
 		ventaDao.saveOrUpdate(venta);
+		
+		if (MitnickConstants.MODO_ENTRENAMIENTO_TIPO.equals(venta.getTipoTicket())){
+			venta.setNumeroTicket(venta.getId().toString());
+			ventaDao.saveOrUpdate(venta);
+			ventaDto.setNumeroTicket(venta.getNumeroTicket());
+		}
+		
 		ventaDto.setId(venta.getId());
+		
 		logger.info("Venta guardada: " +venta.getId() + " - nro ticket: " + ventaDto.getNumeroTicket());
 		return ventaDto;
 
@@ -568,12 +576,17 @@ public class VentaServicio extends ServicioBase implements IVentaServicio {
 			parameters.put("cuitCliente", cuit);
 			String leyenda = "Factura";
 			
-			if (consumidorFinal){
-				venta.setTipoTicket("B");
-				parameters.put("tipoLetra", "B");
+			if (MitnickConstants.MODO_ENTRENAMIENTO_TIPO.equals(venta.getTipoTicket())){
+				venta.setTipoTicket("E");
+				parameters.put("tipoLetra", "E");
 			} else {
-				venta.setTipoTicket("A");
-				parameters.put("tipoLetra", "A");
+				if (consumidorFinal){
+					venta.setTipoTicket("B");
+					parameters.put("tipoLetra", "B");
+				} else {
+					venta.setTipoTicket("A");
+					parameters.put("tipoLetra", "A");
+				}				
 			}
 
 			List<ProductoVentaDto> productos = null;

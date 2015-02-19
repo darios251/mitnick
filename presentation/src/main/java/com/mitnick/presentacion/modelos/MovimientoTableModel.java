@@ -10,6 +10,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 
+
 public class MovimientoTableModel extends AbstractTableModel implements TableModel{
 	
 private static final long serialVersionUID = 1L;
@@ -26,6 +27,8 @@ private static final long serialVersionUID = 1L;
 		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.ventas"));
 		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.ajustes"));
 		columnNames.add(PropertiesManager.getProperty("movimientoTableModel.actual"));
+		columnNames.add("Costo");
+		columnNames.add("Precio");
 		data = new ArrayList<MovimientoProductoDto>();
 	}
 	
@@ -98,12 +101,18 @@ private static final long serialVersionUID = 1L;
 
 		switch(columnIndex) {
 			case 0:
+				if (Validator.isNull(fila.getProducto()))
+					return "";
 				return fila.getProducto().getCodigo(); 
 			case 1: 
+				if (Validator.isNull(fila.getProducto()))
+					return "Totales";
 				return fila.getProducto().getDescripcion();
 			case 2:
-				if (Validator.isNull(fila.getProducto().getMarca()) || Validator.isNull(fila.getProducto().getMarca().getDescripcion()))
+				if (Validator.isNull(fila.getProducto()))
 					return "";
+				if (Validator.isNull(fila.getProducto().getMarca()) || Validator.isNull(fila.getProducto().getMarca().getDescripcion()))
+					return "";				
 				return fila.getProducto().getMarca().getDescripcion();		
 			case 3: 
 				return fila.getStockOriginal();
@@ -112,7 +121,12 @@ private static final long serialVersionUID = 1L;
 			case 5: 
 				return fila.getAjustes();			
 			case 6: 
-				return fila.getStockFinal();			
+				return fila.getStockFinal();	
+			case 7: 				
+				return fila.getCostoTotal();
+			case 8: 
+				return fila.getPrecioTotal();
+	
 		}
 		return data.get(-1);
 	}
