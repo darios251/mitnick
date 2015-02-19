@@ -32,6 +32,7 @@ import com.mitnick.utils.Validator;
 import com.mitnick.utils.anotaciones.Panel;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.ProductoDto;
+import com.mitnick.utils.dtos.ProductoNuevoDto;
 import com.mitnick.utils.dtos.TipoDto;
 
 @Panel("productoPanel")
@@ -66,6 +67,10 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 	private JButton btnEliminar;
 
 
+	private JLabel lblNuevoPrecio;
+	private JTextField txtNuevoPrecio;
+	private JButton btnCambiarPrecio;
+	
 	@Autowired
 	public ProductoPanel(@Qualifier("productoController") ProductoController productoController) {
 		controller = productoController;
@@ -95,7 +100,7 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 	protected void initializeComponents() {
 
 		setLayout(null);
-		setSize(new Dimension(815, 470));
+		setSize(new Dimension(815, 500));
 		
 		add(getLblCdigo());
 		add(getTxtCodigo());
@@ -112,6 +117,10 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 		add(getBtnEliminar());
 		add(getLblArtculos());
 		add(getLblProductos());
+		
+		add(getLblNuevoPrecio());
+		add(getTxtNuevoPrecio());
+		add(getBtnCambiarPrecio());
 		
 		setFocusTraversalPolicy();
 	}
@@ -438,5 +447,66 @@ public class ProductoPanel extends BasePanel<ProductoController> {
 	protected void setDefaultButton() {
 		if(Validator.isNotNull(this.getRootPane()))
 			this.getRootPane().setDefaultButton(getBtnBuscar());
+	}
+	
+	public JLabel getLblNuevoPrecio() {
+		if (lblNuevoPrecio == null) {
+			lblNuevoPrecio = new JLabel("Nuevo Precio:");
+			lblNuevoPrecio.setBounds(25, 450, 70, 20);
+		}
+		return lblNuevoPrecio;
+	}
+	
+	public JTextField getTxtNuevoPrecio() {
+		if (txtNuevoPrecio == null) {
+			txtNuevoPrecio = new JTextField();
+			txtNuevoPrecio.setColumns(10);
+			txtNuevoPrecio.setBounds(150, 450, 50, 20);
+		}
+		return txtNuevoPrecio;
+	}
+	
+	public JButton getBtnCambiarPrecio() {
+		
+		if (btnCambiarPrecio == null) {
+			btnCambiarPrecio = new JButton("Cambiar Precio");
+			btnCambiarPrecio.setToolTipText("Cambiar el precio de los productos que cumplen con el criterio de búsqueda");
+			
+			btnCambiarPrecio.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnCambiarPrecio.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnCambiarPrecio.setMargin(new Insets(-1, -1, -1, -1));
+			btnCambiarPrecio.setBounds(250, 450, 140, 40);
+
+			btnCambiarPrecio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (Validator.isNumeric(getTxtNuevoPrecio().getText())){
+						String precio = getTxtNuevoPrecio().getText();
+						precio = precio.replaceAll(",", ".");
+						consultarProductos();					
+						int opcion = mostrarMensajeConsulta("Está seguro que desea modificar el precio de todos los productos de la lista? Revise la lista.");
+
+						if (opcion == JOptionPane.YES_OPTION) {
+							try {
+								for (ProductoDto producto: getTableModel().getProductos()){
+									String precioCompra = "";
+									if (Validator.isNotNull(producto.getPrecioCompra()))
+										precioCompra = producto.getPrecioCompra().toString();
+									ProductoNuevoDto prod = new ProductoNuevoDto();
+									prod.setId(producto.getId());
+									controller.guardarProducto(prod, producto.getCodigo(),producto.getDescripcion(), producto.getTipo(), producto.getMarca(), String.valueOf(producto.getStock()), String.valueOf(producto.getStockMinimo()), String.valueOf(producto.getStockCompra()), precio, precioCompra, producto.getProveedor(), true, producto.getTalle());
+									consultarProductos();	
+									getTxtNuevoPrecio().setText("");
+								}
+							} catch (PresentationException ex) {
+								mostrarMensaje(ex);
+							}
+						}
+					} else {
+						mostrarMensajeError("El nuevo precio es requerido. Verifique que sea una valor correcto.");
+					}
+				}
+			});
+		}
+		return btnCambiarPrecio;
 	}
 }

@@ -31,7 +31,7 @@
 				<security:salt-source user-property='username'/>
 			</security:password-encoder>
 			<security:user-service>
-				<security:user name="admin" password="5294e11ab6d2707c753bc28d92cfc0bb0f3b7820423c6420e755426e6d1c3d09" authorities="ROLE_ADMIN"/>
+				<security:user name="admin" password="b93c3223d5f823c1293663714523b0f953f15059632ab2e6714f6533a85d4e8e" authorities="ROLE_ADMIN"/>
 				<security:user name="user" password="a5700387a0b64f00ff5fe28ee22eb088c2f684a7ad9645d231bdac76b9456c7f" authorities="ROLE_USER"/>
 			</security:user-service>
 		</security:authentication-provider>

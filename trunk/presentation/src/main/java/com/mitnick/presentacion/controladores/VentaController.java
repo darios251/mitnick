@@ -3,6 +3,8 @@ package com.mitnick.presentacion.controladores;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -25,6 +27,7 @@ import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IVentaServicio;
 import com.mitnick.servicio.servicios.dtos.ConsultaClienteDto;
 import com.mitnick.servicio.servicios.dtos.DescuentoDto;
+import com.mitnick.utils.MitnickConstants;
 import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.VentaHelper;
@@ -373,10 +376,19 @@ public class VentaController extends BaseController {
 		}
 	}
 	
+	private void getImprimir(){
+		int option = JOptionPane.showConfirmDialog((java.awt.Component) null, "Desea imprimir la factura?", "Información", JOptionPane.YES_NO_OPTION);	
+		if (option == JOptionPane.NO_OPTION){
+			VentaManager.getVentaActual().setPrinted(true);
+			VentaManager.getVentaActual().setTipoTicket(MitnickConstants.MODO_ENTRENAMIENTO_TIPO);
+		}
+	}
+	
 	public void finalizarVenta() {
 		if (checkFinalizarVenta()) {
 			try {
 				getVendedor();
+				getImprimir();
 				getVentaServicio().facturar(VentaManager.getVentaActual());
 			} catch (BusinessException e) {
 				int opcion = getPagoPanel().mostrarMensajeReintentar(e.getMessage());

@@ -25,7 +25,7 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
 
 		if (Validator.isNotNull(codigo)) {
-			criteria.add(Restrictions.eq("codigo", codigo));
+			criteria.add(Restrictions.ilike("codigo", codigo, MatchMode.EXACT));	
 		}
 		criteria.add(Restrictions.eq("eliminado", false));
 		List<Producto> productos = getHibernateTemplate()
@@ -40,14 +40,14 @@ public class ProductoDAO extends GenericDaoHibernate<Producto, Long>  implements
 		DetachedCriteria criteria = DetachedCriteria.forClass(Producto.class);
 
 		if (Validator.isNotNull(codigo)) {
-			criteria.add(Restrictions.ilike("codigo", codigo, MatchMode.START));
+			criteria.add(Restrictions.ilike("codigo", codigo, MatchMode.START));			
 		}
 		criteria.add(Restrictions.eq("eliminado", false));
 		List<Producto> productos = getHibernateTemplate()
 				.findByCriteria(criteria);
 		if (productos != null && !productos.isEmpty()){
 			for (Producto producto: productos){
-				if (producto.getCodigo().trim().equals(codigo.trim()))
+				if (producto.getCodigo().toUpperCase().trim().equals(codigo.trim().toUpperCase()))
 					return producto;
 			}			
 		}			

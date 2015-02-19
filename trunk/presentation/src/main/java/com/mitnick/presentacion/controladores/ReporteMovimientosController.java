@@ -14,6 +14,8 @@ import com.mitnick.servicio.servicios.IProductoServicio;
 import com.mitnick.servicio.servicios.IReportesServicio;
 import com.mitnick.servicio.servicios.dtos.ReporteDetalleMovimientosDto;
 import com.mitnick.servicio.servicios.dtos.ReporteMovimientosDto;
+import com.mitnick.utils.MitnickConstants;
+import com.mitnick.utils.anotaciones.AuthorizationRequired;
 import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
@@ -40,6 +42,7 @@ public class ReporteMovimientosController extends BaseController {
 
 	}
 
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void mostrarProductosPanel() {
 		logger.info("Mostrando el panel de productos");
 		ultimoPanelMostrado = reporteMovimientosPanel;
@@ -48,6 +51,7 @@ public class ReporteMovimientosController extends BaseController {
 		reporteMovimientosPanel.actualizarPantalla();
 	}
 	
+	@AuthorizationRequired(role = MitnickConstants.Role.ADMIN)
 	public void exportarMovimientosProducto(List<MovimientoProductoDto> movimientos) {
 		try {
 			reporteServicio.exportarMovimientosAgrupadosPorProducto(movimientos);

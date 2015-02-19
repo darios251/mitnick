@@ -264,7 +264,7 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 		return movimientoDto;
 	}
 
-	@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 	@Override
 	public void reporteFacturas(ReportesDto filtro) {
 		try {
@@ -272,12 +272,13 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			List<ReporteFacturasDto> reportes = new ArrayList<ReporteFacturasDto>();
 
 			for (Venta venta : ventas) {
-				BigDecimal totalVenta = venta.getTotal();
-				BigDecimal impuestoVenta = venta.getImpuesto();
-				BigDecimal netoVenta = venta.getNeto();
-				
-				ReporteFacturasDto diarioDto = getCorte(venta.getFecha(), reportes);				
-				if ("A".equals(venta.getTipoTicket()) || venta.isDevolucion()){
+				if (!MitnickConstants.MODO_ENTRENAMIENTO_TIPO.equals(venta.getTipoTicket())){
+					BigDecimal totalVenta = venta.getTotal();
+					BigDecimal impuestoVenta = venta.getImpuesto();
+					BigDecimal netoVenta = venta.getNeto();
+					
+					ReporteFacturasDto diarioDto = getCorte(venta.getFecha(), reportes);				
+					if ("A".equals(venta.getTipoTicket()) || venta.isDevolucion()){
 					String nroFactura = venta.getNumeroTicket();
 					FacturaDto factura = new FacturaDto();
 					if (Validator.isNotNull(venta.getCliente())){
@@ -299,7 +300,8 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						factura.setNeto(new BigDecimal(0));
 						factura.setIva(new BigDecimal(0));
 					}
-					if (venta.isDevolucion()){						
+						
+						if (venta.isDevolucion()){
 						if ("A".equals(venta.getTipoTicket())) {
 							nroFactura = "NCA-".concat(nroFactura);
 							diarioDto.setIvaNA(diarioDto.getIvaNA().add(impuestoVenta));
@@ -312,21 +314,28 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 							diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
 
 						}
-					} else {
-						nroFactura = "F-".concat(nroFactura);
-						diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
-						diarioDto.setNetoA(diarioDto.getNetoA().add(netoVenta));
-						diarioDto.setTotalA(diarioDto.getTotalA().add(totalVenta));
-					}
-						
-					
-					factura.setNroFactura(nroFactura);
-					factura.setTotal(totalVenta);
 
-					diarioDto.addfactura(factura);
-					
-				} else {
-					diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));	
+						} else {
+							nroFactura = "F-".concat(nroFactura);
+							diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
+							diarioDto.setNetoA(diarioDto.getNetoA().add(netoVenta));
+							diarioDto.setTotalA(diarioDto.getTotalA().add(totalVenta));
+						}
+							
+						
+						factura.setNroFactura(nroFactura);
+						factura.setTotal(totalVenta);
+
+						diarioDto.addfactura(factura);
+						
+					} else {
+						if (venta.isDevolucion()){
+							diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
+						} else {
+							diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));	
+						}
+												
+					}
 				}
 			}
 			for (ReporteFacturasDto diario: reportes){
@@ -406,8 +415,10 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						nroTRX = "N";
 					if ("A".equals(venta.getTipoTicket()))
 						nroTRX = nroTRX.concat("A-");
-					else
+					else if ("B".equals(venta.getTipoTicket()))
 						nroTRX = nroTRX.concat("B-");
+					else
+						nroTRX = nroTRX.concat("E-");
 					nroTRX = nroTRX.concat(venta.getNumeroTicket());
 					dto.setNroTrx(nroTRX);
 					ingresos.add(dto);

@@ -57,6 +57,7 @@ import com.mitnick.utils.PropertiesManager;
 import com.mitnick.utils.Validator;
 import com.mitnick.utils.dtos.ClienteDto;
 import com.mitnick.utils.dtos.CuotaDto;
+import com.mitnick.utils.dtos.MarcaDto;
 import com.mitnick.utils.dtos.MovimientoDto;
 import com.mitnick.utils.dtos.MovimientoProductoDto;
 import com.mitnick.utils.dtos.ProductoDto;
@@ -178,14 +179,17 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 	private List<MovimientoProductoDto> agruparPorProducto(
 			List<Movimiento> movimientos) {
 		List<MovimientoProductoDto> productos = new ArrayList<MovimientoProductoDto>();
+		int totalStock=0;
+		int totalAjustes=0;
+		int totalVentas=0;		
 		for (Movimiento movimiento : movimientos) {
 			MovimientoProductoDto movimientoDto = getDetallePorProducto(
 					movimiento, productos);
 			if (movimiento.getTipo() == Movimiento.CREACION) {
-				movimientoDto.setStockOriginal(movimiento.getCantidad());
+				movimientoDto.setStockOriginal(movimiento.getCantidad());				
 			}else if (movimiento.getTipo() == Movimiento.AJUSTE) {
 				movimientoDto.setAjustes(movimientoDto.getAjustes()
-						+ movimiento.getCantidad());
+						+ movimiento.getCantidad());				
 			} else if (movimiento.getTipo() == Movimiento.VENTA) {
 				movimientoDto.setVentas(movimientoDto.getVentas()
 						- movimiento.getCantidad());
@@ -194,6 +198,38 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						+ movimiento.getCantidad());
 			}
 		}
+		BigDecimal precioTotal = new BigDecimal(0);
+		BigDecimal costoTotal = new BigDecimal(0);
+		for (MovimientoProductoDto dto: productos){
+			if (Validator.isNotNull(dto.getProducto())){
+				dto.setPrecioTotal(dto.getProducto().getPrecioVenta().multiply(new BigDecimal(dto.getStockFinal())));
+				BigDecimal pc = dto.getProducto().getPrecioCompra();
+				if (pc == null){
+					pc = new BigDecimal(0);
+				}
+				dto.setCostoTotal(pc.multiply(new BigDecimal(dto.getStockFinal())));
+				precioTotal = precioTotal.add(dto.getPrecioTotal());
+				costoTotal = costoTotal.add(dto.getCostoTotal());
+			}			
+			totalStock = totalStock + dto.getStockOriginal();
+			totalAjustes = totalAjustes + dto.getAjustes();
+			totalVentas = totalVentas + dto.getVentas();			
+		}
+		MovimientoProductoDto totales = new MovimientoProductoDto();
+		totales.setAjustes(totalAjustes);
+		totales.setVentas(totalVentas);
+		totales.setStockOriginal(totalStock);
+		totales.setProducto(null);	
+		totales.setPrecioTotal(precioTotal);
+		totales.setCostoTotal(costoTotal);
+		ProductoDto prodTemporal = new ProductoDto();
+		prodTemporal.setDescripcion("Totales");
+		prodTemporal.setCodigo("");
+		MarcaDto marca = new MarcaDto();
+		marca.setDescripcion("");
+		prodTemporal.setMarca(marca);
+		totales.setProducto(prodTemporal);
+		productos.add(totales);
 		return productos;
 	}
 
@@ -236,45 +272,70 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 			List<ReporteFacturasDto> reportes = new ArrayList<ReporteFacturasDto>();
 
 			for (Venta venta : ventas) {
-				BigDecimal totalVenta = venta.getTotal();
-				BigDecimal impuestoVenta = venta.getImpuesto();
-				BigDecimal netoVenta = venta.getNeto();
-				
-				ReporteFacturasDto diarioDto = getCorte(venta.getFecha(), reportes);				
-				if ("A".equals(venta.getTipoTicket())){
+				if (!MitnickConstants.MODO_ENTRENAMIENTO_TIPO.equals(venta.getTipoTicket())){
+					BigDecimal totalVenta = venta.getTotal();
+					BigDecimal impuestoVenta = venta.getImpuesto();
+					BigDecimal netoVenta = venta.getNeto();
+					
+					ReporteFacturasDto diarioDto = getCorte(venta.getFecha(), reportes);				
+					if ("A".equals(venta.getTipoTicket()) || venta.isDevolucion()){
 					String nroFactura = venta.getNumeroTicket();
 					FacturaDto factura = new FacturaDto();
-					factura.setCliente(venta.getCliente().getNombre());
-					factura.setCondicion(venta.getDiscriminacionIVA().getDescripcionCorta());
-					factura.setCuit(venta.getCliente().getCuit());
-					factura.setNeto(venta.getNeto());
-					factura.setIva(venta.getImpuesto());
-					
-					if (venta.isDevolucion()){
-						nroFactura = "NC-".concat(nroFactura);
-						diarioDto.setIvaNA(diarioDto.getIvaNA().add(impuestoVenta));
-						diarioDto.setNetoNA(diarioDto.getNetoNA().add(netoVenta));
-						diarioDto.setTotalNA(diarioDto.getTotalNA().add(totalVenta));
+					if (Validator.isNotNull(venta.getCliente())){
+						factura.setCliente(venta.getCliente().getNombre());
+						factura.setCondicion(venta.getDiscriminacionIVA().getDescripcionCorta());
+						factura.setCuit("");
+						if (Validator.isNotNull(venta.getCliente().getCuit()))
+							factura.setCuit(venta.getCliente().getCuit());
+						
 					} else {
-						nroFactura = "F-".concat(nroFactura);
-						diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
-						diarioDto.setNetoA(diarioDto.getNetoA().add(netoVenta));
-						diarioDto.setTotalA(diarioDto.getTotalA().add(totalVenta));
+						factura.setCliente("");
+						factura.setCondicion("");
+						factura.setCuit("");
+					}
+					if ("A".equals(venta.getTipoTicket())){
+						factura.setNeto(venta.getNeto());
+						factura.setIva(venta.getImpuesto());
+					} else {
+						factura.setNeto(new BigDecimal(0));
+						factura.setIva(new BigDecimal(0));
 					}
 						
-					
-					factura.setNroFactura(nroFactura);
-					factura.setTotal(totalVenta);
+						if (venta.isDevolucion()){
+						if ("A".equals(venta.getTipoTicket())) {
+							nroFactura = "NCA-".concat(nroFactura);
+							diarioDto.setIvaNA(diarioDto.getIvaNA().add(impuestoVenta));
+							diarioDto.setNetoNA(diarioDto.getNetoNA().add(netoVenta));
+							
+							diarioDto.setTotalNA(diarioDto.getTotalNA().add(totalVenta));
+						} else {
+							nroFactura = "NCB-".concat(nroFactura);							
+							
+							diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
 
-					diarioDto.addfactura(factura);
-					
-				} else {
-					if (venta.isDevolucion()){
-						diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
+						}
+
+						} else {
+							nroFactura = "F-".concat(nroFactura);
+							diarioDto.setIvaA(diarioDto.getIvaA().add(impuestoVenta));
+							diarioDto.setNetoA(diarioDto.getNetoA().add(netoVenta));
+							diarioDto.setTotalA(diarioDto.getTotalA().add(totalVenta));
+						}
+							
+						
+						factura.setNroFactura(nroFactura);
+						factura.setTotal(totalVenta);
+
+						diarioDto.addfactura(factura);
+						
 					} else {
-						diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));	
+						if (venta.isDevolucion()){
+							diarioDto.setTotalNB(diarioDto.getTotalNB().add(totalVenta));
+						} else {
+							diarioDto.setTotalB(diarioDto.getTotalB().add(totalVenta));	
+						}
+												
 					}
-											
 				}
 			}
 			for (ReporteFacturasDto diario: reportes){
@@ -354,8 +415,10 @@ public class ReportesServicio extends ServicioBase implements IReportesServicio 
 						nroTRX = "N";
 					if ("A".equals(venta.getTipoTicket()))
 						nroTRX = nroTRX.concat("A-");
-					else
+					else if ("B".equals(venta.getTipoTicket()))
 						nroTRX = nroTRX.concat("B-");
+					else
+						nroTRX = nroTRX.concat("E-");
 					nroTRX = nroTRX.concat(venta.getNumeroTicket());
 					dto.setNroTrx(nroTRX);
 					ingresos.add(dto);
